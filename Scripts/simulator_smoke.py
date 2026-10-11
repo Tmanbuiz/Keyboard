@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Install/launch the actual companion app and capture a simulator screenshot."""
 import json
+import os
 import pathlib
+import plistlib
 import subprocess
 import time
 
@@ -25,8 +27,15 @@ try:
     app = root / "build/simulator/Build/Products/Debug-iphonesimulator/WianTribeKeyboard.app"
     run("xcrun", "simctl", "install", device, str(app))
     run("xcrun", "simctl", "status_bar", device, "override", "--time", "9:41", "--batteryState", "charged", "--batteryLevel", "100")
-    print(run("xcrun", "simctl", "launch", device, "com.wiantribe.keyboard"))
+    bundle_id = plistlib.loads((app / "Info.plist").read_bytes())["CFBundleIdentifier"]
+    launched = run("xcrun", "simctl", "launch", device, bundle_id)
+    print(launched)
+    pid = int(launched.rsplit(":", 1)[-1].strip())
     time.sleep(12)  # Let one-time simulator setup notification banners disappear.
+    try:
+        os.kill(pid, 0)  # Signal 0 checks the launched app is still alive.
+    except ProcessLookupError:
+        raise SystemExit("The companion app exited after launch")
     output = root / "build/output"
     output.mkdir(parents=True, exist_ok=True)
     run("xcrun", "simctl", "io", device, "screenshot", str(output / "Home-iPhone.png"))

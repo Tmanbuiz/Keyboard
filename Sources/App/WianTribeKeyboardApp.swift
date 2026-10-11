@@ -27,11 +27,14 @@ struct WianTribeKeyboardApp: App {
 @MainActor
 final class AppModel: ObservableObject {
     private let store = KeyboardStore()
-    @Published var preferences: KeyboardPreferences { didSet { store.preferences = preferences } }
-    @Published var phrases: [SavedPhrase] { didSet { store.phrases = phrases } }
+    private var reloading = false
+    @Published var preferences: KeyboardPreferences { didSet { if !reloading { store.preferences = preferences } } }
+    @Published var phrases: [SavedPhrase] { didSet { if !reloading { store.phrases = phrases } } }
     var shared: Bool { store.isShared }
     init() { preferences = store.preferences; phrases = store.phrases }
     func reload() {
+        reloading = true
+        defer { reloading = false }
         preferences = store.preferences
         captureClipboardOnOpen()
         phrases = store.phrases

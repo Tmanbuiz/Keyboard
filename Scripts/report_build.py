@@ -22,7 +22,7 @@ for log in sorted(logs.glob("*.log")):
                 warnings += 1
             if (kind == "error" and errors <= 40) or (kind == "warning" and warnings <= 25):
                 print(f"::{kind} file={path},line={row},col={col or 1}::{message}")
-        elif re.search(r"(error:|\*\* BUILD FAILED|failed \(|✘|not ok )", line) and len(line) < 400:
+        elif re.search(r"(^\s*(?:fatal )?error:|\*\* BUILD FAILED|failed \(|✘|^\s*not ok )", line) and len(line) < 400:
             key = ("raw", line.strip())
             if key not in seen and errors < 40:
                 seen.add(key)

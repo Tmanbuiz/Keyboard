@@ -17,7 +17,7 @@ private let personalClipboardSavedCallback: @convention(c)
 }
 
 @MainActor
-final class PersonalClipboardMonitor: NSObject, ObservableObject, CLLocationManagerDelegate {
+final class PersonalClipboardMonitor: NSObject, ObservableObject, @preconcurrency CLLocationManagerDelegate {
     static let shared = PersonalClipboardMonitor()
     @Published private(set) var enabled = UserDefaults.standard.bool(forKey: "personalClipboard.enabled")
     @Published private(set) var running = false
