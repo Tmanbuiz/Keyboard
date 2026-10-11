@@ -46,9 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Keyboard-verification-logs
-          path: |
-            build/logs/
-            build/output/KeyboardRegistration.xcresult/
+          path: build/logs/
           if-no-files-found: warn
           retention-days: 1
       - name: Upload sideloading package

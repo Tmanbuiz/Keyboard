@@ -20,7 +20,11 @@ final class KeyboardRegistrationTests: XCTestCase {
         settings.launch()
         try tap("General", in: settings)
         try tap("Keyboard", in: settings)
-        try tap("Keyboards", in: settings)
+        // Recent Settings versions also call the page title "Keyboards".
+        // Select the row by its identifier so we do not tap that title.
+        let keyboardList = settings.buttons["KEYBOARDS"]
+        XCTAssertTrue(keyboardList.waitForExistence(timeout: 8), settings.debugDescription)
+        keyboardList.tap()
         let add = settings.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Add New Keyboard")).firstMatch
         XCTAssertTrue(add.waitForExistence(timeout: 8), settings.debugDescription)
         add.tap()

@@ -39,17 +39,23 @@ try:
     output = root / "build/output"
     output.mkdir(parents=True, exist_ok=True)
     run("xcrun", "simctl", "io", device, "screenshot", str(output / "Home-iPhone.png"))
-    print("Companion app installed and launched in iPhone simulator")
+    print("Companion app installed and launched in iPhone simulator", flush=True)
     log = root / "build/logs/keyboard-ui.log"
+    verification = root / "build/verification"
+    verification.mkdir(parents=True, exist_ok=True)
     with log.open("w") as stream:
         tests = subprocess.run([
             "xcodebuild", "test-without-building", "-project", str(root / "WianTribeKeyboard.xcodeproj"),
             "-scheme", "WianTribeKeyboard", "-configuration", "Debug", "-destination", f"id={device}",
-            "-derivedDataPath", str(root / "build/simulator"), "-resultBundlePath", str(output / "KeyboardRegistration.xcresult"),
+            "-derivedDataPath", str(root / "build/simulator"), "-resultBundlePath", str(verification / "KeyboardRegistration.xcresult"),
             "-parallel-testing-enabled", "NO", "CODE_SIGNING_ALLOWED=NO",
             "-only-testing:WianTribeKeyboardUITests/KeyboardRegistrationTests/testKeyboardCanBeAddedSelectedAndType"
         ], stdout=stream, stderr=subprocess.STDOUT, timeout=480)
-    print(log.read_text()[-16000:])
+    test_log = log.read_text()
+    print(test_log[-10000:])
+    for line in test_log.splitlines():
+        if "error:" in line or "XCTAssert" in line or "Test Case" in line:
+            print(line)
     if tests.returncode:
         raise SystemExit("Keyboard registration/typing UI test failed; see keyboard-ui.log and xcresult")
     print("Actual keyboard appeared in Add New Keyboard, was selected, and typed Tolu")
