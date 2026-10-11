@@ -19,7 +19,7 @@ struct KeyboardPalette {
 final class KeyButton: UIButton {
     var onTap: (() -> Void)?
     var letter: Character?
-    var held = false
+    var longPressConsumed = false
     var normalColor: UIColor = .clear
     private let hint = UILabel()
 
@@ -55,7 +55,7 @@ final class KeyButton: UIButton {
         didSet { backgroundColor = isHighlighted ? normalColor.withAlphaComponent(0.55) : normalColor }
     }
     @objc private func tap() {
-        guard !held else { held = false; return }
+        guard !longPressConsumed else { longPressConsumed = false; return }
         onTap?()
     }
 }

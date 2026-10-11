@@ -97,6 +97,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         glideLayer.frame = content.bounds
+        let wantedHeight = traitCollection.verticalSizeClass == .compact ? min(preferences.height, 205) : preferences.height
+        if heightConstraint?.constant != wantedHeight { heightConstraint?.constant = wantedHeight }
     }
 
     private var before: String { textDocumentProxy.documentContextBeforeInput ?? "" }
@@ -148,6 +150,12 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let key = button(title) { [weak self] in self?.showPanel(identifier) }
             key.accessibilityLabel = label
             toolbar.addArrangedSubview(key)
+        }
+        if panel != nil {
+            let globe = KeyButton(title: "🌐", palette: palette, function: true)
+            globe.accessibilityLabel = "Next keyboard"
+            globe.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
+            toolbar.addArrangedSubview(globe)
         }
         let hide = button("⌄") { [weak self] in self?.dismissKeyboard() }
         hide.accessibilityLabel = "Hide keyboard"; toolbar.addArrangedSubview(hide)
@@ -297,6 +305,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         correction = nil; glideChoices = []; lastSpace = 0
         textDocumentProxy.insertText(text)
         if shift && !capsLock { shift = false; rebuildContent() }
+        if text.hasSuffix("\n") { updateShift() }
         refreshSuggestions()
     }
 
@@ -342,11 +351,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     @objc private func deleteHeld(_ gesture: UILongPressGestureRecognizer) {
         guard let key = gesture.view as? KeyButton else { return }
         if gesture.state == .began {
-            key.held = true; delete()
+            key.longPressConsumed = true; delete()
             repeatDelete = Timer.scheduledTimer(withTimeInterval: 0.075, repeats: true) { [weak self] _ in self?.delete() }
         } else if gesture.state == .ended || gesture.state == .cancelled || gesture.state == .failed {
             repeatDelete?.invalidate(); repeatDelete = nil
-            DispatchQueue.main.async { key.held = false }
+            DispatchQueue.main.async { key.longPressConsumed = false }
         }
     }
 
@@ -404,7 +413,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             DispatchQueue.main.async {
                 guard self.generation == thisGeneration, self.before == context, self.panel == nil else { return }
                 self.currentSuggestions = results
-                var choices = results.map { result in (result.text, { [weak self] in self?.chooseSuggestion(result.text, expectedContext: context) }) }
+                var choices: [(String, () -> Void)] = results.map { result in (result.text, { [weak self] in self?.chooseSuggestion(result.text, expectedContext: context) }) }
                 if !word.isEmpty { choices.insert((word, { [weak self] in self?.chooseSuggestion(word, expectedContext: context) }), at: 0) }
                 self.showSuggestions(Array(choices.prefix(3)))
             }
@@ -477,12 +486,13 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             }
             let width = Double(letterButtons.first?.bounds.width ?? 32)
             let choices = decoder.decode(path: glidePath, centers: centers, entries: engine.entries, language: preferences.language, keyWidth: width)
-            guard let first = choices.first else { setStatus("Swipe a little more slowly, or tap to type"); return }
+            guard !choices.isEmpty else { setStatus("Swipe a little more slowly, or tap to type"); return }
             glideChoices = choices.map { glideShift ? $0.word.prefix(1).uppercased() + $0.word.dropFirst() : $0.word }
             let prefix = !before.isEmpty && before.last?.isWhitespace == false ? " " : ""
             glideInserted = glideChoices[0]
             textDocumentProxy.insertText(prefix + glideInserted + " ")
             glideSuffix = String(before.suffix(64))
+            if glideSuffix.isEmpty { glideChoices = [] }
             if !capsLock { shift = false }
             rebuildContent(); refreshSuggestions()
         } else if gesture.state == .cancelled || gesture.state == .failed { glideLayer.path = nil }
@@ -505,7 +515,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     @objc private func accent(_ gesture: UILongPressGestureRecognizer) {
         guard let key = gesture.view as? KeyButton, let letter = key.letter else { return }
         if gesture.state == .began {
-            key.held = true
+            key.longPressConsumed = true
             accentValues = accents(for: letter); accentSelection = 0
             let popup = UIStackView(); popup.axis = .horizontal; popup.distribution = .fillEqually; popup.spacing = 2
             popup.backgroundColor = palette.function; popup.layer.cornerRadius = 8; popup.clipsToBounds = true
@@ -524,8 +534,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         } else if gesture.state == .ended {
             let chosen = accentValues.indices.contains(accentSelection) ? accentValues[accentSelection] : String(letter)
             removeAccentPopup(); insert(chosen)
-            DispatchQueue.main.async { key.held = false }
-        } else if gesture.state == .cancelled || gesture.state == .failed { removeAccentPopup(); key.held = false }
+            DispatchQueue.main.async { key.longPressConsumed = false }
+        } else if gesture.state == .cancelled || gesture.state == .failed { removeAccentPopup(); key.longPressConsumed = false }
     }
 
     private func highlightAccent() {
