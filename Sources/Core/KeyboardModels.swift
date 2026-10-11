@@ -38,16 +38,40 @@ public struct KeyboardPreferences: Codable, Equatable {
     // Word learning is opt-in; never retain sentences or a keystroke history.
     public var learnWords = false
     public var height: Double = 300
+    // Clipboard history is opt-in and stays on this device.
+    public var clipboardHistory = false
+    public var clipboardDays = 7
     public init() {}
+
+    // Missing keys fall back to defaults, so adding a setting never resets existing ones.
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        let d = KeyboardPreferences()
+        language = (try? c.decodeIfPresent(KeyboardLanguage.self, forKey: .language)) ?? d.language
+        theme = (try? c.decodeIfPresent(KeyboardTheme.self, forKey: .theme)) ?? d.theme
+        handMode = (try? c.decodeIfPresent(HandMode.self, forKey: .handMode)) ?? d.handMode
+        numberRow = (try? c.decodeIfPresent(Bool.self, forKey: .numberRow)) ?? d.numberRow
+        autocorrect = (try? c.decodeIfPresent(Bool.self, forKey: .autocorrect)) ?? d.autocorrect
+        predictions = (try? c.decodeIfPresent(Bool.self, forKey: .predictions)) ?? d.predictions
+        swipeTyping = (try? c.decodeIfPresent(Bool.self, forKey: .swipeTyping)) ?? d.swipeTyping
+        autoCapitalization = (try? c.decodeIfPresent(Bool.self, forKey: .autoCapitalization)) ?? d.autoCapitalization
+        doubleSpacePeriod = (try? c.decodeIfPresent(Bool.self, forKey: .doubleSpacePeriod)) ?? d.doubleSpacePeriod
+        haptics = (try? c.decodeIfPresent(Bool.self, forKey: .haptics)) ?? d.haptics
+        learnWords = (try? c.decodeIfPresent(Bool.self, forKey: .learnWords)) ?? d.learnWords
+        height = (try? c.decodeIfPresent(Double.self, forKey: .height)) ?? d.height
+        clipboardHistory = (try? c.decodeIfPresent(Bool.self, forKey: .clipboardHistory)) ?? d.clipboardHistory
+        clipboardDays = (try? c.decodeIfPresent(Int.self, forKey: .clipboardDays)) ?? d.clipboardDays
+    }
 }
 
+/// A clipboard item. Pinned items are saved phrases: they never expire.
 public struct SavedPhrase: Codable, Identifiable, Equatable {
     public var id: UUID
     public var text: String
     public var pinned: Bool
     public var createdAt: Date
-    public init(text: String, pinned: Bool = false) {
-        id = UUID(); self.text = String(text.prefix(2000)); self.pinned = pinned; createdAt = Date()
+    public init(text: String, pinned: Bool = false, createdAt: Date = Date()) {
+        id = UUID(); self.text = String(text.prefix(ClipboardHistory.maxLength)); self.pinned = pinned; self.createdAt = createdAt
     }
 }
 

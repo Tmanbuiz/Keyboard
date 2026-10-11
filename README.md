@@ -10,7 +10,7 @@ A native iOS keyboard extension and companion app, inspired by useful Android ke
 - An initial offline glide/swipe decoder, alternatives and space-bar cursor movement.
 - Four themes, three keyboard heights and left/right one-handed layouts.
 - Emoji, two original stickers and two original animated GIFs. Media is copied; the user pastes it in a compatible host app.
-- Explicitly saved/pinned phrases and opt-in local word-count learning. No automatic clipboard collection or keystroke history.
+- Android-style clipboard (📋): opt-in history of the last 40 texts copied while the keyboard is open, a "just copied" suggestion chip, tap to paste anywhere, pin/copy/delete, and expiry after 1, 7 or 30 days. Pinned items never expire. Password-manager copies are skipped. Opt-in local word-count learning. No keystroke history.
 - Companion app with setup instructions, a typing practice field, settings and a voice transcription editor.
 - Optional grammar, tone and translation client in the app and keyboard. A private Cloudflare Workers backend template is included; no service or API credentials are provisioned by default.
 
@@ -34,13 +34,13 @@ bash Scripts/build_ipa.sh  # Mac/Xcode only
 
 ## Sideloading and shared settings
 
-The default build has no App Group entitlement, making signing simpler for Personal Teams and sideloaders. App and keyboard preferences/phrases are stored separately; **use ⚙︎ inside the keyboard to configure the keyboard**. Explicit clipboard import can transfer phrases and an optional writing connection.
+The default build has no App Group entitlement, making signing simpler for Personal Teams and sideloaders. App and keyboard preferences/phrases are stored separately; **use ⚙︎ inside the keyboard to configure the keyboard**. Text copied in the app appears in the keyboard clipboard the next time the keyboard opens; the clipboard can also transfer an optional writing connection.
 
 For a paid-team build with shared storage, register `group.com.wiantribe.keyboard` for both targets, then run `python3 Scripts/generate_project.py --shared-container` and sign both targets with profiles containing that group. The keyboard can read shared settings without Full Access; writing to shared storage requires Full Access. It always falls back to its private sandbox when the group is absent.
 
 ## Privacy and platform restrictions
 
-Typing, swipe decoding and suggestions run locally. Full Access is optional for basic typing and is checked before clipboard, media and online actions. Local learning is off by default. Writing requests send only explicitly selected/entered text over HTTPS, use an ephemeral URL session, reject redirects and keep the access token in Keychain. The backend template contains no request logging or stored text history.
+Typing, swipe decoding and suggestions run locally. Full Access is optional for basic typing and is checked before clipboard, media and online actions. Local learning and clipboard history are off by default. iOS gives keyboards no background clipboard access, so history only records the latest copy each time the keyboard is shown, plus anything copied while it stays open. Writing requests send only explicitly selected/entered text over HTTPS, use an ephemeral URL session, reject redirects and keep the access token in Keychain. The backend template contains no request logging or stored text history.
 
 Voice recording is confined to the companion app; it uses Apple's Speech framework and requests microphone/speech permissions only when starting a recording. On-device recognition is preferred when supported; otherwise Apple's service may process the audio. No microphone access is attempted in the extension.
 

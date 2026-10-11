@@ -43,7 +43,7 @@ private struct HomeView: View {
                         if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
                     } label: { Label("Open Settings", systemImage: "gearshape").frame(maxWidth: .infinity).padding(.vertical, 8) }
                         .buttonStyle(.borderedProminent).tint(.mint).foregroundStyle(ocean)
-                    Text("Typing works offline without Full Access. Enable Allow Full Access only for clipboard import, media copying and optional online writing tools.")
+                    Text("Typing works offline without Full Access. Enable Allow Full Access only for clipboard history, media copying and optional online writing tools.")
                         .font(.caption).foregroundStyle(.secondary)
                 }.padding(20).background(card, in: RoundedRectangle(cornerRadius: 22))
                 HStack(alignment: .top, spacing: 20) {
@@ -156,10 +156,10 @@ private struct ToolsView: View {
             Section {
                 NavigationLink { VoiceView() } label: { tool("waveform", "Voice editor", "Speak, review and copy your transcript") }
                 NavigationLink { WriterView() } label: { tool("sparkles", "Writing assistant", "Grammar, tone and translation with your service") }
-                NavigationLink { PhrasesView() } label: { tool("text.badge.star", "Saved phrases", "Keep text you choose to save") }
+                NavigationLink { PhrasesView() } label: { tool("doc.on.clipboard", "Clipboard", "Recent copies and pinned text") }
             }
             Section {
-                Text("Typing, emoji and saved phrases work offline. Voice uses Apple's speech recognition. The writing assistant needs your own HTTPS service connection.")
+                Text("Typing, emoji and your clipboard work offline. Voice uses Apple's speech recognition. The writing assistant needs your own HTTPS service connection.")
                     .font(.subheadline).foregroundStyle(.secondary)
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Your toolkit")
@@ -194,10 +194,18 @@ private struct SettingsView: View {
                 Toggle("Haptic feedback", isOn: $model.preferences.haptics)
             }
             Section {
+                Toggle("Clipboard history", isOn: $model.preferences.clipboardHistory)
+                Picker("Keep recent clips", selection: $model.preferences.clipboardDays) {
+                    ForEach(ClipboardHistory.dayOptions, id: \.self) { Text("\($0) day\($0 == 1 ? "" : "s")").tag($0) }
+                }
+            } header: { Text("Clipboard") } footer: {
+                Text("Needs Allow Full Access. While the keyboard is open, it keeps text you copy so you can paste it anywhere. Pinned items never expire. Copies from password managers are skipped, and nothing leaves this iPhone.")
+            }
+            Section {
                 Toggle("Learn my words on this device", isOn: $model.preferences.learnWords)
                 Button("Clear learned words", role: .destructive) { model.clearLearnedWords() }
                 NavigationLink("Privacy & iOS limits") { PrivacyView() }
-                Button("Clear saved phrases and learned words", role: .destructive) { clearData = true }
+                Button("Clear clipboard, pinned text and learned words", role: .destructive) { clearData = true }
             } header: { Text("Privacy") } footer: {
                 Text("Word learning is off by default. It saves word counts, not sentences. Remove personal data inside the keyboard too if your build uses separate storage.")
             }
@@ -207,7 +215,7 @@ private struct SettingsView: View {
                 Text("WianTribe Keyboard 0.1.0").font(.caption).foregroundStyle(.secondary)
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Make it yours")
-            .confirmationDialog("Clear saved phrases and learned words on this device?", isPresented: $clearData) {
+            .confirmationDialog("Clear clipboard history, pinned text and learned words on this device?", isPresented: $clearData) {
                 Button("Clear personal data", role: .destructive) { model.clearPersonalData() }
             }
     }
@@ -218,16 +226,16 @@ private struct PhrasesView: View {
     @State private var draft = ""
     var body: some View {
         List {
-            Section("Save a phrase") {
-                TextField("Write or paste a phrase", text: $draft, axis: .vertical).lineLimit(2...5)
-                Button("Save phrase", systemImage: "plus") { model.savePhrase(draft); draft = "" }.disabled(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                Text("Only text you explicitly save is stored. Maximum 50 phrases.").font(.caption).foregroundStyle(.secondary)
+            Section("Pin a phrase") {
+                TextField("Write or paste text to keep", text: $draft, axis: .vertical).lineLimit(2...5)
+                Button("Pin", systemImage: "pin") { model.savePhrase(draft); draft = "" }.disabled(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                Text("Pinned text never expires. Recent copies are kept for \(model.preferences.clipboardDays) day\(model.preferences.clipboardDays == 1 ? "" : "s"), up to \(ClipboardHistory.maxRecent) items.").font(.caption).foregroundStyle(.secondary)
             }
-            Section("Your phrases") {
-                if model.phrases.isEmpty { Text("Your saved phrases will appear here.").foregroundStyle(.secondary) }
-                ForEach(model.phrases.sorted { $0.pinned == $1.pinned ? $0.createdAt > $1.createdAt : $0.pinned && !$1.pinned }) { phrase in
+            Section("Clipboard") {
+                if model.phrases.isEmpty { Text("Copied and pinned text will appear here.").foregroundStyle(.secondary) }
+                ForEach(ClipboardHistory.ordered(model.phrases)) { phrase in
                     VStack(alignment: .leading, spacing: 10) {
-                        Text(phrase.text)
+                        Text(phrase.text).lineLimit(6)
                         HStack {
                             Button("Copy", systemImage: "doc.on.doc") { UIPasteboard.general.string = phrase.text }
                             Spacer()
@@ -240,9 +248,12 @@ private struct PhrasesView: View {
                 }
             }
             if !model.shared {
-                Section { Text("To add one to the keyboard: Copy it here, then tap ▣ → Save clipboard text inside the keyboard with Full Access enabled.").font(.caption).foregroundStyle(.secondary) }
+                Section { Text("This build keeps the keyboard's clipboard separate from the app. Open 📋 on the keyboard to see what you've copied. Text you copy here will appear there the next time the keyboard opens.").font(.caption).foregroundStyle(.secondary) }
             }
-        }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Saved phrases")
+            if model.phrases.contains(where: { !$0.pinned }) {
+                Section { Button("Clear recent clips", role: .destructive) { model.clearRecentClips() } }
+            }
+        }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Clipboard")
     }
 }
 
@@ -287,7 +298,8 @@ private struct WriterView: View {
                 }
                 Button("Copy connection for keyboard") {
                     guard let connection = ConnectionVault.load(), let data = try? JSONEncoder().encode(connection), let json = String(data: data, encoding: .utf8) else { return }
-                    UIPasteboard.general.setItems([["public.utf8-plain-text": json]], options: [.localOnly: true, .expirationDate: Date().addingTimeInterval(120)])
+                    // The concealed marker keeps this token out of clipboard history.
+                    UIPasteboard.general.setItems([["public.utf8-plain-text": json, "org.nspasteboard.ConcealedType": Data()]], options: [.localOnly: true, .expirationDate: Date().addingTimeInterval(120)])
                     status = "Copied for two minutes. In the keyboard tap ✦ → Import writing connection. It contains your private access token."
                 }.disabled(!configured)
                 Button("Disconnect", role: .destructive) { ConnectionVault.save(nil); configured = false; token = ""; status = "Disconnected" }
@@ -315,14 +327,14 @@ private struct PrivacyView: View {
         List {
             Section("Your typing stays local") {
                 Text("Basic typing, spelling suggestions, swipe decoding and emoji run on your iPhone. The app has no analytics, advertising SDK or keystroke logger.")
-                Text("Optional learning stores individual word counts only. Saved phrases are stored only after you tap Save. Both can be deleted in settings.")
+                Text("Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.")
             }
             Section("When data can leave your device") {
                 Text("Writing tools send only text you explicitly select or enter to the HTTPS service you connect. The app does not include a developer-owned writing service. Check your provider's privacy terms.")
                 Text("Voice recording is available in this app, with microphone and speech permission. Apple's speech recognition may process audio on Apple's servers when on-device recognition is unavailable.")
             }
             Section("Full Access is optional") {
-                Text("Use the keyboard without Full Access for normal typing. Clipboard import, copying media, haptics, shared-container writes and online writing tools need Full Access. Allowing it does not start background text uploads.")
+                Text("Use the keyboard without Full Access for normal typing. Clipboard history, copying media, haptics, shared-container writes and online writing tools need Full Access. Allowing it does not start background text uploads.")
             }
             Section("iOS limits") {
                 Text("Password fields and phone-number pads use Apple's keyboard. Apps may disable third-party keyboards. Media is copied to the clipboard; you paste it yourself in an app that accepts that format.")

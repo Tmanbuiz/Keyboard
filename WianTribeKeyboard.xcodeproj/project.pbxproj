@@ -24,6 +24,12 @@
 			"path" = "Sources/App/WianTribeKeyboardApp.swift";
 			"sourceTree" = "<group>";
 		};
+		82B96D714C539267D27AD641 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Core/ClipboardHistory.swift";
+			"sourceTree" = "<group>";
+		};
 		8A43DB04DFE3A792F78F0228 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -161,6 +167,7 @@
 				A4A1F8EE0699B7D2BC5C8E30,
 				A4CC490762EB88AA3BE0D206,
 				4123DDC2480CFE0C53D97978,
+				82B96D714C539267D27AD641,
 				8A43DB04DFE3A792F78F0228,
 				D8FEE4E7F4D497F461462B13,
 				0AE84801629539539873D0C2,
@@ -195,6 +202,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = 4123DDC2480CFE0C53D97978;
 		};
+		CB12A513BBB5C8888A9A7F0B = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 82B96D714C539267D27AD641;
+		};
 		1B28249939ECD69D0DBE6140 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 8A43DB04DFE3A792F78F0228;
@@ -222,6 +233,7 @@
 				7A93E05CB0EB835B1331B7D7,
 				989B52009A94CD934FB5EC83,
 				EB3E8CA0874297CD57F513B4,
+				CB12A513BBB5C8888A9A7F0B,
 				1B28249939ECD69D0DBE6140,
 				BE5DB71396A3BC5B8BE8EAAA,
 				13A0240D5AC9E3157A97A389,
@@ -229,6 +241,10 @@
 				E104B1905BB5AA636105B854,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		DE79B93CF5D5B70196F6DD40 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 82B96D714C539267D27AD641;
 		};
 		34BF954803BF4A183B917E33 = {
 			"isa" = "PBXBuildFile";
@@ -262,6 +278,7 @@
 			"isa" = "PBXSourcesBuildPhase";
 			"buildActionMask" = 2147483647;
 			"files" = (
+				DE79B93CF5D5B70196F6DD40,
 				34BF954803BF4A183B917E33,
 				E72E0C41BF106D2643097C30,
 				769F7A5B6DD39D5453D59723,

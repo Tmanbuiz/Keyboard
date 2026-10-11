@@ -32,10 +32,27 @@ final class KeyboardStore {
         get { load("preferences.v1", fallback: KeyboardPreferences()) }
         set { save(newValue, key: "preferences.v1") }
     }
+    /// Clipboard history and saved phrases (pinned items) in one list, newest first.
     var phrases: [SavedPhrase] {
-        get { load("phrases.v1", fallback: [SavedPhrase]()) }
-        set { save(Array(newValue.prefix(50)), key: "phrases.v1") }
+        get {
+            if let clips: [SavedPhrase] = load("clips.v2", fallback: nil) {
+                return ClipboardHistory.pruned(clips, keepDays: preferences.clipboardDays)
+            }
+            // Phrases from v0.1 were saved on purpose, so they become pinned and never expire.
+            let legacy: [SavedPhrase] = load("phrases.v1", fallback: [])
+            return legacy.map { var item = $0; item.pinned = true; return item }
+        }
+        set { save(ClipboardHistory.pruned(newValue, keepDays: preferences.clipboardDays), key: "clips.v2") }
     }
+    /// The pasteboard change count already looked at, so each copy is read at most once.
+    var lastChangeCount: Int {
+        get { local.object(forKey: "clipboard.changeCount") as? Int ?? -1 }
+        set { local.set(newValue, forKey: "clipboard.changeCount") }
+    }
+    func capture(_ text: String) {
+        phrases = ClipboardHistory.adding(text, to: phrases, keepDays: preferences.clipboardDays)
+    }
+    func clearRecentClips() { phrases = phrases.filter(\.pinned) }
     var learned: [String: Int] {
         get { load("learned.v1", fallback: [String: Int]()) }
         set { save(newValue, key: "learned.v1") }
@@ -49,11 +66,7 @@ final class KeyboardStore {
     }
     func addPhrase(_ text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return }
-        var items = phrases
-        items.removeAll { $0.text == String(trimmed.prefix(2000)) }
-        items.insert(SavedPhrase(text: trimmed), at: 0)
-        phrases = items
+        phrases = ClipboardHistory.adding(trimmed, to: phrases, pinned: true, keepDays: preferences.clipboardDays)
     }
     func clearPersonalData() {
         phrases = []; learned = [:]

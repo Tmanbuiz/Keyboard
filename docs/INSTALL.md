@@ -10,9 +10,9 @@
 6. Go to **iPhone Settings → General → Keyboard → Keyboards → Add New Keyboard → WianTribe Keyboard**.
 7. Open a message or the app's Practice page. Hold **🌐** and choose **WianTribe Keyboard**.
 
-Basic typing, suggestions, swipe input and emoji work without **Allow Full Access**. To save clipboard text, copy stickers/GIFs or use a connected writing service, open the keyboard entry in Settings and enable **Allow Full Access**.
+Basic typing, suggestions, swipe input and emoji work without **Allow Full Access**. To use clipboard history, copy stickers/GIFs or use a connected writing service, open the keyboard entry in Settings and enable **Allow Full Access**.
 
-The default sideload build stores settings separately in the app and extension. **Tap ⚙︎ on the keyboard itself** to change its theme, height, language or typing behaviour. For phrases, copy from the app, then tap **▣ → Save clipboard text** in the keyboard.
+The default sideload build stores settings separately in the app and extension. **Tap ⚙︎ on the keyboard itself** to change its theme, height, language or typing behaviour. For clipboard history, tap **📋 → Turn on clipboard history** in the keyboard. Text you copy anywhere then appears in 📋 the next time the keyboard opens.
 
 ## Using Xcode on a Mac
 

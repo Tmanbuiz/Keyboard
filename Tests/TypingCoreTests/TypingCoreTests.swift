@@ -71,5 +71,55 @@ final class TypingCoreTests: XCTestCase {
         preferences.language = .yoruba; preferences.handMode = .right
         XCTAssertEqual(try JSONDecoder().decode(KeyboardPreferences.self, from: JSONEncoder().encode(preferences)), preferences)
         XCTAssertFalse(preferences.learnWords)
+        XCTAssertFalse(preferences.clipboardHistory)
+    }
+
+    func testOlderPreferencesKeepTheirValues() throws {
+        let old = #"{"language":"pidgin","theme":"rose","handMode":"left","numberRow":false,"autocorrect":true,"predictions":true,"swipeTyping":true,"autoCapitalization":true,"doubleSpacePeriod":true,"haptics":true,"learnWords":false,"height":340}"#
+        let decoded = try JSONDecoder().decode(KeyboardPreferences.self, from: Data(old.utf8))
+        XCTAssertEqual(decoded.language, .pidgin); XCTAssertEqual(decoded.theme, .rose)
+        XCTAssertFalse(decoded.numberRow); XCTAssertEqual(decoded.height, 340)
+        XCTAssertFalse(decoded.clipboardHistory); XCTAssertEqual(decoded.clipboardDays, 7)
+    }
+
+    func testClipboardNewestFirstAndDeduplicates() {
+        var items: [SavedPhrase] = []
+        for text in ["one", "two", "three", "two"] { items = ClipboardHistory.adding(text, to: items) }
+        XCTAssertEqual(items.map(\.text), ["two", "three", "one"])
+        XCTAssertEqual(ClipboardHistory.adding("   ", to: items), items)
+    }
+
+    func testClipboardDuplicateKeepsPinAndIdentity() {
+        var items = ClipboardHistory.adding("address", to: [], pinned: true)
+        let id = items[0].id
+        items = ClipboardHistory.adding("other", to: items)
+        items = ClipboardHistory.adding("address", to: items)
+        XCTAssertEqual(items[0].text, "address"); XCTAssertTrue(items[0].pinned); XCTAssertEqual(items[0].id, id)
+    }
+
+    func testClipboardCapsRecentButKeepsPinned() {
+        var items = ClipboardHistory.adding("keep me", to: [], pinned: true)
+        for i in 0..<(ClipboardHistory.maxRecent + 10) { items = ClipboardHistory.adding("clip \(i)", to: items) }
+        XCTAssertEqual(items.filter { !$0.pinned }.count, ClipboardHistory.maxRecent)
+        XCTAssertTrue(items.contains { $0.text == "keep me" && $0.pinned })
+        XCTAssertEqual(items.first?.text, "clip \(ClipboardHistory.maxRecent + 9)")
+    }
+
+    func testClipboardExpiresOnlyRecentItems() {
+        let now = Date()
+        let old = now.addingTimeInterval(-10 * 86_400)
+        let items = [SavedPhrase(text: "old clip", createdAt: old), SavedPhrase(text: "old pin", pinned: true, createdAt: old),
+                     SavedPhrase(text: "new clip", createdAt: now)]
+        XCTAssertEqual(ClipboardHistory.pruned(items, now: now, keepDays: 7).map(\.text), ["old pin", "new clip"])
+        XCTAssertEqual(ClipboardHistory.pruned(items, now: now, keepDays: 30).count, 3)
+        XCTAssertEqual(ClipboardHistory.ordered(items).first?.text, "old pin")
+    }
+
+    func testClipboardSkipsSensitiveContent() {
+        XCTAssertFalse(ClipboardHistory.shouldCapture("hunter2", types: ["public.utf8-plain-text", "org.nspasteboard.ConcealedType"]))
+        XCTAssertFalse(ClipboardHistory.shouldCapture(" \n "))
+        XCTAssertTrue(ClipboardHistory.shouldCapture("See you at 5", types: ["public.utf8-plain-text"]))
+        XCTAssertEqual(ClipboardHistory.preview("Hello there\nsecond line"), "Hello there")
+        XCTAssertEqual(ClipboardHistory.preview(String(repeating: "a", count: 30), length: 5), "aaaaa…")
     }
 }

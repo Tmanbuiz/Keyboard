@@ -42,6 +42,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     private var accentValues: [String] = []
     private var accentSelection = 0
     private var onlineTask: Task<Void, Never>?
+    private var clipboardTimer: Timer?
+    private var freshClip: (text: String, date: Date)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,10 +79,12 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadPreferences()
+        startClipboardWatch()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        clipboardTimer?.invalidate(); clipboardTimer = nil
         repeatDelete?.invalidate(); repeatDelete = nil
         suggestionWork?.cancel(); onlineTask?.cancel()
         removeAccentPopup()
@@ -126,6 +130,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     private func savePreferences() {
         store.preferences = preferences
         reloadPreferences()
+        startClipboardWatch()
     }
 
     private func clear(_ stack: UIStackView) {
@@ -146,7 +151,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         clear(toolbar)
         if panel != nil { toolbar.addArrangedSubview(button("ABC") { [weak self] in self?.showPanel(nil) }) }
         else { toolbar.addArrangedSubview(button(preferences.language.shortTitle) { [weak self] in self?.cycleLanguage() }) }
-        for (title, identifier, label) in [("☺︎", "emoji", "Emoji and stickers"), ("▣", "clips", "Saved phrases"), ("✦", "writing", "Writing tools"), ("⚙︎", "settings", "Keyboard settings")] {
+        for (title, identifier, label) in [("☺︎", "emoji", "Emoji and stickers"), ("📋", "clips", "Clipboard"), ("✦", "writing", "Writing tools"), ("⚙︎", "settings", "Keyboard settings")] {
             let key = button(title) { [weak self] in self?.showPanel(identifier) }
             key.accessibilityLabel = label
             toolbar.addArrangedSubview(key)
@@ -175,7 +180,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     private var panelTitle: String {
-        switch panel { case "emoji": return "Emoji & media"; case "clips": return "Saved phrases"; case "writing": return "Writing tools"; default: return "Make it yours" }
+        switch panel { case "emoji": return "Emoji & media"; case "clips": return "Clipboard"; case "writing": return "Writing tools"; default: return "Make it yours" }
     }
 
     private func rebuildContent() {
@@ -191,7 +196,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let stack = UIStackView(); stack.axis = .vertical; stack.spacing = 8; stack.translatesAutoresizingMaskIntoConstraints = false
             scroll.addSubview(stack)
             NSLayoutConstraint.activate([stack.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor, constant: 5), stack.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor, constant: -5), stack.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 3), stack.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -6), stack.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor, constant: -10)])
-            switch panel { case "emoji": buildEmoji(stack); case "clips": buildPhrases(stack); case "writing": buildWriting(stack); default: buildSettings(stack) }
+            switch panel { case "emoji": buildEmoji(stack); case "clips": buildClipboard(stack); case "writing": buildWriting(stack); default: buildSettings(stack) }
             return
         }
         keys = UIStackView(); keys.axis = .vertical; keys.distribution = .fillEqually; keys.spacing = 6
@@ -302,7 +307,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     private func insert(_ text: String) {
-        correction = nil; glideChoices = []; lastSpace = 0
+        correction = nil; glideChoices = []; lastSpace = 0; freshClip = nil
         textDocumentProxy.insertText(text)
         if shift && !capsLock { shift = false; rebuildContent() }
         if text.hasSuffix("\n") { updateShift() }
@@ -396,7 +401,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if !glideChoices.isEmpty && before.hasSuffix(glideSuffix) {
             showSuggestions(glideChoices.map { word in (word, { [weak self] in self?.chooseGlide(word) }) }); return
         }
-        guard preferences.predictions && plainTextField else { clear(suggestionBar); setStatus(preferences.language.title); return }
+        let clipChoice = recentClipChoice()
+        guard preferences.predictions && plainTextField else {
+            if let clipChoice { showSuggestions([clipChoice]) } else { clear(suggestionBar); setStatus(preferences.language.title) }
+            return
+        }
         let word = currentWord, context = before, previous = TextContext.previousWord(in: before)
         let language = preferences.language, learned = store.learned, supplemental = self.supplemental
         let thisGeneration = generation
@@ -415,6 +424,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 self.currentSuggestions = results
                 var choices: [(String, () -> Void)] = results.map { result in (result.text, { [weak self] in self?.chooseSuggestion(result.text, expectedContext: context) }) }
                 if !word.isEmpty { choices.insert((word, { [weak self] in self?.chooseSuggestion(word, expectedContext: context) }), at: 0) }
+                if word.isEmpty, let clipChoice { choices.insert(clipChoice, at: 0) }
                 self.showSuggestions(Array(choices.prefix(3)))
             }
         }
@@ -560,10 +570,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         for theme in KeyboardTheme.allCases {
             panelButton("\(preferences.theme == theme ? "✓ " : "")\(theme.title)", in: stack) { [weak self] in self?.preferences.theme = theme; self?.savePreferences() }
         }
-        for (title, keyPath) in [("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
+        for (title, keyPath) in [("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Clipboard history", \KeyboardPreferences.clipboardHistory), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
             panelButton("\(preferences[keyPath: keyPath] ? "✓ " : "○ ")\(title)", in: stack) { [weak self] in
                 guard let self else { return }; self.preferences[keyPath: keyPath].toggle(); self.savePreferences()
             }
+        }
+        panelButton("Keep recent clips: \(preferences.clipboardDays) day\(preferences.clipboardDays == 1 ? "" : "s")", in: stack) { [weak self] in
+            guard let self else { return }
+            let options = ClipboardHistory.dayOptions
+            self.preferences.clipboardDays = options[((options.firstIndex(of: self.preferences.clipboardDays) ?? 0) + 1) % options.count]
+            self.savePreferences()
         }
         for hand in HandMode.allCases {
             panelButton("\(preferences.handMode == hand ? "✓ " : "")\(hand.title)", in: stack) { [weak self] in self?.preferences.handMode = hand; self?.savePreferences() }
@@ -575,31 +591,133 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         note(store.isShared ? "Settings and phrases are shared with the app." : "Sideloaded builds may keep app and keyboard settings separate. Use these controls for your keyboard.", in: stack)
     }
 
-    private func buildPhrases(_ stack: UIStackView) {
-        note("Nothing is saved automatically. Save selected text or explicitly copy from your clipboard.", in: stack)
-        panelButton("Save selected text", in: stack) { [weak self] in
+    // MARK: Clipboard history
+
+    private func startClipboardWatch() {
+        clipboardTimer?.invalidate(); clipboardTimer = nil
+        guard preferences.clipboardHistory, hasFullAccess else { return }
+        checkClipboard()
+        // iOS gives keyboards no clipboard notification, so check the change count while the keyboard is on screen.
+        let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in self?.checkClipboard() }
+        RunLoop.main.add(timer, forMode: .common)
+        clipboardTimer = timer
+    }
+
+    private func checkClipboard() {
+        guard preferences.clipboardHistory, hasFullAccess else { return }
+        let pasteboard = UIPasteboard.general
+        let count = pasteboard.changeCount
+        guard count != store.lastChangeCount else { return }
+        store.lastChangeCount = count
+        // Only text is kept. Password managers mark their copies, and those are skipped.
+        guard pasteboard.hasStrings, let text = pasteboard.string,
+              ClipboardHistory.shouldCapture(text, types: pasteboard.types) else { return }
+        if let data = text.data(using: .utf8), (try? JSONDecoder().decode(WritingConnection.self, from: data)) != nil { return }
+        store.capture(text)
+        freshClip = (text, Date())
+        if panel == "clips" { rebuildContent() } else if panel == nil { refreshSuggestions() }
+    }
+
+    /// A "just copied" chip for the suggestion bar, shown for two minutes or until typing starts.
+    private func recentClipChoice() -> (String, () -> Void)? {
+        guard let clip = freshClip, Date().timeIntervalSince(clip.date) < 120, currentWord.isEmpty else { return nil }
+        return ("📋 " + ClipboardHistory.preview(clip.text, length: 18), { [weak self] in
+            self?.freshClip = nil; self?.insert(clip.text)
+        })
+    }
+
+    private func copyToClipboard(_ text: String) {
+        guard hasFullAccess else { setStatus("Copying needs Allow Full Access in Settings"); return }
+        UIPasteboard.general.string = text
+        store.lastChangeCount = UIPasteboard.general.changeCount
+        if preferences.clipboardHistory { store.capture(text) }
+        if panel == "clips" { rebuildContent() }
+        setStatus("Copied. Paste it anywhere")
+    }
+
+    private func buildClipboard(_ stack: UIStackView) {
+        if !hasFullAccess {
+            note("To keep what you copy in other apps, turn on Allow Full Access: Settings → General → Keyboard → Keyboards → WianTribe Keyboard. You can still save selected text below.", in: stack)
+        } else if !preferences.clipboardHistory {
+            note("Clipboard history keeps the last \(ClipboardHistory.maxRecent) things you copy, so you can paste them anywhere. It stays on this iPhone, and copies from password managers are skipped.", in: stack)
+            panelButton("Turn on clipboard history", in: stack) { [weak self] in
+                guard let self else { return }
+                self.preferences.clipboardHistory = true
+                self.store.lastChangeCount = -1 // Include what is already on the clipboard.
+                self.savePreferences(); self.showPanel("clips")
+            }
+        }
+        let actions = UIStackView(); actions.axis = .horizontal; actions.distribution = .fillEqually; actions.spacing = 5
+        let copy = button("Copy selected") { [weak self] in
             guard let self else { return }
             guard let selected = self.textDocumentProxy.selectedText, !selected.isEmpty else { self.setStatus("Select text in your message first"); return }
-            self.store.addPhrase(selected); self.rebuildContent(); self.setStatus("Selection saved on this device")
+            self.copyToClipboard(selected)
         }
-        panelButton("Save clipboard text", in: stack) { [weak self] in
+        let save = button("Pin selected") { [weak self] in
             guard let self else { return }
-            guard self.hasFullAccess else { self.setStatus("Clipboard access needs Allow Full Access in Settings"); return }
-            guard let text = UIPasteboard.general.string, !text.isEmpty else { self.setStatus("Your clipboard has no text"); return }
-            self.store.addPhrase(text); self.rebuildContent(); self.setStatus("Clipboard text saved")
+            guard let selected = self.textDocumentProxy.selectedText, !selected.isEmpty else { self.setStatus("Select text in your message first"); return }
+            self.store.addPhrase(selected); self.rebuildContent(); self.setStatus("Pinned on this device")
         }
-        let phrases = store.phrases.sorted { $0.pinned == $1.pinned ? $0.createdAt > $1.createdAt : $0.pinned && !$1.pinned }
-        if phrases.isEmpty { note("Saved phrases will appear here. You can insert them while offline.", in: stack) }
-        for phrase in phrases {
-            panelButton((phrase.pinned ? "★ " : "") + String(phrase.text.prefix(65)), in: stack) { [weak self] in self?.insert(phrase.text); self?.showPanel(nil) }
-            let controls = UIStackView(); controls.axis = .horizontal; controls.spacing = 8
-            controls.addArrangedSubview(button(phrase.pinned ? "Unpin" : "Pin") { [weak self] in
-                guard let self else { return }; var items = self.store.phrases
-                if let i = items.firstIndex(where: { $0.id == phrase.id }) { items[i].pinned.toggle(); self.store.phrases = items; self.rebuildContent() }
-            })
-            controls.addArrangedSubview(button("Delete") { [weak self] in self?.store.phrases.removeAll { $0.id == phrase.id }; self?.rebuildContent() })
-            controls.heightAnchor.constraint(equalToConstant: 28).isActive = true; stack.addArrangedSubview(controls)
+        let clearRecent = button("Clear recent") { [weak self] in
+            self?.store.clearRecentClips(); self?.freshClip = nil; self?.rebuildContent(); self?.setStatus("Recent clips cleared. Pinned items kept")
         }
+        for key in [copy, save, clearRecent] { key.titleLabel?.font = .systemFont(ofSize: 13, weight: .medium); actions.addArrangedSubview(key) }
+        actions.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        stack.addArrangedSubview(actions)
+
+        let items = ClipboardHistory.ordered(store.phrases)
+        if items.isEmpty {
+            note(preferences.clipboardHistory && hasFullAccess ? "Copy something in any app, then come back to this keyboard. It will appear here." : "Pinned text will appear here. You can paste it while offline.", in: stack)
+            return
+        }
+        var row: UIStackView?
+        for (index, item) in items.enumerated() {
+            if index % 2 == 0 {
+                let next = UIStackView(); next.axis = .horizontal; next.distribution = .fillEqually; next.spacing = 6
+                stack.addArrangedSubview(next); row = next
+            }
+            row?.addArrangedSubview(clipCard(item))
+        }
+        if items.count % 2 == 1 { row?.addArrangedSubview(UIView()) } // Keep the last card half width.
+    }
+
+    private func clipCard(_ item: SavedPhrase) -> UIView {
+        let card = UIStackView(); card.axis = .vertical
+        card.backgroundColor = palette.key; card.layer.cornerRadius = 8; card.layer.cornerCurve = .continuous; card.clipsToBounds = true
+        let body = button((item.pinned ? "📌 " : "") + String(item.text.prefix(160))) { [weak self] in
+            self?.insert(item.text); self?.showPanel(nil)
+        }
+        body.titleLabel?.font = .systemFont(ofSize: 13)
+        body.titleLabel?.adjustsFontSizeToFitWidth = false
+        body.titleLabel?.numberOfLines = 3; body.titleLabel?.lineBreakMode = .byTruncatingTail
+        body.titleLabel?.textAlignment = .natural
+        body.contentHorizontalAlignment = .leading; body.contentVerticalAlignment = .top
+        body.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 4, right: 6)
+        body.layer.cornerRadius = 0; body.layer.shadowOpacity = 0
+        body.accessibilityLabel = (item.pinned ? "Pinned: " : "") + String(item.text.prefix(120))
+        body.accessibilityHint = "Pastes this text"
+        body.heightAnchor.constraint(equalToConstant: 62).isActive = true
+
+        let controls = UIStackView(); controls.axis = .horizontal; controls.distribution = .fillEqually; controls.spacing = 1
+        let pin = button(item.pinned ? "Unpin" : "Pin", function: true) { [weak self] in
+            guard let self else { return }
+            var items = self.store.phrases
+            if let i = items.firstIndex(where: { $0.id == item.id }) { items[i].pinned.toggle(); self.store.phrases = items }
+            self.rebuildContent()
+        }
+        let copy = button("Copy", function: true) { [weak self] in self?.copyToClipboard(item.text) }
+        let delete = button("✕", function: true) { [weak self] in
+            self?.store.phrases.removeAll { $0.id == item.id }; self?.rebuildContent()
+        }
+        delete.accessibilityLabel = "Delete"
+        for key in [pin, copy, delete] {
+            key.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
+            key.layer.cornerRadius = 0; key.layer.shadowOpacity = 0
+            controls.addArrangedSubview(key)
+        }
+        controls.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        card.addArrangedSubview(body); card.addArrangedSubview(controls)
+        return card
     }
 
     private func buildEmoji(_ stack: UIStackView) {
