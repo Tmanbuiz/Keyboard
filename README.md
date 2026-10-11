@@ -32,7 +32,7 @@ Acknowledgements: word frequencies from [wordfreq](https://github.com/rspeer/wor
 
 Requires iOS/iPadOS 17 or later. Open `WianTribeKeyboard.xcodeproj` in Xcode on a Mac, select your signing team for both targets and run on your iPhone. No third-party iOS packages are required.
 
-GitHub Actions builds the app, keyboard and sticker pack, runs the typing/backend tests, launches the companion app in a simulator and uploads **WianTribeKeyboard-sideload**. That artifact contains **WianTribeKeyboard-unsigned.ipa**, its checksum, installation instructions and a simulator screenshot. The IPA must be re-signed by a sideloading tool before installation. Both the app and keyboard extension must be kept and signed.
+GitHub Actions builds the app, keyboard and sticker pack, runs the typing/backend tests, launches the companion app in a simulator and uploads **WianTribeKeyboard-sideload**. Builds on `main` also publish a GitHub Release with **WianTribeKeyboard-…ipa** (app, keyboard and stickers) and **…-keyboard-only.ipa**, both ad-hoc signed and verified, plus checksums and installation instructions. A sideloading tool must re-sign them; keep and sign the extensions.
 
 See [installation instructions](docs/INSTALL.md) and the [device test checklist](docs/DEVICE-TESTING.md).
 

@@ -4,7 +4,7 @@
 
 1. Open this repository's **Actions** tab and the latest successful **Build iPhone keyboard** run.
 2. Download **WianTribeKeyboard-sideload** under Artifacts and extract the ZIP.
-3. Import **WianTribeKeyboard-unsigned.ipa** into your existing sideloading tool. This file is unsigned; importing/re-signing is required before iOS can install it.
+3. Import the IPA into your sideloading tool, which re-signs it with your Apple ID. Use **WianTribeKeyboard-…ipa** for everything, or **…-keyboard-only.ipa** if you use a free Apple ID (it needs two App IDs instead of three).
 4. Keep the bundled **WianTribeKeyboardExtension.appex** and **WianTribeStickers.appex**. The tool must re-sign the app and both extensions with compatible profiles. If it offers to remove extensions, keep them.
 5. Install, then open **WianTribe Keyboard** once.
 6. Go to **iPhone Settings → General → Keyboard → Keyboards → Add New Keyboard → WianTribe Keyboard**.
@@ -30,6 +30,13 @@ On iOS 26, translation and rewriting run on the iPhone. Download translation lan
 Open the app's **Tools → Voice editor**, tap **Start recording**, allow microphone/speech permissions, stop, review and copy the transcript. Return to your message yourself and paste. Speech language availability depends on Apple's support on your device.
 
 For older iPhones, languages Apple doesn't cover, and GIF search, you can connect your own HTTPS service. No service is configured by default. The project includes `Backend/worker.mjs` and setup instructions in `Backend/README.md`. Save the URL and private access token in **Tools → Writing assistant**. For use inside the keyboard, tap **Copy connection for keyboard**, then **✦ → Import service connection from clipboard**. For GIFs, add a GIPHY key to the service (see `Backend/README.md`). The local clipboard transfer expires after two minutes and requires Full Access in the keyboard. Never share that connection JSON; it contains your access token.
+
+## If iOS keeps showing Apple's keyboard
+
+iOS silently swaps in its own keyboard if ours fails to start. Check Settings → Privacy & Security → Analytics & Improvements → Analytics Data for a file starting with **WianTribeKeyboardExtension**:
+
+- **`CODESIGNING` / `Invalid Page`** in the file: the sideloading tool produced a broken signature for the keyboard. Delete the app, then install the **keyboard-only** IPA, making sure the tool keeps and signs extensions. On a free Apple ID, remove unused sideloaded apps first: each app and extension uses one of the account's limited App IDs.
+- **`JetsamEvent`** files mentioning WianTribe: the keyboard ran out of memory. Report it with your iPhone model.
 
 ## If the keyboard doesn't appear
 
