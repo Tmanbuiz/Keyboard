@@ -149,7 +149,7 @@ public enum WritingAction: String, Codable, CaseIterable, Identifiable {
         case .shorter: return "Make the text shorter and clearer, keeping the key points and the language."
         case .longer: return "Expand the text with a little more detail and smoother wording. Keep the meaning, tone and language. Do not invent facts."
         case .summary: return "Summarise the text in two or three sentences in the same language."
-        case .bullets: return "Turn the text into a short list of key points, one per line, each starting with \"\u2022 \". Use the same language."
+        case .bullets: return "Turn the text into a short list of key points, one per line, each starting with \"• \". Use the same language."
         case .table: return "Organise the information as a plain-text table: a header row, then one row per item, with columns separated by \" | \". Use the same language. Do not invent data; leave a cell empty if unknown."
         case .email: return "Format the text as a clear email: a greeting, short paragraphs and a closing line followed by [Your name]. Use the same language."
         case .translate: return "Translate the text into the requested language, preserving the meaning."
