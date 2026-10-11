@@ -34,6 +34,8 @@ public final class EmojiCatalog {
 
     public init() {}
 
+    public func releaseKeywords() { lock.lock(); keywords = [:]; lock.unlock() }
+
     public func items(in group: Int) -> [EmojiItem] { items.filter { $0.group == group } }
     public func item(for emoji: String) -> EmojiItem? { byEmoji[emoji] ?? items.first { $0.skins?.contains(emoji) == true } }
 

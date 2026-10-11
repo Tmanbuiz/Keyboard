@@ -59,7 +59,14 @@ public final class LexiconCache {
     private var loaded: [String: Lexicon] = [:]
     private var order: [String] = []
     private var missing = Set<String>()
-    public var limit = 4
+    public var limit = 3
+
+    /// Releases every dictionary except the ones named, for example after a memory warning.
+    public func trim(keeping codes: Set<String>) {
+        lock.lock(); defer { lock.unlock() }
+        for code in loaded.keys where !codes.contains(code) { loaded.removeValue(forKey: code) }
+        order.removeAll { !codes.contains($0) }
+    }
 
     public func lexicon(for code: String, bundle: Bundle? = nil) -> Lexicon? {
         lock.lock(); defer { lock.unlock() }

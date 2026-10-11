@@ -49,6 +49,16 @@ final class KeyboardStore {
         get { local.object(forKey: "clipboard.changeCount") as? Int ?? -1 }
         set { local.set(newValue, forKey: "clipboard.changeCount") }
     }
+    /// True while the keyboard is on screen. If it is still true when the keyboard next starts,
+    /// iOS ended the last session abnormally (a crash or the memory limit) and showed Apple's keyboard.
+    var sessionOpen: Bool {
+        get { local.bool(forKey: "session.open") }
+        set { local.set(newValue, forKey: "session.open") }
+    }
+    var unexpectedCloses: Int {
+        get { local.integer(forKey: "session.unexpectedCloses") }
+        set { local.set(newValue, forKey: "session.unexpectedCloses") }
+    }
     /// Set after the first copy is read successfully, so setup help can be hidden from then on.
     var clipboardWorked: Bool {
         get { local.bool(forKey: "clipboard.worked") }

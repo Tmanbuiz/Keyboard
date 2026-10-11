@@ -15,7 +15,9 @@ final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewD
     var onLongPress: ((Int, UIView) -> Void)?
     private let palette: KeyboardPalette
     private let collection: UICollectionView
-    private static let imageCache = NSCache<NSURL, UIImage>()
+    static let imageCache: NSCache<NSURL, UIImage> = {
+        let cache = NSCache<NSURL, UIImage>(); cache.totalCostLimit = 8_000_000; cache.countLimit = 60; return cache
+    }()
 
     init(palette: KeyboardPalette) {
         self.palette = palette

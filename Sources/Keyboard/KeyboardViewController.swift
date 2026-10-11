@@ -50,6 +50,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var clipboardBlocked = false
     /// Like Samsung's keyboard, the top row shows tool icons when you aren't typing and word suggestions while you are.
     var toolbarExpanded = true
+    /// After an unexpected close the keyboard starts light: one dictionary and no multilingual mixing.
+    var safeMode = false
+    var crashNotice = false
     var keyPreview: KeyPreview?
     /// While searching emoji or GIFs, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
@@ -70,6 +73,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let launchStore = KeyboardStore(canWriteGroup: false)
+        if launchStore.sessionOpen {
+            launchStore.unexpectedCloses += 1
+            safeMode = true; crashNotice = true
+        }
         hasDictationKey = false // Keep Apple's system dictation button where iOS provides one.
         root.axis = .vertical; root.spacing = 5
         root.translatesAutoresizingMaskIntoConstraints = false
@@ -105,13 +113,15 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        toolbarExpanded = true
+        toolbarExpanded = !crashNotice
+        store.sessionOpen = true
         reloadPreferences()
         startClipboardWatch()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        store.sessionOpen = false
         clipboardTimer?.invalidate(); clipboardTimer = nil
         searchMode = nil; searchQuery = ""; gifTask?.cancel(); handwriting?.stop()
         repeatDelete?.invalidate(); repeatDelete = nil
@@ -164,7 +174,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         primaryLanguage = pack.primaryLanguage
         let others = preferences.multilingual ? preferences.activeLanguages : []
         let key = ([preferences.language] + others).map(\.code).joined(separator: ",")
-        if key != engineKey { engine = SuggestionEngine.make(primary: preferences.language, others: others); engineKey = key }
+        if key != engineKey { loadEngine(primary: preferences.language, others: Array(others.prefix(safeMode ? 0 : 3)), key: key) }
         if heightConstraint == nil {
             heightConstraint = view.heightAnchor.constraint(equalToConstant: preferences.height)
             heightConstraint?.priority = UILayoutPriority(999)
@@ -172,6 +182,30 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         } else { heightConstraint?.constant = preferences.height }
         updateShift(rebuild: false)
         rebuildToolbar(); rebuildContent(); refreshSuggestions()
+    }
+
+    /// Dictionaries load in the background so the keys appear at once; iOS replaces a keyboard
+    /// that is slow to start with its own. Suggestions begin as soon as the dictionary is ready.
+    func loadEngine(primary: KeyboardLanguage, others: [KeyboardLanguage], key: String) {
+        engineKey = key
+        engine = SuggestionEngine(language: primary.pack, lexicons: [])
+        suggestionQueue.async { [weak self] in
+            let loaded = SuggestionEngine.make(primary: primary, others: others)
+            DispatchQueue.main.async {
+                guard let self, self.engineKey == key else { return }
+                self.engine = loaded
+                self.refreshSuggestions()
+            }
+        }
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Free everything that can be reloaded, so iOS doesn't close the keyboard.
+        LexiconCache.shared.trim(keeping: [preferences.language.code])
+        EmojiCatalog.shared.releaseKeywords()
+        MediaGridView.imageCache.removeAllObjects()
+        gifResults = []
     }
 
     func savePreferences() {
@@ -478,6 +512,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     func insert(_ text: String) {
         if searchMode != nil { searchInput(text); return }
+        crashNotice = false
         collapseToolbar()
         correction = nil; glideChoices = []; lastSpace = 0; freshClip = nil
         textDocumentProxy.insertText(text)
@@ -572,6 +607,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     func refreshSuggestions() {
         if searchMode != nil { showSearchResults(); return }
         guard panel == nil else { return }
+        if crashNotice && currentWord.isEmpty {
+            setStatus("iOS closed WianTribe last time, so it started in light mode (count in ⚙︎)"); return
+        }
         suggestionWork?.cancel(); generation += 1
         if let correction, correction.canUndo(context: before) {
             showSuggestions([(correction.original + " ↶", { [weak self] in self?.delete() })]); return
@@ -808,6 +846,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func buildSettings(_ stack: UIStackView) {
+        let closes = store.unexpectedCloses
+        note("Health: " + (closes == 0 ? "no unexpected closes" : "iOS closed the keyboard unexpectedly \(closes) time\(closes == 1 ? "" : "s"). Please report this with your iPhone model.") + (safeMode ? " Light mode is on for this session." : ""), in: stack)
+        if closes > 0 { panelButton("Reset health counter", in: stack) { [weak self] in self?.store.unexpectedCloses = 0; self?.rebuildContent() } }
         note("Changes here apply immediately. Basic typing works without Full Access.", in: stack)
         panelButton("Languages: \(preferences.activeLanguages.map(\.shortTitle).joined(separator: " · "))", in: stack) { [weak self] in self?.showPanel("languages") }
         for theme in KeyboardTheme.allCases {
