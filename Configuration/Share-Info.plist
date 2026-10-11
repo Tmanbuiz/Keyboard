@@ -22,6 +22,10 @@
 	<string>Save to WianTribe</string>
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
+	<key>ALTAppGroups</key>
+	<array>
+		<string>group.com.wiantribe.keyboard.personal</string>
+	</array>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>

@@ -19,7 +19,7 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>CFBundleDisplayName</key>
-	<string>WianTribe Keyboard</string>
+	<string>WianTribe Personal</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -48,5 +48,21 @@
 	<string>Record your voice only when you start recording in the Voice editor.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Turn the voice you choose to record into text you can review and copy.</string>
+	<key>WianTribePersonalClipboard</key>
+	<true/>
+	<key>ALTAppGroups</key>
+	<array>
+		<string>group.com.wiantribe.keyboard.personal</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+	<key>NSLocationDefaultAccuracyReduced</key>
+	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Always location access keeps your personal clipboard monitor running. Coordinates are never saved or sent.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location access keeps your personal clipboard monitor running. Coordinates are never saved or sent.</string>
 </dict>
 </plist>

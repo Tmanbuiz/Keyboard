@@ -3,6 +3,9 @@ import UIKit
 
 @main
 struct WianTribeKeyboardApp: App {
+    #if PERSONAL_BACKGROUND_CLIPBOARD
+    @UIApplicationDelegateAdaptor(PersonalClipboardAppDelegate.self) private var personalDelegate
+    #endif
     @StateObject private var model = AppModel()
     @Environment(\.scenePhase) private var scenePhase
     var body: some Scene {
@@ -11,6 +14,12 @@ struct WianTribeKeyboardApp: App {
                 .tint(Color.mint)
                 .preferredColorScheme(.dark)
                 .onChange(of: scenePhase) { _, phase in if phase == .active { model.reload() } }
+                #if PERSONAL_BACKGROUND_CLIPBOARD
+                .onChange(of: scenePhase) { _, phase in
+                    if phase == .active { PersonalClipboardMonitor.shared.resume() }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: PersonalClipboardNotifications.didSave)) { _ in model.reload() }
+                #endif
         }
     }
 }
@@ -29,7 +38,7 @@ final class AppModel: ObservableObject {
     }
     /// With clipboard history on, opening the app saves the latest copy, like the keyboard does.
     func captureClipboardOnOpen() {
-        guard preferences.clipboardHistory else { return }
+        guard UIApplication.shared.applicationState == .active, preferences.clipboardHistory else { return }
         let pasteboard = UIPasteboard.general
         guard pasteboard.changeCount != store.lastChangeCount, pasteboard.hasStrings else { return }
         store.lastChangeCount = pasteboard.changeCount

@@ -1,7 +1,7 @@
 name: Build iPhone keyboard
 on:
   push:
-    branches: [main, 'feature/**']
+    branches: [main, 'feature/**', 'personal/**']
   workflow_dispatch:
 permissions:
   contents: write # to publish the sideload IPA as a GitHub Release on main
@@ -38,10 +38,10 @@ jobs:
       - name: Upload sideloading package
         uses: actions/upload-artifact@v4
         with:
-          name: WianTribeKeyboard-sideload
+          name: WianTribeKeyboard-personal-background-clipboard
           path: build/output/
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 1
       - name: Publish sideload IPA as a GitHub Release
         if: github.ref == 'refs/heads/main'
         env:

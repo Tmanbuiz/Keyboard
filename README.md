@@ -1,5 +1,11 @@
 # WianTribe Keyboard for iPhone
 
+**Personal clipboard build:** the personal/background-clipboard branch adds
+[Clipper-based background copy alerts](docs/PERSONAL-CLIPBOARD.md). Touch and hold
+an alert to save the current copy into the keyboard's shared history. This is a
+sideload variant with background location and private APIs; see its signing and
+device-test instructions.
+
 A native iOS keyboard extension and companion app, inspired by useful Android keyboard features. This is an independent WianTribe project; it does not use Samsung code, branding or assets.
 
 ## Version 0.2

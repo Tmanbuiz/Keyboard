@@ -352,6 +352,9 @@ private struct PhrasesView: View {
     @State private var clipboardTest = ""
     var body: some View {
         List {
+            #if PERSONAL_BACKGROUND_CLIPBOARD
+            PersonalClipboardSection()
+            #endif
             Section("Pin a phrase") {
                 TextField("Write or paste text to keep", text: $draft, axis: .vertical).lineLimit(2...5)
                 Button("Pin", systemImage: "pin") { model.savePhrase(draft); draft = "" }.disabled(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)

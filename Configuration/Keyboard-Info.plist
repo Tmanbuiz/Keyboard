@@ -19,9 +19,13 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>CFBundleDisplayName</key>
-	<string>WianTribe Keyboard</string>
+	<string>WianTribe Personal</string>
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
+	<key>ALTAppGroups</key>
+	<array>
+		<string>group.com.wiantribe.keyboard.personal</string>
+	</array>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>

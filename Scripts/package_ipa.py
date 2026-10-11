@@ -18,6 +18,7 @@ root = pathlib.Path(__file__).resolve().parents[1]
 built = root / "build/device/Build/Products/Release-iphoneos/WianTribeKeyboard.app"
 output = root / "build/output"
 staging = root / "build/staging"
+personal = plistlib.loads((built / "Info.plist").read_bytes()).get("WianTribePersonalClipboard", False)
 
 
 def run(*args):
@@ -34,11 +35,22 @@ def check(app, with_stickers):
     assert extension_info["NSExtension"]["NSExtensionAttributes"]["RequestsOpenAccess"] is True
     stickers = app / "PlugIns/WianTribeStickers.appex"
     share = app / "PlugIns/WianTribeShare.appex"
+    reader = app / "PlugIns/WianTribeClipboardReader.appex"
+    assert reader.is_dir() == personal, "unexpected clipboard reader set"
+    if personal:
+        reader_info = plistlib.loads((reader / "Info.plist").read_bytes())
+        assert reader_info["CFBundleIdentifier"].startswith(app_info["CFBundleIdentifier"] + ".")
+        assert reader_info["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.usernotifications.content-extension"
+        assert reader_info["NSExtension"]["NSExtensionAttributes"]["UNNotificationExtensionCategory"] == "WianTribeClipboardReader"
+        assert app_info["UIBackgroundModes"] == ["location"]
+        for container in [app, extension, reader]:
+            info = plistlib.loads((container / "Info.plist").read_bytes())
+            assert info["ALTAppGroups"] == app_info["ALTAppGroups"], "shared group metadata does not match"
     assert stickers.is_dir() == with_stickers and share.is_dir() == with_stickers, "unexpected extension set"
     if with_stickers:
         assert plistlib.loads((stickers / "Info.plist").read_bytes())["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.message-payload-provider"
         assert plistlib.loads((share / "Info.plist").read_bytes())["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.share-services"
-    for container in [app, extension]:
+    for container in [app, extension] + ([reader] if personal else []):
         assert (container / "PrivacyInfo.xcprivacy").exists()
         assert (container / container.name.rsplit(".", 1)[0]).exists()
 
@@ -46,8 +58,10 @@ def check(app, with_stickers):
 def sign(app):
     # Inside out: extensions first, then the app that contains them.
     for bundle in sorted((app / "PlugIns").glob("*.appex")):
-        run("codesign", "--force", "--sign", "-", "--timestamp=none", str(bundle))
-    run("codesign", "--force", "--sign", "-", "--timestamp=none", str(app))
+        entitlements = ["--entitlements", str(root / "Configuration/Shared.entitlements")] if personal and bundle.name != "WianTribeStickers.appex" else []
+        run("codesign", "--force", "--sign", "-", "--timestamp=none", *entitlements, str(bundle))
+    entitlements = ["--entitlements", str(root / "Configuration/Shared.entitlements")] if personal else []
+    run("codesign", "--force", "--sign", "-", "--timestamp=none", *entitlements, str(app))
     run("codesign", "--verify", "--deep", "--strict", "--verbose=2", str(app))
 
 
@@ -71,7 +85,8 @@ def package(name, with_stickers):
 
 
 output.mkdir(parents=True, exist_ok=True)
-ipas = [package("WianTribeKeyboard", True), package("WianTribeKeyboard-keyboard-only", False)]
+ipas = [package("WianTribeKeyboard-personal", True), package("WianTribeKeyboard-personal-clipboard", False)] if personal else [
+    package("WianTribeKeyboard", True), package("WianTribeKeyboard-keyboard-only", False)]
 (output / "SHA256SUMS.txt").write_text("".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n" for p in ipas))
-shutil.copyfile(root / "docs/INSTALL.md", output / "INSTALL.md")
+shutil.copyfile(root / ("docs/PERSONAL-CLIPBOARD.md" if personal else "docs/INSTALL.md"), output / "INSTALL.md")
 print("Packaged and ad-hoc signed: " + ", ".join(p.name for p in ipas) + ". Re-sign with your sideloading tool before installing.")
