@@ -143,19 +143,12 @@ extension KeyboardViewController {
 
     /// Lets the person swap the typed word for another reading.
     private func showHandwritingChoices(_ candidates: [String], inserted: String) {
-        clear(suggestionBar)
         let prefix = inserted.hasPrefix(" ") ? " " : ""
-        for candidate in candidates {
-            let key = button(candidate) { [weak self] in
-                guard let self, self.before.hasSuffix(inserted) else { return }
-                for _ in inserted { self.textDocumentProxy.deleteBackward() }
-                self.textDocumentProxy.insertText(prefix + candidate)
-                self.setStatus("Write the next word")
-            }
-            key.backgroundColor = .clear; key.normalColor = .clear; key.layer.shadowOpacity = 0
-            key.setTitleColor(palette.accent, for: .normal)
-            key.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-            suggestionBar.addArrangedSubview(key)
-        }
+        showSuggestions(candidates.map { candidate in (candidate, { [weak self] in
+            guard let self, self.before.hasSuffix(inserted) else { return }
+            for _ in inserted { self.textDocumentProxy.deleteBackward() }
+            self.textDocumentProxy.insertText(prefix + candidate)
+            self.setStatus("Write the next word")
+        }) })
     }
 }

@@ -92,7 +92,14 @@ struct LayoutPreview: View {
         VStack(spacing: 6) {
             HStack { Text("Layout preview"); Spacer(); Image(systemName: "sparkle") }
                 .font(.caption2).foregroundStyle(light ? Color.black.opacity(0.6) : Color.mint).padding(.bottom, 5)
-            HStack { Text("hello"); Spacer(); Text("there"); Spacer(); Text("world") }.font(.caption).padding(.horizontal, 15).padding(.bottom, 5)
+            // The tool row as it appears on the keyboard when you aren't typing.
+            HStack {
+                Text("EN").font(.caption.weight(.semibold))
+                ForEach(["face.smiling", "doc.on.clipboard", "sparkles", "translate", "pencil.and.scribble", "character.cursor.ibeam", "gearshape"], id: \.self) { symbol in
+                    Spacer(minLength: 0); Image(systemName: symbol).font(.system(size: 15))
+                }
+            }.padding(.horizontal, 10).padding(.bottom, 6)
+                .accessibilityLabel("Tools: emoji, clipboard, AI writing, translate, handwriting, text editing, settings")
             if numberRow { keyRow("1234567890", size: 11) }
             keyRow("qwertyuiop", size: 16)
             keyRow("asdfghjkl", size: 16).padding(.horizontal, 12)

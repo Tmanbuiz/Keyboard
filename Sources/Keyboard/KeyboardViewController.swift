@@ -48,6 +48,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var freshClip: (text: String, date: Date)?
     /// True when the clipboard changed but iOS withheld its text (Paste from Other Apps is set to Ask or Deny).
     var clipboardBlocked = false
+    /// Like Samsung's keyboard, the top row shows tool icons when you aren't typing and word suggestions while you are.
+    var toolbarExpanded = true
     var keyPreview: KeyPreview?
     /// While searching emoji or GIFs, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
@@ -81,8 +83,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         toolbar.axis = .horizontal; toolbar.distribution = .fillEqually; toolbar.spacing = 3
         suggestionBar.axis = .horizontal; suggestionBar.distribution = .fillEqually; suggestionBar.spacing = 3
         root.addArrangedSubview(toolbar); root.addArrangedSubview(suggestionBar); root.addArrangedSubview(content)
-        toolbar.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        suggestionBar.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        toolbar.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        suggestionBar.heightAnchor.constraint(equalToConstant: 38).isActive = true
+        suggestionBar.distribution = .fill
         reloadPreferences()
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (controller: KeyboardViewController, _: UITraitCollection) in
             if controller.preferences.theme == .auto && controller.wantsDarkPalette != controller.usingDarkPalette { controller.reloadPreferences() }
@@ -102,6 +105,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        toolbarExpanded = true
         reloadPreferences()
         startClipboardWatch()
     }
@@ -210,20 +214,30 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     func rebuildToolbar() {
         clear(toolbar)
         toolbar.distribution = .fillEqually
-        if searchMode != nil { buildSearchToolbar(); return }
-        if panel != nil { toolbar.addArrangedSubview(button("ABC") { [weak self] in self?.showPanel(nil) }) }
-        else {
+        if searchMode != nil { buildSearchToolbar(); updateTopBar(); return }
+        if panel != nil {
+            toolbar.addArrangedSubview(iconButton("keyboard", label: "Back to keyboard") { [weak self] in self?.showPanel(nil) })
+        } else {
             let languageKey = button(preferences.language.shortTitle) { [weak self] in self?.cycleLanguage() }
+            languageKey.backgroundColor = .clear; languageKey.normalColor = .clear; languageKey.layer.shadowOpacity = 0; languageKey.layer.borderWidth = 0
+            languageKey.titleLabel?.font = .systemFont(ofSize: KeyButton.fontSize(14), weight: .semibold)
             languageKey.accessibilityLabel = "Language: \(preferences.language.pack.englishName)"
             languageKey.accessibilityHint = "Switches language. Hold to choose languages"
             let hold = UILongPressGestureRecognizer(target: self, action: #selector(openLanguages(_:)))
             languageKey.addGestureRecognizer(hold)
             toolbar.addArrangedSubview(languageKey)
         }
-        for (title, identifier, label) in [("☺︎", "emoji", "Emoji, GIFs and stickers"), ("📋", "clips", "Clipboard"), ("⌶", "edit", "Text editing"), ("✍︎", "handwriting", "Handwriting"), ("✦", "writing", "Translate and writing tools"), ("⚙︎", "settings", "Keyboard settings")] {
-            let key = button(title) { [weak self] in self?.showPanel(identifier) }
-            key.accessibilityLabel = label
-            toolbar.addArrangedSubview(key)
+        let tools: [(String, String, String)] = [
+            ("face.smiling", "emoji", "Emoji, GIFs and stickers"), ("doc.on.clipboard", "clips", "Clipboard"),
+            ("sparkles", "writing", "AI writing assist"), ("translate", "translate", "Translate"),
+            ("pencil.and.scribble", "handwriting", "Handwriting"), ("character.cursor.ibeam", "edit", "Text editing"),
+            ("gearshape", "settings", "Keyboard settings")]
+        for (symbol, identifier, label) in tools {
+            // Tapping the open tool again returns to the letters, as on Android.
+            toolbar.addArrangedSubview(iconButton(symbol, label: label, selected: panel == identifier) { [weak self] in
+                guard let self else { return }
+                self.showPanel(self.panel == identifier ? nil : identifier)
+            })
         }
         if panel != nil && needsInputModeSwitchKey {
             let globe = KeyButton(title: "🌐", palette: palette, function: true)
@@ -231,8 +245,43 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             globe.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
             toolbar.addArrangedSubview(globe)
         }
-        let hide = button("⌄") { [weak self] in self?.dismissKeyboard() }
-        hide.accessibilityLabel = "Hide keyboard"; toolbar.addArrangedSubview(hide)
+        toolbar.addArrangedSubview(iconButton("keyboard.chevron.compact.down", label: "Hide keyboard") { [weak self] in self?.dismissKeyboard() })
+        updateTopBar()
+    }
+
+    /// A flat toolbar icon in Samsung's style, using Apple's SF Symbols.
+    func iconButton(_ symbol: String, label: String, selected: Bool = false, action: @escaping () -> Void) -> KeyButton {
+        let key = button("", action: action)
+        let configuration = UIImage.SymbolConfiguration(pointSize: KeyButton.fontSize(18), weight: .regular)
+        key.setImage(UIImage(systemName: symbol, withConfiguration: configuration), for: .normal)
+        key.tintColor = selected ? palette.accent : palette.text
+        key.normalColor = selected ? palette.key : .clear
+        key.backgroundColor = key.normalColor
+        key.layer.shadowOpacity = 0; key.layer.borderWidth = 0
+        key.accessibilityLabel = label
+        if selected { key.accessibilityTraits.insert(.selected) }
+        return key
+    }
+
+    /// Shows either the tool icons or the suggestions while typing; panels and search show both rows.
+    func updateTopBar() {
+        let typing = panel == nil && searchMode == nil
+        toolbar.isHidden = typing && !toolbarExpanded
+        suggestionBar.isHidden = typing && toolbarExpanded
+    }
+
+    func collapseToolbar() {
+        guard toolbarExpanded, panel == nil, searchMode == nil else { return }
+        toolbarExpanded = false; updateTopBar()
+    }
+
+    /// The small button at the start of the suggestion row that brings the tool icons back.
+    func toolbarToggle() -> KeyButton {
+        let key = iconButton("square.grid.2x2", label: "Show tools") { [weak self] in
+            self?.toolbarExpanded = true; self?.updateTopBar()
+        }
+        key.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        return key
     }
 
     @objc func openLanguages(_ gesture: UILongPressGestureRecognizer) {
@@ -255,10 +304,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if identifier != nil { setStatus(panelTitle) }
         rebuildToolbar(); rebuildContent()
         if identifier == nil { refreshSuggestions() }
+        updateTopBar()
     }
 
     var panelTitle: String {
-        switch panel { case "emoji": return "Emoji, GIFs & stickers"; case "clips": return "Clipboard"; case "writing": return "Translate & write"; case "edit": return "Text editing"; case "handwriting": return "Write with your finger"; case "languages": return "Languages"; default: return "Make it yours" }
+        switch panel { case "emoji": return "Emoji, GIFs & stickers"; case "clips": return "Clipboard"; case "writing": return "AI writing assist"; case "translate": return "Translate"; case "edit": return "Text editing"; case "handwriting": return "Write with your finger"; case "languages": return "Languages"; default: return "Make it yours" }
     }
 
     func rebuildContent() {
@@ -276,7 +326,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let stack = UIStackView(); stack.axis = .vertical; stack.spacing = 8; stack.translatesAutoresizingMaskIntoConstraints = false
             scroll.addSubview(stack)
             NSLayoutConstraint.activate([stack.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor, constant: 5), stack.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor, constant: -5), stack.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 3), stack.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -6), stack.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor, constant: -10)])
-            switch panel { case "clips": buildClipboard(stack); case "writing": buildWriting(stack); case "languages": buildLanguages(stack); default: buildSettings(stack) }
+            switch panel { case "clips": buildClipboard(stack); case "writing", "translate": buildWriting(stack); case "languages": buildLanguages(stack); default: buildSettings(stack) }
             return
         }
         keys = UIStackView(); keys.axis = .vertical; keys.distribution = .fillEqually; keys.spacing = 6
@@ -428,6 +478,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     func insert(_ text: String) {
         if searchMode != nil { searchInput(text); return }
+        collapseToolbar()
         correction = nil; glideChoices = []; lastSpace = 0; freshClip = nil
         textDocumentProxy.insertText(text)
         if shift && !capsLock { shift = false; rebuildContent() }
@@ -570,13 +621,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     func showSuggestions(_ choices: [(String, () -> Void)]) {
         clear(suggestionBar)
         if choices.isEmpty { setStatus(preferences.language.title); return }
+        if panel == nil && searchMode == nil { suggestionBar.addArrangedSubview(toolbarToggle()) }
+        let row = UIStackView(); row.axis = .horizontal; row.distribution = .fillEqually; row.spacing = 3
         for (text, action) in choices {
             let key = button(text, action: action)
-            key.backgroundColor = .clear; key.normalColor = .clear
+            key.backgroundColor = .clear; key.normalColor = .clear; key.layer.shadowOpacity = 0; key.layer.borderWidth = 0
             key.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
             key.setTitleColor(palette.accent, for: .normal)
-            suggestionBar.addArrangedSubview(key)
+            row.addArrangedSubview(key)
         }
+        suggestionBar.addArrangedSubview(row)
     }
 
     func chooseSuggestion(_ word: String, expectedContext: String) {
@@ -593,6 +647,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     func setStatus(_ text: String) {
         clear(suggestionBar)
+        if panel == nil && searchMode == nil { suggestionBar.addArrangedSubview(toolbarToggle()) }
         let label = UILabel(); label.text = text; label.textColor = palette.accent
         label.font = .systemFont(ofSize: 12, weight: .medium); label.textAlignment = .center
         label.numberOfLines = 2; label.adjustsFontSizeToFitWidth = true
@@ -639,6 +694,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             glideChoices = choices.map { capsLock ? pack.uppercased($0.word) : (glideShift ? pack.uppercased(String($0.word.prefix(1))) + $0.word.dropFirst() : $0.word) }
             let prefix = !before.isEmpty && before.last?.isWhitespace == false ? " " : ""
             glideInserted = glideChoices[0]
+            collapseToolbar()
             textDocumentProxy.insertText(prefix + glideInserted + " ")
             glideSuffix = String(before.suffix(64))
             if glideSuffix.isEmpty { glideChoices = [] }
@@ -808,6 +864,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             clipboardTimer?.invalidate(); clipboardTimer = nil
             if !clipboardBlocked {
                 clipboardBlocked = true
+                collapseToolbar()
                 if panel == "clips" { rebuildContent() } else if panel == nil { refreshSuggestions() }
             }
             return
@@ -820,6 +877,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if let data = text.data(using: .utf8), (try? JSONDecoder().decode(WritingConnection.self, from: data)) != nil { return }
         store.capture(text)
         freshClip = (text, Date())
+        collapseToolbar() // Show the "just copied" chip, like Android's clipboard suggestion.
         if panel == "clips" { rebuildContent() } else if panel == nil { refreshSuggestions() }
     }
 
@@ -950,9 +1008,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     func buildWriting(_ stack: UIStackView) {
         let onDevice = OnDeviceWriting.canRewrite
-        note("Works on selected text, or on what you've typed in this paragraph. " + (onDevice
-             ? "Rewrites run on this iPhone with Apple Intelligence when your language is supported."
-             : "Translation runs on this iPhone when the languages are downloaded; other tools use your WianTribe service."), in: stack)
+        let translating = panel == "translate"
+        note("Works on selected text, or on what you've typed in this paragraph. " + (translating
+             ? "Translation runs on this iPhone once the languages are downloaded in the WianTribe app."
+             : (onDevice ? "Runs on this iPhone with Apple Intelligence when your language is supported."
+                         : "Uses your WianTribe service, because Apple Intelligence isn't available here.")), in: stack)
+        if translating { buildTranslateRows(stack) } else { buildAssistRows(stack) }
+        buildServiceRows(stack)
+    }
+
+    func buildTranslateRows(_ stack: UIStackView) {
         var targets = preferences.activeLanguages
         if !targets.contains(.english) { targets.append(.english) }
         let translateRow = UIStackView(); translateRow.axis = .horizontal; translateRow.spacing = 5; translateRow.distribution = .fillEqually
@@ -967,6 +1032,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         translateRow.heightAnchor.constraint(equalToConstant: 36).isActive = true
         note("Translate to:", in: stack)
         stack.addArrangedSubview(translateRow)
+    }
+
+    func buildAssistRows(_ stack: UIStackView) {
         // Writing Assist: style rewrites, then formats that change the shape of the text.
         for (heading, actions) in [("Rewrite:", WritingAction.rewrites), ("Format:", WritingAction.formats)] {
             note(heading, in: stack)
@@ -984,6 +1052,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 stack.addArrangedSubview(line)
             }
         }
+    }
+
+    func buildServiceRows(_ stack: UIStackView) {
         if ConnectionVault.load() == nil {
             note("Optional: connect your WianTribe service in the app for languages Apple doesn't cover and for GIF search, then import it here.", in: stack)
             panelButton("Import service connection from clipboard", in: stack) { [weak self] in
@@ -1019,7 +1090,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 do { result = try await WritingService.perform(text: source.text, action: action, language: target); via = "by your service" }
                 catch { failure = error }
             }
-            guard !Task.isCancelled, self.panel == "writing", let stack else { return }
+            guard !Task.isCancelled, self.panel == "writing" || self.panel == "translate", let stack else { return }
             guard let result else {
                 self.setStatus(failure?.localizedDescription ?? "Connect your WianTribe service in the app to use this here"); return
             }
