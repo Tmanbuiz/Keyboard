@@ -1,0 +1,9 @@
+{
+  "name": "wiantribe-keyboard-writing",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "ai": { "binding": "AI" },
+  "vars": { "MODEL": "@cf/meta/llama-3.1-8b-instruct-fp8" },
+  "ratelimits": [{ "name": "WRITING_LIMITER", "namespace_id": "9173001", "simple": { "limit": 10, "period": 60 } }],
+  "observability": { "enabled": false }
+}

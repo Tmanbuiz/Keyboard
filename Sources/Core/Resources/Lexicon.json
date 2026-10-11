@@ -1,0 +1,3337 @@
+[
+  {
+    "word": "the",
+    "frequency": 10000,
+    "language": "english"
+  },
+  {
+    "word": "of",
+    "frequency": 599,
+    "language": "english"
+  },
+  {
+    "word": "and",
+    "frequency": 598,
+    "language": "english"
+  },
+  {
+    "word": "to",
+    "frequency": 597,
+    "language": "english"
+  },
+  {
+    "word": "in",
+    "frequency": 596,
+    "language": "english"
+  },
+  {
+    "word": "a",
+    "frequency": 595,
+    "language": "english"
+  },
+  {
+    "word": "is",
+    "frequency": 594,
+    "language": "english"
+  },
+  {
+    "word": "that",
+    "frequency": 593,
+    "language": "english"
+  },
+  {
+    "word": "for",
+    "frequency": 592,
+    "language": "english"
+  },
+  {
+    "word": "it",
+    "frequency": 591,
+    "language": "english"
+  },
+  {
+    "word": "with",
+    "frequency": 590,
+    "language": "english"
+  },
+  {
+    "word": "as",
+    "frequency": 589,
+    "language": "english"
+  },
+  {
+    "word": "was",
+    "frequency": 588,
+    "language": "english"
+  },
+  {
+    "word": "on",
+    "frequency": 587,
+    "language": "english"
+  },
+  {
+    "word": "be",
+    "frequency": 586,
+    "language": "english"
+  },
+  {
+    "word": "at",
+    "frequency": 585,
+    "language": "english"
+  },
+  {
+    "word": "by",
+    "frequency": 584,
+    "language": "english"
+  },
+  {
+    "word": "this",
+    "frequency": 583,
+    "language": "english"
+  },
+  {
+    "word": "have",
+    "frequency": 582,
+    "language": "english"
+  },
+  {
+    "word": "from",
+    "frequency": 581,
+    "language": "english"
+  },
+  {
+    "word": "or",
+    "frequency": 580,
+    "language": "english"
+  },
+  {
+    "word": "one",
+    "frequency": 579,
+    "language": "english"
+  },
+  {
+    "word": "had",
+    "frequency": 578,
+    "language": "english"
+  },
+  {
+    "word": "not",
+    "frequency": 577,
+    "language": "english"
+  },
+  {
+    "word": "but",
+    "frequency": 576,
+    "language": "english"
+  },
+  {
+    "word": "what",
+    "frequency": 575,
+    "language": "english"
+  },
+  {
+    "word": "all",
+    "frequency": 574,
+    "language": "english"
+  },
+  {
+    "word": "were",
+    "frequency": 573,
+    "language": "english"
+  },
+  {
+    "word": "when",
+    "frequency": 572,
+    "language": "english"
+  },
+  {
+    "word": "we",
+    "frequency": 571,
+    "language": "english"
+  },
+  {
+    "word": "there",
+    "frequency": 1000,
+    "language": "english"
+  },
+  {
+    "word": "can",
+    "frequency": 569,
+    "language": "english"
+  },
+  {
+    "word": "an",
+    "frequency": 568,
+    "language": "english"
+  },
+  {
+    "word": "your",
+    "frequency": 567,
+    "language": "english"
+  },
+  {
+    "word": "which",
+    "frequency": 566,
+    "language": "english"
+  },
+  {
+    "word": "their",
+    "frequency": 950,
+    "language": "english"
+  },
+  {
+    "word": "said",
+    "frequency": 564,
+    "language": "english"
+  },
+  {
+    "word": "if",
+    "frequency": 563,
+    "language": "english"
+  },
+  {
+    "word": "do",
+    "frequency": 562,
+    "language": "english"
+  },
+  {
+    "word": "will",
+    "frequency": 561,
+    "language": "english"
+  },
+  {
+    "word": "each",
+    "frequency": 560,
+    "language": "english"
+  },
+  {
+    "word": "about",
+    "frequency": 559,
+    "language": "english"
+  },
+  {
+    "word": "how",
+    "frequency": 558,
+    "language": "english"
+  },
+  {
+    "word": "up",
+    "frequency": 557,
+    "language": "english"
+  },
+  {
+    "word": "out",
+    "frequency": 556,
+    "language": "english"
+  },
+  {
+    "word": "them",
+    "frequency": 555,
+    "language": "english"
+  },
+  {
+    "word": "then",
+    "frequency": 900,
+    "language": "english"
+  },
+  {
+    "word": "she",
+    "frequency": 553,
+    "language": "english"
+  },
+  {
+    "word": "many",
+    "frequency": 552,
+    "language": "english"
+  },
+  {
+    "word": "some",
+    "frequency": 551,
+    "language": "english"
+  },
+  {
+    "word": "so",
+    "frequency": 550,
+    "language": "english"
+  },
+  {
+    "word": "these",
+    "frequency": 549,
+    "language": "english"
+  },
+  {
+    "word": "would",
+    "frequency": 700,
+    "language": "english"
+  },
+  {
+    "word": "other",
+    "frequency": 547,
+    "language": "english"
+  },
+  {
+    "word": "into",
+    "frequency": 546,
+    "language": "english"
+  },
+  {
+    "word": "has",
+    "frequency": 545,
+    "language": "english"
+  },
+  {
+    "word": "more",
+    "frequency": 544,
+    "language": "english"
+  },
+  {
+    "word": "her",
+    "frequency": 543,
+    "language": "english"
+  },
+  {
+    "word": "two",
+    "frequency": 542,
+    "language": "english"
+  },
+  {
+    "word": "like",
+    "frequency": 541,
+    "language": "english"
+  },
+  {
+    "word": "him",
+    "frequency": 540,
+    "language": "english"
+  },
+  {
+    "word": "see",
+    "frequency": 539,
+    "language": "english"
+  },
+  {
+    "word": "time",
+    "frequency": 538,
+    "language": "english"
+  },
+  {
+    "word": "could",
+    "frequency": 537,
+    "language": "english"
+  },
+  {
+    "word": "no",
+    "frequency": 536,
+    "language": "english"
+  },
+  {
+    "word": "make",
+    "frequency": 535,
+    "language": "english"
+  },
+  {
+    "word": "than",
+    "frequency": 534,
+    "language": "english"
+  },
+  {
+    "word": "first",
+    "frequency": 533,
+    "language": "english"
+  },
+  {
+    "word": "been",
+    "frequency": 532,
+    "language": "english"
+  },
+  {
+    "word": "its",
+    "frequency": 531,
+    "language": "english"
+  },
+  {
+    "word": "who",
+    "frequency": 530,
+    "language": "english"
+  },
+  {
+    "word": "now",
+    "frequency": 529,
+    "language": "english"
+  },
+  {
+    "word": "people",
+    "frequency": 500,
+    "language": "english"
+  },
+  {
+    "word": "my",
+    "frequency": 527,
+    "language": "english"
+  },
+  {
+    "word": "made",
+    "frequency": 526,
+    "language": "english"
+  },
+  {
+    "word": "over",
+    "frequency": 525,
+    "language": "english"
+  },
+  {
+    "word": "did",
+    "frequency": 524,
+    "language": "english"
+  },
+  {
+    "word": "down",
+    "frequency": 523,
+    "language": "english"
+  },
+  {
+    "word": "only",
+    "frequency": 522,
+    "language": "english"
+  },
+  {
+    "word": "way",
+    "frequency": 521,
+    "language": "english"
+  },
+  {
+    "word": "find",
+    "frequency": 520,
+    "language": "english"
+  },
+  {
+    "word": "use",
+    "frequency": 519,
+    "language": "english"
+  },
+  {
+    "word": "may",
+    "frequency": 518,
+    "language": "english"
+  },
+  {
+    "word": "water",
+    "frequency": 517,
+    "language": "english"
+  },
+  {
+    "word": "long",
+    "frequency": 516,
+    "language": "english"
+  },
+  {
+    "word": "little",
+    "frequency": 515,
+    "language": "english"
+  },
+  {
+    "word": "very",
+    "frequency": 514,
+    "language": "english"
+  },
+  {
+    "word": "after",
+    "frequency": 513,
+    "language": "english"
+  },
+  {
+    "word": "words",
+    "frequency": 512,
+    "language": "english"
+  },
+  {
+    "word": "called",
+    "frequency": 511,
+    "language": "english"
+  },
+  {
+    "word": "just",
+    "frequency": 510,
+    "language": "english"
+  },
+  {
+    "word": "where",
+    "frequency": 509,
+    "language": "english"
+  },
+  {
+    "word": "most",
+    "frequency": 508,
+    "language": "english"
+  },
+  {
+    "word": "know",
+    "frequency": 507,
+    "language": "english"
+  },
+  {
+    "word": "get",
+    "frequency": 506,
+    "language": "english"
+  },
+  {
+    "word": "through",
+    "frequency": 505,
+    "language": "english"
+  },
+  {
+    "word": "back",
+    "frequency": 504,
+    "language": "english"
+  },
+  {
+    "word": "much",
+    "frequency": 503,
+    "language": "english"
+  },
+  {
+    "word": "before",
+    "frequency": 502,
+    "language": "english"
+  },
+  {
+    "word": "go",
+    "frequency": 501,
+    "language": "english"
+  },
+  {
+    "word": "good",
+    "frequency": 1000,
+    "language": "english"
+  },
+  {
+    "word": "new",
+    "frequency": 499,
+    "language": "english"
+  },
+  {
+    "word": "write",
+    "frequency": 498,
+    "language": "english"
+  },
+  {
+    "word": "our",
+    "frequency": 497,
+    "language": "english"
+  },
+  {
+    "word": "me",
+    "frequency": 496,
+    "language": "english"
+  },
+  {
+    "word": "man",
+    "frequency": 495,
+    "language": "english"
+  },
+  {
+    "word": "too",
+    "frequency": 494,
+    "language": "english"
+  },
+  {
+    "word": "any",
+    "frequency": 493,
+    "language": "english"
+  },
+  {
+    "word": "day",
+    "frequency": 492,
+    "language": "english"
+  },
+  {
+    "word": "same",
+    "frequency": 491,
+    "language": "english"
+  },
+  {
+    "word": "right",
+    "frequency": 490,
+    "language": "english"
+  },
+  {
+    "word": "look",
+    "frequency": 489,
+    "language": "english"
+  },
+  {
+    "word": "think",
+    "frequency": 488,
+    "language": "english"
+  },
+  {
+    "word": "also",
+    "frequency": 487,
+    "language": "english"
+  },
+  {
+    "word": "around",
+    "frequency": 486,
+    "language": "english"
+  },
+  {
+    "word": "another",
+    "frequency": 485,
+    "language": "english"
+  },
+  {
+    "word": "came",
+    "frequency": 484,
+    "language": "english"
+  },
+  {
+    "word": "come",
+    "frequency": 483,
+    "language": "english"
+  },
+  {
+    "word": "work",
+    "frequency": 700,
+    "language": "english"
+  },
+  {
+    "word": "three",
+    "frequency": 481,
+    "language": "english"
+  },
+  {
+    "word": "word",
+    "frequency": 480,
+    "language": "english"
+  },
+  {
+    "word": "must",
+    "frequency": 479,
+    "language": "english"
+  },
+  {
+    "word": "because",
+    "frequency": 600,
+    "language": "english"
+  },
+  {
+    "word": "does",
+    "frequency": 477,
+    "language": "english"
+  },
+  {
+    "word": "part",
+    "frequency": 476,
+    "language": "english"
+  },
+  {
+    "word": "even",
+    "frequency": 475,
+    "language": "english"
+  },
+  {
+    "word": "place",
+    "frequency": 474,
+    "language": "english"
+  },
+  {
+    "word": "well",
+    "frequency": 473,
+    "language": "english"
+  },
+  {
+    "word": "such",
+    "frequency": 472,
+    "language": "english"
+  },
+  {
+    "word": "here",
+    "frequency": 471,
+    "language": "english"
+  },
+  {
+    "word": "take",
+    "frequency": 470,
+    "language": "english"
+  },
+  {
+    "word": "why",
+    "frequency": 469,
+    "language": "english"
+  },
+  {
+    "word": "help",
+    "frequency": 130,
+    "language": "english"
+  },
+  {
+    "word": "put",
+    "frequency": 467,
+    "language": "english"
+  },
+  {
+    "word": "different",
+    "frequency": 466,
+    "language": "english"
+  },
+  {
+    "word": "away",
+    "frequency": 465,
+    "language": "english"
+  },
+  {
+    "word": "again",
+    "frequency": 464,
+    "language": "english"
+  },
+  {
+    "word": "off",
+    "frequency": 463,
+    "language": "english"
+  },
+  {
+    "word": "went",
+    "frequency": 462,
+    "language": "english"
+  },
+  {
+    "word": "old",
+    "frequency": 461,
+    "language": "english"
+  },
+  {
+    "word": "number",
+    "frequency": 460,
+    "language": "english"
+  },
+  {
+    "word": "great",
+    "frequency": 459,
+    "language": "english"
+  },
+  {
+    "word": "tell",
+    "frequency": 458,
+    "language": "english"
+  },
+  {
+    "word": "small",
+    "frequency": 457,
+    "language": "english"
+  },
+  {
+    "word": "every",
+    "frequency": 456,
+    "language": "english"
+  },
+  {
+    "word": "found",
+    "frequency": 455,
+    "language": "english"
+  },
+  {
+    "word": "still",
+    "frequency": 454,
+    "language": "english"
+  },
+  {
+    "word": "between",
+    "frequency": 453,
+    "language": "english"
+  },
+  {
+    "word": "name",
+    "frequency": 452,
+    "language": "english"
+  },
+  {
+    "word": "should",
+    "frequency": 451,
+    "language": "english"
+  },
+  {
+    "word": "home",
+    "frequency": 450,
+    "language": "english"
+  },
+  {
+    "word": "big",
+    "frequency": 449,
+    "language": "english"
+  },
+  {
+    "word": "give",
+    "frequency": 448,
+    "language": "english"
+  },
+  {
+    "word": "air",
+    "frequency": 447,
+    "language": "english"
+  },
+  {
+    "word": "line",
+    "frequency": 446,
+    "language": "english"
+  },
+  {
+    "word": "set",
+    "frequency": 445,
+    "language": "english"
+  },
+  {
+    "word": "own",
+    "frequency": 444,
+    "language": "english"
+  },
+  {
+    "word": "under",
+    "frequency": 443,
+    "language": "english"
+  },
+  {
+    "word": "read",
+    "frequency": 442,
+    "language": "english"
+  },
+  {
+    "word": "last",
+    "frequency": 441,
+    "language": "english"
+  },
+  {
+    "word": "never",
+    "frequency": 440,
+    "language": "english"
+  },
+  {
+    "word": "us",
+    "frequency": 439,
+    "language": "english"
+  },
+  {
+    "word": "left",
+    "frequency": 438,
+    "language": "english"
+  },
+  {
+    "word": "end",
+    "frequency": 437,
+    "language": "english"
+  },
+  {
+    "word": "along",
+    "frequency": 436,
+    "language": "english"
+  },
+  {
+    "word": "while",
+    "frequency": 435,
+    "language": "english"
+  },
+  {
+    "word": "might",
+    "frequency": 434,
+    "language": "english"
+  },
+  {
+    "word": "next",
+    "frequency": 433,
+    "language": "english"
+  },
+  {
+    "word": "sound",
+    "frequency": 432,
+    "language": "english"
+  },
+  {
+    "word": "below",
+    "frequency": 431,
+    "language": "english"
+  },
+  {
+    "word": "saw",
+    "frequency": 430,
+    "language": "english"
+  },
+  {
+    "word": "something",
+    "frequency": 429,
+    "language": "english"
+  },
+  {
+    "word": "thought",
+    "frequency": 428,
+    "language": "english"
+  },
+  {
+    "word": "both",
+    "frequency": 427,
+    "language": "english"
+  },
+  {
+    "word": "few",
+    "frequency": 426,
+    "language": "english"
+  },
+  {
+    "word": "those",
+    "frequency": 425,
+    "language": "english"
+  },
+  {
+    "word": "always",
+    "frequency": 424,
+    "language": "english"
+  },
+  {
+    "word": "show",
+    "frequency": 423,
+    "language": "english"
+  },
+  {
+    "word": "large",
+    "frequency": 422,
+    "language": "english"
+  },
+  {
+    "word": "often",
+    "frequency": 421,
+    "language": "english"
+  },
+  {
+    "word": "together",
+    "frequency": 420,
+    "language": "english"
+  },
+  {
+    "word": "asked",
+    "frequency": 419,
+    "language": "english"
+  },
+  {
+    "word": "house",
+    "frequency": 418,
+    "language": "english"
+  },
+  {
+    "word": "world",
+    "frequency": 650,
+    "language": "english"
+  },
+  {
+    "word": "going",
+    "frequency": 416,
+    "language": "english"
+  },
+  {
+    "word": "want",
+    "frequency": 415,
+    "language": "english"
+  },
+  {
+    "word": "school",
+    "frequency": 414,
+    "language": "english"
+  },
+  {
+    "word": "important",
+    "frequency": 413,
+    "language": "english"
+  },
+  {
+    "word": "until",
+    "frequency": 412,
+    "language": "english"
+  },
+  {
+    "word": "form",
+    "frequency": 411,
+    "language": "english"
+  },
+  {
+    "word": "food",
+    "frequency": 410,
+    "language": "english"
+  },
+  {
+    "word": "keep",
+    "frequency": 409,
+    "language": "english"
+  },
+  {
+    "word": "children",
+    "frequency": 408,
+    "language": "english"
+  },
+  {
+    "word": "feet",
+    "frequency": 407,
+    "language": "english"
+  },
+  {
+    "word": "land",
+    "frequency": 406,
+    "language": "english"
+  },
+  {
+    "word": "side",
+    "frequency": 405,
+    "language": "english"
+  },
+  {
+    "word": "without",
+    "frequency": 404,
+    "language": "english"
+  },
+  {
+    "word": "boy",
+    "frequency": 403,
+    "language": "english"
+  },
+  {
+    "word": "once",
+    "frequency": 402,
+    "language": "english"
+  },
+  {
+    "word": "animals",
+    "frequency": 401,
+    "language": "english"
+  },
+  {
+    "word": "life",
+    "frequency": 400,
+    "language": "english"
+  },
+  {
+    "word": "enough",
+    "frequency": 399,
+    "language": "english"
+  },
+  {
+    "word": "took",
+    "frequency": 398,
+    "language": "english"
+  },
+  {
+    "word": "sometimes",
+    "frequency": 397,
+    "language": "english"
+  },
+  {
+    "word": "four",
+    "frequency": 396,
+    "language": "english"
+  },
+  {
+    "word": "head",
+    "frequency": 395,
+    "language": "english"
+  },
+  {
+    "word": "above",
+    "frequency": 394,
+    "language": "english"
+  },
+  {
+    "word": "kind",
+    "frequency": 393,
+    "language": "english"
+  },
+  {
+    "word": "began",
+    "frequency": 392,
+    "language": "english"
+  },
+  {
+    "word": "almost",
+    "frequency": 391,
+    "language": "english"
+  },
+  {
+    "word": "live",
+    "frequency": 390,
+    "language": "english"
+  },
+  {
+    "word": "page",
+    "frequency": 389,
+    "language": "english"
+  },
+  {
+    "word": "got",
+    "frequency": 388,
+    "language": "english"
+  },
+  {
+    "word": "earth",
+    "frequency": 387,
+    "language": "english"
+  },
+  {
+    "word": "need",
+    "frequency": 386,
+    "language": "english"
+  },
+  {
+    "word": "far",
+    "frequency": 385,
+    "language": "english"
+  },
+  {
+    "word": "hand",
+    "frequency": 384,
+    "language": "english"
+  },
+  {
+    "word": "high",
+    "frequency": 383,
+    "language": "english"
+  },
+  {
+    "word": "year",
+    "frequency": 382,
+    "language": "english"
+  },
+  {
+    "word": "mother",
+    "frequency": 381,
+    "language": "english"
+  },
+  {
+    "word": "light",
+    "frequency": 380,
+    "language": "english"
+  },
+  {
+    "word": "country",
+    "frequency": 379,
+    "language": "english"
+  },
+  {
+    "word": "father",
+    "frequency": 378,
+    "language": "english"
+  },
+  {
+    "word": "let",
+    "frequency": 377,
+    "language": "english"
+  },
+  {
+    "word": "night",
+    "frequency": 376,
+    "language": "english"
+  },
+  {
+    "word": "picture",
+    "frequency": 375,
+    "language": "english"
+  },
+  {
+    "word": "being",
+    "frequency": 374,
+    "language": "english"
+  },
+  {
+    "word": "study",
+    "frequency": 373,
+    "language": "english"
+  },
+  {
+    "word": "second",
+    "frequency": 372,
+    "language": "english"
+  },
+  {
+    "word": "soon",
+    "frequency": 371,
+    "language": "english"
+  },
+  {
+    "word": "story",
+    "frequency": 370,
+    "language": "english"
+  },
+  {
+    "word": "since",
+    "frequency": 369,
+    "language": "english"
+  },
+  {
+    "word": "white",
+    "frequency": 368,
+    "language": "english"
+  },
+  {
+    "word": "ever",
+    "frequency": 367,
+    "language": "english"
+  },
+  {
+    "word": "paper",
+    "frequency": 366,
+    "language": "english"
+  },
+  {
+    "word": "hard",
+    "frequency": 365,
+    "language": "english"
+  },
+  {
+    "word": "near",
+    "frequency": 364,
+    "language": "english"
+  },
+  {
+    "word": "sentence",
+    "frequency": 363,
+    "language": "english"
+  },
+  {
+    "word": "better",
+    "frequency": 362,
+    "language": "english"
+  },
+  {
+    "word": "best",
+    "frequency": 361,
+    "language": "english"
+  },
+  {
+    "word": "across",
+    "frequency": 360,
+    "language": "english"
+  },
+  {
+    "word": "during",
+    "frequency": 359,
+    "language": "english"
+  },
+  {
+    "word": "today",
+    "frequency": 358,
+    "language": "english"
+  },
+  {
+    "word": "however",
+    "frequency": 357,
+    "language": "english"
+  },
+  {
+    "word": "sure",
+    "frequency": 356,
+    "language": "english"
+  },
+  {
+    "word": "knew",
+    "frequency": 355,
+    "language": "english"
+  },
+  {
+    "word": "try",
+    "frequency": 354,
+    "language": "english"
+  },
+  {
+    "word": "told",
+    "frequency": 353,
+    "language": "english"
+  },
+  {
+    "word": "young",
+    "frequency": 352,
+    "language": "english"
+  },
+  {
+    "word": "sun",
+    "frequency": 351,
+    "language": "english"
+  },
+  {
+    "word": "thing",
+    "frequency": 350,
+    "language": "english"
+  },
+  {
+    "word": "whole",
+    "frequency": 349,
+    "language": "english"
+  },
+  {
+    "word": "hear",
+    "frequency": 348,
+    "language": "english"
+  },
+  {
+    "word": "example",
+    "frequency": 347,
+    "language": "english"
+  },
+  {
+    "word": "heard",
+    "frequency": 346,
+    "language": "english"
+  },
+  {
+    "word": "several",
+    "frequency": 345,
+    "language": "english"
+  },
+  {
+    "word": "change",
+    "frequency": 344,
+    "language": "english"
+  },
+  {
+    "word": "answer",
+    "frequency": 343,
+    "language": "english"
+  },
+  {
+    "word": "room",
+    "frequency": 342,
+    "language": "english"
+  },
+  {
+    "word": "sea",
+    "frequency": 341,
+    "language": "english"
+  },
+  {
+    "word": "against",
+    "frequency": 340,
+    "language": "english"
+  },
+  {
+    "word": "top",
+    "frequency": 339,
+    "language": "english"
+  },
+  {
+    "word": "turned",
+    "frequency": 338,
+    "language": "english"
+  },
+  {
+    "word": "learn",
+    "frequency": 337,
+    "language": "english"
+  },
+  {
+    "word": "point",
+    "frequency": 336,
+    "language": "english"
+  },
+  {
+    "word": "city",
+    "frequency": 335,
+    "language": "english"
+  },
+  {
+    "word": "play",
+    "frequency": 334,
+    "language": "english"
+  },
+  {
+    "word": "toward",
+    "frequency": 333,
+    "language": "english"
+  },
+  {
+    "word": "five",
+    "frequency": 332,
+    "language": "english"
+  },
+  {
+    "word": "himself",
+    "frequency": 331,
+    "language": "english"
+  },
+  {
+    "word": "usually",
+    "frequency": 330,
+    "language": "english"
+  },
+  {
+    "word": "money",
+    "frequency": 329,
+    "language": "english"
+  },
+  {
+    "word": "seen",
+    "frequency": 328,
+    "language": "english"
+  },
+  {
+    "word": "car",
+    "frequency": 327,
+    "language": "english"
+  },
+  {
+    "word": "morning",
+    "frequency": 326,
+    "language": "english"
+  },
+  {
+    "word": "body",
+    "frequency": 325,
+    "language": "english"
+  },
+  {
+    "word": "family",
+    "frequency": 324,
+    "language": "english"
+  },
+  {
+    "word": "later",
+    "frequency": 323,
+    "language": "english"
+  },
+  {
+    "word": "turn",
+    "frequency": 322,
+    "language": "english"
+  },
+  {
+    "word": "move",
+    "frequency": 321,
+    "language": "english"
+  },
+  {
+    "word": "face",
+    "frequency": 320,
+    "language": "english"
+  },
+  {
+    "word": "door",
+    "frequency": 319,
+    "language": "english"
+  },
+  {
+    "word": "cut",
+    "frequency": 318,
+    "language": "english"
+  },
+  {
+    "word": "done",
+    "frequency": 317,
+    "language": "english"
+  },
+  {
+    "word": "group",
+    "frequency": 316,
+    "language": "english"
+  },
+  {
+    "word": "true",
+    "frequency": 315,
+    "language": "english"
+  },
+  {
+    "word": "half",
+    "frequency": 314,
+    "language": "english"
+  },
+  {
+    "word": "red",
+    "frequency": 313,
+    "language": "english"
+  },
+  {
+    "word": "friend",
+    "frequency": 312,
+    "language": "english"
+  },
+  {
+    "word": "feel",
+    "frequency": 311,
+    "language": "english"
+  },
+  {
+    "word": "able",
+    "frequency": 310,
+    "language": "english"
+  },
+  {
+    "word": "list",
+    "frequency": 308,
+    "language": "english"
+  },
+  {
+    "word": "song",
+    "frequency": 307,
+    "language": "english"
+  },
+  {
+    "word": "table",
+    "frequency": 306,
+    "language": "english"
+  },
+  {
+    "word": "easy",
+    "frequency": 305,
+    "language": "english"
+  },
+  {
+    "word": "less",
+    "frequency": 304,
+    "language": "english"
+  },
+  {
+    "word": "matter",
+    "frequency": 303,
+    "language": "english"
+  },
+  {
+    "word": "start",
+    "frequency": 302,
+    "language": "english"
+  },
+  {
+    "word": "idea",
+    "frequency": 301,
+    "language": "english"
+  },
+  {
+    "word": "fish",
+    "frequency": 300,
+    "language": "english"
+  },
+  {
+    "word": "mountain",
+    "frequency": 299,
+    "language": "english"
+  },
+  {
+    "word": "stop",
+    "frequency": 298,
+    "language": "english"
+  },
+  {
+    "word": "base",
+    "frequency": 296,
+    "language": "english"
+  },
+  {
+    "word": "horse",
+    "frequency": 295,
+    "language": "english"
+  },
+  {
+    "word": "watch",
+    "frequency": 294,
+    "language": "english"
+  },
+  {
+    "word": "color",
+    "frequency": 293,
+    "language": "english"
+  },
+  {
+    "word": "wood",
+    "frequency": 292,
+    "language": "english"
+  },
+  {
+    "word": "main",
+    "frequency": 291,
+    "language": "english"
+  },
+  {
+    "word": "open",
+    "frequency": 290,
+    "language": "english"
+  },
+  {
+    "word": "seem",
+    "frequency": 289,
+    "language": "english"
+  },
+  {
+    "word": "become",
+    "frequency": 286,
+    "language": "english"
+  },
+  {
+    "word": "space",
+    "frequency": 285,
+    "language": "english"
+  },
+  {
+    "word": "possible",
+    "frequency": 284,
+    "language": "english"
+  },
+  {
+    "word": "really",
+    "frequency": 650,
+    "language": "english"
+  },
+  {
+    "word": "believe",
+    "frequency": 282,
+    "language": "english"
+  },
+  {
+    "word": "reason",
+    "frequency": 281,
+    "language": "english"
+  },
+  {
+    "word": "person",
+    "frequency": 280,
+    "language": "english"
+  },
+  {
+    "word": "email",
+    "frequency": 279,
+    "language": "english"
+  },
+  {
+    "word": "phone",
+    "frequency": 278,
+    "language": "english"
+  },
+  {
+    "word": "message",
+    "frequency": 500,
+    "language": "english"
+  },
+  {
+    "word": "thanks",
+    "frequency": 800,
+    "language": "english"
+  },
+  {
+    "word": "meeting",
+    "frequency": 275,
+    "language": "english"
+  },
+  {
+    "word": "tomorrow",
+    "frequency": 274,
+    "language": "english"
+  },
+  {
+    "word": "yesterday",
+    "frequency": 273,
+    "language": "english"
+  },
+  {
+    "word": "tonight",
+    "frequency": 272,
+    "language": "english"
+  },
+  {
+    "word": "afternoon",
+    "frequency": 270,
+    "language": "english"
+  },
+  {
+    "word": "happy",
+    "frequency": 269,
+    "language": "english"
+  },
+  {
+    "word": "love",
+    "frequency": 268,
+    "language": "english"
+  },
+  {
+    "word": "welcome",
+    "frequency": 267,
+    "language": "english"
+  },
+  {
+    "word": "please",
+    "frequency": 266,
+    "language": "english"
+  },
+  {
+    "word": "sorry",
+    "frequency": 265,
+    "language": "english"
+  },
+  {
+    "word": "okay",
+    "frequency": 264,
+    "language": "english"
+  },
+  {
+    "word": "yes",
+    "frequency": 263,
+    "language": "english"
+  },
+  {
+    "word": "hello",
+    "frequency": 1500,
+    "language": "english"
+  },
+  {
+    "word": "thank",
+    "frequency": 900,
+    "language": "english"
+  },
+  {
+    "word": "goodbye",
+    "frequency": 260,
+    "language": "english"
+  },
+  {
+    "word": "wait",
+    "frequency": 259,
+    "language": "english"
+  },
+  {
+    "word": "understand",
+    "frequency": 257,
+    "language": "english"
+  },
+  {
+    "word": "build",
+    "frequency": 254,
+    "language": "english"
+  },
+  {
+    "word": "keyboard",
+    "frequency": 500,
+    "language": "english"
+  },
+  {
+    "word": "app",
+    "frequency": 252,
+    "language": "english"
+  },
+  {
+    "word": "everyone",
+    "frequency": 251,
+    "language": "english"
+  },
+  {
+    "word": "support",
+    "frequency": 250,
+    "language": "english"
+  },
+  {
+    "word": "remote",
+    "frequency": 249,
+    "language": "english"
+  },
+  {
+    "word": "voice",
+    "frequency": 248,
+    "language": "english"
+  },
+  {
+    "word": "typing",
+    "frequency": 247,
+    "language": "english"
+  },
+  {
+    "word": "save",
+    "frequency": 246,
+    "language": "english"
+  },
+  {
+    "word": "copy",
+    "frequency": 245,
+    "language": "english"
+  },
+  {
+    "word": "paste",
+    "frequency": 244,
+    "language": "english"
+  },
+  {
+    "word": "share",
+    "frequency": 243,
+    "language": "english"
+  },
+  {
+    "word": "install",
+    "frequency": 242,
+    "language": "english"
+  },
+  {
+    "word": "settings",
+    "frequency": 241,
+    "language": "english"
+  },
+  {
+    "word": "language",
+    "frequency": 240,
+    "language": "english"
+  },
+  {
+    "word": "theme",
+    "frequency": 238,
+    "language": "english"
+  },
+  {
+    "word": "swipe",
+    "frequency": 237,
+    "language": "english"
+  },
+  {
+    "word": "letter",
+    "frequency": 236,
+    "language": "english"
+  },
+  {
+    "word": "accent",
+    "frequency": 235,
+    "language": "english"
+  },
+  {
+    "word": "translate",
+    "frequency": 234,
+    "language": "english"
+  },
+  {
+    "word": "professional",
+    "frequency": 233,
+    "language": "english"
+  },
+  {
+    "word": "casual",
+    "frequency": 232,
+    "language": "english"
+  },
+  {
+    "word": "grammar",
+    "frequency": 231,
+    "language": "english"
+  },
+  {
+    "word": "text",
+    "frequency": 230,
+    "language": "english"
+  },
+  {
+    "word": "quick",
+    "frequency": 228,
+    "language": "english"
+  },
+  {
+    "word": "brown",
+    "frequency": 227,
+    "language": "english"
+  },
+  {
+    "word": "fox",
+    "frequency": 226,
+    "language": "english"
+  },
+  {
+    "word": "jumps",
+    "frequency": 225,
+    "language": "english"
+  },
+  {
+    "word": "lazy",
+    "frequency": 224,
+    "language": "english"
+  },
+  {
+    "word": "dog",
+    "frequency": 223,
+    "language": "english"
+  },
+  {
+    "word": "book",
+    "frequency": 222,
+    "language": "english"
+  },
+  {
+    "word": "enjoy",
+    "frequency": 220,
+    "language": "english"
+  },
+  {
+    "word": "clear",
+    "frequency": 219,
+    "language": "english"
+  },
+  {
+    "word": "choose",
+    "frequency": 218,
+    "language": "english"
+  },
+  {
+    "word": "clean",
+    "frequency": 216,
+    "language": "english"
+  },
+  {
+    "word": "safe",
+    "frequency": 215,
+    "language": "english"
+  },
+  {
+    "word": "private",
+    "frequency": 214,
+    "language": "english"
+  },
+  {
+    "word": "ready",
+    "frequency": 213,
+    "language": "english"
+  },
+  {
+    "word": "project",
+    "frequency": 212,
+    "language": "english"
+  },
+  {
+    "word": "music",
+    "frequency": 211,
+    "language": "english"
+  },
+  {
+    "word": "game",
+    "frequency": 210,
+    "language": "english"
+  },
+  {
+    "word": "click",
+    "frequency": 209,
+    "language": "english"
+  },
+  {
+    "word": "screen",
+    "frequency": 208,
+    "language": "english"
+  },
+  {
+    "word": "power",
+    "frequency": 207,
+    "language": "english"
+  },
+  {
+    "word": "volume",
+    "frequency": 206,
+    "language": "english"
+  },
+  {
+    "word": "you",
+    "frequency": 1400,
+    "language": "english"
+  },
+  {
+    "word": "they",
+    "frequency": 1000,
+    "language": "english"
+  },
+  {
+    "word": "ten",
+    "frequency": 100,
+    "language": "english"
+  },
+  {
+    "word": "ẹ",
+    "frequency": 400,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọ",
+    "frequency": 399,
+    "language": "yoruba"
+  },
+  {
+    "word": "ṣ",
+    "frequency": 398,
+    "language": "yoruba"
+  },
+  {
+    "word": "à",
+    "frequency": 397,
+    "language": "yoruba"
+  },
+  {
+    "word": "á",
+    "frequency": 396,
+    "language": "yoruba"
+  },
+  {
+    "word": "è",
+    "frequency": 395,
+    "language": "yoruba"
+  },
+  {
+    "word": "é",
+    "frequency": 394,
+    "language": "yoruba"
+  },
+  {
+    "word": "ì",
+    "frequency": 393,
+    "language": "yoruba"
+  },
+  {
+    "word": "í",
+    "frequency": 392,
+    "language": "yoruba"
+  },
+  {
+    "word": "ò",
+    "frequency": 391,
+    "language": "yoruba"
+  },
+  {
+    "word": "ó",
+    "frequency": 390,
+    "language": "yoruba"
+  },
+  {
+    "word": "ù",
+    "frequency": 389,
+    "language": "yoruba"
+  },
+  {
+    "word": "ú",
+    "frequency": 388,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹ̀",
+    "frequency": 387,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹ́",
+    "frequency": 386,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọ̀",
+    "frequency": 385,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọ́",
+    "frequency": 384,
+    "language": "yoruba"
+  },
+  {
+    "word": "àárọ̀",
+    "frequency": 383,
+    "language": "yoruba"
+  },
+  {
+    "word": "káàárọ̀",
+    "frequency": 382,
+    "language": "yoruba"
+  },
+  {
+    "word": "káàsán",
+    "frequency": 381,
+    "language": "yoruba"
+  },
+  {
+    "word": "káalẹ́",
+    "frequency": 380,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹkáàárọ̀",
+    "frequency": 379,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹkáàsán",
+    "frequency": 378,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹkáalẹ́",
+    "frequency": 377,
+    "language": "yoruba"
+  },
+  {
+    "word": "báwo",
+    "frequency": 376,
+    "language": "yoruba"
+  },
+  {
+    "word": "dáadáa",
+    "frequency": 375,
+    "language": "yoruba"
+  },
+  {
+    "word": "ṣé",
+    "frequency": 374,
+    "language": "yoruba"
+  },
+  {
+    "word": "bẹẹni",
+    "frequency": 373,
+    "language": "yoruba"
+  },
+  {
+    "word": "bẹ́ẹ̀ni",
+    "frequency": 372,
+    "language": "yoruba"
+  },
+  {
+    "word": "rárá",
+    "frequency": 371,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹsẹ́",
+    "frequency": 370,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹṣé",
+    "frequency": 369,
+    "language": "yoruba"
+  },
+  {
+    "word": "oṣé",
+    "frequency": 368,
+    "language": "yoruba"
+  },
+  {
+    "word": "jọ̀wọ́",
+    "frequency": 367,
+    "language": "yoruba"
+  },
+  {
+    "word": "àlàáfíà",
+    "frequency": 366,
+    "language": "yoruba"
+  },
+  {
+    "word": "dúpẹ́",
+    "frequency": 365,
+    "language": "yoruba"
+  },
+  {
+    "word": "mo",
+    "frequency": 364,
+    "language": "yoruba"
+  },
+  {
+    "word": "mi",
+    "frequency": 363,
+    "language": "yoruba"
+  },
+  {
+    "word": "a",
+    "frequency": 362,
+    "language": "yoruba"
+  },
+  {
+    "word": "wa",
+    "frequency": 361,
+    "language": "yoruba"
+  },
+  {
+    "word": "wọn",
+    "frequency": 360,
+    "language": "yoruba"
+  },
+  {
+    "word": "ní",
+    "frequency": 358,
+    "language": "yoruba"
+  },
+  {
+    "word": "ni",
+    "frequency": 357,
+    "language": "yoruba"
+  },
+  {
+    "word": "àti",
+    "frequency": 356,
+    "language": "yoruba"
+  },
+  {
+    "word": "pé",
+    "frequency": 355,
+    "language": "yoruba"
+  },
+  {
+    "word": "kí",
+    "frequency": 354,
+    "language": "yoruba"
+  },
+  {
+    "word": "kò",
+    "frequency": 353,
+    "language": "yoruba"
+  },
+  {
+    "word": "má",
+    "frequency": 352,
+    "language": "yoruba"
+  },
+  {
+    "word": "ṣe",
+    "frequency": 351,
+    "language": "yoruba"
+  },
+  {
+    "word": "láti",
+    "frequency": 350,
+    "language": "yoruba"
+  },
+  {
+    "word": "fún",
+    "frequency": 349,
+    "language": "yoruba"
+  },
+  {
+    "word": "sí",
+    "frequency": 348,
+    "language": "yoruba"
+  },
+  {
+    "word": "inú",
+    "frequency": 347,
+    "language": "yoruba"
+  },
+  {
+    "word": "ilé",
+    "frequency": 346,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹ̀kọ́",
+    "frequency": 345,
+    "language": "yoruba"
+  },
+  {
+    "word": "iṣẹ́",
+    "frequency": 344,
+    "language": "yoruba"
+  },
+  {
+    "word": "owó",
+    "frequency": 343,
+    "language": "yoruba"
+  },
+  {
+    "word": "omi",
+    "frequency": 342,
+    "language": "yoruba"
+  },
+  {
+    "word": "oúnjẹ",
+    "frequency": 341,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọrẹ́",
+    "frequency": 340,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹbí",
+    "frequency": 339,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọmọ",
+    "frequency": 338,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìyá",
+    "frequency": 337,
+    "language": "yoruba"
+  },
+  {
+    "word": "bàbá",
+    "frequency": 336,
+    "language": "yoruba"
+  },
+  {
+    "word": "arákùnrin",
+    "frequency": 335,
+    "language": "yoruba"
+  },
+  {
+    "word": "arábìnrin",
+    "frequency": 334,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọkọ",
+    "frequency": 333,
+    "language": "yoruba"
+  },
+  {
+    "word": "aya",
+    "frequency": 332,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìfẹ́",
+    "frequency": 331,
+    "language": "yoruba"
+  },
+  {
+    "word": "ayọ̀",
+    "frequency": 330,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọjọ́",
+    "frequency": 329,
+    "language": "yoruba"
+  },
+  {
+    "word": "òní",
+    "frequency": 328,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọ̀la",
+    "frequency": 327,
+    "language": "yoruba"
+  },
+  {
+    "word": "àná",
+    "frequency": 326,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọ̀nà",
+    "frequency": 325,
+    "language": "yoruba"
+  },
+  {
+    "word": "àkókò",
+    "frequency": 324,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìròyìn",
+    "frequency": 323,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìwé",
+    "frequency": 322,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìlú",
+    "frequency": 321,
+    "language": "yoruba"
+  },
+  {
+    "word": "ilẹ̀",
+    "frequency": 320,
+    "language": "yoruba"
+  },
+  {
+    "word": "ayé",
+    "frequency": 319,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọ̀run",
+    "frequency": 318,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìmọ̀",
+    "frequency": 317,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọgbọ́n",
+    "frequency": 316,
+    "language": "yoruba"
+  },
+  {
+    "word": "agbára",
+    "frequency": 315,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìrànlọ́wọ́",
+    "frequency": 314,
+    "language": "yoruba"
+  },
+  {
+    "word": "kọ́kọ́",
+    "frequency": 313,
+    "language": "yoruba"
+  },
+  {
+    "word": "lẹ́yìn",
+    "frequency": 312,
+    "language": "yoruba"
+  },
+  {
+    "word": "gbogbo",
+    "frequency": 311,
+    "language": "yoruba"
+  },
+  {
+    "word": "díẹ̀",
+    "frequency": 310,
+    "language": "yoruba"
+  },
+  {
+    "word": "púpọ̀",
+    "frequency": 309,
+    "language": "yoruba"
+  },
+  {
+    "word": "ń",
+    "frequency": 308,
+    "language": "yoruba"
+  },
+  {
+    "word": "dé",
+    "frequency": 307,
+    "language": "yoruba"
+  },
+  {
+    "word": "lọ",
+    "frequency": 306,
+    "language": "yoruba"
+  },
+  {
+    "word": "wá",
+    "frequency": 305,
+    "language": "yoruba"
+  },
+  {
+    "word": "jókòó",
+    "frequency": 304,
+    "language": "yoruba"
+  },
+  {
+    "word": "dúró",
+    "frequency": 303,
+    "language": "yoruba"
+  },
+  {
+    "word": "gbọ́",
+    "frequency": 302,
+    "language": "yoruba"
+  },
+  {
+    "word": "rí",
+    "frequency": 301,
+    "language": "yoruba"
+  },
+  {
+    "word": "mọ̀",
+    "frequency": 300,
+    "language": "yoruba"
+  },
+  {
+    "word": "sọ",
+    "frequency": 299,
+    "language": "yoruba"
+  },
+  {
+    "word": "ka",
+    "frequency": 298,
+    "language": "yoruba"
+  },
+  {
+    "word": "kọ",
+    "frequency": 297,
+    "language": "yoruba"
+  },
+  {
+    "word": "jẹ",
+    "frequency": 296,
+    "language": "yoruba"
+  },
+  {
+    "word": "mu",
+    "frequency": 295,
+    "language": "yoruba"
+  },
+  {
+    "word": "gbà",
+    "frequency": 293,
+    "language": "yoruba"
+  },
+  {
+    "word": "dá",
+    "frequency": 292,
+    "language": "yoruba"
+  },
+  {
+    "word": "sé",
+    "frequency": 291,
+    "language": "yoruba"
+  },
+  {
+    "word": "ṣí",
+    "frequency": 290,
+    "language": "yoruba"
+  },
+  {
+    "word": "pa",
+    "frequency": 289,
+    "language": "yoruba"
+  },
+  {
+    "word": "rántí",
+    "frequency": 288,
+    "language": "yoruba"
+  },
+  {
+    "word": "fi",
+    "frequency": 287,
+    "language": "yoruba"
+  },
+  {
+    "word": "wọ́n",
+    "frequency": 286,
+    "language": "yoruba"
+  },
+  {
+    "word": "rere",
+    "frequency": 283,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọkàn",
+    "frequency": 282,
+    "language": "yoruba"
+  },
+  {
+    "word": "àṣẹ",
+    "frequency": 281,
+    "language": "yoruba"
+  },
+  {
+    "word": "àdúrà",
+    "frequency": 280,
+    "language": "yoruba"
+  },
+  {
+    "word": "inúdidùn",
+    "frequency": 279,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìbáṣepọ̀",
+    "frequency": 278,
+    "language": "yoruba"
+  },
+  {
+    "word": "ibùkún",
+    "frequency": 277,
+    "language": "yoruba"
+  },
+  {
+    "word": "àbúrò",
+    "frequency": 276,
+    "language": "yoruba"
+  },
+  {
+    "word": "ẹ̀gbọ́n",
+    "frequency": 275,
+    "language": "yoruba"
+  },
+  {
+    "word": "ìdílé",
+    "frequency": 274,
+    "language": "yoruba"
+  },
+  {
+    "word": "àlejò",
+    "frequency": 273,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọdún",
+    "frequency": 272,
+    "language": "yoruba"
+  },
+  {
+    "word": "méjì",
+    "frequency": 271,
+    "language": "yoruba"
+  },
+  {
+    "word": "mẹ́ta",
+    "frequency": 270,
+    "language": "yoruba"
+  },
+  {
+    "word": "mẹ́rin",
+    "frequency": 269,
+    "language": "yoruba"
+  },
+  {
+    "word": "márùn-ún",
+    "frequency": 268,
+    "language": "yoruba"
+  },
+  {
+    "word": "ọ̀kan",
+    "frequency": 267,
+    "language": "yoruba"
+  },
+  {
+    "word": "mẹ́fà",
+    "frequency": 266,
+    "language": "yoruba"
+  },
+  {
+    "word": "méje",
+    "frequency": 265,
+    "language": "yoruba"
+  },
+  {
+    "word": "mẹ́jọ",
+    "frequency": 264,
+    "language": "yoruba"
+  },
+  {
+    "word": "mẹ́sàn-án",
+    "frequency": 263,
+    "language": "yoruba"
+  },
+  {
+    "word": "mẹ́wàá",
+    "frequency": 262,
+    "language": "yoruba"
+  },
+  {
+    "word": "abeg",
+    "frequency": 400,
+    "language": "pidgin"
+  },
+  {
+    "word": "dey",
+    "frequency": 399,
+    "language": "pidgin"
+  },
+  {
+    "word": "na",
+    "frequency": 398,
+    "language": "pidgin"
+  },
+  {
+    "word": "wetin",
+    "frequency": 397,
+    "language": "pidgin"
+  },
+  {
+    "word": "sabi",
+    "frequency": 396,
+    "language": "pidgin"
+  },
+  {
+    "word": "no",
+    "frequency": 395,
+    "language": "pidgin"
+  },
+  {
+    "word": "wahala",
+    "frequency": 394,
+    "language": "pidgin"
+  },
+  {
+    "word": "how",
+    "frequency": 393,
+    "language": "pidgin"
+  },
+  {
+    "word": "far",
+    "frequency": 392,
+    "language": "pidgin"
+  },
+  {
+    "word": "una",
+    "frequency": 391,
+    "language": "pidgin"
+  },
+  {
+    "word": "wey",
+    "frequency": 390,
+    "language": "pidgin"
+  },
+  {
+    "word": "dem",
+    "frequency": 389,
+    "language": "pidgin"
+  },
+  {
+    "word": "e",
+    "frequency": 388,
+    "language": "pidgin"
+  },
+  {
+    "word": "don",
+    "frequency": 387,
+    "language": "pidgin"
+  },
+  {
+    "word": "go",
+    "frequency": 386,
+    "language": "pidgin"
+  },
+  {
+    "word": "come",
+    "frequency": 385,
+    "language": "pidgin"
+  },
+  {
+    "word": "waka",
+    "frequency": 384,
+    "language": "pidgin"
+  },
+  {
+    "word": "chop",
+    "frequency": 383,
+    "language": "pidgin"
+  },
+  {
+    "word": "belle",
+    "frequency": 382,
+    "language": "pidgin"
+  },
+  {
+    "word": "pikin",
+    "frequency": 381,
+    "language": "pidgin"
+  },
+  {
+    "word": "oga",
+    "frequency": 380,
+    "language": "pidgin"
+  },
+  {
+    "word": "madam",
+    "frequency": 379,
+    "language": "pidgin"
+  },
+  {
+    "word": "bros",
+    "frequency": 378,
+    "language": "pidgin"
+  },
+  {
+    "word": "sis",
+    "frequency": 377,
+    "language": "pidgin"
+  },
+  {
+    "word": "oya",
+    "frequency": 376,
+    "language": "pidgin"
+  },
+  {
+    "word": "sha",
+    "frequency": 375,
+    "language": "pidgin"
+  },
+  {
+    "word": "sef",
+    "frequency": 374,
+    "language": "pidgin"
+  },
+  {
+    "word": "abi",
+    "frequency": 373,
+    "language": "pidgin"
+  },
+  {
+    "word": "shey",
+    "frequency": 372,
+    "language": "pidgin"
+  },
+  {
+    "word": "jare",
+    "frequency": 371,
+    "language": "pidgin"
+  },
+  {
+    "word": "gbege",
+    "frequency": 370,
+    "language": "pidgin"
+  },
+  {
+    "word": "yarn",
+    "frequency": 369,
+    "language": "pidgin"
+  },
+  {
+    "word": "gist",
+    "frequency": 368,
+    "language": "pidgin"
+  },
+  {
+    "word": "vex",
+    "frequency": 367,
+    "language": "pidgin"
+  },
+  {
+    "word": "palava",
+    "frequency": 365,
+    "language": "pidgin"
+  },
+  {
+    "word": "yawa",
+    "frequency": 364,
+    "language": "pidgin"
+  },
+  {
+    "word": "small-small",
+    "frequency": 361,
+    "language": "pidgin"
+  },
+  {
+    "word": "sharp-sharp",
+    "frequency": 360,
+    "language": "pidgin"
+  },
+  {
+    "word": "carry",
+    "frequency": 359,
+    "language": "pidgin"
+  },
+  {
+    "word": "body",
+    "frequency": 358,
+    "language": "pidgin"
+  },
+  {
+    "word": "finish",
+    "frequency": 357,
+    "language": "pidgin"
+  },
+  {
+    "word": "well-well",
+    "frequency": 356,
+    "language": "pidgin"
+  },
+  {
+    "word": "plenty",
+    "frequency": 355,
+    "language": "pidgin"
+  },
+  {
+    "word": "anyhow",
+    "frequency": 354,
+    "language": "pidgin"
+  },
+  {
+    "word": "korrect",
+    "frequency": 353,
+    "language": "pidgin"
+  },
+  {
+    "word": "correct",
+    "frequency": 352,
+    "language": "pidgin"
+  },
+  {
+    "word": "fit",
+    "frequency": 351,
+    "language": "pidgin"
+  },
+  {
+    "word": "nofit",
+    "frequency": 350,
+    "language": "pidgin"
+  },
+  {
+    "word": "wan",
+    "frequency": 349,
+    "language": "pidgin"
+  },
+  {
+    "word": "make",
+    "frequency": 348,
+    "language": "pidgin"
+  },
+  {
+    "word": "send",
+    "frequency": 347,
+    "language": "pidgin"
+  },
+  {
+    "word": "receive",
+    "frequency": 346,
+    "language": "pidgin"
+  },
+  {
+    "word": "money",
+    "frequency": 345,
+    "language": "pidgin"
+  },
+  {
+    "word": "market",
+    "frequency": 344,
+    "language": "pidgin"
+  },
+  {
+    "word": "house",
+    "frequency": 343,
+    "language": "pidgin"
+  },
+  {
+    "word": "work",
+    "frequency": 342,
+    "language": "pidgin"
+  },
+  {
+    "word": "today",
+    "frequency": 341,
+    "language": "pidgin"
+  },
+  {
+    "word": "tomorrow",
+    "frequency": 340,
+    "language": "pidgin"
+  },
+  {
+    "word": "yesterday",
+    "frequency": 339,
+    "language": "pidgin"
+  },
+  {
+    "word": "morning",
+    "frequency": 338,
+    "language": "pidgin"
+  },
+  {
+    "word": "evening",
+    "frequency": 337,
+    "language": "pidgin"
+  },
+  {
+    "word": "night",
+    "frequency": 336,
+    "language": "pidgin"
+  },
+  {
+    "word": "people",
+    "frequency": 335,
+    "language": "pidgin"
+  },
+  {
+    "word": "person",
+    "frequency": 334,
+    "language": "pidgin"
+  },
+  {
+    "word": "everybody",
+    "frequency": 333,
+    "language": "pidgin"
+  },
+  {
+    "word": "nobody",
+    "frequency": 332,
+    "language": "pidgin"
+  },
+  {
+    "word": "somebody",
+    "frequency": 331,
+    "language": "pidgin"
+  },
+  {
+    "word": "thing",
+    "frequency": 330,
+    "language": "pidgin"
+  },
+  {
+    "word": "stuff",
+    "frequency": 329,
+    "language": "pidgin"
+  },
+  {
+    "word": "thank",
+    "frequency": 328,
+    "language": "pidgin"
+  },
+  {
+    "word": "thanks",
+    "frequency": 327,
+    "language": "pidgin"
+  },
+  {
+    "word": "sorry",
+    "frequency": 326,
+    "language": "pidgin"
+  },
+  {
+    "word": "welcome",
+    "frequency": 325,
+    "language": "pidgin"
+  },
+  {
+    "word": "amen",
+    "frequency": 324,
+    "language": "pidgin"
+  },
+  {
+    "word": "fine",
+    "frequency": 323,
+    "language": "pidgin"
+  },
+  {
+    "word": "okay",
+    "frequency": 322,
+    "language": "pidgin"
+  },
+  {
+    "word": "true",
+    "frequency": 321,
+    "language": "pidgin"
+  },
+  {
+    "word": "reach",
+    "frequency": 320,
+    "language": "pidgin"
+  },
+  {
+    "word": "know",
+    "frequency": 319,
+    "language": "pidgin"
+  },
+  {
+    "word": "hear",
+    "frequency": 317,
+    "language": "pidgin"
+  },
+  {
+    "word": "talk",
+    "frequency": 316,
+    "language": "pidgin"
+  },
+  {
+    "word": "see",
+    "frequency": 315,
+    "language": "pidgin"
+  },
+  {
+    "word": "reason",
+    "frequency": 314,
+    "language": "pidgin"
+  },
+  {
+    "word": "dey-never",
+    "frequency": 313,
+    "language": "pidgin"
+  },
+  {
+    "word": "happen",
+    "frequency": 310,
+    "language": "pidgin"
+  },
+  {
+    "word": "sup",
+    "frequency": 309,
+    "language": "pidgin"
+  },
+  {
+    "word": "later",
+    "frequency": 308,
+    "language": "pidgin"
+  },
+  {
+    "word": "now",
+    "frequency": 307,
+    "language": "pidgin"
+  },
+  {
+    "word": "here",
+    "frequency": 306,
+    "language": "pidgin"
+  },
+  {
+    "word": "there",
+    "frequency": 305,
+    "language": "pidgin"
+  },
+  {
+    "word": "inside",
+    "frequency": 304,
+    "language": "pidgin"
+  },
+  {
+    "word": "outside",
+    "frequency": 303,
+    "language": "pidgin"
+  },
+  {
+    "word": "together",
+    "frequency": 302,
+    "language": "pidgin"
+  },
+  {
+    "word": "never",
+    "frequency": 301,
+    "language": "pidgin"
+  },
+  {
+    "word": "always",
+    "frequency": 300,
+    "language": "pidgin"
+  },
+  {
+    "word": "sometimes",
+    "frequency": 299,
+    "language": "pidgin"
+  },
+  {
+    "word": "ehen",
+    "frequency": 298,
+    "language": "pidgin"
+  },
+  {
+    "word": "aswear",
+    "frequency": 297,
+    "language": "pidgin"
+  },
+  {
+    "word": "nko",
+    "frequency": 296,
+    "language": "pidgin"
+  },
+  {
+    "word": "nawa",
+    "frequency": 295,
+    "language": "pidgin"
+  },
+  {
+    "word": "chai",
+    "frequency": 294,
+    "language": "pidgin"
+  },
+  {
+    "word": "chei",
+    "frequency": 293,
+    "language": "pidgin"
+  },
+  {
+    "word": "biko",
+    "frequency": 292,
+    "language": "pidgin"
+  },
+  {
+    "word": "pap",
+    "frequency": 291,
+    "language": "pidgin"
+  },
+  {
+    "word": "pepper",
+    "frequency": 290,
+    "language": "pidgin"
+  },
+  {
+    "word": "garri",
+    "frequency": 289,
+    "language": "pidgin"
+  },
+  {
+    "word": "rice",
+    "frequency": 288,
+    "language": "pidgin"
+  },
+  {
+    "word": "suya",
+    "frequency": 287,
+    "language": "pidgin"
+  },
+  {
+    "word": "agbalumo",
+    "frequency": 286,
+    "language": "pidgin"
+  },
+  {
+    "word": "plantain",
+    "frequency": 285,
+    "language": "pidgin"
+  },
+  {
+    "word": "yam",
+    "frequency": 284,
+    "language": "pidgin"
+  },
+  {
+    "word": "akara",
+    "frequency": 283,
+    "language": "pidgin"
+  },
+  {
+    "word": "moi-moi",
+    "frequency": 282,
+    "language": "pidgin"
+  },
+  {
+    "word": "jollof",
+    "frequency": 281,
+    "language": "pidgin"
+  },
+  {
+    "word": "eba",
+    "frequency": 280,
+    "language": "pidgin"
+  },
+  {
+    "word": "fufu",
+    "frequency": 279,
+    "language": "pidgin"
+  },
+  {
+    "word": "stew",
+    "frequency": 278,
+    "language": "pidgin"
+  },
+  {
+    "word": "soup",
+    "frequency": 277,
+    "language": "pidgin"
+  },
+  {
+    "word": "bus",
+    "frequency": 276,
+    "language": "pidgin"
+  },
+  {
+    "word": "keke",
+    "frequency": 275,
+    "language": "pidgin"
+  },
+  {
+    "word": "danfo",
+    "frequency": 274,
+    "language": "pidgin"
+  },
+  {
+    "word": "okada",
+    "frequency": 273,
+    "language": "pidgin"
+  },
+  {
+    "word": "fuel",
+    "frequency": 272,
+    "language": "pidgin"
+  },
+  {
+    "word": "light",
+    "frequency": 271,
+    "language": "pidgin"
+  },
+  {
+    "word": "nepa",
+    "frequency": 270,
+    "language": "pidgin"
+  },
+  {
+    "word": "hustle",
+    "frequency": 269,
+    "language": "pidgin"
+  },
+  {
+    "word": "cruise",
+    "frequency": 268,
+    "language": "pidgin"
+  },
+  {
+    "word": "vibes",
+    "frequency": 267,
+    "language": "pidgin"
+  },
+  {
+    "word": "enjoy",
+    "frequency": 266,
+    "language": "pidgin"
+  },
+  {
+    "word": "soft",
+    "frequency": 265,
+    "language": "pidgin"
+  },
+  {
+    "word": "balance",
+    "frequency": 264,
+    "language": "pidgin"
+  },
+  {
+    "word": "settle",
+    "frequency": 263,
+    "language": "pidgin"
+  },
+  {
+    "word": "link",
+    "frequency": 262,
+    "language": "pidgin"
+  },
+  {
+    "word": "call",
+    "frequency": 261,
+    "language": "pidgin"
+  },
+  {
+    "word": "text",
+    "frequency": 260,
+    "language": "pidgin"
+  },
+  {
+    "word": "message",
+    "frequency": 259,
+    "language": "pidgin"
+  },
+  {
+    "word": "phone",
+    "frequency": 258,
+    "language": "pidgin"
+  },
+  {
+    "word": "charge",
+    "frequency": 257,
+    "language": "pidgin"
+  },
+  {
+    "word": "battery",
+    "frequency": 256,
+    "language": "pidgin"
+  },
+  {
+    "word": "data",
+    "frequency": 255,
+    "language": "pidgin"
+  },
+  {
+    "word": "network",
+    "frequency": 254,
+    "language": "pidgin"
+  },
+  {
+    "word": "urgent",
+    "frequency": 253,
+    "language": "pidgin"
+  },
+  {
+    "word": "easy",
+    "frequency": 252,
+    "language": "pidgin"
+  },
+  {
+    "word": "jejely",
+    "frequency": 251,
+    "language": "pidgin"
+  },
+  {
+    "word": "kilode",
+    "frequency": 250,
+    "language": "pidgin"
+  },
+  {
+    "word": "wahala-less",
+    "frequency": 249,
+    "language": "pidgin"
+  }
+]

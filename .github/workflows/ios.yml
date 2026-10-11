@@ -1,0 +1,38 @@
+name: Build iPhone keyboard
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: keyboard-build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check toolchain
+        run: xcodebuild -version
+      - name: Test typing engine
+        run: swift test --jobs 2
+      - name: Test writing service boundaries
+        run: node --test Backend/worker.test.mjs
+      - name: Build device app and package unsigned IPA
+        run: bash Scripts/build_ipa.sh
+      - name: Build simulator app
+        run: >-
+          xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard
+          -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
+          -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build
+      - name: Launch companion app in simulator
+        run: python3 Scripts/simulator_smoke.py
+      - name: Upload sideloading package
+        uses: actions/upload-artifact@v4
+        with:
+          name: WianTribeKeyboard-sideload
+          path: build/output/
+          if-no-files-found: error
+          retention-days: 7

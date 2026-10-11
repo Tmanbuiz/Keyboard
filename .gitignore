@@ -1,0 +1,13 @@
+.build/
+build/
+.swiftpm/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+Backend/.dev.vars
+Backend/node_modules/
+Backend/.wrangler/
+*.mobileprovision
+*.p12
+__pycache__/
+*.pyc
