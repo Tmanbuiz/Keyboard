@@ -19,7 +19,7 @@ try:
     run("xcrun", "simctl", "install", device, str(app))
     run("xcrun", "simctl", "status_bar", device, "override", "--time", "9:41", "--batteryState", "charged", "--batteryLevel", "100")
     print(run("xcrun", "simctl", "launch", device, "com.wiantribe.keyboard"))
-    time.sleep(4)
+    time.sleep(12)  # Let one-time simulator setup notification banners disappear.
     output = root / "build/output"
     output.mkdir(parents=True, exist_ok=True)
     run("xcrun", "simctl", "io", device, "screenshot", str(output / "Home-iPhone.png"))

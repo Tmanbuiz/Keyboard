@@ -90,7 +90,11 @@ struct LayoutPreview: View {
             if numberRow { keyRow("1234567890", size: 11) }
             keyRow("qwertyuiop", size: 16)
             keyRow("asdfghjkl", size: 16).padding(.horizontal, 12)
-            HStack(spacing: 5) { previewKey("⇧", size: 17); keyRow("zxcvbnm", size: 16); previewKey("⌫", size: 17) }
+            HStack(spacing: 5) {
+                previewKey("⇧", size: 17).frame(width: 31)
+                keyRow("zxcvbnm", size: 16)
+                previewKey("⌫", size: 17).frame(width: 31)
+            }
             HStack(spacing: 5) {
                 previewKey("123", size: 11).frame(width: 34)
                 previewKey("🌐", size: 12).frame(width: 30)
