@@ -57,7 +57,7 @@ private struct HomeView: View {
         }
         .background(ocean).toolbar(.hidden, for: .navigationBar)
     }
-    private func setupStep(_ number: String, title: String, detail: String) -> some View {
+    private func setupStep(_ number: String, title: LocalizedStringKey, detail: LocalizedStringKey) -> some View {
         HStack(alignment: .top, spacing: 12) {
             Text(number).font(.caption.weight(.bold)).frame(width: 26, height: 26)
                 .background(Color.mint.opacity(0.15), in: Circle()).foregroundStyle(.mint)
@@ -67,7 +67,7 @@ private struct HomeView: View {
             }
         }
     }
-    private func feature(_ icon: String, _ title: String) -> some View {
+    private func feature(_ icon: String, _ title: LocalizedStringKey) -> some View {
         VStack(spacing: 8) {
             Image(systemName: icon).font(.title3).foregroundStyle(.mint)
             Text(title).font(.caption2.weight(.medium))
@@ -171,7 +171,7 @@ private struct ToolsView: View {
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Your toolkit")
     }
-    private func tool(_ icon: String, _ title: String, _ detail: String) -> some View {
+    private func tool(_ icon: String, _ title: LocalizedStringKey, _ detail: LocalizedStringKey) -> some View {
         HStack(spacing: 16) {
             Image(systemName: icon).font(.title2).foregroundStyle(.mint).frame(width: 32)
             VStack(alignment: .leading, spacing: 5) { Text(title).font(.headline); Text(detail).font(.caption).foregroundStyle(.secondary) }.padding(.vertical, 10)

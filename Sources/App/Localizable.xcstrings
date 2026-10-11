@@ -1,0 +1,3644 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%lld languages": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld idiomas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld langues"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld idiomas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Sprachen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld لغة"
+          }
+        }
+      }
+    },
+    "A backend template is included in the project. No service is deployed or subscription activated by this app. Provider usage charges may apply to your service.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El proyecto incluye una plantilla de servidor. Esta app no despliega ningún servicio ni activa suscripciones. Tu proveedor puede cobrar por el uso de tu servicio."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un modèle de serveur est inclus dans le projet. Cette app ne déploie aucun service et n'active aucun abonnement. Votre fournisseur peut facturer l'utilisation de votre service."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O projeto inclui um modelo de servidor. Este app não implanta nenhum serviço nem ativa assinaturas. Seu provedor pode cobrar pelo uso do seu serviço."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Projekt enthält eine Server-Vorlage. Diese App stellt keinen Dienst bereit und aktiviert kein Abo. Dein Anbieter kann Nutzungsgebühren für deinen Dienst berechnen."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتضمن المشروع قالب خادم. لا ينشر هذا التطبيق أي خدمة ولا يفعّل أي اشتراك. قد يفرض مزوّدك رسوم استخدام على خدمتك."
+          }
+        }
+      }
+    },
+    "A little more you, in every message.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un poco más de ti en cada mensaje."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un peu plus de vous dans chaque message."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um pouco mais de você em cada mensagem."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein bisschen mehr du in jeder Nachricht."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لمسة منك في كل رسالة."
+          }
+        }
+      }
+    },
+    "Accent colour": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color de acento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couleur d'accent"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cor de destaque"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akzentfarbe"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لون التمييز"
+          }
+        }
+      }
+    },
+    "Add WianTribe Keyboard": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade WianTribe Keyboard"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez WianTribe Keyboard"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicione o WianTribe Keyboard"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WianTribe Keyboard hinzufügen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أضف WianTribe Keyboard"
+          }
+        }
+      }
+    },
+    "Add a language": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir un idioma"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une langue"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar idioma"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprache hinzufügen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إضافة لغة"
+          }
+        }
+      }
+    },
+    "Appearance": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apariencia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apparence"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aparência"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Darstellung"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المظهر"
+          }
+        }
+      }
+    },
+    "Auto capitals": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mayúsculas automáticas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Majuscules automatiques"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maiúsculas automáticas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatische Großschreibung"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأحرف الكبيرة تلقائيًا"
+          }
+        }
+      }
+    },
+    "Autocorrect": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autocorrección"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correction automatique"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correção automática"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autokorrektur"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التصحيح التلقائي"
+          }
+        }
+      }
+    },
+    "Basic typing, spelling suggestions, swipe decoding and emoji run on your iPhone. The app has no analytics, advertising SDK or keystroke logger.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La escritura básica, las sugerencias ortográficas, el deslizamiento y los emojis funcionan en tu iPhone. La app no tiene analíticas, SDK publicitarios ni registro de pulsaciones."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La saisie de base, les suggestions orthographiques, le glissement et les emoji fonctionnent sur votre iPhone. L'app n'a ni outil d'analyse, ni SDK publicitaire, ni enregistreur de frappe."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitação básica, sugestões de ortografia, deslizar e emojis rodam no seu iPhone. O app não tem análises, SDK de anúncios nem registro de teclas."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grundlegendes Tippen, Rechtschreibvorschläge, Wischerkennung und Emojis laufen auf deinem iPhone. Die App hat keine Analysen, kein Werbe-SDK und keinen Tastenlogger."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعمل الكتابة الأساسية واقتراحات الإملاء والكتابة بالسحب والرموز التعبيرية على iPhone. لا يحتوي التطبيق على أدوات تحليل أو حزم إعلانات أو مسجل لضغطات المفاتيح."
+          }
+        }
+      }
+    },
+    "Clear": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسح"
+          }
+        }
+      }
+    },
+    "Clear clipboard history, pinned text and learned words on this device?": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Borrar el historial del portapapeles, el texto fijado y las palabras aprendidas en este dispositivo?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer l'historique du presse-papiers, le texte épinglé et les mots appris sur cet appareil ?"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar o histórico da área de transferência, o texto fixado e as palavras aprendidas neste dispositivo?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwischenablageverlauf, angehefteten Text und gelernte Wörter auf diesem Gerät löschen?"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هل تريد مسح سجل الحافظة والنص المثبت والكلمات المتعلَّمة على هذا الجهاز؟"
+          }
+        }
+      }
+    },
+    "Clear clipboard, pinned text and learned words": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar portapapeles, texto fijado y palabras aprendidas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer le presse-papiers, le texte épinglé et les mots appris"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar área de transferência, texto fixado e palavras aprendidas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwischenablage, angehefteten Text und gelernte Wörter löschen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسح الحافظة والنص المثبت والكلمات المتعلَّمة"
+          }
+        }
+      }
+    },
+    "Clear learned words": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar palabras aprendidas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer les mots appris"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar palavras aprendidas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gelernte Wörter löschen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسح الكلمات المتعلَّمة"
+          }
+        }
+      }
+    },
+    "Clear personal data": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar datos personales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer les données personnelles"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar dados pessoais"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Persönliche Daten löschen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسح البيانات الشخصية"
+          }
+        }
+      }
+    },
+    "Clear recent clips": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar recortes recientes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer les éléments récents"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar itens recentes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Einträge löschen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسح المقتطفات الحديثة"
+          }
+        }
+      }
+    },
+    "Clipboard": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portapapeles"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presse-papiers"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Área de transferência"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwischenablage"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الحافظة"
+          }
+        }
+      }
+    },
+    "Clipboard history": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historial del portapapeles"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historique du presse-papiers"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Histórico da área de transferência"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwischenablageverlauf"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سجل الحافظة"
+          }
+        }
+      }
+    },
+    "Copied and pinned text will appear here.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aquí aparecerá el texto copiado y fijado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le texte copié et épinglé apparaîtra ici."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O texto copiado e fixado aparecerá aqui."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopierter und angehefteter Text erscheint hier."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سيظهر هنا النص المنسوخ والمثبت."
+          }
+        }
+      }
+    },
+    "Copy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieren"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نسخ"
+          }
+        }
+      }
+    },
+    "Copy connection for keyboard": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar conexión para el teclado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier la connexion pour le clavier"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar conexão para o teclado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung für die Tastatur kopieren"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نسخ الاتصال للوحة المفاتيح"
+          }
+        }
+      }
+    },
+    "Copy result": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar resultado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier le résultat"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar resultado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergebnis kopieren"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نسخ النتيجة"
+          }
+        }
+      }
+    },
+    "Current": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actual"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actuelle"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atual"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktuell"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الحالية"
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حذف"
+          }
+        }
+      }
+    },
+    "Disconnect": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desconectar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déconnecter"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desconectar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trennen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قطع الاتصال"
+          }
+        }
+      }
+    },
+    "Double-space period": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punto con doble espacio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Point avec double espace"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ponto com espaço duplo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Punkt per doppeltem Leerzeichen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نقطة بمسافتين"
+          }
+        }
+      }
+    },
+    "Download": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descargar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Télécharger"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baixar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laden"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنزيل"
+          }
+        }
+      }
+    },
+    "Download languages for on-device translation": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descarga idiomas para traducir en el dispositivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Téléchargez des langues pour traduire sur l'appareil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baixe idiomas para tradução no aparelho"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprachen für die Übersetzung auf dem Gerät laden"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نزّل لغات للترجمة على الجهاز"
+          }
+        }
+      }
+    },
+    "Full Access is optional": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El acceso total es opcional"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'accès complet est facultatif"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Acesso Total é opcional"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voller Zugriff ist optional"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الوصول الكامل اختياري"
+          }
+        }
+      }
+    },
+    "Grammar, tone and translation with your service": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gramática, tono y traducción"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grammaire, ton et traduction"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gramática, tom e tradução"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grammatik, Tonfall und Übersetzung"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "القواعد والنبرة والترجمة"
+          }
+        }
+      }
+    },
+    "Haptic feedback": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Respuesta háptica"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retour haptique"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resposta tátil"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haptisches Feedback"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاستجابة اللمسية"
+          }
+        }
+      }
+    },
+    "Height": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altura"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hauteur"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altura"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Höhe"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الارتفاع"
+          }
+        }
+      }
+    },
+    "Home": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicio"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accueil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Início"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الرئيسية"
+          }
+        }
+      }
+    },
+    "Independent software by WianTribe. Samsung's branding and assets are not used.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Software independiente de WianTribe. No se usan la marca ni los recursos de Samsung."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logiciel indépendant de WianTribe. La marque et les ressources de Samsung ne sont pas utilisées."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Software independente da WianTribe. A marca e os recursos da Samsung não são usados."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unabhängige Software von WianTribe. Marke und Inhalte von Samsung werden nicht verwendet."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برنامج مستقل من WianTribe. لا تُستخدم علامة Samsung التجارية أو مواردها."
+          }
+        }
+      }
+    },
+    "Keep recent clips": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conservar recortes recientes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conserver les éléments récents"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manter itens recentes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Einträge behalten"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الاحتفاظ بالمقتطفات الحديثة"
+          }
+        }
+      }
+    },
+    "Key outlines": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contorno de teclas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contour des touches"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contorno das teclas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tastenumrandung"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حدود المفاتيح"
+          }
+        }
+      }
+    },
+    "Key pop-up preview": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista ampliada de teclas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aperçu des touches"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prévia das teclas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tastenvorschau"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "معاينة المفاتيح المنبثقة"
+          }
+        }
+      }
+    },
+    "Key sounds": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonido de teclas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son des touches"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Som das teclas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tastentöne"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أصوات المفاتيح"
+          }
+        }
+      }
+    },
+    "Languages": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idiomas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langues"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idiomas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprachen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اللغات"
+          }
+        }
+      }
+    },
+    "Layout": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distribución"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disposition"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Layout"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Layout"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التخطيط"
+          }
+        }
+      }
+    },
+    "Layout preview": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista previa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aperçu"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pré-visualização"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschau"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "معاينة"
+          }
+        }
+      }
+    },
+    "Learn my words on this device": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprender mis palabras en este dispositivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apprendre mes mots sur cet appareil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aprender minhas palavras neste dispositivo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Meine Wörter auf diesem Gerät lernen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعلُّم كلماتي على هذا الجهاز"
+          }
+        }
+      }
+    },
+    "Let's get you typing": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empecemos a escribir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commençons à écrire"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vamos começar a digitar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los geht's mit dem Tippen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لنبدأ الكتابة"
+          }
+        }
+      }
+    },
+    "Make it yours": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hazlo tuyo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personnalisez-le"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deixe do seu jeito"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mach sie zu deiner"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اجعلها لك"
+          }
+        }
+      }
+    },
+    "Multilingual typing": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escritura multilingüe"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisie multilingue"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitação multilíngue"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mehrsprachiges Tippen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الكتابة بعدة لغات"
+          }
+        }
+      }
+    },
+    "Needs Allow Full Access. While the keyboard is open, it keeps text you copy so you can paste it anywhere. Pinned items never expire. Copies from password managers are skipped, and nothing leaves this iPhone.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requiere «Permitir acceso total». Mientras el teclado está abierto, guarda el texto que copias para pegarlo donde quieras. Los elementos fijados no caducan. Se omiten las copias de gestores de contraseñas y nada sale de este iPhone."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nécessite « Autoriser l'accès complet ». Tant que le clavier est ouvert, il garde le texte que vous copiez pour le coller n'importe où. Les éléments épinglés n'expirent jamais. Les copies des gestionnaires de mots de passe sont ignorées et rien ne quitte cet iPhone."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requer “Permitir Acesso Total”. Enquanto o teclado está aberto, ele guarda o texto que você copia para colar em qualquer lugar. Itens fixados nunca expiram. Cópias de gerenciadores de senhas são ignoradas e nada sai deste iPhone."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erfordert „Vollen Zugriff erlauben“. Solange die Tastatur geöffnet ist, merkt sie sich kopierten Text, damit du ihn überall einfügen kannst. Angeheftete Einträge laufen nie ab. Kopien aus Passwortmanagern werden übersprungen, und nichts verlässt dieses iPhone."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتطلب «السماح بالوصول الكامل». أثناء فتح لوحة المفاتيح، تحتفظ بالنص الذي تنسخه لتلصقه في أي مكان. لا تنتهي صلاحية العناصر المثبتة. يتم تخطي النسخ من مديري كلمات المرور، ولا يغادر شيء هذا الـ iPhone."
+          }
+        }
+      }
+    },
+    "Number row": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fila de números"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rangée de chiffres"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linha de números"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zahlenreihe"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صف الأرقام"
+          }
+        }
+      }
+    },
+    "Offline first": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin conexión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hors ligne d'abord"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline primeiro"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline zuerst"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يعمل دون اتصال"
+          }
+        }
+      }
+    },
+    "On-device translation needs iOS 18 or later.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traducción en el dispositivo requiere iOS 18 o posterior."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traduction sur l'appareil nécessite iOS 18 ou version ultérieure."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tradução no dispositivo requer iOS 18 ou posterior."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Übersetzung auf dem Gerät erfordert iOS 18 oder neuer."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتطلب الترجمة على الجهاز iOS 18 أو أحدث."
+          }
+        }
+      }
+    },
+    "Open Settings": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Ajustes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Réglages"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Ajustes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen öffnen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح الإعدادات"
+          }
+        }
+      }
+    },
+    "Open Settings → General → Keyboard → Keyboards → Add New Keyboard → WianTribe.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre Ajustes → General → Teclado → Teclados → Añadir teclado nuevo → WianTribe."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrez Réglages → Général → Clavier → Claviers → Ajouter un clavier → WianTribe."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abra Ajustes → Geral → Teclado → Teclados → Adicionar Novo Teclado → WianTribe."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne Einstellungen → Allgemein → Tastatur → Tastaturen → Tastatur hinzufügen → WianTribe."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح الإعدادات ← عام ← لوحة المفاتيح ← لوحات المفاتيح ← إضافة لوحة مفاتيح جديدة ← WianTribe."
+          }
+        }
+      }
+    },
+    "Open a message, hold 🌐, then choose WianTribe Keyboard.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre un mensaje, mantén pulsado 🌐 y elige WianTribe Keyboard."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrez un message, maintenez 🌐, puis choisissez WianTribe Keyboard."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abra uma mensagem, mantenha 🌐 pressionado e escolha WianTribe Keyboard."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne eine Nachricht, halte 🌐 gedrückt und wähle WianTribe Keyboard."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افتح رسالة، واضغط مطولًا على 🌐، ثم اختر WianTribe Keyboard."
+          }
+        }
+      }
+    },
+    "Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El aprendizaje opcional solo guarda recuentos de palabras sueltas. El historial del portapapeles está desactivado hasta que lo actives; guarda el texto copiado mientras el teclado está abierto, omite las copias de gestores de contraseñas y se queda en este iPhone. El texto fijado se conserva hasta que lo borres. Todo puede borrarse en Ajustes."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'apprentissage facultatif n'enregistre que des fréquences de mots isolés. L'historique du presse-papiers est désactivé jusqu'à ce que vous l'activiez ; il garde le texte copié pendant que le clavier est ouvert, ignore les gestionnaires de mots de passe et reste sur cet iPhone. Le texte épinglé est conservé jusqu'à sa suppression. Tout peut être effacé dans les réglages."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O aprendizado opcional guarda apenas contagens de palavras soltas. O histórico da área de transferência fica desativado até você ativá-lo; ele guarda o texto copiado enquanto o teclado está aberto, ignora gerenciadores de senhas e fica neste iPhone. O texto fixado é mantido até você apagá-lo. Tudo pode ser apagado nos ajustes."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das optionale Lernen speichert nur Häufigkeiten einzelner Wörter. Der Zwischenablageverlauf ist aus, bis du ihn einschaltest; er merkt sich Text, der bei geöffneter Tastatur kopiert wird, überspringt Passwortmanager und bleibt auf diesem iPhone. Angehefteter Text bleibt, bis du ihn löschst. Alles lässt sich in den Einstellungen löschen."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحفظ التعلُّم الاختياري عدد مرات استخدام الكلمات المفردة فقط. سجل الحافظة متوقف حتى تشغّله، ويحتفظ بالنص المنسوخ أثناء فتح لوحة المفاتيح، ويتخطى مديري كلمات المرور، ويبقى على هذا الـ iPhone. يبقى النص المثبت حتى تحذفه. يمكن حذف كل ذلك من الإعدادات."
+          }
+        }
+      }
+    },
+    "Optional service connection": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conexión de servicio opcional"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connexion facultative à un service"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conexão de serviço opcional"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionale Dienstverbindung"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اتصال خدمة اختياري"
+          }
+        }
+      }
+    },
+    "Password fields and phone-number pads use Apple's keyboard. Apps may disable third-party keyboards. Media is copied to the clipboard; you paste it yourself in an app that accepts that format.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los campos de contraseña y de número de teléfono usan el teclado de Apple. Las apps pueden desactivar teclados de terceros. El contenido multimedia se copia al portapapeles y lo pegas tú en una app que acepte ese formato."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les champs de mot de passe et de numéro de téléphone utilisent le clavier d'Apple. Les apps peuvent désactiver les claviers tiers. Les médias sont copiés dans le presse-papiers ; vous les collez vous-même dans une app qui accepte ce format."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Campos de senha e de telefone usam o teclado da Apple. Apps podem desativar teclados de terceiros. Mídias são copiadas para a área de transferência; você mesmo cola num app que aceite esse formato."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passwort- und Telefonnummernfelder nutzen die Apple-Tastatur. Apps können Tastaturen von Drittanbietern deaktivieren. Medien werden in die Zwischenablage kopiert; du fügst sie selbst in einer App ein, die das Format unterstützt."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تستخدم حقول كلمات المرور وأرقام الهاتف لوحة مفاتيح Apple. قد تعطّل التطبيقات لوحات مفاتيح الجهات الخارجية. تُنسخ الوسائط إلى الحافظة، ثم تلصقها بنفسك في تطبيق يقبل هذا التنسيق."
+          }
+        }
+      }
+    },
+    "Pin": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fijar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épingler"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anheften"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تثبيت"
+          }
+        }
+      }
+    },
+    "Pin a phrase": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fijar una frase"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épingler une phrase"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fixar uma frase"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satz anheften"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تثبيت عبارة"
+          }
+        }
+      }
+    },
+    "Practice": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practicar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essayer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Praticar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üben"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تدريب"
+          }
+        }
+      }
+    },
+    "Privacy": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confidentialité"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidade"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutz"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الخصوصية"
+          }
+        }
+      }
+    },
+    "Privacy & iOS limits": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidad y límites de iOS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confidentialité et limites d'iOS"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidade e limites do iOS"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutz & iOS-Grenzen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الخصوصية وقيود iOS"
+          }
+        }
+      }
+    },
+    "Privacy & limits": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidad y límites"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confidentialité et limites"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacidade e limites"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datenschutz & Grenzen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الخصوصية والقيود"
+          }
+        }
+      }
+    },
+    "Recent copies and pinned text": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copias recientes y texto fijado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copies récentes et texte épinglé"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cópias recentes e texto fixado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Kopien und angehefteter Text"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "النسخ الحديثة والنص المثبت"
+          }
+        }
+      }
+    },
+    "Recording runs only while this screen is active. Only languages Apple's speech recognition supports are listed. For Pidgin, choose English (Nigeria).": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La grabación solo funciona mientras esta pantalla está activa. Solo aparecen los idiomas que admite el reconocimiento de voz de Apple. Para pidgin, elige inglés (Nigeria)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'enregistrement ne fonctionne que tant que cet écran est actif. Seules les langues prises en charge par la reconnaissance vocale d'Apple sont listées. Pour le pidgin, choisissez anglais (Nigeria)."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A gravação só funciona enquanto esta tela está ativa. Só aparecem os idiomas aceitos pelo reconhecimento de fala da Apple. Para pidgin, escolha inglês (Nigéria)."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Aufnahme läuft nur, solange dieser Bildschirm aktiv ist. Es werden nur Sprachen angezeigt, die Apples Spracherkennung unterstützt. Für Pidgin wähle Englisch (Nigeria)."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يعمل التسجيل فقط أثناء نشاط هذه الشاشة. تظهر فقط اللغات التي يدعمها التعرّف على الكلام من Apple. للبيدجن، اختر الإنجليزية (نيجيريا)."
+          }
+        }
+      }
+    },
+    "Remove": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quitar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirer"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remover"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إزالة"
+          }
+        }
+      }
+    },
+    "Review result": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisar resultado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifier le résultat"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisar resultado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergebnis prüfen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مراجعة النتيجة"
+          }
+        }
+      }
+    },
+    "Runs on this iPhone when Apple supports the language. Otherwise only the text above is sent to your service. Review results before using them.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se ejecuta en este iPhone cuando Apple admite el idioma. Si no, solo se envía a tu servicio el texto de arriba. Revisa los resultados antes de usarlos."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "S'exécute sur cet iPhone quand Apple prend en charge la langue. Sinon, seul le texte ci-dessus est envoyé à votre service. Vérifiez les résultats avant de les utiliser."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Roda neste iPhone quando a Apple oferece suporte ao idioma. Caso contrário, só o texto acima é enviado ao seu serviço. Revise os resultados antes de usar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Läuft auf diesem iPhone, wenn Apple die Sprache unterstützt. Andernfalls wird nur der Text oben an deinen Dienst gesendet. Prüfe die Ergebnisse vor der Verwendung."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يعمل على هذا الـ iPhone عندما تدعم Apple اللغة. وإلا يُرسَل النص أعلاه فقط إلى خدمتك. راجع النتائج قبل استخدامها."
+          }
+        }
+      }
+    },
+    "Save connection": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar conexión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer la connexion"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salvar conexão"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbindung speichern"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حفظ الاتصال"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإعدادات"
+          }
+        }
+      }
+    },
+    "Speak, review and copy your transcript": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Habla, revisa y copia tu transcripción"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parlez, relisez et copiez votre transcription"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fale, revise e copie sua transcrição"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprechen, prüfen und Transkript kopieren"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحدّث وراجع وانسخ النص"
+          }
+        }
+      }
+    },
+    "Speech language": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma de voz"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langue parlée"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma da fala"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprechsprache"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لغة الكلام"
+          }
+        }
+      }
+    },
+    "Suggestions and swipe draw on all your languages that share an alphabet, so you can mix them in one message without switching.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las sugerencias y el deslizamiento usan todos tus idiomas con el mismo alfabeto, así puedes mezclarlos en un mensaje sin cambiar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les suggestions et le glissement s'appuient sur toutes vos langues qui partagent un alphabet : vous pouvez les mélanger dans un message sans changer."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugestões e deslizar usam todos os seus idiomas que compartilham o alfabeto, para você misturá-los numa mensagem sem trocar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschläge und Wischen nutzen alle deine Sprachen mit gleichem Alphabet, sodass du sie in einer Nachricht mischen kannst, ohne zu wechseln."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعتمد الاقتراحات والكتابة بالسحب على جميع لغاتك التي تشترك في الأبجدية نفسها، لتمزجها في رسالة واحدة دون تبديل."
+          }
+        }
+      }
+    },
+    "Suggestions, autocorrect and swipe use dictionaries for each of your languages. Password fields and some apps use Apple's keyboard.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las sugerencias, la autocorrección y el deslizamiento usan diccionarios para cada uno de tus idiomas. Los campos de contraseña y algunas apps usan el teclado de Apple."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les suggestions, la correction automatique et la saisie par glissement utilisent un dictionnaire pour chacune de vos langues. Les champs de mot de passe et certaines apps utilisent le clavier d'Apple."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugestões, correção automática e deslizar usam dicionários para cada um dos seus idiomas. Campos de senha e alguns apps usam o teclado da Apple."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorschläge, Autokorrektur und Wischen nutzen Wörterbücher für jede deiner Sprachen. Passwortfelder und manche Apps verwenden die Apple-Tastatur."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تستخدم الاقتراحات والتصحيح التلقائي والكتابة بالسحب قواميس لكل لغة من لغاتك. تستخدم حقول كلمات المرور وبعض التطبيقات لوحة مفاتيح Apple."
+          }
+        }
+      }
+    },
+    "Swipe to type": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desliza para escribir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glisser pour écrire"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deslize para digitar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wischen zum Tippen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اسحب للكتابة"
+          }
+        }
+      }
+    },
+    "Swipe typing": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escritura deslizando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisie par glissement"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitação deslizante"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wischtippen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الكتابة بالسحب"
+          }
+        }
+      }
+    },
+    "Switch with the globe": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambia con el globo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changez avec le globe"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Troque com o globo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit dem Globus wechseln"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بدّل بزر الكرة الأرضية"
+          }
+        }
+      }
+    },
+    "Tap the box, then hold the globe key to select WianTribe.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca el cuadro y mantén pulsada la tecla del globo para elegir WianTribe."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez la zone, puis maintenez la touche globe pour choisir WianTribe."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque na caixa e mantenha pressionada a tecla do globo para escolher o WianTribe."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe in das Feld und halte dann die Globustaste gedrückt, um WianTribe zu wählen."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اضغط على المربع، ثم اضغط مطولًا على مفتاح الكرة الأرضية لاختيار WianTribe."
+          }
+        }
+      }
+    },
+    "Tap ⚙︎ on the keyboard to choose your theme, layout and language.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toca ⚙︎ en el teclado para elegir tema, distribución e idioma."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez ⚙︎ sur le clavier pour choisir le thème, la disposition et la langue."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque em ⚙︎ no teclado para escolher tema, layout e idioma."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippe auf der Tastatur auf ⚙︎, um Design, Layout und Sprache zu wählen."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اضغط ⚙︎ على لوحة المفاتيح لاختيار السمة والتخطيط واللغة."
+          }
+        }
+      }
+    },
+    "The keyboard can't open a microphone or launch the voice editor. Open the app yourself to record, then copy the transcript. Apple's own dictation button may appear below the keyboard on supported devices.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El teclado no puede usar el micrófono ni abrir el editor de voz. Abre tú la app para grabar y luego copia la transcripción. En dispositivos compatibles puede aparecer el botón de dictado de Apple debajo del teclado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le clavier ne peut pas utiliser le micro ni ouvrir l'éditeur vocal. Ouvrez l'app vous-même pour enregistrer, puis copiez la transcription. Le bouton de dictée d'Apple peut apparaître sous le clavier sur les appareils compatibles."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O teclado não pode usar o microfone nem abrir o editor de voz. Abra o app para gravar e depois copie a transcrição. O botão de ditado da Apple pode aparecer abaixo do teclado em aparelhos compatíveis."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Tastatur kann weder das Mikrofon nutzen noch den Spracheditor öffnen. Öffne die App selbst zum Aufnehmen und kopiere dann das Transkript. Auf unterstützten Geräten kann Apples Diktiertaste unter der Tastatur erscheinen."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لا تستطيع لوحة المفاتيح استخدام الميكروفون أو فتح محرر الصوت. افتح التطبيق بنفسك للتسجيل، ثم انسخ النص. قد يظهر زر الإملاء من Apple أسفل لوحة المفاتيح على الأجهزة المدعومة."
+          }
+        }
+      }
+    },
+    "Theme": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tema"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thème"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tema"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Design"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "السمة"
+          }
+        }
+      }
+    },
+    "This build keeps the keyboard's clipboard separate from the app. Open 📋 on the keyboard to see what you've copied. Text you copy here will appear there the next time the keyboard opens.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versión guarda el portapapeles del teclado aparte de la app. Abre 📋 en el teclado para ver lo que copiaste. El texto que copies aquí aparecerá allí la próxima vez que se abra el teclado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette version garde le presse-papiers du clavier séparé de l'app. Ouvrez 📋 sur le clavier pour voir ce que vous avez copié. Le texte copié ici y apparaîtra à la prochaine ouverture du clavier."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versão mantém a área de transferência do teclado separada do app. Abra 📋 no teclado para ver o que você copiou. O texto copiado aqui aparecerá lá na próxima vez que o teclado abrir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Version hält die Zwischenablage der Tastatur getrennt von der App. Öffne 📋 auf der Tastatur, um Kopiertes zu sehen. Hier kopierter Text erscheint dort, wenn die Tastatur das nächste Mal geöffnet wird."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحتفظ هذه النسخة بحافظة لوحة المفاتيح منفصلة عن التطبيق. افتح 📋 على لوحة المفاتيح لترى ما نسخته. سيظهر النص الذي تنسخه هنا هناك في المرة التالية التي تُفتح فيها لوحة المفاتيح."
+          }
+        }
+      }
+    },
+    "Tools": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Herramientas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Outils"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ferramentas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werkzeuge"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الأدوات"
+          }
+        }
+      }
+    },
+    "Translation and rewriting run on this iPhone when Apple's on-device models support the language. Otherwise, writing tools and GIF search send only the text or search words you choose to the HTTPS service you connect. GIF previews load from GIPHY. The app does not include a developer-owned service.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traducción y la reescritura se hacen en este iPhone cuando los modelos de Apple admiten el idioma. Si no, las herramientas de escritura y la búsqueda de GIF envían solo el texto o las palabras que elijas al servicio HTTPS que conectes. Las vistas previas de GIF se cargan desde GIPHY. La app no incluye ningún servicio del desarrollador."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traduction et la réécriture se font sur cet iPhone quand les modèles d'Apple prennent en charge la langue. Sinon, les outils d'écriture et la recherche de GIF n'envoient que le texte ou les mots choisis au service HTTPS que vous connectez. Les aperçus de GIF proviennent de GIPHY. L'app n'inclut aucun service du développeur."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tradução e reescrita rodam neste iPhone quando os modelos da Apple oferecem suporte ao idioma. Caso contrário, as ferramentas de escrita e a busca de GIFs enviam só o texto ou as palavras que você escolher ao serviço HTTPS que você conectar. As prévias de GIF vêm do GIPHY. O app não inclui serviço do desenvolvedor."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersetzen und Umschreiben laufen auf diesem iPhone, wenn Apples Modelle die Sprache unterstützen. Andernfalls senden Schreibwerkzeuge und GIF-Suche nur den gewählten Text bzw. die Suchwörter an den HTTPS-Dienst, den du verbindest. GIF-Vorschauen werden von GIPHY geladen. Die App enthält keinen Dienst des Entwicklers."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتم الترجمة وإعادة الصياغة على هذا الـ iPhone عندما تدعم نماذج Apple اللغة. وإلا ترسل أدوات الكتابة والبحث عن GIF النص أو كلمات البحث التي تختارها فقط إلى خدمة HTTPS التي توصلها. تُحمَّل معاينات GIF من GIPHY. لا يتضمن التطبيق أي خدمة تابعة للمطوّر."
+          }
+        }
+      }
+    },
+    "Translation in the keyboard runs on your iPhone with Apple's Translate models. Download each language once here; after that it works offline.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traducción del teclado se hace en tu iPhone con los modelos de Traducir de Apple. Descarga cada idioma una vez aquí; después funciona sin conexión."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traduction du clavier se fait sur votre iPhone avec les modèles de Traduire d'Apple. Téléchargez chaque langue une fois ici ; ensuite, elle fonctionne hors ligne."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A tradução no teclado acontece no seu iPhone com os modelos do Traduzir da Apple. Baixe cada idioma uma vez aqui; depois funciona offline."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Übersetzung in der Tastatur läuft auf deinem iPhone mit Apples Übersetzen-Modellen. Lade jede Sprache hier einmal herunter; danach funktioniert sie offline."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتم الترجمة في لوحة المفاتيح على iPhone باستخدام نماذج الترجمة من Apple. نزّل كل لغة مرة واحدة هنا، وبعدها تعمل دون اتصال."
+          }
+        }
+      }
+    },
+    "Translation language": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma de traducción"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langue de traduction"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma da tradução"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersetzungssprache"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لغة الترجمة"
+          }
+        }
+      }
+    },
+    "Translation languages": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idiomas de traducción"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langues de traduction"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idiomas de tradução"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersetzungssprachen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لغات الترجمة"
+          }
+        }
+      }
+    },
+    "Try your new keyboard": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prueba tu nuevo teclado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Essayez votre nouveau clavier"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Experimente seu novo teclado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probiere deine neue Tastatur aus"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جرّب لوحة مفاتيحك الجديدة"
+          }
+        }
+      }
+    },
+    "Type something here…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe algo aquí…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écrivez quelque chose ici…"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digite algo aqui…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schreib hier etwas…"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اكتب شيئًا هنا…"
+          }
+        }
+      }
+    },
+    "Typing": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escritura"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisie"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitação"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الكتابة"
+          }
+        }
+      }
+    },
+    "Typing works offline without Full Access. Enable Allow Full Access only for clipboard history, media copying and optional online writing tools.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La escritura funciona sin conexión y sin acceso total. Activa «Permitir acceso total» solo para el historial del portapapeles, copiar contenido multimedia y las herramientas de escritura en línea opcionales."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La saisie fonctionne hors ligne sans accès complet. Activez « Autoriser l'accès complet » uniquement pour l'historique du presse-papiers, la copie de médias et les outils d'écriture en ligne facultatifs."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A digitação funciona offline sem Acesso Total. Ative “Permitir Acesso Total” apenas para o histórico da área de transferência, copiar mídia e as ferramentas de escrita online opcionais."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen funktioniert offline ohne vollen Zugriff. Aktiviere „Vollen Zugriff erlauben“ nur für den Zwischenablageverlauf, das Kopieren von Medien und optionale Online-Schreibwerkzeuge."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعمل الكتابة دون اتصال ودون وصول كامل. فعّل «السماح بالوصول الكامل» فقط لسجل الحافظة ونسخ الوسائط وأدوات الكتابة الاختيارية عبر الإنترنت."
+          }
+        }
+      }
+    },
+    "Typing, emoji, stickers and your clipboard work offline. Translation and rewriting run on your iPhone where Apple supports them; your own service covers other languages and GIF search.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La escritura, los emojis, los stickers y el portapapeles funcionan sin conexión. La traducción y la reescritura se hacen en tu iPhone cuando Apple las admite; tu propio servicio cubre otros idiomas y la búsqueda de GIF."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La saisie, les emoji, les autocollants et le presse-papiers fonctionnent hors ligne. La traduction et la réécriture se font sur votre iPhone quand Apple les prend en charge ; votre propre service couvre les autres langues et la recherche de GIF."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitação, emojis, figurinhas e a área de transferência funcionam offline. Tradução e reescrita acontecem no seu iPhone quando a Apple oferece suporte; seu próprio serviço cobre outros idiomas e a busca de GIFs."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen, Emojis, Sticker und deine Zwischenablage funktionieren offline. Übersetzen und Umschreiben laufen auf deinem iPhone, wo Apple sie unterstützt; dein eigener Dienst deckt andere Sprachen und die GIF-Suche ab."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعمل الكتابة والرموز التعبيرية والملصقات والحافظة دون اتصال. تتم الترجمة وإعادة الصياغة على iPhone حيثما تدعمها Apple، وتغطي خدمتك الخاصة اللغات الأخرى والبحث عن صور GIF."
+          }
+        }
+      }
+    },
+    "Use as input": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar como entrada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser comme texte"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar como entrada"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Eingabe verwenden"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استخدامها كنص"
+          }
+        }
+      }
+    },
+    "Use the keyboard without Full Access for normal typing. Clipboard history, GIFs, copying stickers, haptics, shared-container writes and your online service need Full Access. Allowing it does not start background text uploads.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa el teclado sin acceso total para escribir con normalidad. El historial del portapapeles, los GIF, copiar stickers, la respuesta háptica, el almacenamiento compartido y tu servicio en línea necesitan acceso total. Permitirlo no inicia envíos de texto en segundo plano."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisez le clavier sans accès complet pour la saisie normale. L'historique du presse-papiers, les GIF, la copie d'autocollants, le retour haptique, le stockage partagé et votre service en ligne nécessitent l'accès complet. L'autoriser ne déclenche aucun envoi de texte en arrière-plan."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use o teclado sem Acesso Total para digitar normalmente. Histórico da área de transferência, GIFs, copiar figurinhas, resposta tátil, armazenamento compartilhado e seu serviço online precisam do Acesso Total. Permitir não inicia envios de texto em segundo plano."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für normales Tippen brauchst du keinen vollen Zugriff. Zwischenablageverlauf, GIFs, Sticker kopieren, Haptik, gemeinsamer Speicher und dein Online-Dienst benötigen vollen Zugriff. Das Erlauben startet keine Textübertragungen im Hintergrund."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استخدم لوحة المفاتيح دون وصول كامل للكتابة العادية. يحتاج سجل الحافظة وصور GIF ونسخ الملصقات والاستجابة اللمسية والتخزين المشترك وخدمتك عبر الإنترنت إلى الوصول الكامل. السماح به لا يبدأ رفع أي نص في الخلفية."
+          }
+        }
+      }
+    },
+    "Voice editor": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editor de voz"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Éditeur vocal"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editor de voz"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spracheditor"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "محرر الصوت"
+          }
+        }
+      }
+    },
+    "Voice recording is available in this app, with microphone and speech permission. Apple's speech recognition may process audio on Apple's servers when on-device recognition is unavailable.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La grabación de voz está disponible en esta app, con permiso de micrófono y de voz. El reconocimiento de voz de Apple puede procesar el audio en sus servidores cuando no está disponible en el dispositivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'enregistrement vocal est disponible dans cette app, avec l'autorisation du micro et de la reconnaissance vocale. La reconnaissance vocale d'Apple peut traiter l'audio sur ses serveurs si elle n'est pas disponible sur l'appareil."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A gravação de voz está disponível neste app, com permissão de microfone e fala. O reconhecimento de fala da Apple pode processar o áudio nos servidores da Apple quando não estiver disponível no aparelho."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprachaufnahmen sind in dieser App mit Mikrofon- und Spracherkennungsfreigabe möglich. Apples Spracherkennung kann Audio auf Apple-Servern verarbeiten, wenn sie auf dem Gerät nicht verfügbar ist."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تسجيل الصوت متاح في هذا التطبيق بإذن الميكروفون والتعرّف على الكلام. قد يعالج التعرّف على الكلام من Apple الصوت على خوادم Apple عندما لا يتوفر على الجهاز."
+          }
+        }
+      }
+    },
+    "When data can leave your device": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuándo pueden salir datos de tu dispositivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quand des données peuvent quitter l'appareil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quando dados podem sair do aparelho"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wann Daten dein Gerät verlassen können"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "متى يمكن أن تغادر البيانات جهازك"
+          }
+        }
+      }
+    },
+    "Word learning is off by default. It saves word counts, not sentences. Remove personal data inside the keyboard too if your build uses separate storage.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El aprendizaje de palabras está desactivado por defecto. Guarda recuentos de palabras, no frases. Si tu versión usa almacenamiento separado, borra también los datos personales dentro del teclado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'apprentissage des mots est désactivé par défaut. Il enregistre des fréquences de mots, pas des phrases. Si votre version utilise un stockage séparé, effacez aussi les données personnelles dans le clavier."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O aprendizado de palavras vem desativado. Ele salva contagens de palavras, não frases. Se sua versão usa armazenamento separado, apague também os dados pessoais dentro do teclado."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Lernen von Wörtern ist standardmäßig aus. Es speichert Worthäufigkeiten, keine Sätze. Wenn deine Version getrennten Speicher nutzt, lösche persönliche Daten auch in der Tastatur."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعلُّم الكلمات متوقف افتراضيًا. يحفظ عدد مرات استخدام الكلمات وليس الجمل. إذا كانت نسختك تستخدم تخزينًا منفصلًا، فامسح البيانات الشخصية داخل لوحة المفاتيح أيضًا."
+          }
+        }
+      }
+    },
+    "Word lists from wordfreq by Robyn Speer (CC BY-SA 4.0). Yorùbá and Naija Pidgin lists by WianTribe. Up to 6 languages.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listas de palabras de wordfreq, de Robyn Speer (CC BY-SA 4.0). Listas de yoruba y pidgin nigeriano de WianTribe. Hasta 6 idiomas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listes de mots issues de wordfreq, de Robyn Speer (CC BY-SA 4.0). Listes yoruba et pidgin nigérian par WianTribe. Jusqu'à 6 langues."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listas de palavras do wordfreq, de Robyn Speer (CC BY-SA 4.0). Listas de iorubá e pidgin nigeriano da WianTribe. Até 6 idiomas."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wortlisten aus wordfreq von Robyn Speer (CC BY-SA 4.0). Listen für Yoruba und nigerianisches Pidgin von WianTribe. Bis zu 6 Sprachen."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قوائم الكلمات من wordfreq لروبن سبير (CC BY-SA 4.0). قوائم اليوروبا والبيدجن النيجيري من WianTribe. حتى 6 لغات."
+          }
+        }
+      }
+    },
+    "Word suggestions": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugerencias de palabras"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggestions de mots"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugestões de palavras"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wortvorschläge"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اقتراحات الكلمات"
+          }
+        }
+      }
+    },
+    "Working…": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Procesando…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En cours…"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Processando…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird bearbeitet…"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جارٍ العمل…"
+          }
+        }
+      }
+    },
+    "Write or paste text to keep": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe o pega el texto que quieras guardar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écrivez ou collez le texte à garder"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreva ou cole o texto a guardar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text zum Behalten schreiben oder einfügen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اكتب أو الصق نصًا للاحتفاظ به"
+          }
+        }
+      }
+    },
+    "Writing assistant": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asistente de escritura"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Assistant d'écriture"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Assistente de escrita"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schreibassistent"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مساعد الكتابة"
+          }
+        }
+      }
+    },
+    "Your languages": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus idiomas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos langues"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seus idiomas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Sprachen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لغاتك"
+          }
+        }
+      }
+    },
+    "Your text": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu texto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre texte"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu texto"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Text"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نصك"
+          }
+        }
+      }
+    },
+    "Your toolkit": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus herramientas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos outils"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas ferramentas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Werkzeuge"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أدواتك"
+          }
+        }
+      }
+    },
+    "Your typing stays local": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo que escribes se queda en tu iPhone"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre saisie reste sur l'appareil"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua digitação fica no aparelho"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Tippen bleibt lokal"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كتابتك تبقى على جهازك"
+          }
+        }
+      }
+    },
+    "Your words.\nYour way.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus palabras.\nA tu manera."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vos mots.\nÀ votre façon."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suas palavras.\nDo seu jeito."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Worte.\nDein Stil."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كلماتك.\nبطريقتك."
+          }
+        }
+      }
+    },
+    "iOS limits": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Límites de iOS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limites d'iOS"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limites do iOS"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS-Grenzen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قيود iOS"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
