@@ -30,6 +30,12 @@
 			"path" = "Sources/Core/ClipboardHistory.swift";
 			"sourceTree" = "<group>";
 		};
+		988733DE7CCB2D18F8FDF783 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Core/EmojiCatalog.swift";
+			"sourceTree" = "<group>";
+		};
 		8A43DB04DFE3A792F78F0228 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -66,16 +72,52 @@
 			"path" = "Sources/Keyboard/KeyButton.swift";
 			"sourceTree" = "<group>";
 		};
+		7D80314045ABE958B579369D = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Keyboard/KeyboardViewController+Editing.swift";
+			"sourceTree" = "<group>";
+		};
+		2774DE97D320F0D6D0FEC4CF = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Keyboard/KeyboardViewController+Handwriting.swift";
+			"sourceTree" = "<group>";
+		};
+		F8D1A26AD1514724D0424B1E = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Keyboard/KeyboardViewController+Media.swift";
+			"sourceTree" = "<group>";
+		};
 		4BB3554BB30FADCFB923D0C5 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "Sources/Keyboard/KeyboardViewController.swift";
 			"sourceTree" = "<group>";
 		};
+		C57AEA25FACDC276759ED7B8 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Keyboard/MediaGridView.swift";
+			"sourceTree" = "<group>";
+		};
+		B63EFDE034AD1ECC8260A451 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Shared/GifService.swift";
+			"sourceTree" = "<group>";
+		};
 		339D57E43FB42F7A2592F03C = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "Sources/Shared/KeyboardStore.swift";
+			"sourceTree" = "<group>";
+		};
+		6C1A298FC390DC53481CB333 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Shared/OnDeviceWriting.swift";
 			"sourceTree" = "<group>";
 		};
 		C656D266B95EE7EFF4313FE8 = {
@@ -246,6 +288,108 @@
 			"path" = "Sources/Core/Resources/dict-yo.txt";
 			"sourceTree" = "<group>";
 		};
+		9360430111406A622FB8AE4E = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.json";
+			"path" = "Sources/Core/Resources/emoji.json";
+			"sourceTree" = "<group>";
+		};
+		70508A0ADE332FEA69B26857 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-da.txt";
+			"sourceTree" = "<group>";
+		};
+		163E399D3B67DE422C0AA052 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-de.txt";
+			"sourceTree" = "<group>";
+		};
+		0EA15CB873C6760E65350E8F = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-en.txt";
+			"sourceTree" = "<group>";
+		};
+		8977CD224CF6E5F26AE81B11 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-es.txt";
+			"sourceTree" = "<group>";
+		};
+		1803A6EE172F233A75623223 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-fi.txt";
+			"sourceTree" = "<group>";
+		};
+		4C6240B231CC322974FB1ADE = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-fr.txt";
+			"sourceTree" = "<group>";
+		};
+		5FE73728D09659EFD6D2678F = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-hu.txt";
+			"sourceTree" = "<group>";
+		};
+		A5050937AD350BFCF32902F7 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-it.txt";
+			"sourceTree" = "<group>";
+		};
+		3C76D8AA42B20281EF500F37 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-ms.txt";
+			"sourceTree" = "<group>";
+		};
+		6DB2446FCA3593B81335FB7A = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-nb.txt";
+			"sourceTree" = "<group>";
+		};
+		FDDD42019C9412E6F920C85A = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-nl.txt";
+			"sourceTree" = "<group>";
+		};
+		BB8197C3BD0177692D69C493 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-pl.txt";
+			"sourceTree" = "<group>";
+		};
+		DB097459E81CDD17FE565207 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-pt.txt";
+			"sourceTree" = "<group>";
+		};
+		87B8D757E96491B3AA5C2530 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-ru.txt";
+			"sourceTree" = "<group>";
+		};
+		31646311E9CB953EF8177019 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-sv.txt";
+			"sourceTree" = "<group>";
+		};
+		3430EB1493E6672DA92AE829 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Sources/Core/Resources/emojikw-uk.txt";
+			"sourceTree" = "<group>";
+		};
 		7B7F4281E3FAF5E7736A1DE4 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "image.gif";
@@ -262,6 +406,102 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "image.gif";
 			"path" = "Sources/Keyboard/Media/love.gif";
+			"sourceTree" = "<group>";
+		};
+		DEDAFEA430F5CADEABAFF5E0 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-amen.png";
+			"sourceTree" = "<group>";
+		};
+		2DFD7ADE99F6B914C2ECB5DD = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-congrats.png";
+			"sourceTree" = "<group>";
+		};
+		C227D6E9291C764F46EECEC7 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-good-morning.png";
+			"sourceTree" = "<group>";
+		};
+		1B2D0F86E03EFE8EC1F80C0E = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-good-night.png";
+			"sourceTree" = "<group>";
+		};
+		35ABF80771322A32DF178C70 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-happy-birthday.png";
+			"sourceTree" = "<group>";
+		};
+		3D0EF2D325301D8683CC6937 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-hello-there.png";
+			"sourceTree" = "<group>";
+		};
+		6CDCDB55C23E9CBC8935EC1B = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-lol.png";
+			"sourceTree" = "<group>";
+		};
+		75935FC735A1E786874003D8 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-love-you.png";
+			"sourceTree" = "<group>";
+		};
+		443FC2D0C3437F945BD63108 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-miss-you.png";
+			"sourceTree" = "<group>";
+		};
+		BA8ABA0A70BD6D9926925B97 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-no-way.png";
+			"sourceTree" = "<group>";
+		};
+		63F7E2B68A7C0A5A03CCB2D5 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-on-my-way.png";
+			"sourceTree" = "<group>";
+		};
+		8265E91E7DF1B1FA721CC41D = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-see-you-soon.png";
+			"sourceTree" = "<group>";
+		};
+		4EB536EC41DBB95AAC05817D = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-sorry.png";
+			"sourceTree" = "<group>";
+		};
+		71B074A6151D1C84D36F3304 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-thank-you.png";
+			"sourceTree" = "<group>";
+		};
+		1757E6B59279BE8D17D3ACD5 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-well-done.png";
+			"sourceTree" = "<group>";
+		};
+		E02D304E3CBC54D7329F0108 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "image.png";
+			"path" = "Sources/Keyboard/Media/sticker-yes.png";
 			"sourceTree" = "<group>";
 		};
 		EBEF19246B88FB25CE86F2E5 = {
@@ -286,6 +526,18 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "text.plist.xml";
 			"path" = "Configuration/Keyboard-Info.plist";
+			"sourceTree" = "<group>";
+		};
+		01F4E10BA1910D137C16C823 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Configuration/Stickers-Info.plist";
+			"sourceTree" = "<group>";
+		};
+		07C1832D3EC03FCD6200D73F = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "folder.assetcatalog";
+			"path" = "Sources/Stickers/Stickers.xcassets";
 			"sourceTree" = "<group>";
 		};
 		04C7981C5E70EE187BBB08AF = {
@@ -314,11 +566,19 @@
 			"path" = "WianTribeKeyboardExtension.appex";
 			"sourceTree" = "BUILT_PRODUCTS_DIR";
 		};
+		ABAC8EFEEA6A0ACB5D142940 = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.app-extension";
+			"includeInIndex" = 0;
+			"path" = "WianTribeStickers.appex";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
 		FBDC4F23F93125BBEEAE800C = {
 			"isa" = "PBXGroup";
 			"children" = (
 				36992FD9EFCC35941EC8F506,
 				0BD0388F3B1FCFE4A7ADD82D,
+				ABAC8EFEEA6A0ACB5D142940,
 			);
 			"name" = "Products";
 			"sourceTree" = "<group>";
@@ -330,14 +590,21 @@
 				A4CC490762EB88AA3BE0D206,
 				4123DDC2480CFE0C53D97978,
 				82B96D714C539267D27AD641,
+				988733DE7CCB2D18F8FDF783,
 				8A43DB04DFE3A792F78F0228,
 				D8FEE4E7F4D497F461462B13,
 				8BA631D82288A7906BA35E6E,
 				5A171F31A25A950F51725104,
 				0AE84801629539539873D0C2,
 				12BA73BCB149491DA0F400AC,
+				7D80314045ABE958B579369D,
+				2774DE97D320F0D6D0FEC4CF,
+				F8D1A26AD1514724D0424B1E,
 				4BB3554BB30FADCFB923D0C5,
+				C57AEA25FACDC276759ED7B8,
+				B63EFDE034AD1ECC8260A451,
 				339D57E43FB42F7A2592F03C,
+				6C1A298FC390DC53481CB333,
 				C656D266B95EE7EFF4313FE8,
 				2F8BFAFA241578BA57F10027,
 				1DDD10CB5796A04D01F7D50E,
@@ -366,13 +633,48 @@
 				833994ED6D69A5B998574B0F,
 				2D9B7931930B913D3D603541,
 				65CCE96A254AA8EFCA377A97,
+				9360430111406A622FB8AE4E,
+				70508A0ADE332FEA69B26857,
+				163E399D3B67DE422C0AA052,
+				0EA15CB873C6760E65350E8F,
+				8977CD224CF6E5F26AE81B11,
+				1803A6EE172F233A75623223,
+				4C6240B231CC322974FB1ADE,
+				5FE73728D09659EFD6D2678F,
+				A5050937AD350BFCF32902F7,
+				3C76D8AA42B20281EF500F37,
+				6DB2446FCA3593B81335FB7A,
+				FDDD42019C9412E6F920C85A,
+				BB8197C3BD0177692D69C493,
+				DB097459E81CDD17FE565207,
+				87B8D757E96491B3AA5C2530,
+				31646311E9CB953EF8177019,
+				3430EB1493E6672DA92AE829,
 				7B7F4281E3FAF5E7736A1DE4,
 				83AED4DE1961DFDA90BF2452,
 				F37614F70B4E86396548C820,
+				DEDAFEA430F5CADEABAFF5E0,
+				2DFD7ADE99F6B914C2ECB5DD,
+				C227D6E9291C764F46EECEC7,
+				1B2D0F86E03EFE8EC1F80C0E,
+				35ABF80771322A32DF178C70,
+				3D0EF2D325301D8683CC6937,
+				6CDCDB55C23E9CBC8935EC1B,
+				75935FC735A1E786874003D8,
+				443FC2D0C3437F945BD63108,
+				BA8ABA0A70BD6D9926925B97,
+				63F7E2B68A7C0A5A03CCB2D5,
+				8265E91E7DF1B1FA721CC41D,
+				4EB536EC41DBB95AAC05817D,
+				71B074A6151D1C84D36F3304,
+				1757E6B59279BE8D17D3ACD5,
+				E02D304E3CBC54D7329F0108,
 				EBEF19246B88FB25CE86F2E5,
 				C1EBADC2AFDF095C26A5D241,
 				CCFA6F90FD0B720597ECC2FA,
 				F5E19338E9E7A9B69CDCE6CC,
+				01F4E10BA1910D137C16C823,
+				07C1832D3EC03FCD6200D73F,
 				04C7981C5E70EE187BBB08AF,
 				A896A87432FDB683A804D1DF,
 				FBDC4F23F93125BBEEAE800C,
@@ -395,6 +697,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = 82B96D714C539267D27AD641;
 		};
+		D7880D56398AE62B3E32EAE1 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 988733DE7CCB2D18F8FDF783;
+		};
 		1B28249939ECD69D0DBE6140 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 8A43DB04DFE3A792F78F0228;
@@ -415,9 +721,17 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = 0AE84801629539539873D0C2;
 		};
+		B60AD32820418343BFB850BD = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = B63EFDE034AD1ECC8260A451;
+		};
 		1D8501F4A2FD39A7FBD45452 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 339D57E43FB42F7A2592F03C;
+		};
+		97F325668AA6C75D1ADB262D = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 6C1A298FC390DC53481CB333;
 		};
 		E104B1905BB5AA636105B854 = {
 			"isa" = "PBXBuildFile";
@@ -431,12 +745,15 @@
 				989B52009A94CD934FB5EC83,
 				EB3E8CA0874297CD57F513B4,
 				CB12A513BBB5C8888A9A7F0B,
+				D7880D56398AE62B3E32EAE1,
 				1B28249939ECD69D0DBE6140,
 				BE5DB71396A3BC5B8BE8EAAA,
 				0497DDD36B95DDCA2BCEDAD4,
 				C10A7EBE8D978A207EAD12A3,
 				13A0240D5AC9E3157A97A389,
+				B60AD32820418343BFB850BD,
 				1D8501F4A2FD39A7FBD45452,
+				97F325668AA6C75D1ADB262D,
 				E104B1905BB5AA636105B854,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -444,6 +761,10 @@
 		DE79B93CF5D5B70196F6DD40 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 82B96D714C539267D27AD641;
+		};
+		C41ABCDC4E315ED2E887FB3A = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 988733DE7CCB2D18F8FDF783;
 		};
 		34BF954803BF4A183B917E33 = {
 			"isa" = "PBXBuildFile";
@@ -469,13 +790,37 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = 12BA73BCB149491DA0F400AC;
 		};
+		19A1DD505CB4113BD4F7AF55 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 7D80314045ABE958B579369D;
+		};
+		2CDF958D9C52104C7D7A5288 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 2774DE97D320F0D6D0FEC4CF;
+		};
+		B94719946FB18F58BEA038C0 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = F8D1A26AD1514724D0424B1E;
+		};
 		19917022ADD92703C49017A9 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 4BB3554BB30FADCFB923D0C5;
 		};
+		2F39957C15CC5646CA348845 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = C57AEA25FACDC276759ED7B8;
+		};
+		B6E271107EF1ECDD9EE6EA59 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = B63EFDE034AD1ECC8260A451;
+		};
 		FC950075668C774EF863DECF = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 339D57E43FB42F7A2592F03C;
+		};
+		17A176D87DCD8D8086A50B75 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 6C1A298FC390DC53481CB333;
 		};
 		3C20F72A1FA9E176C323B449 = {
 			"isa" = "PBXBuildFile";
@@ -486,14 +831,21 @@
 			"buildActionMask" = 2147483647;
 			"files" = (
 				DE79B93CF5D5B70196F6DD40,
+				C41ABCDC4E315ED2E887FB3A,
 				34BF954803BF4A183B917E33,
 				E72E0C41BF106D2643097C30,
 				5BA3864544AC3F9C26EB70DF,
 				66C9C1605DCA41248350B7E7,
 				769F7A5B6DD39D5453D59723,
 				4995F39AAD89E06398B37D7D,
+				19A1DD505CB4113BD4F7AF55,
+				2CDF958D9C52104C7D7A5288,
+				B94719946FB18F58BEA038C0,
 				19917022ADD92703C49017A9,
+				2F39957C15CC5646CA348845,
+				B6E271107EF1ECDD9EE6EA59,
 				FC950075668C774EF863DECF,
+				17A176D87DCD8D8086A50B75,
 				3C20F72A1FA9E176C323B449,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -628,6 +980,74 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = 65CCE96A254AA8EFCA377A97;
 		};
+		28ED988FA3D36154CFD64201 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 9360430111406A622FB8AE4E;
+		};
+		FF781080A5F86E1A5547D004 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 70508A0ADE332FEA69B26857;
+		};
+		40098EC471A88EBCBB64FA07 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 163E399D3B67DE422C0AA052;
+		};
+		81985E1693A0AFB2E2E1692E = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 0EA15CB873C6760E65350E8F;
+		};
+		F9005A395D6786E2EDA0FE5B = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 8977CD224CF6E5F26AE81B11;
+		};
+		7A74861AC0269309A535F046 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 1803A6EE172F233A75623223;
+		};
+		AE7A0AE82F3B94E2A8A06F0A = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 4C6240B231CC322974FB1ADE;
+		};
+		D03F5F58C122AC6B6CD9A84F = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 5FE73728D09659EFD6D2678F;
+		};
+		D99C450B31B702D898FA6735 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = A5050937AD350BFCF32902F7;
+		};
+		EADACE832388F61BC8092E42 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 3C76D8AA42B20281EF500F37;
+		};
+		E63DC9BBCAE6928F26E5CAF0 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 6DB2446FCA3593B81335FB7A;
+		};
+		48E278D7E87093FCCD9AF64B = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = FDDD42019C9412E6F920C85A;
+		};
+		AEFD1DAD0F6BEE99E9351281 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = BB8197C3BD0177692D69C493;
+		};
+		34524500502F5D4BD75A0B99 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = DB097459E81CDD17FE565207;
+		};
+		74ADD040497165A17DD19A3F = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 87B8D757E96491B3AA5C2530;
+		};
+		EE711CF81992B10F803490C7 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 31646311E9CB953EF8177019;
+		};
+		47C0C336A81018FF59D68851 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 3430EB1493E6672DA92AE829;
+		};
 		0421EB2CF697B41E59963544 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 7B7F4281E3FAF5E7736A1DE4;
@@ -639,6 +1059,70 @@
 		39C008997C149785F8C6CFB1 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = F37614F70B4E86396548C820;
+		};
+		A4403219AEE72BAA2A7220AC = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = DEDAFEA430F5CADEABAFF5E0;
+		};
+		83FFACCDA8FC64B296C77872 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 2DFD7ADE99F6B914C2ECB5DD;
+		};
+		A0AD6A5060EE47FB0DC07A90 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = C227D6E9291C764F46EECEC7;
+		};
+		890967EE3D2AD41A72BA5D1C = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 1B2D0F86E03EFE8EC1F80C0E;
+		};
+		075CD83178ECDB3C44F3902D = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 35ABF80771322A32DF178C70;
+		};
+		5ECAFB7DFDEFBEB66AD16386 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 3D0EF2D325301D8683CC6937;
+		};
+		FF076F8ABEF7411F4632DB70 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 6CDCDB55C23E9CBC8935EC1B;
+		};
+		92B61F8F5CB0CFBC74F4AFDB = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 75935FC735A1E786874003D8;
+		};
+		8A1438548A183B6405B05D95 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 443FC2D0C3437F945BD63108;
+		};
+		0B60FDDFD3DF28E03E4ECCE4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = BA8ABA0A70BD6D9926925B97;
+		};
+		3E3FA555226859FDD567BAD4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 63F7E2B68A7C0A5A03CCB2D5;
+		};
+		5009549C7137DAAA26D4F2E5 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 8265E91E7DF1B1FA721CC41D;
+		};
+		740F0DAA21F4C3486192692E = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 4EB536EC41DBB95AAC05817D;
+		};
+		B4F2E6BF08BB3BE43935B419 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 71B074A6151D1C84D36F3304;
+		};
+		3B9CF7C2DA18DAA7B0B52F03 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 1757E6B59279BE8D17D3ACD5;
+		};
+		27861DEF4C06CDBAC51159D6 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = E02D304E3CBC54D7329F0108;
 		};
 		9A2A762E99055EDEE2AD56AF = {
 			"isa" = "PBXBuildFile";
@@ -675,9 +1159,42 @@
 				CAA5644977DBE9060865783D,
 				B544906F70593749E3A0A7EC,
 				B08723626A65A6D6B73D6EA0,
+				28ED988FA3D36154CFD64201,
+				FF781080A5F86E1A5547D004,
+				40098EC471A88EBCBB64FA07,
+				81985E1693A0AFB2E2E1692E,
+				F9005A395D6786E2EDA0FE5B,
+				7A74861AC0269309A535F046,
+				AE7A0AE82F3B94E2A8A06F0A,
+				D03F5F58C122AC6B6CD9A84F,
+				D99C450B31B702D898FA6735,
+				EADACE832388F61BC8092E42,
+				E63DC9BBCAE6928F26E5CAF0,
+				48E278D7E87093FCCD9AF64B,
+				AEFD1DAD0F6BEE99E9351281,
+				34524500502F5D4BD75A0B99,
+				74ADD040497165A17DD19A3F,
+				EE711CF81992B10F803490C7,
+				47C0C336A81018FF59D68851,
 				0421EB2CF697B41E59963544,
 				1AC6570D2596CCEAE90D4C29,
 				39C008997C149785F8C6CFB1,
+				A4403219AEE72BAA2A7220AC,
+				83FFACCDA8FC64B296C77872,
+				A0AD6A5060EE47FB0DC07A90,
+				890967EE3D2AD41A72BA5D1C,
+				075CD83178ECDB3C44F3902D,
+				5ECAFB7DFDEFBEB66AD16386,
+				FF076F8ABEF7411F4632DB70,
+				92B61F8F5CB0CFBC74F4AFDB,
+				8A1438548A183B6405B05D95,
+				0B60FDDFD3DF28E03E4ECCE4,
+				3E3FA555226859FDD567BAD4,
+				5009549C7137DAAA26D4F2E5,
+				740F0DAA21F4C3486192692E,
+				B4F2E6BF08BB3BE43935B419,
+				3B9CF7C2DA18DAA7B0B52F03,
+				27861DEF4C06CDBAC51159D6,
 				9A2A762E99055EDEE2AD56AF,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -698,9 +1215,31 @@
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
+		6974A27EB7F2C7F5F70AAC0D = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 07C1832D3EC03FCD6200D73F;
+		};
+		9AD045E385C0ECC79BFC7CCF = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				6974A27EB7F2C7F5F70AAC0D,
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
 		0993E4A2BC1A5841BF40A8E8 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 0BD0388F3B1FCFE4A7ADD82D;
+			"settings" = {
+				"ATTRIBUTES" = (
+					"CodeSignOnCopy",
+					"RemoveHeadersOnCopy",
+				);
+			};
+		};
+		6E56D291C27C80D044F1357B = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = ABAC8EFEEA6A0ACB5D142940;
 			"settings" = {
 				"ATTRIBUTES" = (
 					"CodeSignOnCopy",
@@ -715,6 +1254,7 @@
 			"dstSubfolderSpec" = 13;
 			"files" = (
 				0993E4A2BC1A5841BF40A8E8,
+				6E56D291C27C80D044F1357B,
 			);
 			"name" = "Embed App Extensions";
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -730,6 +1270,18 @@
 			"isa" = "PBXTargetDependency";
 			"target" = 6525FA7ED291309A5276BE13;
 			"targetProxy" = F5A429194A00232ACC3298B6;
+		};
+		71131EBF269DFD3FE47D04DC = {
+			"isa" = "PBXContainerItemProxy";
+			"containerPortal" = 98F54143AB4E86B28C3AFEE0;
+			"proxyType" = 1;
+			"remoteGlobalIDString" = BDFF5F97F1E34E085F97FAD0;
+			"remoteInfo" = "WianTribeStickers";
+		};
+		C9BB08DF080B6DA80F51F963 = {
+			"isa" = "PBXTargetDependency";
+			"target" = BDFF5F97F1E34E085F97FAD0;
+			"targetProxy" = 71131EBF269DFD3FE47D04DC;
 		};
 		ED8772ADEC3A6C25161BC957 = {
 			"isa" = "XCBuildConfiguration";
@@ -904,6 +1456,69 @@
 			"defaultConfigurationIsVisible" = 0;
 			"defaultConfigurationName" = "Release";
 		};
+		FADA32735D30A864DB4BC0FE = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"CODE_SIGN_STYLE" = "Automatic";
+				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "0.1.0";
+				"TARGETED_DEVICE_FAMILY" = "1,2";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"SUPPORTS_MACCATALYST" = "NO";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"PRODUCT_NAME" = "WianTribeStickers";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.wiantribe.keyboard.stickers";
+				"INFOPLIST_FILE" = "Configuration/Stickers-Info.plist";
+				"ASSETCATALOG_COMPILER_APPICON_NAME" = "iMessage App Icon";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"SWIFT_COMPILATION_MODE" = "singlefile";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG";
+				"ENABLE_TESTABILITY" = "YES";
+			};
+			"name" = "Debug";
+		};
+		650C6DD852D676EC23B8E556 = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"CODE_SIGN_STYLE" = "Automatic";
+				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "0.1.0";
+				"TARGETED_DEVICE_FAMILY" = "1,2";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"SUPPORTS_MACCATALYST" = "NO";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"PRODUCT_NAME" = "WianTribeStickers";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.wiantribe.keyboard.stickers";
+				"INFOPLIST_FILE" = "Configuration/Stickers-Info.plist";
+				"ASSETCATALOG_COMPILER_APPICON_NAME" = "iMessage App Icon";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"SWIFT_COMPILATION_MODE" = "wholemodule";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+			"name" = "Release";
+		};
+		A9DC575E50C73700A00195EE = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				FADA32735D30A864DB4BC0FE,
+				650C6DD852D676EC23B8E556,
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
 		874E7FD7A39CF1D6319F589D = {
 			"isa" = "PBXNativeTarget";
 			"buildConfigurationList" = 268D2D29669C504AD910B275;
@@ -918,6 +1533,7 @@
 			);
 			"dependencies" = (
 				DE58E2B17C19600779694943,
+				C9BB08DF080B6DA80F51F963,
 			);
 			"name" = "WianTribeKeyboard";
 			"productName" = "WianTribeKeyboard";
@@ -943,6 +1559,23 @@
 			"productReference" = 0BD0388F3B1FCFE4A7ADD82D;
 			"productType" = "com.apple.product-type.app-extension";
 		};
+		BDFF5F97F1E34E085F97FAD0 = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = A9DC575E50C73700A00195EE;
+			"buildPhases" = (
+				9AD045E385C0ECC79BFC7CCF,
+			);
+			"buildRules" = (
+
+			);
+			"dependencies" = (
+
+			);
+			"name" = "WianTribeStickers";
+			"productName" = "WianTribeStickers";
+			"productReference" = ABAC8EFEEA6A0ACB5D142940;
+			"productType" = "com.apple.product-type.app-extension.messages-sticker-pack";
+		};
 		98F54143AB4E86B28C3AFEE0 = {
 			"isa" = "PBXProject";
 			"attributes" = {
@@ -952,6 +1585,9 @@
 						"CreatedOnToolsVersion" = "16.0";
 					};
 					6525FA7ED291309A5276BE13 = {
+						"CreatedOnToolsVersion" = "16.0";
+					};
+					BDFF5F97F1E34E085F97FAD0 = {
 						"CreatedOnToolsVersion" = "16.0";
 					};
 				};
@@ -971,6 +1607,7 @@
 			"targets" = (
 				874E7FD7A39CF1D6319F589D,
 				6525FA7ED291309A5276BE13,
+				BDFF5F97F1E34E085F97FAD0,
 			);
 		};
 	};

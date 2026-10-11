@@ -14,6 +14,9 @@ extension_info = plistlib.loads((extension / "Info.plist").read_bytes())
 assert extension_info["CFBundleIdentifier"].startswith(app_info["CFBundleIdentifier"] + ".")
 assert extension_info["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.keyboard-service"
 assert extension_info["NSExtension"]["NSExtensionAttributes"]["RequestsOpenAccess"] is True
+stickers = app / "PlugIns/WianTribeStickers.appex"
+if not stickers.is_dir(): raise SystemExit("iMessage sticker pack was not embedded")
+assert plistlib.loads((stickers / "Info.plist").read_bytes())["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.message-payload-provider"
 for container in [app, extension]:
     assert (container / "PrivacyInfo.xcprivacy").exists()
     assert (container / container.name.rsplit(".", 1)[0]).exists()
@@ -25,4 +28,4 @@ with zipfile.ZipFile(ipa, "w", zipfile.ZIP_DEFLATED) as archive:
         if file.is_file(): archive.write(file, "Payload/" + str(file.relative_to(app.parent)))
 (output / "SHA256SUMS.txt").write_text(hashlib.sha256(ipa.read_bytes()).hexdigest() + "  " + ipa.name + "\n")
 shutil.copyfile(root / "docs/INSTALL.md", output / "INSTALL.md")
-print("Packaged app + keyboard extension. This IPA is unsigned and must be re-signed before installation.")
+print("Packaged app + keyboard extension + iMessage stickers. This IPA is unsigned and must be re-signed before installation.")

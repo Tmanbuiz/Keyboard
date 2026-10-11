@@ -72,6 +72,16 @@ final class KeyboardStore {
         if pairs.count > 1500, let key = pairs.keys.first(where: { $0 != previous }) { pairs.removeValue(forKey: key) }
         learnedPairs = pairs
     }
+    var recentEmoji: [String] {
+        get { load("recentEmoji.v1", fallback: [String]()) }
+        set { save(Array(newValue.prefix(40)), key: "recentEmoji.v1") }
+    }
+    func useEmoji(_ emoji: String) {
+        var list = recentEmoji
+        list.removeAll { $0 == emoji }
+        list.insert(emoji, at: 0)
+        recentEmoji = list
+    }
     func learn(_ word: String) {
         guard preferences.learnWords, TextContext.canLearn(word) else { return }
         var words = learned

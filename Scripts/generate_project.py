@@ -60,6 +60,11 @@ write_plist("Keyboard-Info.plist", {
                     "NSExtensionAttributes": {"IsASCIICapable": True, "PrimaryLanguage": "mul",
                                                "RequestsOpenAccess": True, "PrefersRightToLeft": False}}
 })
+write_plist("Stickers-Info.plist", {
+    **{k: v for k, v in common_info.items() if k != "CFBundleExecutable"}, "CFBundleDisplayName": "WianTribe Stickers", "CFBundlePackageType": "XPC!",
+    "NSExtension": {"NSExtensionPointIdentifier": "com.apple.message-payload-provider",
+                    "NSExtensionPrincipalClass": "StickerBrowserViewController"}
+})
 write_plist("Sideload.entitlements", {})
 write_plist("Shared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"]})
 write_plist("PrivacyInfo.xcprivacy", {
@@ -71,12 +76,14 @@ write_plist("PrivacyInfo.xcprivacy", {
 project_id = identifier("project")
 app_id = identifier("target-app")
 keyboard_id = identifier("target-keyboard")
+stickers_id = identifier("target-stickers")
+sticker_catalog = "Sources/Stickers/Stickers.xcassets"
 all_files = sorted({str(p.relative_to(ROOT)) for p in (ROOT / "Sources").rglob("*.swift")})
 resources = ["Sources/Core/Resources/Languages.json", "Configuration/PrivacyInfo.xcprivacy"]
 # Dictionaries and emoji data are only needed by the keyboard, so the app stays small.
 keyboard_data = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Core/Resources").glob("*") if p.is_file() and p.name != "Languages.json")
 media = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Keyboard/Media").glob("*") if p.is_file())
-all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements"]
+all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Stickers-Info.plist", sticker_catalog, "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements"]
 refs = {}
 for path in all_paths:
     suffix = pathlib.Path(path).suffix
@@ -84,7 +91,8 @@ for path in all_paths:
     refs[path] = add("file-" + path, "PBXFileReference", lastKnownFileType=filetype, path=path, sourceTree="<group>")
 app_product = add("product-app", "PBXFileReference", explicitFileType="wrapper.application", includeInIndex=0, path="WianTribeKeyboard.app", sourceTree="BUILT_PRODUCTS_DIR")
 keyboard_product = add("product-keyboard", "PBXFileReference", explicitFileType="wrapper.app-extension", includeInIndex=0, path="WianTribeKeyboardExtension.appex", sourceTree="BUILT_PRODUCTS_DIR")
-products = add("products", "PBXGroup", children=[app_product, keyboard_product], name="Products", sourceTree="<group>")
+stickers_product = add("product-stickers", "PBXFileReference", explicitFileType="wrapper.app-extension", includeInIndex=0, path="WianTribeStickers.appex", sourceTree="BUILT_PRODUCTS_DIR")
+products = add("products", "PBXGroup", children=[app_product, keyboard_product, stickers_product], name="Products", sourceTree="<group>")
 main_group = add("main-group", "PBXGroup", children=list(refs.values()) + [products], sourceTree="<group>")
 
 def phase(label, isa, paths):
@@ -97,10 +105,14 @@ app_resources = phase("app-resources", "PBXResourcesBuildPhase", resources + ["S
 keyboard_resources = phase("keyboard-resources", "PBXResourcesBuildPhase", resources + keyboard_data + media)
 app_frameworks = phase("app-frameworks", "PBXFrameworksBuildPhase", [])
 keyboard_frameworks = phase("keyboard-frameworks", "PBXFrameworksBuildPhase", [])
+stickers_resources = phase("stickers-resources", "PBXResourcesBuildPhase", [sticker_catalog])
 embed_file = add("embed-file", "PBXBuildFile", fileRef=keyboard_product, settings={"ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]})
-embed = add("embed", "PBXCopyFilesBuildPhase", buildActionMask=2147483647, dstPath="", dstSubfolderSpec=13, files=[embed_file], name="Embed App Extensions", runOnlyForDeploymentPostprocessing=0)
+embed_stickers = add("embed-stickers-file", "PBXBuildFile", fileRef=stickers_product, settings={"ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]})
+embed = add("embed", "PBXCopyFilesBuildPhase", buildActionMask=2147483647, dstPath="", dstSubfolderSpec=13, files=[embed_file, embed_stickers], name="Embed App Extensions", runOnlyForDeploymentPostprocessing=0)
 proxy = add("dependency-proxy", "PBXContainerItemProxy", containerPortal=project_id, proxyType=1, remoteGlobalIDString=keyboard_id, remoteInfo="WianTribeKeyboardExtension")
 dependency = add("dependency", "PBXTargetDependency", target=keyboard_id, targetProxy=proxy)
+stickers_proxy = add("dependency-stickers-proxy", "PBXContainerItemProxy", containerPortal=project_id, proxyType=1, remoteGlobalIDString=stickers_id, remoteInfo="WianTribeStickers")
+stickers_dependency = add("dependency-stickers", "PBXTargetDependency", target=stickers_id, targetProxy=stickers_proxy)
 
 project_settings = {"CLANG_ENABLE_MODULES": "YES", "CLANG_ENABLE_OBJC_ARC": "YES", "IPHONEOS_DEPLOYMENT_TARGET": "17.0",
                     "SDKROOT": "iphoneos", "SWIFT_VERSION": "5.0", "SWIFT_STRICT_CONCURRENCY": "minimal",
@@ -126,9 +138,12 @@ app_configs = configurations("app", {**common_target, "PRODUCT_BUNDLE_IDENTIFIER
 keyboard_configs = configurations("keyboard", {**common_target, "PRODUCT_BUNDLE_IDENTIFIER": "com.wiantribe.keyboard.extension", "INFOPLIST_FILE": "Configuration/Keyboard-Info.plist",
                                                 "APPLICATION_EXTENSION_API_ONLY": "YES", "SKIP_INSTALL": "YES",
                                                 "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/Frameworks", "@executable_path/../../Frameworks"]})
-add("target-app", "PBXNativeTarget", buildConfigurationList=app_configs, buildPhases=[app_sources, app_frameworks, app_resources, embed], buildRules=[], dependencies=[dependency], name="WianTribeKeyboard", productName="WianTribeKeyboard", productReference=app_product, productType="com.apple.product-type.application")
+stickers_configs = configurations("stickers", {**common_target, "PRODUCT_BUNDLE_IDENTIFIER": "com.wiantribe.keyboard.stickers", "INFOPLIST_FILE": "Configuration/Stickers-Info.plist",
+                                                "ASSETCATALOG_COMPILER_APPICON_NAME": "iMessage App Icon", "SKIP_INSTALL": "YES", "PRODUCT_NAME": "WianTribeStickers"})
+add("target-app", "PBXNativeTarget", buildConfigurationList=app_configs, buildPhases=[app_sources, app_frameworks, app_resources, embed], buildRules=[], dependencies=[dependency, stickers_dependency], name="WianTribeKeyboard", productName="WianTribeKeyboard", productReference=app_product, productType="com.apple.product-type.application")
 add("target-keyboard", "PBXNativeTarget", buildConfigurationList=keyboard_configs, buildPhases=[keyboard_sources, keyboard_frameworks, keyboard_resources], buildRules=[], dependencies=[], name="WianTribeKeyboardExtension", productName="WianTribeKeyboardExtension", productReference=keyboard_product, productType="com.apple.product-type.app-extension")
-add("project", "PBXProject", attributes={"LastUpgradeCheck": "1600", "TargetAttributes": {app_id: {"CreatedOnToolsVersion": "16.0"}, keyboard_id: {"CreatedOnToolsVersion": "16.0"}}}, buildConfigurationList=project_configs, compatibilityVersion="Xcode 14.0", developmentRegion="en", hasScannedForEncodings=0, knownRegions=["en", "Base"], mainGroup=main_group, productRefGroup=products, projectDirPath="", projectRoot="", targets=[app_id, keyboard_id])
+add("target-stickers", "PBXNativeTarget", buildConfigurationList=stickers_configs, buildPhases=[stickers_resources], buildRules=[], dependencies=[], name="WianTribeStickers", productName="WianTribeStickers", productReference=stickers_product, productType="com.apple.product-type.app-extension.messages-sticker-pack")
+add("project", "PBXProject", attributes={"LastUpgradeCheck": "1600", "TargetAttributes": {app_id: {"CreatedOnToolsVersion": "16.0"}, keyboard_id: {"CreatedOnToolsVersion": "16.0"}, stickers_id: {"CreatedOnToolsVersion": "16.0"}}}, buildConfigurationList=project_configs, compatibilityVersion="Xcode 14.0", developmentRegion="en", hasScannedForEncodings=0, knownRegions=["en", "Base"], mainGroup=main_group, productRefGroup=products, projectDirPath="", projectRoot="", targets=[app_id, keyboard_id, stickers_id])
 
 project = ROOT / "WianTribeKeyboard.xcodeproj"
 project.mkdir(exist_ok=True)

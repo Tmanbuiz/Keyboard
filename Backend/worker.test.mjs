@@ -50,3 +50,34 @@ test("language codes from the keyboard are accepted and unknown ones rejected", 
     assert.equal((await worker.fetch(request({ text: "hi", action: "translate", language }), environment())).status, 400);
   }
 });
+function gifRequest(query = "?q=happy&lang=fr", token = secret) {
+  return new Request(`https://example.test/gifs${query}`, { headers: { "Authorization": `Bearer ${token}` } });
+}
+const giphyBody = { data: [
+  { id: "a1", title: "Happy", images: { fixed_width_small: { url: "https://media1.giphy.com/a.gif" }, downsized: { url: "https://media1.giphy.com/a-full.gif" } } },
+  { id: "evil", title: "x", images: { fixed_width_small: { url: "https://evil.example/a.gif" }, downsized: { url: "https://media.giphy.com/b.gif" } } }
+] };
+test("GIF search needs the access token and keeps the GIPHY key server side", async () => {
+  let called = false;
+  const fetcher = async () => { called = true; return Response.json(giphyBody); };
+  const denied = await worker.fetch(gifRequest(undefined, "wrong"), environment({ GIPHY_API_KEY: "k" }), {}, fetcher);
+  assert.equal(denied.status, 401); assert.equal(called, false);
+  assert.equal((await worker.fetch(gifRequest(), environment(), {}, fetcher)).status, 503);
+});
+test("GIF results are limited to GIPHY media and the query is forwarded", async () => {
+  let requested;
+  const fetcher = async (target) => { requested = new URL(target); return Response.json(giphyBody); };
+  const response = await worker.fetch(gifRequest("?q=joyeux%20anniversaire&lang=fr"), environment({ GIPHY_API_KEY: "server-key" }), {}, fetcher);
+  assert.equal(response.status, 200);
+  assert.equal(requested.searchParams.get("q"), "joyeux anniversaire");
+  assert.equal(requested.searchParams.get("lang"), "fr");
+  const body = await response.json();
+  assert.deepEqual(body.gifs.map(g => g.id), ["a1"]);
+  assert.equal(JSON.stringify(body).includes("server-key"), false);
+});
+test("empty GIF query loads trending and bad language falls back", async () => {
+  let requested;
+  const fetcher = async (target) => { requested = new URL(target); return Response.json({ data: [] }); };
+  await worker.fetch(gifRequest("?q=&lang=../x"), environment({ GIPHY_API_KEY: "k" }), {}, fetcher);
+  assert.match(requested.pathname, /trending/);
+});

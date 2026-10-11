@@ -1,0 +1,10 @@
+{
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "filename": "happy-birthday.png",
+    "accessibility-label": "Happy birthday!"
+  }
+}

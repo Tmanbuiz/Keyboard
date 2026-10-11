@@ -42,6 +42,8 @@ public struct KeyboardPreferences: Codable, Equatable {
     public var keySounds = true
     public var keyPreview = true
     public var keyBorders = false
+    /// Default emoji skin tone: 0 is the standard yellow, 1–5 are light to dark.
+    public var skinTone = 0
     public var handMode: HandMode = .full
     public var numberRow = true
     public var autocorrect = true
@@ -83,6 +85,7 @@ public struct KeyboardPreferences: Codable, Equatable {
         keySounds = (try? c.decodeIfPresent(Bool.self, forKey: .keySounds)) ?? d.keySounds
         keyPreview = (try? c.decodeIfPresent(Bool.self, forKey: .keyPreview)) ?? d.keyPreview
         keyBorders = (try? c.decodeIfPresent(Bool.self, forKey: .keyBorders)) ?? d.keyBorders
+        skinTone = (try? c.decodeIfPresent(Int.self, forKey: .skinTone)) ?? d.skinTone
         handMode = (try? c.decodeIfPresent(HandMode.self, forKey: .handMode)) ?? d.handMode
         numberRow = (try? c.decodeIfPresent(Bool.self, forKey: .numberRow)) ?? d.numberRow
         autocorrect = (try? c.decodeIfPresent(Bool.self, forKey: .autocorrect)) ?? d.autocorrect

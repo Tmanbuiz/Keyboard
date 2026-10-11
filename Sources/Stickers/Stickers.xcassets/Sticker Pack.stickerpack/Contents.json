@@ -1,0 +1,59 @@
+{
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "grid-size": "regular"
+  },
+  "stickers": [
+    {
+      "filename": "hello-there.sticker"
+    },
+    {
+      "filename": "thank-you.sticker"
+    },
+    {
+      "filename": "on-my-way.sticker"
+    },
+    {
+      "filename": "lol.sticker"
+    },
+    {
+      "filename": "congrats.sticker"
+    },
+    {
+      "filename": "good-morning.sticker"
+    },
+    {
+      "filename": "good-night.sticker"
+    },
+    {
+      "filename": "love-you.sticker"
+    },
+    {
+      "filename": "miss-you.sticker"
+    },
+    {
+      "filename": "happy-birthday.sticker"
+    },
+    {
+      "filename": "sorry.sticker"
+    },
+    {
+      "filename": "see-you-soon.sticker"
+    },
+    {
+      "filename": "yes.sticker"
+    },
+    {
+      "filename": "no-way.sticker"
+    },
+    {
+      "filename": "amen.sticker"
+    },
+    {
+      "filename": "well-done.sticker"
+    }
+  ]
+}

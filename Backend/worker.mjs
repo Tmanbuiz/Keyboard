@@ -41,15 +41,56 @@ async function readBody(request) {
   } finally { reader.releaseLock(); }
 }
 
+function giphyMedia(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && (url.hostname === "giphy.com" || url.hostname.endsWith(".giphy.com")) ? url.toString() : null;
+  } catch { return null; }
+}
+
+// GIF search through GIPHY. The key stays on the server; only the search words are forwarded.
+async function gifs(url, env, fetcher) {
+  if (!env.GIPHY_API_KEY) return json({ error: "GIF search not configured" }, 503);
+  const query = (url.searchParams.get("q") || "").trim().slice(0, 50);
+  const lang = /^[a-z]{2,3}$/.test(url.searchParams.get("lang") || "") ? url.searchParams.get("lang") : "en";
+  const endpoint = new URL(query ? "https://api.giphy.com/v1/gifs/search" : "https://api.giphy.com/v1/gifs/trending");
+  endpoint.searchParams.set("api_key", env.GIPHY_API_KEY);
+  endpoint.searchParams.set("limit", "24");
+  endpoint.searchParams.set("rating", "pg-13");
+  if (query) { endpoint.searchParams.set("q", query); endpoint.searchParams.set("lang", lang); }
+  let body;
+  try {
+    const response = await fetcher(endpoint.toString(), { headers: { "Accept": "application/json" } });
+    if (!response.ok) return json({ error: "GIF provider unavailable" }, 502);
+    body = await response.json();
+  } catch { return json({ error: "GIF provider unavailable" }, 502); }
+  const results = [];
+  for (const item of Array.isArray(body?.data) ? body.data : []) {
+    const images = item?.images || {};
+    const preview = giphyMedia(images.fixed_width_small?.url || images.fixed_width?.url);
+    const full = giphyMedia(images.downsized?.url || images.fixed_height?.url);
+    if (typeof item?.id === "string" && preview && full) {
+      results.push({ id: item.id, title: typeof item.title === "string" ? item.title.slice(0, 80) : "", preview, url: full });
+    }
+  }
+  return json({ gifs: results });
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, context, fetcher = fetch) {
     const url = new URL(request.url);
-    if (url.pathname !== "/write") return json({ error: "Not found" }, 404);
-    if (request.method !== "POST") return json({ error: "POST required" }, 405);
-    if (!env.API_TOKEN || env.API_TOKEN.length < 32 || !env.AI || !env.WRITING_LIMITER) return json({ error: "Service not configured" }, 503);
+    const route = url.pathname === "/write" ? "write" : (url.pathname === "/gifs" ? "gifs" : null);
+    if (!route) return json({ error: "Not found" }, 404);
+    if (request.method !== (route === "write" ? "POST" : "GET")) return json({ error: route === "write" ? "POST required" : "GET required" }, 405);
+    if (!env.API_TOKEN || env.API_TOKEN.length < 32 || !env.WRITING_LIMITER || (route === "write" && !env.AI)) return json({ error: "Service not configured" }, 503);
     const authorization = request.headers.get("Authorization") || "";
     if (!authorization.startsWith("Bearer ") || authorization.length > 512 ||
         !await equalsSecret(authorization.slice(7), env.API_TOKEN)) return json({ error: "Unauthorized" }, 401);
+    if (route === "gifs") {
+      const { success } = await env.WRITING_LIMITER.limit({ key: "private-owner-gifs" });
+      if (!success) return json({ error: "Try again later" }, 429);
+      return gifs(url, env, fetcher);
+    }
     const { success } = await env.WRITING_LIMITER.limit({ key: "private-owner" });
     if (!success) return json({ error: "Try again later" }, 429);
     if (!request.headers.get("Content-Type")?.startsWith("application/json")) return json({ error: "JSON required" }, 415);
