@@ -17,6 +17,7 @@ def run(*args):
         raise SystemExit(result.returncode)
     return result.stdout.strip()
 data = json.loads(run("xcrun", "simctl", "list", "--json"))
+run("defaults", "write", "com.apple.iphonesimulator", "ConnectHardwareKeyboard", "-bool", "false")
 runtimes = [r for r in data["runtimes"] if r.get("isAvailable") and "iOS" in r["name"]]
 runtime = sorted(runtimes, key=lambda r: tuple(map(int, r["version"].split("."))))[-1]
 device_type = next(d for d in data["devicetypes"] if "iPhone 16 Pro" == d["name"])

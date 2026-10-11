@@ -25,6 +25,13 @@ jobs:
         run: set -o pipefail; node --test Backend/*.test.mjs 2>&1 | tee build/logs/node-test.log
       - name: Build device app and package unsigned IPA
         run: set -o pipefail; bash Scripts/build_ipa.sh 2>&1 | tee build/logs/device.log
+      - name: Upload compiled sideloading package
+        uses: actions/upload-artifact@v4
+        with:
+          name: WianTribeKeyboard-personal-background-clipboard
+          path: build/output/
+          if-no-files-found: error
+          retention-days: 1
       - name: Build simulator app
         run: |
           if [[ "$GITHUB_REF_NAME" == "personal/background-clipboard" ]]; then
@@ -48,13 +55,6 @@ jobs:
           name: Keyboard-verification-logs
           path: build/logs/
           if-no-files-found: warn
-          retention-days: 1
-      - name: Upload sideloading package
-        uses: actions/upload-artifact@v4
-        with:
-          name: WianTribeKeyboard-personal-background-clipboard
-          path: build/output/
-          if-no-files-found: error
           retention-days: 1
       - name: Publish sideload IPA as a GitHub Release
         if: github.ref == 'refs/heads/main'

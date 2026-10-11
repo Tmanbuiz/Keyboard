@@ -25,7 +25,7 @@ final class KeyboardRegistrationTests: XCTestCase {
         let keyboardList = settings.buttons["KEYBOARDS"]
         XCTAssertTrue(keyboardList.waitForExistence(timeout: 8), settings.debugDescription)
         keyboardList.tap()
-        let add = settings.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Add New Keyboard")).firstMatch
+        let add = settings.buttons["AddNewKeyboard"]
         XCTAssertTrue(add.waitForExistence(timeout: 8), settings.debugDescription)
         add.tap()
         try tap(keyboardName, in: settings)
