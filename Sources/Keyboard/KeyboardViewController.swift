@@ -938,11 +938,21 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         translateRow.heightAnchor.constraint(equalToConstant: 36).isActive = true
         note("Translate to:", in: stack)
         stack.addArrangedSubview(translateRow)
-        for action in [WritingAction.grammar, .professional, .casual] {
-            let title = action == .grammar ? "Fix grammar & spelling" : (action == .professional ? "Make it professional" : "Make it casual")
-            panelButton(title, in: stack) { [weak self, weak stack] in
-                guard let self, let stack else { return }
-                self.runWriting(action, target: self.preferences.language, in: stack)
+        // Writing Assist: style rewrites, then formats that change the shape of the text.
+        for (heading, actions) in [("Rewrite:", WritingAction.rewrites), ("Format:", WritingAction.formats)] {
+            note(heading, in: stack)
+            for start in stride(from: 0, to: actions.count, by: 2) {
+                let line = UIStackView(); line.axis = .horizontal; line.spacing = 5; line.distribution = .fillEqually
+                for action in actions[start..<min(start + 2, actions.count)] {
+                    let key = button(action.title) { [weak self, weak stack] in
+                        guard let self, let stack else { return }
+                        self.runWriting(action, target: self.preferences.language, in: stack)
+                    }
+                    key.titleLabel?.font = .systemFont(ofSize: KeyButton.fontSize(14), weight: .medium)
+                    line.addArrangedSubview(key)
+                }
+                line.heightAnchor.constraint(equalToConstant: 36).isActive = true
+                stack.addArrangedSubview(line)
             }
         }
         if ConnectionVault.load() == nil {

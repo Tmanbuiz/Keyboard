@@ -165,4 +165,14 @@ final class TypingCoreTests: XCTestCase {
         XCTAssertEqual(ClipboardHistory.preview("Hello there\nsecond line"), "Hello there")
         XCTAssertEqual(ClipboardHistory.preview(String(repeating: "a", count: 30), length: 5), "aaaaa…")
     }
+
+    func testWritingAssistActionsAreComplete() {
+        XCTAssertEqual(Set(WritingAction.rewrites + WritingAction.formats + [.translate]), Set(WritingAction.allCases))
+        for action in WritingAction.allCases {
+            XCTAssertFalse(action.title.isEmpty); XCTAssertGreaterThan(action.instruction.count, 20)
+        }
+        // v0.1 stored action names must still decode.
+        XCTAssertEqual(try JSONDecoder().decode([WritingAction].self, from: Data(#"["grammar","casual"]"#.utf8)), [.grammar, .casual])
+    }
+
 }

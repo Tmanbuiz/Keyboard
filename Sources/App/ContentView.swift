@@ -392,7 +392,7 @@ private struct WriterView: View {
                 Picker("Translation language", selection: $language) { ForEach(KeyboardLanguage.allCases) { Text($0.title).tag($0) } }
                 ForEach(WritingAction.allCases) { action in
                     Button(action == .translate ? "Translate to \(language.title)" : action.title) { perform(action) }
-                        .disabled(busy || !configured || text.isEmpty)
+                        .disabled(busy || text.isEmpty)
                 }
                 Text("Runs on this iPhone when Apple supports the language. Otherwise only the text above is sent to your service. Review results before using them.")
                     .font(.caption).foregroundStyle(.secondary)

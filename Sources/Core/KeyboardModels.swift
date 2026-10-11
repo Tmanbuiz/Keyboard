@@ -112,10 +112,49 @@ public struct SavedPhrase: Codable, Identifiable, Equatable {
     }
 }
 
+/// Writing Assist actions: rewrites change the style, formats change the shape of the text.
+/// The instructions are shared by Apple's on-device model and Backend/worker.mjs.
 public enum WritingAction: String, Codable, CaseIterable, Identifiable {
-    case grammar, professional, casual, translate
+    case grammar, professional, casual, polite, social, emojify, shorter, longer, summary, bullets, table, email, translate
     public var id: String { rawValue }
-    public var title: String { rawValue.capitalized }
+    public static let rewrites: [WritingAction] = [.grammar, .professional, .casual, .polite, .social, .emojify, .shorter, .longer]
+    public static let formats: [WritingAction] = [.summary, .bullets, .table, .email]
+
+    public var title: String {
+        switch self {
+        case .grammar: return "Fix grammar & spelling"
+        case .professional: return "Professional"
+        case .casual: return "Casual"
+        case .polite: return "Polite"
+        case .social: return "Social post"
+        case .emojify: return "Add emoji"
+        case .shorter: return "Shorter"
+        case .longer: return "Longer"
+        case .summary: return "Summarise"
+        case .bullets: return "Bullet points"
+        case .table: return "Table"
+        case .email: return "Email"
+        case .translate: return "Translate"
+        }
+    }
+
+    public var instruction: String {
+        switch self {
+        case .grammar: return "Correct grammar, spelling and punctuation. Keep the meaning, tone and language."
+        case .professional: return "Rewrite in a clear, professional tone. Keep the meaning and language."
+        case .casual: return "Rewrite in a friendly, casual tone. Keep the meaning and language."
+        case .polite: return "Rewrite so it sounds polite, warm and respectful. Keep the meaning and language."
+        case .social: return "Rewrite as an engaging social media post, ending with two to four relevant hashtags. Keep the language."
+        case .emojify: return "Add a few fitting emoji to the text. Keep every word as it is."
+        case .shorter: return "Make the text shorter and clearer, keeping the key points and the language."
+        case .longer: return "Expand the text with a little more detail and smoother wording. Keep the meaning, tone and language. Do not invent facts."
+        case .summary: return "Summarise the text in two or three sentences in the same language."
+        case .bullets: return "Turn the text into a short list of key points, one per line, each starting with \"\u2022 \". Use the same language."
+        case .table: return "Organise the information as a plain-text table: a header row, then one row per item, with columns separated by \" | \". Use the same language. Do not invent data; leave a cell empty if unknown."
+        case .email: return "Format the text as a clear email: a greeting, short paragraphs and a closing line followed by [Your name]. Use the same language."
+        case .translate: return "Translate the text into the requested language, preserving the meaning."
+        }
+    }
 }
 
 public enum TextContext {

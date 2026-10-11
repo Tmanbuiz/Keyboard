@@ -3,10 +3,20 @@
 // Language codes match Sources/Core/Resources/Languages.json; v0.1 names are still accepted.
 const languages = { en: "English", es: "Spanish", fr: "French", pt: "Portuguese", de: "German", it: "Italian", nl: "Dutch", sv: "Swedish", nb: "Norwegian", da: "Danish", fi: "Finnish", pl: "Polish", cs: "Czech", ro: "Romanian", hu: "Hungarian", tr: "Turkish", id: "Indonesian", ms: "Malay", fil: "Filipino", sw: "Swahili", yo: "Yoruba with correct tone marks and diacritics", pcm: "Nigerian Pidgin", ig: "Igbo with correct diacritics", ha: "Hausa with correct hooked letters", ru: "Russian", uk: "Ukrainian", ar: "Arabic", he: "Hebrew" };
 const legacyLanguages = { english: "en", yoruba: "yo", pidgin: "pcm" };
+// Keep in sync with WritingAction.instruction in Sources/Core/KeyboardModels.swift.
 const actions = {
-  grammar: "Correct grammar, spelling and punctuation while preserving meaning and language.",
-  professional: "Rewrite in a clear professional tone, preserving the meaning and language.",
-  casual: "Rewrite in a friendly casual tone, preserving the meaning and language.",
+  grammar: "Correct grammar, spelling and punctuation. Keep the meaning, tone and language.",
+  professional: "Rewrite in a clear, professional tone. Keep the meaning and language.",
+  casual: "Rewrite in a friendly, casual tone. Keep the meaning and language.",
+  polite: "Rewrite so it sounds polite, warm and respectful. Keep the meaning and language.",
+  social: "Rewrite as an engaging social media post, ending with two to four relevant hashtags. Keep the language.",
+  emojify: "Add a few fitting emoji to the text. Keep every word as it is.",
+  shorter: "Make the text shorter and clearer, keeping the key points and the language.",
+  longer: "Expand the text with a little more detail and smoother wording. Keep the meaning, tone and language. Do not invent facts.",
+  summary: "Summarise the text in two or three sentences in the same language.",
+  bullets: "Turn the text into a short list of key points, one per line, each starting with \"\u2022 \". Use the same language.",
+  table: "Organise the information as a plain-text table: a header row, then one row per item, with columns separated by \" | \". Use the same language. Do not invent data; leave a cell empty if unknown.",
+  email: "Format the text as a clear email: a greeting, short paragraphs and a closing line followed by [Your name]. Use the same language.",
   translate: "Translate the text into the requested language, preserving the meaning."
 };
 

@@ -81,3 +81,10 @@ test("empty GIF query loads trending and bad language falls back", async () => {
   await worker.fetch(gifRequest("?q=&lang=../x"), environment({ GIPHY_API_KEY: "k" }), {}, fetcher);
   assert.match(requested.pathname, /trending/);
 });
+test("every Writing Assist action is accepted", async () => {
+  for (const action of ["polite", "social", "emojify", "shorter", "longer", "summary", "bullets", "table", "email"]) {
+    let input;
+    const response = await worker.fetch(request({ text: "Meeting moved to 3pm, bring the report", action, language: "en" }), environment({ AI: { run: async (_, payload) => { input = payload; return { response: "ok" }; } } }));
+    assert.equal(response.status, 200, action); assert.match(input.messages[0].content, /English/);
+  }
+});
