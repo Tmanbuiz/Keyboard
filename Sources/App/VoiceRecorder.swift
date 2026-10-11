@@ -100,6 +100,10 @@ struct VoiceView: View {
         }.padding(22).background(Color(red: 0.035, green: 0.10, blue: 0.13)).navigationTitle("Voice editor").navigationBarTitleDisplayMode(.inline)
             .onAppear { if !locales.contains(where: { $0.0 == locale }), let first = locales.first { locale = first.0 } }
             .onDisappear { permissionTask?.cancel(); recorder.stop() }
-            .onChange(of: phase) { _, phase in if phase != .active { permissionTask?.cancel(); recorder.stop() } }
+            .onChange(of: phase) { _, phase in
+                if phase == .background || (phase == .inactive && recorder.recording) {
+                    permissionTask?.cancel(); recorder.stop()
+                }
+            }
     }
 }

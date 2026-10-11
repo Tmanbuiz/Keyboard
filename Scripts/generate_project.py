@@ -65,7 +65,7 @@ write_plist("Shared.entitlements", {"com.apple.security.application-groups": ["g
 write_plist("PrivacyInfo.xcprivacy", {
     "NSPrivacyTracking": False, "NSPrivacyTrackingDomains": [], "NSPrivacyCollectedDataTypes": [],
     "NSPrivacyAccessedAPITypes": [{"NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
-                                   "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "C56D.1"]}]
+                                   "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "1C8F.1"]}]
 })
 
 project_id = identifier("project")

@@ -22,6 +22,7 @@ enum ConnectionVault {
         return try? JSONDecoder().decode(WritingConnection.self, from: data)
     }
     @discardableResult static func save(_ connection: WritingConnection?) -> Bool {
+        if let connection, !connection.valid { return false }
         let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
                                    kSecAttrService as String: service, kSecAttrAccount as String: "connection"]
         SecItemDelete(query as CFDictionary)
