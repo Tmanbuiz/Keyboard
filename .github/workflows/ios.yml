@@ -4,7 +4,7 @@ on:
     branches: [main, 'feature/**']
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write # to publish the sideload IPA as a GitHub Release on main
 concurrency:
   group: keyboard-build-${{ github.ref }}
   cancel-in-progress: true
@@ -42,3 +42,16 @@ jobs:
           path: build/output/
           if-no-files-found: error
           retention-days: 7
+      - name: Publish sideload IPA as a GitHub Release
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" build/device/Build/Products/Release-iphoneos/WianTribeKeyboard.app/Info.plist)
+          tag="v${version}-build${{ github.run_number }}"
+          cp build/output/WianTribeKeyboard-unsigned.ipa "build/output/WianTribeKeyboard-${version}-build${{ github.run_number }}-unsigned.ipa"
+          gh release create "$tag" --target "${{ github.sha }}" --prerelease \
+            --title "WianTribe Keyboard ${version} (build ${{ github.run_number }})" \
+            --notes "Unsigned IPA for sideloading. Re-sign it with your sideloading tool and keep both extensions (keyboard and iMessage stickers). See docs/INSTALL.md. Commit ${{ github.sha }}." \
+            "build/output/WianTribeKeyboard-${version}-build${{ github.run_number }}-unsigned.ipa" build/output/SHA256SUMS.txt build/output/INSTALL.md
+          echo "::notice title=Sideload release::https://github.com/${{ github.repository }}/releases/tag/$tag"
