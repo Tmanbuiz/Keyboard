@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 @main
 struct WianTribeKeyboardApp: App {
@@ -25,5 +26,13 @@ final class AppModel: ObservableObject {
     func savePhrase(_ text: String) { store.addPhrase(text); phrases = store.phrases }
     func clearPersonalData() { store.clearPersonalData(); phrases = [] }
     func clearLearnedWords() { store.learned = [:]; store.learnedPairs = [:] }
+    /// Reading the clipboard here makes iOS show its paste prompt and adds "Paste from Other Apps"
+    /// to this app's page in Settings, which also covers the keyboard.
+    func testClipboard() -> String {
+        let pasteboard = UIPasteboard.general
+        guard pasteboard.hasStrings else { return "Copy some text in another app first, then tap Test again." }
+        guard let text = pasteboard.string else { return "iOS didn't share the clipboard. Tap Open WianTribe settings and set Paste from Other Apps to Allow." }
+        return "Clipboard access works (\(text.count) characters). Now copy text anywhere and open 📋 on the keyboard."
+    }
     func clearRecentClips() { store.clearRecentClips(); phrases = store.phrases }
 }

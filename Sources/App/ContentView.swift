@@ -342,6 +342,7 @@ private struct LanguagesView: View {
 private struct PhrasesView: View {
     @EnvironmentObject private var model: AppModel
     @State private var draft = ""
+    @State private var clipboardTest = ""
     var body: some View {
         List {
             Section("Pin a phrase") {
@@ -370,6 +371,17 @@ private struct PhrasesView: View {
             }
             if model.phrases.contains(where: { !$0.pinned }) {
                 Section { Button("Clear recent clips", role: .destructive) { model.clearRecentClips() } }
+            }
+            Section {
+                Text("iOS asks before an app reads what you copied, but a keyboard can't show that question, so set Paste from Other Apps to Allow. The keyboard then keeps what you copy while it's open.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Button("Test clipboard access", systemImage: "checkmark.shield") { clipboardTest = model.testClipboard() }
+                if !clipboardTest.isEmpty { Text(clipboardTest).font(.caption) }
+                Button("Open WianTribe settings", systemImage: "gearshape") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+                }
+            } header: { Text("Set up clipboard access") } footer: {
+                Text("In Settings: Paste from Other Apps → Allow. Also turn on clipboard history inside the keyboard: 📋 → Turn on clipboard history.")
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Clipboard")
     }

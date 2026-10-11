@@ -46,6 +46,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var onlineTask: Task<Void, Never>?
     var clipboardTimer: Timer?
     var freshClip: (text: String, date: Date)?
+    /// True when the clipboard changed but iOS withheld its text (Paste from Other Apps is set to Ask or Deny).
+    var clipboardBlocked = false
     var keyPreview: KeyPreview?
     /// While searching emoji or GIFs, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
@@ -799,10 +801,22 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let pasteboard = UIPasteboard.general
         let count = pasteboard.changeCount
         guard count != store.lastChangeCount else { return }
+        guard pasteboard.hasStrings else { store.lastChangeCount = count; return }
+        guard let text = pasteboard.string else {
+            // A keyboard can't show iOS's "Allow Paste?" prompt, so with the default "Ask" setting iOS
+            // returns no text. Stop polling, explain the fix, and try again next time the keyboard opens.
+            clipboardTimer?.invalidate(); clipboardTimer = nil
+            if !clipboardBlocked {
+                clipboardBlocked = true
+                if panel == "clips" { rebuildContent() } else if panel == nil { refreshSuggestions() }
+            }
+            return
+        }
+        clipboardBlocked = false
         store.lastChangeCount = count
+        store.clipboardWorked = true
         // Only text is kept. Password managers mark their copies, and those are skipped.
-        guard pasteboard.hasStrings, let text = pasteboard.string,
-              ClipboardHistory.shouldCapture(text, types: pasteboard.types) else { return }
+        guard ClipboardHistory.shouldCapture(text, types: pasteboard.types) else { return }
         if let data = text.data(using: .utf8), (try? JSONDecoder().decode(WritingConnection.self, from: data)) != nil { return }
         store.capture(text)
         freshClip = (text, Date())
@@ -811,6 +825,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     /// A "just copied" chip for the suggestion bar, shown for two minutes or until typing starts.
     func recentClipChoice() -> (String, () -> Void)? {
+        if clipboardBlocked && currentWord.isEmpty {
+            return ("📋 Allow clipboard access", { [weak self] in self?.showPanel("clips") })
+        }
         guard let clip = freshClip, Date().timeIntervalSince(clip.date) < 120, currentWord.isEmpty else { return nil }
         return ("📋 " + ClipboardHistory.preview(clip.text, length: 18), { [weak self] in
             self?.freshClip = nil; self?.insert(clip.text)
@@ -836,6 +853,18 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 self.preferences.clipboardHistory = true
                 self.store.lastChangeCount = -1 // Include what is already on the clipboard.
                 self.savePreferences(); self.showPanel("clips")
+            }
+        } else if clipboardBlocked || !store.clipboardWorked {
+            note(clipboardBlocked
+                 ? "⚠️ iOS is blocking the clipboard. Open Settings → Apps → WianTribe Keyboard → Paste from Other Apps and choose Allow. (If you don't see it, open the WianTribe app → Tools → Clipboard → Test clipboard access first.)"
+                 : "Copy some text in any app, then come back. If nothing appears, open Settings → Apps → WianTribe Keyboard → Paste from Other Apps and choose Allow.", in: stack)
+            panelButton("Check the clipboard again", in: stack) { [weak self] in
+                guard let self else { return }
+                self.clipboardBlocked = false
+                self.store.lastChangeCount = -1
+                self.startClipboardWatch()
+                if !self.clipboardBlocked { self.rebuildContent() }
+                self.setStatus(self.clipboardBlocked ? "Still blocked. Check Paste from Other Apps" : (self.store.clipboardWorked ? "Clipboard access works" : "Nothing new on the clipboard yet"))
             }
         }
         let actions = UIStackView(); actions.axis = .horizontal; actions.distribution = .fillEqually; actions.spacing = 5

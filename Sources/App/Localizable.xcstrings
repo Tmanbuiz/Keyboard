@@ -1123,6 +1123,40 @@
         }
       }
     },
+    "In Settings: Paste from Other Apps → Allow. Also turn on clipboard history inside the keyboard: 📋 → Turn on clipboard history.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En Ajustes: Pegar desde otras apps → Permitir. Activa también el historial dentro del teclado: 📋 → Activar historial del portapapeles."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dans Réglages : Coller depuis d'autres apps → Autoriser. Activez aussi l'historique dans le clavier : 📋 → Activer l'historique du presse-papiers."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Em Ajustes: Colar de Outros Apps → Permitir. Ative também o histórico dentro do teclado: 📋 → Ativar histórico."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In den Einstellungen: Aus anderen Apps einsetzen → Erlauben. Schalte außerdem den Verlauf in der Tastatur ein: 📋 → Zwischenablageverlauf einschalten."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "في الإعدادات: اللصق من التطبيقات الأخرى ← السماح. وشغّل أيضًا سجل الحافظة داخل لوحة المفاتيح: 📋 ← تشغيل سجل الحافظة."
+          }
+        }
+      }
+    },
     "Independent software by WianTribe. Samsung's branding and assets are not used.": {
       "localizations": {
         "es": {
@@ -1735,6 +1769,40 @@
         }
       }
     },
+    "Open WianTribe settings": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir ajustes de WianTribe"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir les réglages de WianTribe"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir ajustes do WianTribe"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WianTribe-Einstellungen öffnen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح إعدادات WianTribe"
+          }
+        }
+      }
+    },
     "Open a message, hold 🌐, then choose WianTribe Keyboard.": {
       "localizations": {
         "es": {
@@ -2279,6 +2347,40 @@
         }
       }
     },
+    "Set up clipboard access": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurar acceso al portapapeles"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurer l'accès au presse-papiers"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Configurar acesso à área de transferência"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff auf die Zwischenablage einrichten"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إعداد الوصول إلى الحافظة"
+          }
+        }
+      }
+    },
     "Settings": {
       "localizations": {
         "es": {
@@ -2615,6 +2717,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "اضغط ⚙︎ على لوحة المفاتيح لاختيار السمة والتخطيط واللغة."
+          }
+        }
+      }
+    },
+    "Test clipboard access": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Probar acceso al portapapeles"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tester l'accès au presse-papiers"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Testar acesso à área de transferência"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff auf die Zwischenablage testen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختبار الوصول إلى الحافظة"
           }
         }
       }
@@ -3601,6 +3737,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "كلماتك.\nبطريقتك."
+          }
+        }
+      }
+    },
+    "iOS asks before an app reads what you copied, but a keyboard can't show that question, so set Paste from Other Apps to Allow. The keyboard then keeps what you copy while it's open.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS pregunta antes de que una app lea lo que copiaste, pero un teclado no puede mostrar esa pregunta, así que pon «Pegar desde otras apps» en «Permitir». Así el teclado guardará lo que copies mientras esté abierto."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS demande avant qu'une app lise ce que vous avez copié, mais un clavier ne peut pas afficher cette question : réglez « Coller depuis d'autres apps » sur « Autoriser ». Le clavier gardera alors ce que vous copiez tant qu'il est ouvert."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O iOS pergunta antes de um app ler o que você copiou, mas um teclado não consegue mostrar essa pergunta. Por isso, ajuste “Colar de Outros Apps” para “Permitir”. Assim o teclado guarda o que você copia enquanto está aberto."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS fragt, bevor eine App Kopiertes liest, aber eine Tastatur kann diese Frage nicht anzeigen. Stelle daher „Aus anderen Apps einsetzen“ auf „Erlauben“. Dann merkt sich die Tastatur, was du kopierst, solange sie geöffnet ist."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يسأل iOS قبل أن يقرأ أي تطبيق ما نسخته، لكن لوحة المفاتيح لا تستطيع عرض هذا السؤال، لذا اضبط «اللصق من التطبيقات الأخرى» على «السماح». بعدها تحتفظ لوحة المفاتيح بما تنسخه أثناء فتحها."
           }
         }
       }

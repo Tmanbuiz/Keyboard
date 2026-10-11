@@ -49,6 +49,11 @@ final class KeyboardStore {
         get { local.object(forKey: "clipboard.changeCount") as? Int ?? -1 }
         set { local.set(newValue, forKey: "clipboard.changeCount") }
     }
+    /// Set after the first copy is read successfully, so setup help can be hidden from then on.
+    var clipboardWorked: Bool {
+        get { local.bool(forKey: "clipboard.worked") }
+        set { local.set(newValue, forKey: "clipboard.worked") }
+    }
     func capture(_ text: String) {
         phrases = ClipboardHistory.adding(text, to: phrases, keepDays: preferences.clipboardDays)
     }
