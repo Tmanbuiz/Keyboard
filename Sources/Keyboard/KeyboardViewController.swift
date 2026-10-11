@@ -97,7 +97,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         glideLayer.frame = content.bounds
-        let wantedHeight = traitCollection.verticalSizeClass == .compact ? min(preferences.height, 205) : preferences.height
+        let wantedHeight = CGFloat(traitCollection.verticalSizeClass == .compact ? min(preferences.height, 205) : preferences.height)
         if heightConstraint?.constant != wantedHeight { heightConstraint?.constant = wantedHeight }
     }
 
@@ -487,7 +487,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let width = Double(letterButtons.first?.bounds.width ?? 32)
             let choices = decoder.decode(path: glidePath, centers: centers, entries: engine.entries, language: preferences.language, keyWidth: width)
             guard !choices.isEmpty else { setStatus("Swipe a little more slowly, or tap to type"); return }
-            glideChoices = choices.map { glideShift ? $0.word.prefix(1).uppercased() + $0.word.dropFirst() : $0.word }
+            glideChoices = choices.map { capsLock ? $0.word.uppercased() : (glideShift ? $0.word.prefix(1).uppercased() + $0.word.dropFirst() : $0.word) }
             let prefix = !before.isEmpty && before.last?.isWhitespace == false ? " " : ""
             glideInserted = glideChoices[0]
             textDocumentProxy.insertText(prefix + glideInserted + " ")
@@ -516,7 +516,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         guard let key = gesture.view as? KeyButton, let letter = key.letter else { return }
         if gesture.state == .began {
             key.longPressConsumed = true
-            accentValues = accents(for: letter); accentSelection = 0
+            accentValues = accents(for: letter); accentSelection = min(1, accentValues.count - 1)
             let popup = UIStackView(); popup.axis = .horizontal; popup.distribution = .fillEqually; popup.spacing = 2
             popup.backgroundColor = palette.function; popup.layer.cornerRadius = 8; popup.clipsToBounds = true
             let width = min(content.bounds.width - 8, CGFloat(accentValues.count) * 32)
