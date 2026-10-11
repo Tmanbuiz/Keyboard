@@ -48,7 +48,7 @@ private struct HomeView: View {
                 }.padding(20).background(card, in: RoundedRectangle(cornerRadius: 22))
                 HStack(alignment: .top, spacing: 20) {
                     feature("wifi.slash", "Offline first")
-                    feature("globe", "EN · YO · NG")
+                    feature("globe", "\(LanguageCatalog.all.count) languages")
                     feature("hand.draw", "Swipe to type")
                 }.frame(maxWidth: .infinity)
                 Text("Independent software by WianTribe. Samsung's branding and assets are not used.")
@@ -193,7 +193,9 @@ private struct SettingsView: View {
                 HStack { Text("Height"); Slider(value: $model.preferences.height, in: 240...360, step: 30); Text("\(Int(model.preferences.height))").monospacedDigit() }
             }
             Section("Typing") {
-                Picker("Language", selection: $model.preferences.language) { ForEach(KeyboardLanguage.allCases) { Text($0.title).tag($0) } }
+                NavigationLink { LanguagesView() } label: {
+                    LabeledContent("Languages", value: model.preferences.activeLanguages.map(\.shortTitle).joined(separator: " · "))
+                }
                 Toggle("Autocorrect", isOn: $model.preferences.autocorrect)
                 Toggle("Word suggestions", isOn: $model.preferences.predictions)
                 Toggle("Swipe typing", isOn: $model.preferences.swipeTyping)
@@ -228,6 +230,51 @@ private struct SettingsView: View {
             .confirmationDialog("Clear clipboard history, pinned text and learned words on this device?", isPresented: $clearData) {
                 Button("Clear personal data", role: .destructive) { model.clearPersonalData() }
             }
+    }
+}
+
+private struct LanguagesView: View {
+    @EnvironmentObject private var model: AppModel
+    private var enabled: [KeyboardLanguage] { model.preferences.activeLanguages }
+    var body: some View {
+        List {
+            Section {
+                Toggle("Multilingual typing", isOn: $model.preferences.multilingual)
+            } footer: { Text("Suggestions and swipe draw on all your languages that share an alphabet, so you can mix them in one message without switching.") }
+            Section("Your languages") {
+                ForEach(enabled) { language in
+                    HStack {
+                        VStack(alignment: .leading) { Text(language.title); Text(language.pack.englishName).font(.caption).foregroundStyle(.secondary) }
+                        Spacer()
+                        if language == model.preferences.language { Text("Current").font(.caption).foregroundStyle(.mint) }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture { model.preferences.language = language }
+                    .swipeActions {
+                        if language != model.preferences.language {
+                            Button("Remove", role: .destructive) { model.preferences.languages = enabled.filter { $0 != language } }
+                        }
+                    }
+                }
+            }
+            Section("Add a language") {
+                ForEach(LanguageCatalog.all.filter { pack in !enabled.contains { $0.code == pack.code } }.sorted { $0.englishName < $1.englishName }) { pack in
+                    Button {
+                        guard enabled.count < 6 else { return }
+                        model.preferences.languages = enabled + [KeyboardLanguage(pack.code)]
+                    } label: {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(pack.name).foregroundStyle(.primary)
+                                Text(pack.englishName + (pack.hasDictionary ? "" : " · layout and accents only")).font(.caption).foregroundStyle(.secondary)
+                            }
+                            Spacer(); Image(systemName: "plus.circle")
+                        }
+                    }.disabled(enabled.count >= 6)
+                }
+            }
+            Section { Text("Word lists from wordfreq by Robyn Speer (CC BY-SA 4.0). Yorùbá and Naija Pidgin lists by WianTribe. Up to 6 languages.").font(.caption).foregroundStyle(.secondary) }
+        }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Languages")
     }
 }
 
@@ -270,7 +317,7 @@ private struct PhrasesView: View {
 private struct WriterView: View {
     @State private var text = ""
     @State private var result = ""
-    @State private var language: KeyboardLanguage = .english
+    @State private var language: KeyboardLanguage = LanguageCatalog.deviceLanguages().first ?? .english
     @State private var endpoint = ""
     @State private var token = ""
     @State private var status = ""

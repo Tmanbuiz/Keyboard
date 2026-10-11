@@ -59,6 +59,7 @@ final class KeyButton: UIButton {
     /// Characters offered when this key is held (accents, punctuation).
     var alternates: [String] = []
     var longPressConsumed = false
+    private(set) var hintText: String?
     var normalColor: UIColor = .clear
     private let hint = UILabel()
 
@@ -88,6 +89,7 @@ final class KeyButton: UIButton {
         titleLabel?.minimumScaleFactor = 0.7
         accessibilityLabel = title
         if let hint {
+            hintText = hint
             self.hint.text = hint
             self.hint.font = .systemFont(ofSize: 9)
             self.hint.textColor = palette.text.withAlphaComponent(0.6)

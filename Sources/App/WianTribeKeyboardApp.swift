@@ -24,6 +24,6 @@ final class AppModel: ObservableObject {
     func reload() { preferences = store.preferences; phrases = store.phrases }
     func savePhrase(_ text: String) { store.addPhrase(text); phrases = store.phrases }
     func clearPersonalData() { store.clearPersonalData(); phrases = [] }
-    func clearLearnedWords() { store.learned = [:] }
+    func clearLearnedWords() { store.learned = [:]; store.learnedPairs = [:] }
     func clearRecentClips() { store.clearRecentClips(); phrases = store.phrases }
 }

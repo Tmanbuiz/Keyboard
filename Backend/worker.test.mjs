@@ -42,3 +42,11 @@ test("provider errors never echo submitted text or credentials", async () => {
   const response = await worker.fetch(request(), environment({ AI: { run: async () => { throw new Error(secret); } } }));
   assert.equal(response.status, 502); assert.equal((await response.text()).includes(secret), false);
 });
+test("language codes from the keyboard are accepted and unknown ones rejected", async () => {
+  let input;
+  const ok = await worker.fetch(request({ text: "bonjour", action: "translate", language: "fr" }), environment({ AI: { run: async (_, payload) => { input = payload; return { response: "hello" }; } } }));
+  assert.equal(ok.status, 200); assert.match(input.messages[0].content, /French/);
+  for (const language of ["xx", "__proto__", "toString", 7]) {
+    assert.equal((await worker.fetch(request({ text: "hi", action: "translate", language }), environment())).status, 400);
+  }
+});

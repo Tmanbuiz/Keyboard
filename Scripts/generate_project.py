@@ -57,7 +57,7 @@ write_plist("Keyboard-Info.plist", {
     **common_info, "CFBundleDisplayName": "WianTribe Keyboard", "CFBundlePackageType": "XPC!",
     "NSExtension": {"NSExtensionPointIdentifier": "com.apple.keyboard-service",
                     "NSExtensionPrincipalClass": "$(PRODUCT_MODULE_NAME).KeyboardViewController",
-                    "NSExtensionAttributes": {"IsASCIICapable": True, "PrimaryLanguage": "en-US",
+                    "NSExtensionAttributes": {"IsASCIICapable": True, "PrimaryLanguage": "mul",
                                                "RequestsOpenAccess": True, "PrefersRightToLeft": False}}
 })
 write_plist("Sideload.entitlements", {})
@@ -72,13 +72,15 @@ project_id = identifier("project")
 app_id = identifier("target-app")
 keyboard_id = identifier("target-keyboard")
 all_files = sorted({str(p.relative_to(ROOT)) for p in (ROOT / "Sources").rglob("*.swift")})
-resources = ["Sources/Core/Resources/Lexicon.json", "Configuration/PrivacyInfo.xcprivacy"]
+resources = ["Sources/Core/Resources/Languages.json", "Configuration/PrivacyInfo.xcprivacy"]
+# Dictionaries and emoji data are only needed by the keyboard, so the app stays small.
+keyboard_data = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Core/Resources").glob("*") if p.is_file() and p.name != "Languages.json")
 media = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Keyboard/Media").glob("*") if p.is_file())
-all_paths = all_files + resources + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements"]
+all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements"]
 refs = {}
 for path in all_paths:
     suffix = pathlib.Path(path).suffix
-    filetype = {".swift": "sourcecode.swift", ".json": "text.json", ".png": "image.png", ".gif": "image.gif", ".plist": "text.plist.xml", ".entitlements": "text.plist.entitlements", ".xcprivacy": "text.xml", ".xcassets": "folder.assetcatalog"}[suffix]
+    filetype = {".swift": "sourcecode.swift", ".json": "text.json", ".txt": "text", ".png": "image.png", ".gif": "image.gif", ".plist": "text.plist.xml", ".entitlements": "text.plist.entitlements", ".xcprivacy": "text.xml", ".xcassets": "folder.assetcatalog"}[suffix]
     refs[path] = add("file-" + path, "PBXFileReference", lastKnownFileType=filetype, path=path, sourceTree="<group>")
 app_product = add("product-app", "PBXFileReference", explicitFileType="wrapper.application", includeInIndex=0, path="WianTribeKeyboard.app", sourceTree="BUILT_PRODUCTS_DIR")
 keyboard_product = add("product-keyboard", "PBXFileReference", explicitFileType="wrapper.app-extension", includeInIndex=0, path="WianTribeKeyboardExtension.appex", sourceTree="BUILT_PRODUCTS_DIR")
@@ -92,7 +94,7 @@ def phase(label, isa, paths):
 app_sources = phase("app-sources", "PBXSourcesBuildPhase", [p for p in all_files if not p.startswith("Sources/Keyboard/")])
 keyboard_sources = phase("keyboard-sources", "PBXSourcesBuildPhase", [p for p in all_files if not p.startswith("Sources/App/")])
 app_resources = phase("app-resources", "PBXResourcesBuildPhase", resources + ["Sources/App/Assets.xcassets"])
-keyboard_resources = phase("keyboard-resources", "PBXResourcesBuildPhase", resources + media)
+keyboard_resources = phase("keyboard-resources", "PBXResourcesBuildPhase", resources + keyboard_data + media)
 app_frameworks = phase("app-frameworks", "PBXFrameworksBuildPhase", [])
 keyboard_frameworks = phase("keyboard-frameworks", "PBXFrameworksBuildPhase", [])
 embed_file = add("embed-file", "PBXBuildFile", fileRef=keyboard_product, settings={"ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]})

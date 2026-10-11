@@ -15,14 +15,20 @@ public struct GlideCandidate: Equatable {
 public struct GlideDecoder {
     public init() {}
 
-    public func decode(path: [GlidePoint], centers: [Character: GlidePoint], entries: [LexiconEntry],
-                       language: KeyboardLanguage, keyWidth: Double, limit: Int = 3) -> [GlideCandidate] {
+    /// Letters whose key centre is close enough to the start of the path to begin a word.
+    public func startLetters(path: [GlidePoint], centers: [Character: GlidePoint], keyWidth: Double) -> Set<Character> {
+        guard let first = path.first else { return [] }
+        return Set(centers.filter { first.distance(to: $0.value) < keyWidth * 1.1 }.keys)
+    }
+
+    public func decode(path: [GlidePoint], centers: [Character: GlidePoint], words: [(String, Int)],
+                       keyWidth: Double, limit: Int = 3) -> [GlideCandidate] {
         guard path.count >= 3, keyWidth > 0, let first = path.first, let last = path.last,
               pathLength(path) > keyWidth * 0.75 else { return [] }
         let observed = resample(path, count: 32)
         var ranked: [GlideCandidate] = []
-        for entry in entries where entry.language == language || (language == .pidgin && entry.language == .english) {
-            let letters = Array(entry.word.lowercased())
+        for (word, frequency) in words {
+            let letters = Array(word)
             guard letters.count > 1, let start = letters.first.flatMap({ centers[$0] }),
                   let end = letters.last.flatMap({ centers[$0] }),
                   first.distance(to: start) < keyWidth * 1.1, last.distance(to: end) < keyWidth * 1.1 else { continue }
@@ -39,8 +45,8 @@ public struct GlideDecoder {
             guard shape < 1.6, lengthDifference < 1.5 else { continue }
             let score = shape + min(lengthDifference, 1) * 0.2
                 + (first.distance(to: start) + last.distance(to: end)) / keyWidth * 0.25
-                - log(Double(max(entry.frequency, 1)) + 1) * 0.035
-            ranked.append(GlideCandidate(word: entry.word, score: score))
+                - log(Double(max(frequency, 1)) + 1) * 0.035
+            ranked.append(GlideCandidate(word: word, score: score))
         }
         return Array(ranked.sorted { $0.score == $1.score ? $0.word < $1.word : $0.score < $1.score }.prefix(limit))
     }

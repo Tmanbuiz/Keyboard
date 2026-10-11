@@ -1,17 +1,5 @@
 import Foundation
 
-public enum KeyboardLanguage: String, Codable, CaseIterable, Identifiable {
-    case english, yoruba, pidgin
-    public var id: String { rawValue }
-    public var title: String {
-        switch self { case .english: return "English"; case .yoruba: return "Yorùbá"; case .pidgin: return "Naija Pidgin" }
-    }
-    public var shortTitle: String {
-        switch self { case .english: return "EN"; case .yoruba: return "YO"; case .pidgin: return "NG" }
-    }
-    public var speechLocale: String { self == .yoruba ? "yo-NG" : "en-NG" }
-}
-
 public enum KeyboardTheme: String, Codable, CaseIterable, Identifiable {
     case auto, ocean, midnight, light, rose, forest, sunset, slate
     public var id: String { rawValue }
@@ -44,7 +32,11 @@ public enum HandMode: String, Codable, CaseIterable, Identifiable {
 }
 
 public struct KeyboardPreferences: Codable, Equatable {
-    public var language: KeyboardLanguage = .english
+    /// The language whose layout is shown.
+    public var language: KeyboardLanguage = LanguageCatalog.deviceLanguages().first ?? .english
+    /// Languages the person switches between; with multilingual typing on, suggestions draw on all of them.
+    public var languages: [KeyboardLanguage] = KeyboardPreferences.defaultLanguages()
+    public var multilingual = true
     public var theme: KeyboardTheme = .auto
     public var accent: KeyAccent = .theme
     public var keySounds = true
@@ -67,11 +59,25 @@ public struct KeyboardPreferences: Codable, Equatable {
     public var clipboardDays = 7
     public init() {}
 
+    public static func defaultLanguages() -> [KeyboardLanguage] {
+        let device = LanguageCatalog.deviceLanguages()
+        return Array((device.isEmpty ? [.english] : device).prefix(3))
+    }
+
+    /// Enabled languages, always including the current one, without duplicates.
+    public var activeLanguages: [KeyboardLanguage] {
+        var result = [language]
+        for item in languages where !result.contains(item) { result.append(item) }
+        return result
+    }
+
     // Missing keys fall back to defaults, so adding a setting never resets existing ones.
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         let d = KeyboardPreferences()
         language = (try? c.decodeIfPresent(KeyboardLanguage.self, forKey: .language)) ?? d.language
+        languages = (try? c.decodeIfPresent([KeyboardLanguage].self, forKey: .languages)) ?? [language]
+        multilingual = (try? c.decodeIfPresent(Bool.self, forKey: .multilingual)) ?? d.multilingual
         theme = (try? c.decodeIfPresent(KeyboardTheme.self, forKey: .theme)) ?? d.theme
         accent = (try? c.decodeIfPresent(KeyAccent.self, forKey: .accent)) ?? d.accent
         keySounds = (try? c.decodeIfPresent(Bool.self, forKey: .keySounds)) ?? d.keySounds
@@ -133,9 +139,10 @@ public enum TextContext {
         return [".", "!", "?"].contains(String(trimmed.suffix(1))) && trimmed.count < text.count
     }
 
-    public static func matchingCase(_ candidate: String, to original: String) -> String {
-        if !original.isEmpty && original == original.uppercased() { return candidate.uppercased() }
-        if original.first?.isUppercase == true { return candidate.prefix(1).uppercased() + candidate.dropFirst() }
+    public static func matchingCase(_ candidate: String, to original: String, language: LanguagePack? = nil) -> String {
+        let upper: (String) -> String = { language?.uppercased($0) ?? $0.uppercased() }
+        if original.count > 1 && original.contains(where: \.isUppercase) && original == upper(original) { return upper(candidate) }
+        if original.first?.isUppercase == true { return upper(String(candidate.prefix(1))) + candidate.dropFirst() }
         return candidate
     }
 

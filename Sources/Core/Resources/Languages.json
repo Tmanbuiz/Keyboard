@@ -1,0 +1,1139 @@
+[
+ {
+  "code": "en",
+  "name": "English",
+  "englishName": "English",
+  "shortTitle": "EN",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "à",
+    "á",
+    "â",
+    "ä",
+    "ã",
+    "å",
+    "ā",
+    "æ"
+   ],
+   "c": [
+    "ç",
+    "ć",
+    "č"
+   ],
+   "e": [
+    "è",
+    "é",
+    "ê",
+    "ë",
+    "ē",
+    "ė"
+   ],
+   "i": [
+    "ì",
+    "í",
+    "î",
+    "ï",
+    "ī"
+   ],
+   "n": [
+    "ñ",
+    "ń"
+   ],
+   "o": [
+    "ò",
+    "ó",
+    "ô",
+    "ö",
+    "õ",
+    "ø",
+    "ō",
+    "œ"
+   ],
+   "s": [
+    "ß",
+    "ś",
+    "š"
+   ],
+   "u": [
+    "ù",
+    "ú",
+    "û",
+    "ü",
+    "ū"
+   ],
+   "y": [
+    "ÿ",
+    "ý"
+   ],
+   "z": [
+    "ž",
+    "ź",
+    "ż"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "en_US",
+  "rightToLeft": false,
+  "nextWords": {
+   "": [
+    "I",
+    "the",
+    "you"
+   ],
+   "thank": [
+    "you",
+    "god",
+    "goodness"
+   ],
+   "how": [
+    "are",
+    "is",
+    "do"
+   ],
+   "good": [
+    "morning",
+    "night",
+    "luck"
+   ],
+   "i": [
+    "am",
+    "will",
+    "have"
+   ],
+   "see": [
+    "you",
+    "the",
+    "it"
+   ],
+   "happy": [
+    "birthday",
+    "new",
+    "to"
+   ],
+   "on": [
+    "my",
+    "the",
+    "your"
+   ],
+   "let": [
+    "me",
+    "us",
+    "you"
+   ],
+   "talk": [
+    "to",
+    "soon",
+    "later"
+   ],
+   "what": [
+    "is",
+    "are",
+    "do"
+   ],
+   "i'm": [
+    "going",
+    "not",
+    "on"
+   ],
+   "are": [
+    "you",
+    "we",
+    "they"
+   ],
+   "can": [
+    "you",
+    "i",
+    "we"
+   ],
+   "do": [
+    "you",
+    "not",
+    "it"
+   ],
+   "have": [
+    "a",
+    "you",
+    "to"
+   ],
+   "will": [
+    "be",
+    "you",
+    "do"
+   ],
+   "in": [
+    "the",
+    "a",
+    "my"
+   ],
+   "of": [
+    "the",
+    "my",
+    "course"
+   ],
+   "to": [
+    "the",
+    "be",
+    "you"
+   ],
+   "for": [
+    "the",
+    "you",
+    "your"
+   ]
+  }
+ },
+ {
+  "code": "es",
+  "name": "Español",
+  "englishName": "Spanish",
+  "shortTitle": "ES",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjklñ",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "á"
+   ],
+   "e": [
+    "é"
+   ],
+   "i": [
+    "í"
+   ],
+   "o": [
+    "ó"
+   ],
+   "u": [
+    "ú",
+    "ü"
+   ],
+   "n": [
+    "ñ"
+   ],
+   "?": [
+    "¿"
+   ],
+   "!": [
+    "¡"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "es",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "fr",
+  "name": "Français",
+  "englishName": "French",
+  "shortTitle": "FR",
+  "rows": [
+   "azertyuiop",
+   "qsdfghjklm",
+   "wxcvbn"
+  ],
+  "alternates": {
+   "a": [
+    "à",
+    "â",
+    "æ"
+   ],
+   "c": [
+    "ç"
+   ],
+   "e": [
+    "é",
+    "è",
+    "ê",
+    "ë"
+   ],
+   "i": [
+    "î",
+    "ï"
+   ],
+   "o": [
+    "ô",
+    "œ"
+   ],
+   "u": [
+    "ù",
+    "û",
+    "ü"
+   ],
+   "y": [
+    "ÿ"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "fr",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "pt",
+  "name": "Português",
+  "englishName": "Portuguese",
+  "shortTitle": "PT",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "ã",
+    "á",
+    "à",
+    "â"
+   ],
+   "c": [
+    "ç"
+   ],
+   "e": [
+    "é",
+    "ê"
+   ],
+   "i": [
+    "í"
+   ],
+   "o": [
+    "õ",
+    "ó",
+    "ô"
+   ],
+   "u": [
+    "ú",
+    "ü"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "pt_BR",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "de",
+  "name": "Deutsch",
+  "englishName": "German",
+  "shortTitle": "DE",
+  "rows": [
+   "qwertzuiopü",
+   "asdfghjklöä",
+   "yxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "ä"
+   ],
+   "o": [
+    "ö"
+   ],
+   "u": [
+    "ü"
+   ],
+   "s": [
+    "ß"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "de",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "it",
+  "name": "Italiano",
+  "englishName": "Italian",
+  "shortTitle": "IT",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "à",
+    "á"
+   ],
+   "e": [
+    "è",
+    "é"
+   ],
+   "i": [
+    "ì",
+    "í"
+   ],
+   "o": [
+    "ò",
+    "ó"
+   ],
+   "u": [
+    "ù",
+    "ú"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "it",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "nl",
+  "name": "Nederlands",
+  "englishName": "Dutch",
+  "shortTitle": "NL",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "e": [
+    "é",
+    "ë",
+    "è"
+   ],
+   "i": [
+    "ï",
+    "í"
+   ],
+   "o": [
+    "ó",
+    "ö"
+   ],
+   "u": [
+    "ü",
+    "ú"
+   ],
+   "a": [
+    "á",
+    "ä"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "nl",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "sv",
+  "name": "Svenska",
+  "englishName": "Swedish",
+  "shortTitle": "SV",
+  "rows": [
+   "qwertyuiopå",
+   "asdfghjklöä",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "e": [
+    "é"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "sv",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "nb",
+  "name": "Norsk",
+  "englishName": "Norwegian",
+  "shortTitle": "NO",
+  "rows": [
+   "qwertyuiopå",
+   "asdfghjkløæ",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "e": [
+    "é",
+    "è"
+   ],
+   "o": [
+    "ö"
+   ],
+   "a": [
+    "ä"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "nb",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "da",
+  "name": "Dansk",
+  "englishName": "Danish",
+  "shortTitle": "DA",
+  "rows": [
+   "qwertyuiopå",
+   "asdfghjkløæ",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "e": [
+    "é"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "da",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "fi",
+  "name": "Suomi",
+  "englishName": "Finnish",
+  "shortTitle": "FI",
+  "rows": [
+   "qwertyuiopå",
+   "asdfghjklöä",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "s": [
+    "š"
+   ],
+   "z": [
+    "ž"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "fi",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "pl",
+  "name": "Polski",
+  "englishName": "Polish",
+  "shortTitle": "PL",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "ą"
+   ],
+   "c": [
+    "ć"
+   ],
+   "e": [
+    "ę"
+   ],
+   "l": [
+    "ł"
+   ],
+   "n": [
+    "ń"
+   ],
+   "o": [
+    "ó"
+   ],
+   "s": [
+    "ś"
+   ],
+   "z": [
+    "ż",
+    "ź"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "pl",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "cs",
+  "name": "Čeština",
+  "englishName": "Czech",
+  "shortTitle": "CS",
+  "rows": [
+   "qwertzuiop",
+   "asdfghjkl",
+   "yxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "á"
+   ],
+   "c": [
+    "č"
+   ],
+   "d": [
+    "ď"
+   ],
+   "e": [
+    "é",
+    "ě"
+   ],
+   "i": [
+    "í"
+   ],
+   "n": [
+    "ň"
+   ],
+   "o": [
+    "ó"
+   ],
+   "r": [
+    "ř"
+   ],
+   "s": [
+    "š"
+   ],
+   "t": [
+    "ť"
+   ],
+   "u": [
+    "ú",
+    "ů"
+   ],
+   "y": [
+    "ý"
+   ],
+   "z": [
+    "ž"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "cs",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "ro",
+  "name": "Română",
+  "englishName": "Romanian",
+  "shortTitle": "RO",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "ă",
+    "â"
+   ],
+   "i": [
+    "î"
+   ],
+   "s": [
+    "ș"
+   ],
+   "t": [
+    "ț"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "ro",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "hu",
+  "name": "Magyar",
+  "englishName": "Hungarian",
+  "shortTitle": "HU",
+  "rows": [
+   "qwertzuiop",
+   "asdfghjkl",
+   "yxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "á"
+   ],
+   "e": [
+    "é"
+   ],
+   "i": [
+    "í"
+   ],
+   "o": [
+    "ó",
+    "ö",
+    "ő"
+   ],
+   "u": [
+    "ú",
+    "ü",
+    "ű"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "hu",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "tr",
+  "name": "Türkçe",
+  "englishName": "Turkish",
+  "shortTitle": "TR",
+  "rows": [
+   "qwertyuıopğü",
+   "asdfghjklşi",
+   "zxcvbnmöç"
+  ],
+  "alternates": {
+   "a": [
+    "â"
+   ],
+   "i": [
+    "î"
+   ],
+   "u": [
+    "û"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "tr",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "id",
+  "name": "Bahasa Indonesia",
+  "englishName": "Indonesian",
+  "shortTitle": "ID",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {},
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "id",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "ms",
+  "name": "Bahasa Melayu",
+  "englishName": "Malay",
+  "shortTitle": "MS",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {},
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "ms",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "fil",
+  "name": "Filipino",
+  "englishName": "Filipino",
+  "shortTitle": "FIL",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "n": [
+    "ñ"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "fil",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "sw",
+  "name": "Kiswahili",
+  "englishName": "Swahili",
+  "shortTitle": "SW",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {},
+  "hasDictionary": false,
+  "autocorrect": false,
+  "checker": "sw",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "yo",
+  "name": "Yorùbá",
+  "englishName": "Yoruba",
+  "shortTitle": "YO",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "à",
+    "á"
+   ],
+   "e": [
+    "ẹ",
+    "̀",
+    "́",
+    "è",
+    "é"
+   ],
+   "i": [
+    "ì",
+    "í"
+   ],
+   "o": [
+    "ọ",
+    "̀",
+    "́",
+    "ò",
+    "ó"
+   ],
+   "u": [
+    "ù",
+    "ú"
+   ],
+   "s": [
+    "ṣ"
+   ],
+   "n": [
+    "ǹ",
+    "ń"
+   ],
+   "m": [
+    "m",
+    "̀",
+    "ḿ"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": false,
+  "checker": "yo",
+  "rightToLeft": false,
+  "nextWords": {
+   "": [
+    "ẹ",
+    "mo",
+    "ṣé"
+   ],
+   "ẹ": [
+    "kú",
+    "káàárọ̀",
+    "ṣé"
+   ],
+   "ṣé": [
+    "dáadáa",
+    "o",
+    "ẹ"
+   ]
+  }
+ },
+ {
+  "code": "pcm",
+  "name": "Naija Pidgin",
+  "englishName": "Nigerian Pidgin",
+  "shortTitle": "NG",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "à",
+    "á"
+   ],
+   "e": [
+    "ẹ",
+    "è",
+    "é"
+   ],
+   "o": [
+    "ọ",
+    "ò",
+    "ó"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": false,
+  "checker": "en_US",
+  "rightToLeft": false,
+  "nextWords": {
+   "": [
+    "how",
+    "abeg",
+    "i"
+   ],
+   "how": [
+    "far",
+    "you",
+    "body"
+   ],
+   "i": [
+    "dey",
+    "go",
+    "no"
+   ],
+   "you": [
+    "dey",
+    "go",
+    "sabi"
+   ],
+   "wetin": [
+    "dey",
+    "happen",
+    "you"
+   ],
+   "e": [
+    "don",
+    "dey",
+    "be"
+   ]
+  }
+ },
+ {
+  "code": "ig",
+  "name": "Igbo",
+  "englishName": "Igbo",
+  "shortTitle": "IG",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "a": [
+    "à",
+    "á"
+   ],
+   "e": [
+    "è",
+    "é"
+   ],
+   "i": [
+    "ị",
+    "ì",
+    "í"
+   ],
+   "o": [
+    "ọ",
+    "ò",
+    "ó"
+   ],
+   "u": [
+    "ụ",
+    "ù",
+    "ú"
+   ],
+   "n": [
+    "ṅ",
+    "ń",
+    "ǹ"
+   ],
+   "m": [
+    "ḿ"
+   ]
+  },
+  "hasDictionary": false,
+  "autocorrect": false,
+  "checker": "ig",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "ha",
+  "name": "Hausa",
+  "englishName": "Hausa",
+  "shortTitle": "HA",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "alternates": {
+   "b": [
+    "ɓ"
+   ],
+   "d": [
+    "ɗ"
+   ],
+   "k": [
+    "ƙ"
+   ],
+   "y": [
+    "ƴ"
+   ],
+   "'": [
+    "ʼ"
+   ],
+   "a": [
+    "à",
+    "â"
+   ],
+   "e": [
+    "è",
+    "ê"
+   ],
+   "i": [
+    "ì",
+    "î"
+   ],
+   "o": [
+    "ò",
+    "ô"
+   ],
+   "u": [
+    "ù",
+    "û"
+   ]
+  },
+  "hasDictionary": false,
+  "autocorrect": false,
+  "checker": "ha",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "ru",
+  "name": "Русский",
+  "englishName": "Russian",
+  "shortTitle": "RU",
+  "rows": [
+   "йцукенгшщзх",
+   "фывапролджэ",
+   "ячсмитьбю"
+  ],
+  "alternates": {
+   "е": [
+    "ё"
+   ],
+   "ь": [
+    "ъ"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "ru",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "uk",
+  "name": "Українська",
+  "englishName": "Ukrainian",
+  "shortTitle": "UK",
+  "rows": [
+   "йцукенгшщзх",
+   "фівапролджє",
+   "ячсмитьбю"
+  ],
+  "alternates": {
+   "і": [
+    "ї"
+   ],
+   "г": [
+    "ґ"
+   ],
+   "х": [
+    "ї"
+   ],
+   "ь": [
+    "'"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": true,
+  "checker": "uk",
+  "rightToLeft": false,
+  "nextWords": {}
+ },
+ {
+  "code": "ar",
+  "name": "العربية",
+  "englishName": "Arabic",
+  "shortTitle": "AR",
+  "rows": [
+   "ضصثقفغعهخحج",
+   "شسيبلاتنمكط",
+   "ءظذدزروةى"
+  ],
+  "alternates": {
+   "ا": [
+    "أ",
+    "إ",
+    "آ"
+   ],
+   "ي": [
+    "ئ"
+   ],
+   "و": [
+    "ؤ"
+   ],
+   "ه": [
+    "ة"
+   ],
+   "ء": [
+    "ئ",
+    "ؤ"
+   ]
+  },
+  "hasDictionary": true,
+  "autocorrect": false,
+  "checker": "ar",
+  "rightToLeft": true,
+  "nextWords": {}
+ },
+ {
+  "code": "he",
+  "name": "עברית",
+  "englishName": "Hebrew",
+  "shortTitle": "HE",
+  "rows": [
+   "קראטוןםפ",
+   "שדגכעיחלךף",
+   "זסבהנמצתץ"
+  ],
+  "alternates": {},
+  "hasDictionary": true,
+  "autocorrect": false,
+  "checker": "he",
+  "rightToLeft": true,
+  "nextWords": {}
+ }
+]

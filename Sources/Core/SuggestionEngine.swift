@@ -1,97 +1,142 @@
 import Foundation
 
-public struct LexiconEntry: Codable, Equatable {
-    public let word: String
-    public let frequency: Int
-    public let language: KeyboardLanguage
-    public init(word: String, frequency: Int, language: KeyboardLanguage = .english) {
-        self.word = word; self.frequency = frequency; self.language = language
-    }
-}
-
 public struct WordSuggestion: Equatable {
     public let text: String
     public let score: Double
     public let isCorrection: Bool
+    public let language: String
 }
 
+/// Completions, corrections and next-word predictions across one or more languages.
+/// The first lexicon belongs to the language on screen; the others come from multilingual typing.
 public struct SuggestionEngine {
-    public let entries: [LexiconEntry]
-    private let known: Set<String>
-    private let frequencies: [String: Int]
+    public let language: LanguagePack
+    public let lexicons: [Lexicon]
 
-    public init(entries: [LexiconEntry]) {
-        self.entries = entries
-        known = Set(entries.map { $0.word.lowercased() })
-        frequencies = Dictionary(entries.map { ($0.word.lowercased(), $0.frequency) }, uniquingKeysWith: max)
+    public init(language: LanguagePack, lexicons: [Lexicon]) {
+        self.language = language; self.lexicons = lexicons
     }
 
-    public static func bundled(bundle: Bundle? = nil) -> SuggestionEngine {
-        #if SWIFT_PACKAGE
-        let resourceBundle = bundle ?? Bundle.module
-        #else
-        let resourceBundle = bundle ?? Bundle.main
-        #endif
-        guard let url = resourceBundle.url(forResource: "Lexicon", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let entries = try? JSONDecoder().decode([LexiconEntry].self, from: data) else {
-            return SuggestionEngine(entries: [])
+    /// Loads dictionaries for the current language plus, when multilingual, others written in the same script.
+    public static func make(primary: KeyboardLanguage, others: [KeyboardLanguage] = [], cache: LexiconCache = .shared) -> SuggestionEngine {
+        let pack = primary.pack
+        let script = Set(pack.rows.joined())
+        var lexicons: [Lexicon] = []
+        if let main = cache.lexicon(for: pack.code) { lexicons.append(main) }
+        for other in others where other != primary {
+            // Mixing scripts never helps a single word, so only same-alphabet languages are combined.
+            guard !Set(other.pack.rows.joined()).isDisjoint(with: script), let lexicon = cache.lexicon(for: other.code) else { continue }
+            lexicons.append(lexicon)
         }
-        return SuggestionEngine(entries: entries)
+        return SuggestionEngine(language: pack, lexicons: lexicons)
     }
 
-    public func contains(_ word: String) -> Bool { known.contains(word.lowercased()) }
-    public func frequency(of word: String) -> Int { frequencies[word.lowercased()] ?? 1 }
+    public var primary: Lexicon? { lexicons.first { $0.code == language.code } }
+    public func contains(_ word: String) -> Bool { lexicons.contains { $0.contains(normalize(word)) } }
+    public func frequency(of word: String) -> Int? { lexicons.compactMap { $0.frequency(of: normalize(word)) }.max() }
 
-    public func suggestions(for original: String, previous: String = "", language: KeyboardLanguage,
-                            learned: [String: Int] = [:], supplemental: [String] = [], limit: Int = 3) -> [WordSuggestion] {
-        let word = original.lowercased().precomposedStringWithCanonicalMapping
+    func normalize(_ word: String) -> String { language.lowercased(word).precomposedStringWithCanonicalMapping }
+
+    public func suggestions(for original: String, previous: String = "", learned: [String: Int] = [:],
+                            learnedPairs: [String: [String: Int]] = [:], supplemental: [String] = [], limit: Int = 3) -> [WordSuggestion] {
+        let word = normalize(original)
         if word.isEmpty {
-            let next = nextWords(after: previous, language: language)
-            return Array(next.prefix(limit)).map { WordSuggestion(text: $0, score: 1, isCorrection: false) }
+            return Array(nextWords(after: previous, learnedPairs: learnedPairs).prefix(limit))
+                .map { WordSuggestion(text: $0, score: 1, isCorrection: false, language: language.code) }
         }
         guard word.count <= 32 else { return [] }
+        let likely = Set(nextWords(after: previous, learnedPairs: learnedPairs))
+        let active = activeLanguage(previous: previous)
         var results: [String: WordSuggestion] = [:]
-        let candidates = entries.filter { $0.language == language || (language == .pidgin && $0.language == .english) }
-        func consider(_ candidate: String, frequency: Int, personal: Bool = false) {
-            let normalized = candidate.lowercased().precomposedStringWithCanonicalMapping
+        let first = word.first!
+        let starts: Set<Character> = word.count > 2 ? [first, Array(word)[1]] : [first]
+
+        func consider(_ candidate: String, frequency: Int, code: String, personal: Bool = false) {
+            let normalized = normalize(candidate)
             guard normalized != word else { return }
             let prefix = normalized.hasPrefix(word)
             guard prefix || abs(normalized.count - word.count) <= 2 else { return }
-            let distance = prefix ? 0 : (Self.isTransposition(word, normalized) ? 1 : Self.editDistance(word, normalized))
-            guard prefix || distance <= (word.count > 6 ? 2 : 1) || Self.isTransposition(word, normalized) else { return }
+            let transposed = Self.isTransposition(word, normalized)
+            let distance = prefix ? 0 : (transposed ? 1 : Self.editDistance(word, normalized, limit: 2))
+            guard prefix || distance <= (word.count > 6 ? 2 : 1) else { return }
             let score = (prefix ? 6.0 : 3.0 - Double(distance)) + log(Double(max(frequency, 1)) + 1) / 3
-                + (personal ? 1 : 0) + (nextWords(after: previous, language: language).contains(normalized) ? 2 : 0)
-            let result = WordSuggestion(text: TextContext.matchingCase(candidate, to: original), score: score, isCorrection: !prefix)
+                + (personal ? 1 : 0) + (likely.contains(normalized) ? 2 : 0) + (code == active ? 0.6 : 0)
+            let text = TextContext.matchingCase(candidate, to: original, language: language)
+            let result = WordSuggestion(text: text, score: score, isCorrection: !prefix, language: code)
             if results[normalized] == nil || results[normalized]!.score < score { results[normalized] = result }
         }
-        for entry in candidates { consider(entry.word, frequency: entry.frequency) }
-        for (candidate, count) in learned { consider(candidate, frequency: min(count * 20, 1000), personal: true) }
-        for candidate in supplemental where candidate.count <= 32 { consider(candidate, frequency: frequencies[candidate.lowercased()] ?? 10) }
+        for lexicon in lexicons {
+            for i in lexicon.indexes(startingWith: starts) { consider(lexicon.words[i], frequency: lexicon.frequencies[i], code: lexicon.code) }
+        }
+        for (candidate, count) in learned { consider(candidate, frequency: min(count * 20, 1000), code: language.code, personal: true) }
+        for candidate in supplemental where candidate.count <= 32 {
+            consider(candidate, frequency: frequency(of: candidate) ?? 10, code: language.code)
+        }
         return Array(results.values.sorted { $0.score == $1.score ? $0.text < $1.text : $0.score > $1.score }.prefix(limit))
     }
 
-    public func autocorrection(for word: String, language: KeyboardLanguage, protectedWords: Set<String> = [],
-                               supplemental: [String] = []) -> String? {
-        // Dialect/diacritics, names, acronyms, apostrophes and short words are never silently changed.
-        guard language == .english, (3...24).contains(word.count), word == word.lowercased(),
-              word.unicodeScalars.allSatisfy({ (97...122).contains(Int($0.value)) }),
-              !known.contains(word), !protectedWords.contains(word) else { return nil }
-        let shortlist = suggestions(for: word, language: language, supplemental: supplemental, limit: 12)
-            .filter { $0.isCorrection && (Self.isTransposition(word, $0.text) || Self.editDistance(word, $0.text) == 1) }
-        guard let first = shortlist.first, frequency(of: first.text) >= 30,
-              shortlist.count == 1 || first.score - shortlist[1].score > 0.35 else { return nil }
-        return first.text
+    /// The language the person seems to be writing in right now, judged by the previous word.
+    func activeLanguage(previous: String) -> String {
+        let word = normalize(previous)
+        guard !word.isEmpty, lexicons.count > 1 else { return language.code }
+        if primary?.contains(word) == true { return language.code }
+        return lexicons.first { $0.contains(word) }?.code ?? language.code
     }
 
-    public static func editDistance(_ lhs: String, _ rhs: String) -> Int {
+    /// A confident single-edit fix for an unknown word, or nil. Words known in any enabled language,
+    /// names, acronyms, words with digits and dialect languages are never silently changed.
+    public func autocorrection(for word: String, protectedWords: Set<String> = [], supplemental: [String] = []) -> String? {
+        guard language.autocorrect, let primary, (3...24).contains(word.count), word == language.lowercased(word),
+              word.allSatisfy({ $0.isLetter || $0 == "'" }), !protectedWords.contains(word) else { return nil }
+        let own = frequency(of: word)
+        if let own, own >= 20 { return nil } // A real word in one of the person's languages.
+        let shortlist = suggestions(for: word, supplemental: supplemental, limit: 12)
+            .filter { $0.isCorrection && $0.language == primary.code
+                && (Self.isTransposition(word, normalize($0.text)) || Self.editDistance(word, normalize($0.text), limit: 1) == 1) }
+        guard let best = shortlist.first, let bestFrequency = frequency(of: best.text),
+              bestFrequency >= 30, bestFrequency >= (own ?? 0) * 40,
+              shortlist.count == 1 || best.score - shortlist[1].score > 0.35 else { return nil }
+        return best.text
+    }
+
+    /// Words likely to follow `word`: the person's own pairs first, then built-in pairs, then common words.
+    public func nextWords(after word: String, learnedPairs: [String: [String: Int]] = [:]) -> [String] {
+        let key = normalize(word)
+        var result: [String] = []
+        func add(_ items: [String]) { for item in items where !result.contains(item) { result.append(item) } }
+        if let personal = learnedPairs[key] { add(personal.sorted { $0.value > $1.value }.map(\.key)) }
+        add(language.nextWords[key] ?? [])
+        if result.count < 3 {
+            if key.isEmpty, let primary { add(primary.top(3, minimumLength: language.code == "en" ? 1 : 2)) }
+            else if let primary { add(primary.top(3, minimumLength: 2)) }
+        }
+        return Array(result.prefix(3))
+    }
+
+    /// Words a glide can produce, limited to those starting near where the finger went down.
+    public func glideWords(startingWith letters: Set<Character>) -> [(String, Int)] {
+        var seen = Set<String>(), result: [(String, Int)] = []
+        for lexicon in lexicons {
+            for i in lexicon.indexes(startingWith: letters) where seen.insert(lexicon.words[i]).inserted {
+                result.append((lexicon.words[i], lexicon.frequencies[i]))
+            }
+        }
+        return result
+    }
+
+    /// Levenshtein distance that gives up early once it exceeds `limit`.
+    public static func editDistance(_ lhs: String, _ rhs: String, limit: Int = .max) -> Int {
         let a = Array(lhs), b = Array(rhs)
+        if abs(a.count - b.count) > limit { return limit + 1 }
         var previous = Array(0...b.count)
         for (i, character) in a.enumerated() {
             var current = [i + 1]
+            var best = i + 1
             for (j, other) in b.enumerated() {
-                current.append(min(current[j] + 1, previous[j + 1] + 1, previous[j] + (character == other ? 0 : 1)))
+                let value = min(current[j] + 1, previous[j + 1] + 1, previous[j] + (character == other ? 0 : 1))
+                current.append(value); best = min(best, value)
             }
+            if best > limit { return limit + 1 }
             previous = current
         }
         return previous[b.count]
@@ -103,14 +148,5 @@ public struct SuggestionEngine {
         let different = a.indices.filter { a[$0] != b[$0] }
         return different.count == 2 && different[1] == different[0] + 1
             && a[different[0]] == b[different[1]] && a[different[1]] == b[different[0]]
-    }
-
-    public func nextWords(after word: String, language: KeyboardLanguage) -> [String] {
-        if language == .yoruba { return ["ẹ", "ni", "àti"] }
-        if language == .pidgin { return word.lowercased() == "how" ? ["far", "you", "e"] : ["you", "dey", "na"] }
-        let pairs = ["thank": ["you", "you!", "goodness"], "how": ["are", "do", "is"],
-                     "good": ["morning", "night", "luck"], "i": ["am", "will", "have"],
-                     "see": ["you", "it", "the"], "hello": ["there", "world", "everyone"]]
-        return pairs[word.lowercased()] ?? ["I", "the", "you"]
     }
 }

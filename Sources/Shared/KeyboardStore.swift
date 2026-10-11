@@ -57,6 +57,21 @@ final class KeyboardStore {
         get { load("learned.v1", fallback: [String: Int]()) }
         set { save(newValue, key: "learned.v1") }
     }
+    /// Which word followed which, counted only when word learning is on. Used for next-word suggestions.
+    var learnedPairs: [String: [String: Int]] {
+        get { load("pairs.v1", fallback: [String: [String: Int]]()) }
+        set { save(newValue, key: "pairs.v1") }
+    }
+    func learnPair(previous: String, word: String) {
+        guard preferences.learnWords, TextContext.canLearn(previous), TextContext.canLearn(word) else { return }
+        var pairs = learnedPairs
+        var next = pairs[previous] ?? [:]
+        next[word] = min((next[word] ?? 0) + 1, 500)
+        if next.count > 12, let least = next.min(by: { $0.value < $1.value })?.key { next.removeValue(forKey: least) }
+        pairs[previous] = next
+        if pairs.count > 1500, let key = pairs.keys.first(where: { $0 != previous }) { pairs.removeValue(forKey: key) }
+        learnedPairs = pairs
+    }
     func learn(_ word: String) {
         guard preferences.learnWords, TextContext.canLearn(word) else { return }
         var words = learned
@@ -69,6 +84,6 @@ final class KeyboardStore {
         phrases = ClipboardHistory.adding(trimmed, to: phrases, pinned: true, keepDays: preferences.clipboardDays)
     }
     func clearPersonalData() {
-        phrases = []; learned = [:]
+        phrases = []; learned = [:]; learnedPairs = [:]
     }
 }

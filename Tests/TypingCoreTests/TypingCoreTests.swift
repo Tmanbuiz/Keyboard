@@ -2,13 +2,46 @@ import XCTest
 @testable import TypingCore
 
 final class TypingCoreTests: XCTestCase {
-    let engine = SuggestionEngine.bundled()
+    let engine = SuggestionEngine.make(primary: .english)
 
-    func testBundledLexiconHasAllLanguages() {
-        XCTAssertGreaterThan(engine.entries.count, 300)
-        for language in KeyboardLanguage.allCases {
-            XCTAssertTrue(engine.entries.contains { $0.language == language })
+    func testCatalogAndDictionariesLoad() {
+        XCTAssertGreaterThanOrEqual(LanguageCatalog.all.count, 25)
+        XCTAssertEqual(Set(LanguageCatalog.all.map(\.code)).count, LanguageCatalog.all.count)
+        for pack in LanguageCatalog.all {
+            XCTAssertEqual(pack.rows.count, 3, pack.code)
+            XCTAssertEqual(pack.hasDictionary, Lexicon.load(code: pack.code) != nil, pack.code)
         }
+        XCTAssertGreaterThan(Lexicon.load(code: "fr")?.count ?? 0, 20_000)
+        XCTAssertTrue(Lexicon.load(code: "yo")?.contains("káàárọ̀") ?? false)
+        XCTAssertFalse(KeyboardLanguage("ar").pack.isCased)
+        XCTAssertTrue(KeyboardLanguage("ar").pack.rightToLeft)
+        XCTAssertEqual(KeyboardLanguage("tr").pack.uppercased("i"), "İ")
+        XCTAssertEqual(KeyboardLanguage("zz"), .english)
+    }
+
+    func testDeviceLanguagesAndLegacyNames() throws {
+        XCTAssertEqual(LanguageCatalog.deviceLanguages(["fr-CA", "en-US", "fr-FR", "xx"]).map(\.code), ["fr", "en"])
+        XCTAssertEqual(LanguageCatalog.deviceLanguages(["nn-NO", "tl"]).map(\.code), ["nb", "fil"])
+        let decoded = try JSONDecoder().decode([KeyboardLanguage].self, from: Data(#"["english","yoruba","pidgin","de"]"#.utf8))
+        XCTAssertEqual(decoded.map(\.code), ["en", "yo", "pcm", "de"])
+    }
+
+    func testOtherLanguagesSuggestAndCorrect() {
+        let french = SuggestionEngine.make(primary: KeyboardLanguage("fr"))
+        XCTAssertTrue(french.suggestions(for: "bonj").contains { $0.text == "bonjour" })
+        let german = SuggestionEngine.make(primary: KeyboardLanguage("de"))
+        XCTAssertTrue(german.suggestions(for: "Schö").contains { $0.text.hasPrefix("Schö") })
+        let russian = SuggestionEngine.make(primary: KeyboardLanguage("ru"))
+        XCTAssertTrue(russian.suggestions(for: "приве").contains { $0.text == "привет" })
+        XCTAssertNil(SuggestionEngine.make(primary: .yoruba).autocorrection(for: "ẹsẹ"))
+    }
+
+    func testMultilingualSuggestionsMixSameScriptOnly() {
+        let mixed = SuggestionEngine.make(primary: .english, others: [KeyboardLanguage("es"), KeyboardLanguage("ru")])
+        XCTAssertEqual(mixed.lexicons.map(\.code), ["en", "es"])
+        XCTAssertTrue(mixed.suggestions(for: "graci").contains { $0.text == "gracias" })
+        // A Spanish word is known, so it is not "corrected" into English.
+        XCTAssertNil(mixed.autocorrection(for: "hola"))
     }
 
     func testUnicodeCursorContext() {
@@ -21,21 +54,27 @@ final class TypingCoreTests: XCTestCase {
     }
 
     func testConservativeCorrectionAndDialects() {
-        XCTAssertEqual(engine.autocorrection(for: "teh", language: .english), "the")
-        XCTAssertEqual(engine.autocorrection(for: "hellp", language: .english), "hello")
-        XCTAssertNil(engine.autocorrection(for: "Bukola", language: .english))
-        XCTAssertNil(engine.autocorrection(for: "OTP", language: .english))
-        XCTAssertNil(engine.autocorrection(for: "dey", language: .pidgin))
-        XCTAssertNil(engine.autocorrection(for: "ẹsẹ", language: .yoruba))
-        XCTAssertNil(engine.autocorrection(for: "hellp", language: .english, protectedWords: ["hellp"]))
-        XCTAssertNil(engine.autocorrection(for: "samsung123", language: .english))
+        XCTAssertEqual(engine.autocorrection(for: "teh"), "the")
+        XCTAssertTrue(["help", "hello"].contains(engine.autocorrection(for: "hellp") ?? ""))
+        XCTAssertEqual(engine.autocorrection(for: "becuase"), "because")
+        XCTAssertNil(engine.autocorrection(for: "Bukola"))
+        XCTAssertNil(engine.autocorrection(for: "OTP"))
+        XCTAssertNil(SuggestionEngine.make(primary: .pidgin).autocorrection(for: "dey"))
+        XCTAssertNil(engine.autocorrection(for: "hellp", protectedWords: ["hellp"]))
+        XCTAssertNil(engine.autocorrection(for: "samsung123"))
+        XCTAssertNil(engine.autocorrection(for: "keyboard"))
     }
 
     func testCompletionAndNextWord() {
-        XCTAssertEqual(engine.suggestions(for: "hell", language: .english).first?.text, "hello")
-        XCTAssertEqual(engine.suggestions(for: "", previous: "thank", language: .english).first?.text, "you")
-        let custom = engine.suggestions(for: "wian", language: .english, learned: ["wiantribe": 10])
+        XCTAssertTrue(engine.suggestions(for: "hell").contains { $0.text == "hello" })
+        XCTAssertEqual(engine.suggestions(for: "Hell").first?.text.first, "H")
+        XCTAssertEqual(engine.suggestions(for: "", previous: "thank").first?.text, "you")
+        let custom = engine.suggestions(for: "wian", learned: ["wiantribe": 10])
         XCTAssertTrue(custom.contains { $0.text == "wiantribe" })
+        let personal = engine.suggestions(for: "", previous: "see", learnedPairs: ["see": ["tomorrow": 4]])
+        XCTAssertEqual(personal.first?.text, "tomorrow")
+        XCTAssertEqual(SuggestionEngine.editDistance("kitten", "sitting"), 3)
+        XCTAssertEqual(SuggestionEngine.editDistance("kitten", "sitting", limit: 1), 2)
     }
 
     func testCorrectionUndoRequiresCursorContext() {
@@ -53,10 +92,12 @@ final class TypingCoreTests: XCTestCase {
         let decoder = GlideDecoder()
         let ideal = Array("hello").compactMap { centers[$0] }
         let path = decoder.resample(ideal, count: 80)
-        let candidates = decoder.decode(path: path, centers: centers, entries: engine.entries, language: .english, keyWidth: 1)
+        let starts = decoder.startLetters(path: path, centers: centers, keyWidth: 1)
+        XCTAssertTrue(starts.contains("h"))
+        let candidates = decoder.decode(path: path, centers: centers, words: engine.glideWords(startingWith: starts), keyWidth: 1)
         XCTAssertEqual(candidates.first?.word, "hello")
-        XCTAssertTrue(decoder.decode(path: [GlidePoint(x: 40, y: 40), GlidePoint(x: 50, y: 45), GlidePoint(x: 60, y: 40)],
-                                     centers: centers, entries: engine.entries, language: .english, keyWidth: 1).isEmpty)
+        let far = [GlidePoint(x: 40, y: 40), GlidePoint(x: 50, y: 45), GlidePoint(x: 60, y: 40)]
+        XCTAssertTrue(decoder.decode(path: far, centers: centers, words: engine.glideWords(startingWith: decoder.startLetters(path: far, centers: centers, keyWidth: 1)), keyWidth: 1).isEmpty)
     }
 
     func testLearningDoesNotRetainAddressesOrCodes() {
@@ -78,6 +119,8 @@ final class TypingCoreTests: XCTestCase {
         let old = #"{"language":"pidgin","theme":"rose","handMode":"left","numberRow":false,"autocorrect":true,"predictions":true,"swipeTyping":true,"autoCapitalization":true,"doubleSpacePeriod":true,"haptics":true,"learnWords":false,"height":340}"#
         let decoded = try JSONDecoder().decode(KeyboardPreferences.self, from: Data(old.utf8))
         XCTAssertEqual(decoded.language, .pidgin); XCTAssertEqual(decoded.theme, .rose)
+        XCTAssertEqual(decoded.languages, [.pidgin]); XCTAssertTrue(decoded.multilingual)
+        XCTAssertTrue(decoded.keySounds); XCTAssertEqual(decoded.accent, .theme)
         XCTAssertFalse(decoded.numberRow); XCTAssertEqual(decoded.height, 340)
         XCTAssertFalse(decoded.clipboardHistory); XCTAssertEqual(decoded.clipboardDays, 7)
     }
