@@ -18,6 +18,12 @@
 			"path" = "Sources/App/ContentView.swift";
 			"sourceTree" = "<group>";
 		};
+		B71E26585942ABE513EDE65B = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/App/KeyboardSetupView.swift";
+			"sourceTree" = "<group>";
+		};
 		A4CC490762EB88AA3BE0D206 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -664,6 +670,7 @@
 			"children" = (
 				A7513EA82E3AAEB186FDF2A5,
 				A4A1F8EE0699B7D2BC5C8E30,
+				B71E26585942ABE513EDE65B,
 				A4CC490762EB88AA3BE0D206,
 				4123DDC2480CFE0C53D97978,
 				FB25DD5C7E4A5E39AA5A7614,
@@ -775,6 +782,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = A4A1F8EE0699B7D2BC5C8E30;
 		};
+		A82FAB6BAD348C00206EC814 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = B71E26585942ABE513EDE65B;
+		};
 		989B52009A94CD934FB5EC83 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = A4CC490762EB88AA3BE0D206;
@@ -849,6 +860,7 @@
 			"files" = (
 				E63A5F47C97AB867272258A4,
 				7A93E05CB0EB835B1331B7D7,
+				A82FAB6BAD348C00206EC814,
 				989B52009A94CD934FB5EC83,
 				EB3E8CA0874297CD57F513B4,
 				C5A2FE3F757E1380F6BBE1C6,
@@ -1679,7 +1691,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1707,7 +1719,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1743,7 +1755,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1772,7 +1784,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1809,7 +1821,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1837,7 +1849,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1873,7 +1885,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1902,7 +1914,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1939,7 +1951,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
@@ -1968,7 +1980,7 @@
 			"buildSettings" = {
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Shared.entitlements";
-				"CURRENT_PROJECT_VERSION" = "1";
+				"CURRENT_PROJECT_VERSION" = "2";
 				"MARKETING_VERSION" = "0.2.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";

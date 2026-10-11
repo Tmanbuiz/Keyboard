@@ -26,15 +26,31 @@ jobs:
       - name: Build device app and package unsigned IPA
         run: set -o pipefail; bash Scripts/build_ipa.sh 2>&1 | tee build/logs/device.log
       - name: Build simulator app
-        run: >-
-          set -o pipefail; xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard
-          -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
-          -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build/logs/simulator.log
-      - name: Launch companion app in simulator
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "personal/background-clipboard" ]]; then
+            python3 Scripts/generate_project.py --personal-background-clipboard --ui-tests
+          else
+            python3 Scripts/generate_project.py --ui-tests
+          fi
+          set -o pipefail
+          xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard \
+            -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build-for-testing 2>&1 | tee build/logs/simulator.log
+      - name: Verify app launch and keyboard registration and typing
         run: python3 Scripts/simulator_smoke.py
       - name: Report compiler errors and warnings
         if: always()
         run: python3 Scripts/report_build.py build/logs
+      - name: Upload verification logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Keyboard-verification-logs
+          path: |
+            build/logs/
+            build/output/KeyboardRegistration.xcresult/
+          if-no-files-found: warn
+          retention-days: 1
       - name: Upload sideloading package
         uses: actions/upload-artifact@v4
         with:

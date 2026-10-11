@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--shared-container", action="store_true", help="Enable App Groups for a paid Apple team")
 parser.add_argument("--personal-background-clipboard", action="store_true",
                     help="Build the Clipper-based personal sideload variant with a notification reader")
+parser.add_argument("--ui-tests", action="store_true", help="Include the simulator keyboard registration and typing test")
 options = parser.parse_args()
 if options.personal_background_clipboard:
     options.shared_container = True
@@ -73,7 +74,7 @@ write_plist("Keyboard-Info.plist", {
     **({"ALTAppGroups": [group_name]} if personal else {}),
     "NSExtension": {"NSExtensionPointIdentifier": "com.apple.keyboard-service",
                     "NSExtensionPrincipalClass": "$(PRODUCT_MODULE_NAME).KeyboardViewController",
-                    "NSExtensionAttributes": {"IsASCIICapable": True, "PrimaryLanguage": "mul",
+                    "NSExtensionAttributes": {"IsASCIICapable": True, "PrimaryLanguage": "en-US",
                                                "RequestsOpenAccess": True, "PrefersRightToLeft": False}}
 })
 write_plist("Stickers-Info.plist", {
@@ -115,6 +116,8 @@ keyboard_id = identifier("target-keyboard")
 stickers_id = identifier("target-stickers")
 share_id = identifier("target-share")
 reader_id = identifier("target-reader")
+ui_test_id = identifier("target-ui-tests")
+ui_test_path = "Tests/KeyboardUITests/KeyboardRegistrationTests.swift"
 sticker_catalog = "Sources/Stickers/Stickers.xcassets"
 all_files = sorted({str(p.relative_to(ROOT)) for p in (ROOT / "Sources").rglob("*.swift")})
 resources = ["Sources/Core/Resources/Languages.json", "Configuration/PrivacyInfo.xcprivacy"]
@@ -124,6 +127,8 @@ media = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Keyboard/Media
 all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Stickers-Info.plist", "Configuration/Share-Info.plist", sticker_catalog, "Sources/App/Localizable.xcstrings", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements"]
 if personal:
     all_paths += ["Configuration/ClipboardReader-Info.plist"]
+if options.ui_tests:
+    all_paths += [ui_test_path]
 refs = {}
 for path in all_paths:
     suffix = pathlib.Path(path).suffix
@@ -136,6 +141,10 @@ share_product = add("product-share", "PBXFileReference", explicitFileType="wrapp
 reader_product = add("product-reader", "PBXFileReference", explicitFileType="wrapper.app-extension", includeInIndex=0,
                      path="WianTribeClipboardReader.appex", sourceTree="BUILT_PRODUCTS_DIR") if personal else None
 products = add("products", "PBXGroup", children=[app_product, keyboard_product, stickers_product, share_product] + ([reader_product] if personal else []), name="Products", sourceTree="<group>")
+if options.ui_tests:
+    ui_test_product = add("product-ui-tests", "PBXFileReference", explicitFileType="wrapper.cfbundle", includeInIndex=0,
+                         path="WianTribeKeyboardUITests.xctest", sourceTree="BUILT_PRODUCTS_DIR")
+    objects[products]["children"].append(ui_test_product)
 main_group = add("main-group", "PBXGroup", children=list(refs.values()) + [products], sourceTree="<group>")
 
 def phase(label, isa, paths):
@@ -191,7 +200,7 @@ def configurations(label, settings):
 
 project_configs = configurations("project", project_settings)
 common_target = {"CODE_SIGN_STYLE": "Automatic", "CODE_SIGN_ENTITLEMENTS": "Configuration/Shared.entitlements" if options.shared_container else "Configuration/Sideload.entitlements",
-                 "CURRENT_PROJECT_VERSION": "1", "MARKETING_VERSION": "0.2.0", "TARGETED_DEVICE_FAMILY": "1,2",
+                 "CURRENT_PROJECT_VERSION": "2", "MARKETING_VERSION": "0.2.0", "TARGETED_DEVICE_FAMILY": "1,2",
                  "SUPPORTED_PLATFORMS": "iphoneos iphonesimulator", "SUPPORTS_MACCATALYST": "NO", "GENERATE_INFOPLIST_FILE": "NO",
                  "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/Frameworks"], "PRODUCT_NAME": "$(TARGET_NAME)"}
 if personal:
@@ -220,7 +229,23 @@ add("target-app", "PBXNativeTarget", buildConfigurationList=app_configs, buildPh
 add("target-keyboard", "PBXNativeTarget", buildConfigurationList=keyboard_configs, buildPhases=[keyboard_sources, keyboard_frameworks, keyboard_resources], buildRules=[], dependencies=[], name="WianTribeKeyboardExtension", productName="WianTribeKeyboardExtension", productReference=keyboard_product, productType="com.apple.product-type.app-extension")
 add("target-stickers", "PBXNativeTarget", buildConfigurationList=stickers_configs, buildPhases=[stickers_resources], buildRules=[], dependencies=[], name="WianTribeStickers", productName="WianTribeStickers", productReference=stickers_product, productType="com.apple.product-type.app-extension.messages-sticker-pack")
 add("target-share", "PBXNativeTarget", buildConfigurationList=share_configs, buildPhases=[share_sources, share_frameworks, share_resources], buildRules=[], dependencies=[], name="WianTribeShare", productName="WianTribeShare", productReference=share_product, productType="com.apple.product-type.app-extension")
+if options.ui_tests:
+    ui_test_sources = phase("ui-test-sources", "PBXSourcesBuildPhase", [ui_test_path])
+    ui_test_frameworks = phase("ui-test-frameworks", "PBXFrameworksBuildPhase", [])
+    ui_test_configs = configurations("ui-tests", {**common_target, "PRODUCT_BUNDLE_IDENTIFIER": bundle_base + ".uitests",
+        "CODE_SIGN_ENTITLEMENTS": "Configuration/Sideload.entitlements", "GENERATE_INFOPLIST_FILE": "YES",
+        "TEST_TARGET_NAME": "WianTribeKeyboard", "SKIP_INSTALL": "YES"})
+    ui_test_proxy = add("ui-test-app-proxy", "PBXContainerItemProxy", containerPortal=project_id, proxyType=1,
+                        remoteGlobalIDString=app_id, remoteInfo="WianTribeKeyboard")
+    ui_test_dependency = add("ui-test-app-dependency", "PBXTargetDependency", target=app_id, targetProxy=ui_test_proxy)
+    add("target-ui-tests", "PBXNativeTarget", buildConfigurationList=ui_test_configs,
+        buildPhases=[ui_test_sources, ui_test_frameworks], buildRules=[], dependencies=[ui_test_dependency],
+        name="WianTribeKeyboardUITests", productName="WianTribeKeyboardUITests", productReference=ui_test_product,
+        productType="com.apple.product-type.bundle.ui-testing")
 add("project", "PBXProject", attributes={"LastUpgradeCheck": "1600", "TargetAttributes": {app_id: {"CreatedOnToolsVersion": "16.0"}, keyboard_id: {"CreatedOnToolsVersion": "16.0"}, stickers_id: {"CreatedOnToolsVersion": "16.0"}, share_id: {"CreatedOnToolsVersion": "16.0"}, **({reader_id: {"CreatedOnToolsVersion": "16.0"}} if personal else {})}}, buildConfigurationList=project_configs, compatibilityVersion="Xcode 14.0", developmentRegion="en", hasScannedForEncodings=0, knownRegions=["en", "Base", "es", "fr", "pt", "de", "ar"], mainGroup=main_group, productRefGroup=products, projectDirPath="", projectRoot="", targets=[app_id, keyboard_id, stickers_id, share_id] + ([reader_id] if personal else []))
+if options.ui_tests:
+    objects[project_id]["targets"].append(ui_test_id)
+    objects[project_id]["attributes"]["TargetAttributes"][ui_test_id] = {"CreatedOnToolsVersion": "16.0", "TestTargetID": app_id}
 
 project = ROOT / "WianTribeKeyboard.xcodeproj"
 project.mkdir(exist_ok=True)
@@ -228,10 +253,13 @@ project.mkdir(exist_ok=True)
 schemes = project / "xcshareddata/xcschemes"
 schemes.mkdir(parents=True, exist_ok=True)
 buildable = f'<BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{app_id}" BuildableName="WianTribeKeyboard.app" BlueprintName="WianTribeKeyboard" ReferencedContainer="container:WianTribeKeyboard.xcodeproj"/>'
+testable = f'<BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{ui_test_id}" BuildableName="WianTribeKeyboardUITests.xctest" BlueprintName="WianTribeKeyboardUITests" ReferencedContainer="container:WianTribeKeyboard.xcodeproj"/>'
+test_build_entry = f'<BuildActionEntry buildForTesting="YES" buildForRunning="NO" buildForProfiling="NO" buildForArchiving="NO" buildForAnalyzing="NO">{testable}</BuildActionEntry>' if options.ui_tests else ""
+test_entries = f'<TestableReference skipped="NO">{testable}</TestableReference>' if options.ui_tests else ""
 (schemes / "WianTribeKeyboard.xcscheme").write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
 <Scheme LastUpgradeVersion="1600" version="1.3">
-  <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">{buildable}</BuildActionEntry></BuildActionEntries></BuildAction>
-  <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES"><Testables/></TestAction>
+  <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES">{buildable}</BuildActionEntry>{test_build_entry}</BuildActionEntries></BuildAction>
+  <TestAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="NO"><Testables>{test_entries}</Testables><MacroExpansion>{buildable}</MacroExpansion><EnvironmentVariables><EnvironmentVariable key="WIANTRIBE_APP_IDENTIFIER" value="{bundle_base}" isEnabled="YES"/><EnvironmentVariable key="WIANTRIBE_KEYBOARD_NAME" value="{'WianTribe Personal' if personal else 'WianTribe Keyboard'}" isEnabled="YES"/></EnvironmentVariables></TestAction>
   <LaunchAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" debugServiceExtension="internal" allowLocationSimulation="YES"><BuildableProductRunnable runnableDebuggingMode="0">{buildable}</BuildableProductRunnable></LaunchAction>
   <ProfileAction buildConfiguration="Release" shouldUseLaunchSchemeArgsEnv="YES" useCustomWorkingDirectory="NO" debugDocumentVersioning="YES"><BuildableProductRunnable runnableDebuggingMode="0">{buildable}</BuildableProductRunnable></ProfileAction>
   <AnalyzeAction buildConfiguration="Debug"/>

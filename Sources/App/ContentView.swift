@@ -39,9 +39,9 @@ private struct HomeView: View {
                     setupStep("1", title: "Add WianTribe Keyboard", detail: "Open Settings → General → Keyboard → Keyboards → Add New Keyboard → WianTribe.")
                     setupStep("2", title: "Switch with the globe", detail: "Open a message, hold 🌐, then choose WianTribe Keyboard.")
                     setupStep("3", title: "Make it yours", detail: "Tap ⚙︎ on the keyboard to choose your theme, layout and language.")
-                    Button {
-                        if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
-                    } label: { Label("Open Settings", systemImage: "gearshape").frame(maxWidth: .infinity).padding(.vertical, 8) }
+                    NavigationLink {
+                        KeyboardSetupView()
+                    } label: { Label("Keyboard setup", systemImage: "keyboard").frame(maxWidth: .infinity).padding(.vertical, 8) }
                         .buttonStyle(.borderedProminent).tint(.mint).foregroundStyle(ocean)
                     Text("Typing works offline without Full Access. Enable Allow Full Access only for clipboard history, media copying and optional online writing tools.")
                         .font(.caption).foregroundStyle(.secondary)
@@ -139,6 +139,7 @@ private struct PracticeView: View {
                         if text.isEmpty { Text("Type something here…").foregroundStyle(.secondary).padding(18).allowsHitTesting(false) }
                     }
                     .accessibilityLabel("Typing practice")
+                    .accessibilityIdentifier("typing-practice")
                 HStack {
                     Button(copied ? "Copied" : "Copy text", systemImage: "doc.on.doc") { UIPasteboard.general.string = text; copied = true }
                         .buttonStyle(.bordered).disabled(text.isEmpty)

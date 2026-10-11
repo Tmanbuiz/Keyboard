@@ -5,7 +5,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var store = KeyboardStore(canWriteGroup: false)
     var preferences = KeyboardPreferences()
     var palette = KeyboardPalette.make(.ocean)
-    var engine = SuggestionEngine.make(primary: .english)
+    // Keep init light too; the property initializer runs before viewDidLoad.
+    var engine = SuggestionEngine(language: KeyboardLanguage.english.pack, lexicons: [])
     var engineKey = ""
     var pack: LanguagePack { preferences.language.pack }
     let checker = UITextChecker()

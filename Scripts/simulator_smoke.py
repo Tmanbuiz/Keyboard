@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install/launch the actual companion app and capture a simulator screenshot."""
+"""Verify app launch, then add/select/type with its actual keyboard in iOS."""
 import json
 import os
 import pathlib
@@ -40,6 +40,19 @@ try:
     output.mkdir(parents=True, exist_ok=True)
     run("xcrun", "simctl", "io", device, "screenshot", str(output / "Home-iPhone.png"))
     print("Companion app installed and launched in iPhone simulator")
+    log = root / "build/logs/keyboard-ui.log"
+    with log.open("w") as stream:
+        tests = subprocess.run([
+            "xcodebuild", "test-without-building", "-project", str(root / "WianTribeKeyboard.xcodeproj"),
+            "-scheme", "WianTribeKeyboard", "-configuration", "Debug", "-destination", f"id={device}",
+            "-derivedDataPath", str(root / "build/simulator"), "-resultBundlePath", str(output / "KeyboardRegistration.xcresult"),
+            "-parallel-testing-enabled", "NO", "CODE_SIGNING_ALLOWED=NO",
+            "-only-testing:WianTribeKeyboardUITests/KeyboardRegistrationTests/testKeyboardCanBeAddedSelectedAndType"
+        ], stdout=stream, stderr=subprocess.STDOUT, timeout=480)
+    print(log.read_text()[-16000:])
+    if tests.returncode:
+        raise SystemExit("Keyboard registration/typing UI test failed; see keyboard-ui.log and xcresult")
+    print("Actual keyboard appeared in Add New Keyboard, was selected, and typed Tolu")
 finally:
     subprocess.run(["xcrun", "simctl", "shutdown", device], check=False)
     subprocess.run(["xcrun", "simctl", "delete", device], check=False)

@@ -33,6 +33,7 @@ def check(app, with_stickers):
     assert extension_info["CFBundleIdentifier"].startswith(app_info["CFBundleIdentifier"] + ".")
     assert extension_info["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.keyboard-service"
     assert extension_info["NSExtension"]["NSExtensionAttributes"]["RequestsOpenAccess"] is True
+    assert extension_info["NSExtension"]["NSExtensionAttributes"]["PrimaryLanguage"] == "en-US"
     stickers = app / "PlugIns/WianTribeStickers.appex"
     share = app / "PlugIns/WianTribeShare.appex"
     reader = app / "PlugIns/WianTribeClipboardReader.appex"

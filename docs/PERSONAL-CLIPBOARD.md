@@ -45,6 +45,24 @@ The app uses bundle identifier **com.wiantribe.keyboard.personal** and appears a
 5. Return and tap **Check and resume monitoring**.
 6. Copy harmless text in Safari, touch and hold the copy alert, then check 📋.
 
+## If the keyboard is missing
+
+The app's **Open app permissions** button opens the page with Cellular Data,
+notifications and location. To add a keyboard, return to the main iPhone Settings
+page, then use **General → Keyboard → Keyboards → Add New Keyboard → WianTribe Personal**.
+
+Open WianTribe → **Keyboard setup** to check the installed extension and share
+installation details. This checks the files left by the installer; it does not
+claim that iOS registered or enabled them. If the extension is missing, reinstall
+with both plug-ins kept (**Dropping 0 of 2 plug-ins** in Sideloadly for the minimal
+IPA). If the files are present but the keyboard is absent from Add New Keyboard,
+share the installation report and Sideloadly installation log.
+
+Build 2 uses English as the initial registration language; the keyboard still
+reports the selected typing language after it opens. The cloud UI check now
+opens iOS Settings, adds the actual keyboard, selects it and types into Practice.
+This does not verify a re-signed IPA's provisioning on a real iPhone.
+
 If shared storage is unavailable, fix signing first. The monitor does not report
 successful sharing with an inaccessible keyboard. Basic typing and foreground
 clipboard tools remain available.
