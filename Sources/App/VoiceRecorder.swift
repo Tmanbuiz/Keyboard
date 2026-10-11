@@ -70,13 +70,14 @@ final class VoiceRecorder: ObservableObject {
 
 struct VoiceView: View {
     @StateObject private var recorder = VoiceRecorder()
-    @State private var locale = "en-NG"
+    @State private var locale = Locale.current.identifier.replacingOccurrences(of: "_", with: "-")
     @State private var permissionTask: Task<Void, Never>?
     @Environment(\.scenePhase) private var phase
+    /// Every language Apple's speech recognition offers on this device, by name.
     private var locales: [(String, String)] {
-        let supported = Set(SFSpeechRecognizer.supportedLocales().map(\.identifier))
-        return [("en-NG", "English · Nigeria"), ("en-US", "English · US"), ("en-GB", "English · UK"), ("yo-NG", "Yorùbá")]
-            .filter { supported.contains($0.0) || supported.contains($0.0.replacingOccurrences(of: "-", with: "_")) }
+        SFSpeechRecognizer.supportedLocales()
+            .map { ($0.identifier.replacingOccurrences(of: "_", with: "-"), Locale.current.localizedString(forIdentifier: $0.identifier) ?? $0.identifier) }
+            .sorted { $0.1.localizedCaseInsensitiveCompare($1.1) == .orderedAscending }
     }
     var body: some View {
         VStack(spacing: 20) {
@@ -95,10 +96,15 @@ struct VoiceView: View {
                 Button("Copy", systemImage: "doc.on.doc") { UIPasteboard.general.string = recorder.transcript; recorder.status = "Copied. Return to your message and paste." }
                     .buttonStyle(.bordered).disabled(recorder.transcript.isEmpty)
             }
-            Text("Recording runs only while this screen is active. Apple's language availability varies. Use English for Pidgin; recognition quality will vary.")
+            Text("Recording runs only while this screen is active. Only languages Apple's speech recognition supports are listed. For Pidgin, choose English (Nigeria).")
                 .font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center)
         }.padding(22).background(Color(red: 0.035, green: 0.10, blue: 0.13)).navigationTitle("Voice editor").navigationBarTitleDisplayMode(.inline)
-            .onAppear { if !locales.contains(where: { $0.0 == locale }), let first = locales.first { locale = first.0 } }
+            .onAppear {
+                guard !locales.contains(where: { $0.0 == locale }) else { return }
+                // Fall back to another variety of the phone's language, then to the first available language.
+                let language = Locale.current.language.languageCode?.identifier ?? "en"
+                locale = locales.first { $0.0.hasPrefix(language + "-") }?.0 ?? locales.first?.0 ?? "en-US"
+            }
             .onDisappear { permissionTask?.cancel(); recorder.stop() }
             .onChange(of: phase) { _, phase in
                 if phase == .background || (phase == .inactive && recorder.recording) {

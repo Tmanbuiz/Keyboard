@@ -44,6 +44,15 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     private var onlineTask: Task<Void, Never>?
     private var clipboardTimer: Timer?
     private var freshClip: (text: String, date: Date)?
+    private var keyPreview: KeyPreview?
+    private var usingDarkPalette = true
+
+    override func loadView() {
+        // A custom input view lets the keyboard play the system key click.
+        let input = KeyboardInputView(frame: .zero, inputViewStyle: .keyboard)
+        inputView = input
+        view = input
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,8 +103,23 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         super.textDidChange(textInput)
         if let correction, !correction.canUndo(context: before) { self.correction = nil }
         if !before.hasSuffix(glideSuffix) { glideChoices = [] }
+        if preferences.theme == .auto && wantsDarkPalette != usingDarkPalette { reloadPreferences() }
         updateShift()
         refreshSuggestions()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if preferences.theme == .auto && wantsDarkPalette != usingDarkPalette { reloadPreferences() }
+    }
+
+    /// Auto theme follows the text field's keyboard appearance, then the system light/dark setting.
+    private var wantsDarkPalette: Bool {
+        switch textDocumentProxy.keyboardAppearance ?? .default {
+        case .dark: return true
+        case .light: return false
+        default: return traitCollection.userInterfaceStyle == .dark
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -115,7 +139,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     private func reloadPreferences() {
         store = KeyboardStore(canWriteGroup: hasFullAccess)
         preferences = store.preferences
-        palette = .make(preferences.theme)
+        usingDarkPalette = wantsDarkPalette
+        palette = .make(preferences.theme, dark: usingDarkPalette, accent: preferences.accent, borders: preferences.keyBorders)
+        keyPreview?.removeFromSuperview(); keyPreview = nil
         view.backgroundColor = palette.background
         primaryLanguage = preferences.language == .yoruba ? "yo" : "en"
         if heightConstraint == nil {
@@ -144,8 +170,25 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     private func feedback() {
+        if preferences.keySounds { UIDevice.current.playInputClick() }
         if preferences.haptics && hasFullAccess { UISelectionFeedbackGenerator().selectionChanged() }
     }
+
+    /// Shows the enlarged character above a key while it is held down.
+    private func addPreview(to key: KeyButton) {
+        guard preferences.keyPreview, !UIAccessibility.isVoiceOverRunning else { return }
+        key.addTarget(self, action: #selector(showKeyPreview(_:)), for: [.touchDown, .touchDragEnter])
+        key.addTarget(self, action: #selector(hideKeyPreview), for: [.touchUpInside, .touchUpOutside, .touchCancel, .touchDragExit])
+    }
+
+    @objc private func showKeyPreview(_ key: KeyButton) {
+        guard let title = key.title(for: .normal), !title.isEmpty else { return }
+        let preview = keyPreview ?? KeyPreview(palette: palette)
+        if preview.superview == nil { view.addSubview(preview); keyPreview = preview }
+        preview.show(title, over: key.convert(key.bounds, to: view), in: view.bounds)
+    }
+
+    @objc private func hideKeyPreview() { keyPreview?.isHidden = true }
 
     private func rebuildToolbar() {
         clear(toolbar)
@@ -156,7 +199,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             key.accessibilityLabel = label
             toolbar.addArrangedSubview(key)
         }
-        if panel != nil {
+        if panel != nil && needsInputModeSwitchKey {
             let globe = KeyButton(title: "🌐", palette: palette, function: true)
             globe.accessibilityLabel = "Next keyboard"
             globe.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
@@ -231,7 +274,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     private let hints: [Character: String] = ["q":"1", "w":"2", "e":"3", "r":"4", "t":"5", "y":"6", "u":"7", "i":"8", "o":"9", "p":"0", "a":"@", "s":"#", "d":"$", "f":"%", "g":"&", "h":"*", "j":"-", "k":"+", "l":"=", "z":"!", "x":"?", "c":"'", "v":"\"", "b":":", "n":";", "m":"/"]
 
     private func buildLetters() {
-        if preferences.numberRow { row(Array("1234567890").map { character in button(String(character)) { [weak self] in self?.insert(String(character)) } }) }
+        if preferences.numberRow { row(Array("1234567890").map { character in characterKey(String(character)) }) }
         for (index, letters) in ["qwertyuiop", "asdfghjkl", "zxcvbnm"].enumerated() {
             var buttons: [KeyButton] = letters.map { letter in
                 let key = KeyButton(title: (shift || capsLock) ? String(letter).uppercased() : String(letter), hint: hints[letter], palette: palette)
@@ -242,6 +285,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 }
                 let hold = UILongPressGestureRecognizer(target: self, action: #selector(accent(_:)))
                 hold.minimumPressDuration = 0.38; key.addGestureRecognizer(hold)
+                addPreview(to: key)
                 letterButtons.append(key)
                 return key
             }
@@ -255,10 +299,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         }
     }
 
+    private func characterKey(_ text: String) -> KeyButton {
+        let key = button(text) { [weak self] in self?.insert(text) }
+        addPreview(to: key)
+        return key
+    }
+
     private func buildSymbols() {
         let rows = mode == "numbers" ? ["1234567890", "-/:;()$&@\"", ".,?!'"] : ["[]{}#%^*+=", "_\\|~<>€£¥•", ".,?!'"]
         for (i, characters) in rows.enumerated() {
-            var buttons = characters.map { char in button(String(char)) { [weak self] in self?.insert(String(char)) } }
+            var buttons = characters.map { char in characterKey(String(char)) }
             if i == 2 {
                 buttons.insert(button(mode == "numbers" ? "#+=" : "123", function: true) { [weak self] in
                     guard let self else { return }; self.mode = self.mode == "numbers" ? "symbols" : "numbers"; self.rebuildContent()
@@ -275,19 +325,25 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             guard let self else { return }; self.mode = self.mode == "letters" ? "numbers" : "letters"; self.rebuildContent()
         }
         stack.addArrangedSubview(modeKey)
-        let globe = KeyButton(title: "🌐", palette: palette, function: true)
-        globe.accessibilityLabel = "Next keyboard"; globe.accessibilityHint = "Hold to select another keyboard"
-        globe.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
-        stack.addArrangedSubview(globe) // Always provide a keyboard switch, including sideloaded builds.
-        let comma = button(",") { [weak self] in self?.insert(",") }; stack.addArrangedSubview(comma)
+        var narrowKeys = [modeKey]
+        // iPhones with a Home button need an on-keyboard globe; Face ID iPhones show one below the keyboard.
+        if needsInputModeSwitchKey {
+            let globe = KeyButton(title: "🌐", palette: palette, function: true)
+            globe.accessibilityLabel = "Next keyboard"; globe.accessibilityHint = "Hold to select another keyboard"
+            globe.addTarget(self, action: #selector(handleInputModeList(from:with:)), for: .allTouchEvents)
+            stack.addArrangedSubview(globe); narrowKeys.append(globe)
+        }
+        let comma = punctuationKey(",", alternates: [",", ";", ":", "-", "_", "(", ")", "/"])
+        stack.addArrangedSubview(comma)
         let space = button(preferences.language.title) { [weak self] in self?.space() }
         space.accessibilityLabel = "Space"; space.accessibilityHint = "Drag to move the cursor"
         let cursor = UIPanGestureRecognizer(target: self, action: #selector(moveCursor(_:))); space.addGestureRecognizer(cursor)
         stack.addArrangedSubview(space)
-        let period = button(".") { [weak self] in self?.insert(".") }; stack.addArrangedSubview(period)
+        let period = punctuationKey(".", alternates: [".", "?", "!", "'", "\"", "…", "@", "#"])
+        stack.addArrangedSubview(period)
         let returnKey = button(returnTitle, function: true) { [weak self] in self?.insert("\n") }
         returnKey.accessibilityLabel = "Return"; stack.addArrangedSubview(returnKey)
-        for key in [modeKey, globe, comma, period] { key.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.105).isActive = true }
+        for key in narrowKeys + [comma, period] { key.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.105).isActive = true }
         returnKey.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.16).isActive = true
         keys.addArrangedSubview(stack)
     }
@@ -296,6 +352,17 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         switch textDocumentProxy.returnKeyType ?? .default {
         case .go: return "Go"; case .search: return "Search"; case .send: return "Send"; case .done: return "Done"; case .next: return "Next"; default: return "↵"
         }
+    }
+
+    /// A punctuation key: tap for the main character, hold and slide for alternatives.
+    private func punctuationKey(_ title: String, alternates: [String]) -> KeyButton {
+        let key = button(title) { [weak self] in self?.insert(title) }
+        key.alternates = alternates
+        key.accessibilityHint = "Hold for more punctuation"
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(accent(_:)))
+        hold.minimumPressDuration = 0.38; key.addGestureRecognizer(hold)
+        addPreview(to: key)
+        return key
     }
 
     private func deleteKey() -> KeyButton {
@@ -523,20 +590,22 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     @objc private func accent(_ gesture: UILongPressGestureRecognizer) {
-        guard let key = gesture.view as? KeyButton, let letter = key.letter else { return }
+        guard let key = gesture.view as? KeyButton, key.letter != nil || !key.alternates.isEmpty else { return }
+        let letter: Character = key.letter ?? " "
         if gesture.state == .began {
-            key.longPressConsumed = true
-            accentValues = accents(for: letter); accentSelection = min(1, accentValues.count - 1)
+            key.longPressConsumed = true; hideKeyPreview()
+            accentValues = key.alternates.isEmpty ? accents(for: letter) : key.alternates
+            accentSelection = min(1, accentValues.count - 1)
             let popup = UIStackView(); popup.axis = .horizontal; popup.distribution = .fillEqually; popup.spacing = 2
             popup.backgroundColor = palette.function; popup.layer.cornerRadius = 8; popup.clipsToBounds = true
             let width = min(content.bounds.width - 8, CGFloat(accentValues.count) * 32)
-            let frame = key.convert(key.bounds, to: content)
-            popup.frame = CGRect(x: min(max(4, frame.midX - width / 2), content.bounds.width - width - 4), y: max(0, frame.minY - 42), width: width, height: 40)
+            let frame = key.convert(key.bounds, to: view)
+            popup.frame = CGRect(x: min(max(4, frame.midX - width / 2), view.bounds.width - width - 4), y: max(0, frame.minY - 46), width: width, height: 40)
             for value in accentValues {
                 let label = UILabel(); label.text = value; label.textAlignment = .center; label.textColor = palette.text
                 label.font = .systemFont(ofSize: 20); popup.addArrangedSubview(label)
             }
-            content.addSubview(popup); accentPopup = popup; highlightAccent()
+            view.addSubview(popup); accentPopup = popup; highlightAccent()
         } else if gesture.state == .changed, let popup = accentPopup {
             let x = gesture.location(in: popup).x
             accentSelection = min(accentValues.count - 1, max(0, Int(x / (popup.bounds.width / CGFloat(accentValues.count)))))
@@ -570,7 +639,13 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         for theme in KeyboardTheme.allCases {
             panelButton("\(preferences.theme == theme ? "✓ " : "")\(theme.title)", in: stack) { [weak self] in self?.preferences.theme = theme; self?.savePreferences() }
         }
-        for (title, keyPath) in [("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Clipboard history", \KeyboardPreferences.clipboardHistory), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
+        panelButton("Accent colour: \(preferences.accent.title)", in: stack) { [weak self] in
+            guard let self else { return }
+            let all = KeyAccent.allCases
+            self.preferences.accent = all[((all.firstIndex(of: self.preferences.accent) ?? 0) + 1) % all.count]
+            self.savePreferences()
+        }
+        for (title, keyPath) in [("Key sounds", \KeyboardPreferences.keySounds), ("Key pop-up preview", \KeyboardPreferences.keyPreview), ("Key outlines", \KeyboardPreferences.keyBorders), ("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Clipboard history", \KeyboardPreferences.clipboardHistory), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
             panelButton("\(preferences[keyPath: keyPath] ? "✓ " : "○ ")\(title)", in: stack) { [weak self] in
                 guard let self else { return }; self.preferences[keyPath: keyPath].toggle(); self.savePreferences()
             }
@@ -584,8 +659,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         for hand in HandMode.allCases {
             panelButton("\(preferences.handMode == hand ? "✓ " : "")\(hand.title)", in: stack) { [weak self] in self?.preferences.handMode = hand; self?.savePreferences() }
         }
-        for height in [260.0, 300.0, 340.0] {
-            panelButton("Height: \(Int(height))", in: stack) { [weak self] in self?.preferences.height = height; self?.savePreferences() }
+        for height in KeyboardPreferences.heights {
+            panelButton("\(preferences.height == height ? "✓ " : "")Height: \(Int(height))", in: stack) { [weak self] in self?.preferences.height = height; self?.savePreferences() }
         }
         panelButton("Clear learned words", in: stack) { [weak self] in self?.store.learned = [:]; self?.setStatus("Learned words cleared") }
         note(store.isShared ? "Settings and phrases are shared with the app." : "Sideloaded builds may keep app and keyboard settings separate. Use these controls for your keyboard.", in: stack)

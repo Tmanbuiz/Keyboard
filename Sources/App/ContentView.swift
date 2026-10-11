@@ -78,9 +78,15 @@ private struct HomeView: View {
 struct LayoutPreview: View {
     var theme: KeyboardTheme
     var numberRow: Bool
-    private var light: Bool { theme == .light }
+    @Environment(\.colorScheme) private var scheme
+    private var light: Bool { theme == .light || (theme == .auto && scheme == .light) }
     private var base: Color {
-        switch theme { case .ocean: return card; case .midnight: return Color(white: 0.10); case .light: return Color(white: 0.85); case .rose: return Color(red: 0.22, green: 0.10, blue: 0.16) }
+        switch theme {
+        case .auto: return light ? Color(white: 0.85) : Color(white: 0.10)
+        case .ocean: return card; case .midnight: return Color(white: 0.10); case .light: return Color(white: 0.85)
+        case .rose: return Color(red: 0.22, green: 0.10, blue: 0.16); case .forest: return Color(red: 0.08, green: 0.15, blue: 0.10)
+        case .sunset: return Color(red: 0.24, green: 0.11, blue: 0.08); case .slate: return Color(red: 0.13, green: 0.15, blue: 0.19)
+        }
     }
     var body: some View {
         VStack(spacing: 6) {
@@ -180,9 +186,11 @@ private struct SettingsView: View {
             Section("Appearance") {
                 Picker("Theme", selection: $model.preferences.theme) { ForEach(KeyboardTheme.allCases) { Text($0.title).tag($0) } }
                 LayoutPreview(theme: model.preferences.theme, numberRow: model.preferences.numberRow).listRowInsets(EdgeInsets())
+                Picker("Accent colour", selection: $model.preferences.accent) { ForEach(KeyAccent.allCases) { Text($0.title).tag($0) } }
+                Toggle("Key outlines", isOn: $model.preferences.keyBorders)
                 Toggle("Number row", isOn: $model.preferences.numberRow)
                 Picker("Layout", selection: $model.preferences.handMode) { ForEach(HandMode.allCases) { Text($0.title).tag($0) } }
-                HStack { Text("Height"); Slider(value: $model.preferences.height, in: 260...340, step: 20); Text("\(Int(model.preferences.height))").monospacedDigit() }
+                HStack { Text("Height"); Slider(value: $model.preferences.height, in: 240...360, step: 30); Text("\(Int(model.preferences.height))").monospacedDigit() }
             }
             Section("Typing") {
                 Picker("Language", selection: $model.preferences.language) { ForEach(KeyboardLanguage.allCases) { Text($0.title).tag($0) } }
@@ -192,6 +200,8 @@ private struct SettingsView: View {
                 Toggle("Auto capitals", isOn: $model.preferences.autoCapitalization)
                 Toggle("Double-space period", isOn: $model.preferences.doubleSpacePeriod)
                 Toggle("Haptic feedback", isOn: $model.preferences.haptics)
+                Toggle("Key sounds", isOn: $model.preferences.keySounds)
+                Toggle("Key pop-up preview", isOn: $model.preferences.keyPreview)
             }
             Section {
                 Toggle("Clipboard history", isOn: $model.preferences.clipboardHistory)

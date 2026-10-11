@@ -13,9 +13,28 @@ public enum KeyboardLanguage: String, Codable, CaseIterable, Identifiable {
 }
 
 public enum KeyboardTheme: String, Codable, CaseIterable, Identifiable {
-    case ocean, midnight, light, rose
+    case auto, ocean, midnight, light, rose, forest, sunset, slate
     public var id: String { rawValue }
-    public var title: String { rawValue.capitalized }
+    public var title: String { self == .auto ? "Auto (light/dark)" : rawValue.capitalized }
+}
+
+/// Accent colours people can pick on top of any theme.
+public enum KeyAccent: String, Codable, CaseIterable, Identifiable {
+    case theme, mint, blue, purple, pink, orange, gold
+    public var id: String { rawValue }
+    public var title: String { self == .theme ? "Theme colour" : rawValue.capitalized }
+    /// RGB components, or nil to keep the theme's own accent.
+    public var rgb: (Double, Double, Double)? {
+        switch self {
+        case .theme: return nil
+        case .mint: return (0.38, 0.88, 0.75)
+        case .blue: return (0.29, 0.56, 1.0)
+        case .purple: return (0.66, 0.50, 1.0)
+        case .pink: return (1.0, 0.45, 0.66)
+        case .orange: return (1.0, 0.58, 0.20)
+        case .gold: return (0.95, 0.77, 0.25)
+        }
+    }
 }
 
 public enum HandMode: String, Codable, CaseIterable, Identifiable {
@@ -26,7 +45,11 @@ public enum HandMode: String, Codable, CaseIterable, Identifiable {
 
 public struct KeyboardPreferences: Codable, Equatable {
     public var language: KeyboardLanguage = .english
-    public var theme: KeyboardTheme = .ocean
+    public var theme: KeyboardTheme = .auto
+    public var accent: KeyAccent = .theme
+    public var keySounds = true
+    public var keyPreview = true
+    public var keyBorders = false
     public var handMode: HandMode = .full
     public var numberRow = true
     public var autocorrect = true
@@ -38,6 +61,7 @@ public struct KeyboardPreferences: Codable, Equatable {
     // Word learning is opt-in; never retain sentences or a keystroke history.
     public var learnWords = false
     public var height: Double = 300
+    public static let heights: [Double] = [240, 270, 300, 330, 360]
     // Clipboard history is opt-in and stays on this device.
     public var clipboardHistory = false
     public var clipboardDays = 7
@@ -49,6 +73,10 @@ public struct KeyboardPreferences: Codable, Equatable {
         let d = KeyboardPreferences()
         language = (try? c.decodeIfPresent(KeyboardLanguage.self, forKey: .language)) ?? d.language
         theme = (try? c.decodeIfPresent(KeyboardTheme.self, forKey: .theme)) ?? d.theme
+        accent = (try? c.decodeIfPresent(KeyAccent.self, forKey: .accent)) ?? d.accent
+        keySounds = (try? c.decodeIfPresent(Bool.self, forKey: .keySounds)) ?? d.keySounds
+        keyPreview = (try? c.decodeIfPresent(Bool.self, forKey: .keyPreview)) ?? d.keyPreview
+        keyBorders = (try? c.decodeIfPresent(Bool.self, forKey: .keyBorders)) ?? d.keyBorders
         handMode = (try? c.decodeIfPresent(HandMode.self, forKey: .handMode)) ?? d.handMode
         numberRow = (try? c.decodeIfPresent(Bool.self, forKey: .numberRow)) ?? d.numberRow
         autocorrect = (try? c.decodeIfPresent(Bool.self, forKey: .autocorrect)) ?? d.autocorrect
