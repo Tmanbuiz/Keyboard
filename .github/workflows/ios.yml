@@ -1,7 +1,7 @@
 name: Build iPhone keyboard
 on:
   push:
-    branches: [main]
+    branches: [main, 'feature/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -11,24 +11,30 @@ concurrency:
 jobs:
   build:
     runs-on: macos-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: Check toolchain
-        run: xcodebuild -version
+        run: |
+          mkdir -p build/logs
+          xcodebuild -version | tee build/logs/toolchain.log
+          echo "::notice title=Toolchain::$(xcodebuild -version | tr '\n' ' ') / $(xcrun --sdk iphoneos --show-sdk-version)"
       - name: Test typing engine
-        run: swift test --jobs 2
+        run: set -o pipefail; swift test --jobs 2 2>&1 | tee build/logs/swift-test.log
       - name: Test writing service boundaries
-        run: node --test Backend/worker.test.mjs
+        run: set -o pipefail; node --test Backend/*.test.mjs 2>&1 | tee build/logs/node-test.log
       - name: Build device app and package unsigned IPA
-        run: bash Scripts/build_ipa.sh
+        run: set -o pipefail; bash Scripts/build_ipa.sh 2>&1 | tee build/logs/device.log
       - name: Build simulator app
         run: >-
-          xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard
+          set -o pipefail; xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard
           -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator'
-          -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build
+          -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build/logs/simulator.log
       - name: Launch companion app in simulator
         run: python3 Scripts/simulator_smoke.py
+      - name: Report compiler errors and warnings
+        if: always()
+        run: python3 Scripts/report_build.py build/logs
       - name: Upload sideloading package
         uses: actions/upload-artifact@v4
         with:
