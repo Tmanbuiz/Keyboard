@@ -2,25 +2,37 @@
 
 A native iOS keyboard extension and companion app, inspired by useful Android keyboard features. This is an independent WianTribe project; it does not use Samsung code, branding or assets.
 
-## Version 0.1
+## Version 0.2
 
-- QWERTY keyboard, optional number row, numbers/symbol pages, caps lock, repeat delete and double-space period.
-- English, Yoruba accents/tones and Nigerian Pidgin presets, with an original 667-entry starter dictionary.
-- Offline completion, supplementary Apple spelling suggestions and conservative English autocorrect with immediate undo.
-- An initial offline glide/swipe decoder, alternatives and space-bar cursor movement.
-- Four themes, three keyboard heights and left/right one-handed layouts.
-- Emoji, two original stickers and two original animated GIFs. Media is copied; the user pastes it in a compatible host app.
-- Android-style clipboard (📋): opt-in history of the last 40 texts copied while the keyboard is open, a "just copied" suggestion chip, tap to paste anywhere, pin/copy/delete, and expiry after 1, 7 or 30 days. Pinned items never expire. Password-manager copies are skipped. Opt-in local word-count learning. No keystroke history.
-- Companion app with setup instructions, a typing practice field, settings and a voice transcription editor.
-- Optional grammar, tone and translation client in the app and keyboard. A private Cloudflare Workers backend template is included; no service or API credentials are provisioned by default.
+**Typing**
+- 28 languages: English, Spanish, French, Portuguese, German, Italian, Dutch, Swedish, Norwegian, Danish, Finnish, Polish, Czech, Romanian, Hungarian, Turkish, Indonesian, Malay, Filipino, Russian, Ukrainian, Arabic, Hebrew, Yorùbá, Naija Pidgin, plus Swahili, Igbo and Hausa layouts. QWERTY, AZERTY, QWERTZ, Nordic, Turkish, Cyrillic, Arabic and Hebrew layouts with long-press accents.
+- Dictionaries of up to 30,000 words per language, offline completion, Apple spelling suggestions, autocorrect with one-tap undo, and swipe typing in every language with a dictionary.
+- Multilingual typing: mix same-alphabet languages in one message without switching. Defaults follow the phone's preferred languages.
+- Opt-in on-device learning of your words and which word usually follows which.
+- Key pop-up preview, key click sounds, haptics, hold-for-more punctuation, space-bar cursor, five heights, one-handed layouts, iPad sizing and larger key labels with Dynamic Type.
 
-This is a first testing build, not Samsung feature parity. Swipe accuracy uses a small dictionary and needs real-device tuning. English corrections are deliberately limited; Yoruba and Pidgin are not silently autocorrected. Handwriting input, a large searchable GIF catalogue, full multilingual prediction and production-grade translation require further work.
+**Look**
+- Eight themes including Auto (follows light/dark), seven accent colours and optional key outlines.
+
+**Panels** (toolbar above the keys)
+- ☺︎ Emoji, GIFs and stickers: the full Unicode 15.0 emoji set with categories, recents, skin tones and search in 16 languages; GIF search powered by GIPHY through your own service; 16 original stickers. An iMessage sticker pack ships with the app.
+- 📋 Android-style clipboard: opt-in history of the last 40 texts copied while the keyboard is open, a "just copied" chip, pin/copy/delete, expiry after 1, 7 or 30 days. Password-manager copies are skipped.
+- ⌶ Text editing: arrows, word and line jumps, copy, cut, paste and delete word, with hold-to-repeat.
+- ✍︎ Handwriting: write with a finger; Apple's on-device Vision reads it, with alternatives to swap.
+- ✦ Translate and write: translation with Apple's on-device Translate models and grammar/tone rewriting with Apple Intelligence on iOS 26, falling back to your own service.
+- ⚙︎ Settings and the language picker (hold the language key).
+
+**Companion app** in English, Spanish, French, Portuguese, German and Arabic: setup, practice, settings, languages, clipboard, translation language downloads, a writing assistant and a voice editor for every language Apple's speech recognition supports.
+
+Known limits: iOS doesn't let keyboards use the microphone, watch the clipboard in the background, insert images directly or work in password fields. Chinese, Japanese, Korean and Indic scripts need dedicated input methods that aren't built yet. Dictionaries for Swahili, Igbo and Hausa aren't available yet, so those are layout-only. App translations should be reviewed by native speakers before release. See [App Store preparation](docs/APP-STORE.md) and the [privacy policy](docs/PRIVACY.md).
+
+Acknowledgements: word frequencies from [wordfreq](https://github.com/rspeer/wordfreq) by Robyn Speer (data CC BY-SA 4.0); emoji data from [emojibase](https://emojibase.dev) (MIT); GIFs powered by GIPHY.
 
 ## Build and sideload
 
 Requires iOS/iPadOS 17 or later. Open `WianTribeKeyboard.xcodeproj` in Xcode on a Mac, select your signing team for both targets and run on your iPhone. No third-party iOS packages are required.
 
-GitHub Actions builds both targets, runs the typing/backend tests, launches the companion app in a simulator and uploads **WianTribeKeyboard-sideload**. That artifact contains **WianTribeKeyboard-unsigned.ipa**, its checksum, installation instructions and a simulator screenshot. The IPA must be re-signed by a sideloading tool before installation. Both the app and keyboard extension must be kept and signed.
+GitHub Actions builds the app, keyboard and sticker pack, runs the typing/backend tests, launches the companion app in a simulator and uploads **WianTribeKeyboard-sideload**. That artifact contains **WianTribeKeyboard-unsigned.ipa**, its checksum, installation instructions and a simulator screenshot. The IPA must be re-signed by a sideloading tool before installation. Both the app and keyboard extension must be kept and signed.
 
 See [installation instructions](docs/INSTALL.md) and the [device test checklist](docs/DEVICE-TESTING.md).
 
@@ -30,7 +42,7 @@ node --test Backend/worker.test.mjs
 bash Scripts/build_ipa.sh  # Mac/Xcode only
 ```
 
-`Scripts/generate_project.py` reproduces the checked-in Xcode project using Python's standard library. `Scripts/generate_assets.py` recreates the original geometric icon/media and needs Pillow; the generated assets are already committed, so normal builds do not need Pillow.
+`Scripts/generate_project.py` reproduces the checked-in Xcode project using Python's standard library. `Scripts/build_languages.py` (needs `pip install wordfreq`), `Scripts/build_emoji.py` (needs `npm install emojibase-data`), `Scripts/generate_stickers.py` (needs Pillow) and `Scripts/build_strings.py` regenerate the committed language, emoji, sticker and translation data. `Scripts/generate_assets.py` recreates the original geometric icon/media and needs Pillow; the generated assets are already committed, so normal builds do not need Pillow.
 
 ## Sideloading and shared settings
 
@@ -40,7 +52,7 @@ For a paid-team build with shared storage, register `group.com.wiantribe.keyboar
 
 ## Privacy and platform restrictions
 
-Typing, swipe decoding and suggestions run locally. Full Access is optional for basic typing and is checked before clipboard, media and online actions. Local learning and clipboard history are off by default. iOS gives keyboards no background clipboard access, so history only records the latest copy each time the keyboard is shown, plus anything copied while it stays open. Writing requests send only explicitly selected/entered text over HTTPS, use an ephemeral URL session, reject redirects and keep the access token in Keychain. The backend template contains no request logging or stored text history.
+Typing, swipe decoding, suggestions, emoji search, handwriting and (on iOS 26) translation and rewriting run locally. Full Access is optional for basic typing and is checked before clipboard, media, GIF and online actions. Local learning and clipboard history are off by default. iOS gives keyboards no background clipboard access, so history only records the latest copy each time the keyboard is shown, plus anything copied while it stays open. Writing requests send only explicitly selected/entered text over HTTPS, use an ephemeral URL session, reject redirects and keep the access token in Keychain. The backend template contains no request logging or stored text history.
 
 Voice recording is confined to the companion app; it uses Apple's Speech framework and requests microphone/speech permissions only when starting a recording. On-device recognition is preferred when supported; otherwise Apple's service may process the audio. No microphone access is attempted in the extension.
 
