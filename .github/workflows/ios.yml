@@ -56,6 +56,6 @@ jobs:
           sed -i '' -e "s/  WianTribeKeyboard.ipa/  $full/" -e "s/  WianTribeKeyboard-keyboard-only.ipa/  $lite/" SHA256SUMS.txt
           gh release create "$tag" --target "${{ github.sha }}" --prerelease \
             --title "WianTribe Keyboard ${version} (build ${{ github.run_number }})" \
-            --notes "Ad-hoc signed IPAs for sideloading; your tool re-signs them. $full has the app, keyboard and iMessage stickers. $lite has only the app and keyboard, for free Apple IDs that are short of App IDs. Keep the extensions when re-signing. See INSTALL.md. Commit ${{ github.sha }}." \
+            --notes "Ad-hoc signed IPAs for sideloading; your tool re-signs them. $full has the app, keyboard, iMessage stickers and the Save to WianTribe share extension. $lite has only the app and keyboard, for free Apple IDs that are short of App IDs. Keep the extensions when re-signing. See INSTALL.md. Commit ${{ github.sha }}." \
             "$full" "$lite" SHA256SUMS.txt INSTALL.md
           echo "::notice title=Sideload release::https://github.com/${{ github.repository }}/releases/tag/$tag"

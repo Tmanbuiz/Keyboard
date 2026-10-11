@@ -358,6 +358,10 @@ private struct PhrasesView: View {
                 Text("Pinned text never expires. Recent copies are kept for \(model.preferences.clipboardDays) day\(model.preferences.clipboardDays == 1 ? "" : "s"), up to \(ClipboardHistory.maxRecent) items.").font(.caption).foregroundStyle(.secondary)
             }
             Section("Clipboard") {
+                PasteButton(payloadType: String.self) { strings in
+                    let text = strings.joined(separator: "\n")
+                    DispatchQueue.main.async { model.saveClip(text) }
+                }.labelStyle(.titleAndIcon)
                 if model.phrases.isEmpty { Text("Copied and pinned text will appear here.").foregroundStyle(.secondary) }
                 ForEach(ClipboardHistory.ordered(model.phrases)) { phrase in
                     VStack(alignment: .leading, spacing: 10) {
@@ -373,8 +377,21 @@ private struct PhrasesView: View {
                         .swipeActions { Button("Delete", role: .destructive) { model.phrases.removeAll { $0.id == phrase.id } } }
                 }
             }
-            if !model.shared {
-                Section { Text("This build keeps the keyboard's clipboard separate from the app. Open 📋 on the keyboard to see what you've copied. Text you copy here will appear there the next time the keyboard opens.").font(.caption).foregroundStyle(.secondary) }
+            Section {
+                Label("Back Tap: double-tap the back of your iPhone", systemImage: "hand.tap")
+                Text("1. Open Shortcuts, tap +, add the action Save Clipboard to WianTribe, and save it.\n2. Settings → Accessibility → Touch → Back Tap → Double Tap → choose that shortcut.\nNow copy anything, double-tap the back of the phone, and it's in your keyboard clipboard.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Label("Share: Save to WianTribe", systemImage: "square.and.arrow.up")
+                Text("Select text or a link in any app, tap Share, then Save to WianTribe. If you don't see it, tap More (…) and turn it on.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Label("Action button, Control Center or Siri", systemImage: "button.programmable")
+                Text("Assign the same shortcut to the Action button or a Control Center shortcut, or say “Save clipboard to WianTribe”.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Button("Open Shortcuts", systemImage: "square.2.layers.3d") {
+                    if let url = URL(string: "shortcuts://") { UIApplication.shared.open(url) }
+                }
+            } header: { Text("Save copies without opening the keyboard") } footer: {
+                Text(model.shared ? "Everything you save here appears in the keyboard's 📋 straight away." : "This sideloaded build keeps the app's and keyboard's clipboards separate. The App Store version shares them, so everything saved here appears in the keyboard.")
             }
             if model.phrases.contains(where: { !$0.pinned }) {
                 Section { Button("Clear recent clips", role: .destructive) { model.clearRecentClips() } }

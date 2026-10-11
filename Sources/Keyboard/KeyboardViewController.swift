@@ -984,6 +984,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         actions.heightAnchor.constraint(equalToConstant: 34).isActive = true
         stack.addArrangedSubview(actions)
 
+        if store.hasGroup {
+            note("Tip: save copies without opening the keyboard: double-tap the back of your iPhone (Back Tap), or Share → Save to WianTribe. Set it up in the WianTribe app → Tools → Clipboard.", in: stack)
+        }
         let items = ClipboardHistory.ordered(store.phrases)
         if items.isEmpty {
             note(preferences.clipboardHistory && hasFullAccess ? "Copy something in any app, then come back to this keyboard. It will appear here." : "Pinned text will appear here. You can paste it while offline.", in: stack)

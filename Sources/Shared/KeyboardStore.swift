@@ -8,6 +8,8 @@ final class KeyboardStore {
     private let group: UserDefaults?
     private let canWriteGroup: Bool
     var isShared: Bool { group != nil && canWriteGroup }
+    /// True when the App Group exists (App Store and paid-team builds), even if this process can't write to it.
+    var hasGroup: Bool { group != nil }
 
     init(canWriteGroup: Bool = true) {
         self.canWriteGroup = canWriteGroup
@@ -36,7 +38,15 @@ final class KeyboardStore {
     var phrases: [SavedPhrase] {
         get {
             if let clips: [SavedPhrase] = load("clips.v2", fallback: nil) {
-                return ClipboardHistory.pruned(clips, keepDays: preferences.clipboardDays)
+                var list = clips
+                // Without Full Access the keyboard keeps its own list, but it can still read items saved
+                // by the app, the Share menu or the Shortcut into the App Group, so merge them in.
+                if !canWriteGroup, let data = group?.data(forKey: "clips.v2"),
+                   let shared = try? JSONDecoder().decode([SavedPhrase].self, from: data) {
+                    let known = Set(list.map(\.text))
+                    list = (list + shared.filter { !known.contains($0.text) }).sorted { $0.createdAt > $1.createdAt }
+                }
+                return ClipboardHistory.pruned(list, keepDays: preferences.clipboardDays)
             }
             // Phrases from v0.1 were saved on purpose, so they become pinned and never expire.
             let legacy: [SavedPhrase] = load("phrases.v1", fallback: [])

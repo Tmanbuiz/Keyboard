@@ -22,7 +22,25 @@ final class AppModel: ObservableObject {
     @Published var phrases: [SavedPhrase] { didSet { store.phrases = phrases } }
     var shared: Bool { store.isShared }
     init() { preferences = store.preferences; phrases = store.phrases }
-    func reload() { preferences = store.preferences; phrases = store.phrases }
+    func reload() {
+        preferences = store.preferences
+        captureClipboardOnOpen()
+        phrases = store.phrases
+    }
+    /// With clipboard history on, opening the app saves the latest copy, like the keyboard does.
+    func captureClipboardOnOpen() {
+        guard preferences.clipboardHistory else { return }
+        let pasteboard = UIPasteboard.general
+        guard pasteboard.changeCount != store.lastChangeCount, pasteboard.hasStrings else { return }
+        store.lastChangeCount = pasteboard.changeCount
+        guard let text = pasteboard.string, ClipboardHistory.shouldCapture(text, types: pasteboard.types) else { return }
+        store.capture(text)
+    }
+    /// From Apple's Paste button, which never shows the "Allow Paste" question.
+    func saveClip(_ text: String) {
+        guard ClipboardHistory.shouldCapture(text) else { return }
+        store.capture(text); phrases = store.phrases
+    }
     func savePhrase(_ text: String) { store.addPhrase(text); phrases = store.phrases }
     func clearPersonalData() { store.clearPersonalData(); phrases = [] }
     func clearLearnedWords() { store.learned = [:]; store.learnedPairs = [:] }

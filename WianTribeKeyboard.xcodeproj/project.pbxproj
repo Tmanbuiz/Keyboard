@@ -6,6 +6,12 @@
 	};
 	"objectVersion" = 56;
 	"objects" = {
+		A7513EA82E3AAEB186FDF2A5 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/App/ClipboardIntents.swift";
+			"sourceTree" = "<group>";
+		};
 		A4A1F8EE0699B7D2BC5C8E30 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -100,6 +106,12 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "Sources/Keyboard/MediaGridView.swift";
+			"sourceTree" = "<group>";
+		};
+		A661E0890601E63AAEAFF913 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Share/ShareViewController.swift";
 			"sourceTree" = "<group>";
 		};
 		B63EFDE034AD1ECC8260A451 = {
@@ -534,6 +546,12 @@
 			"path" = "Configuration/Stickers-Info.plist";
 			"sourceTree" = "<group>";
 		};
+		D36322D872D619CFEFC63F4A = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Configuration/Share-Info.plist";
+			"sourceTree" = "<group>";
+		};
 		07C1832D3EC03FCD6200D73F = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "folder.assetcatalog";
@@ -579,12 +597,20 @@
 			"path" = "WianTribeStickers.appex";
 			"sourceTree" = "BUILT_PRODUCTS_DIR";
 		};
+		B5FF4976087D94E5B7F211F2 = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.app-extension";
+			"includeInIndex" = 0;
+			"path" = "WianTribeShare.appex";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
 		FBDC4F23F93125BBEEAE800C = {
 			"isa" = "PBXGroup";
 			"children" = (
 				36992FD9EFCC35941EC8F506,
 				0BD0388F3B1FCFE4A7ADD82D,
 				ABAC8EFEEA6A0ACB5D142940,
+				B5FF4976087D94E5B7F211F2,
 			);
 			"name" = "Products";
 			"sourceTree" = "<group>";
@@ -592,6 +618,7 @@
 		870B3294C0CBD48AF6BBCC1B = {
 			"isa" = "PBXGroup";
 			"children" = (
+				A7513EA82E3AAEB186FDF2A5,
 				A4A1F8EE0699B7D2BC5C8E30,
 				A4CC490762EB88AA3BE0D206,
 				4123DDC2480CFE0C53D97978,
@@ -608,6 +635,7 @@
 				F8D1A26AD1514724D0424B1E,
 				4BB3554BB30FADCFB923D0C5,
 				C57AEA25FACDC276759ED7B8,
+				A661E0890601E63AAEAFF913,
 				B63EFDE034AD1ECC8260A451,
 				339D57E43FB42F7A2592F03C,
 				6C1A298FC390DC53481CB333,
@@ -680,6 +708,7 @@
 				CCFA6F90FD0B720597ECC2FA,
 				F5E19338E9E7A9B69CDCE6CC,
 				01F4E10BA1910D137C16C823,
+				D36322D872D619CFEFC63F4A,
 				07C1832D3EC03FCD6200D73F,
 				F845250E9A63D882499EE398,
 				04C7981C5E70EE187BBB08AF,
@@ -687,6 +716,10 @@
 				FBDC4F23F93125BBEEAE800C,
 			);
 			"sourceTree" = "<group>";
+		};
+		E63A5F47C97AB867272258A4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = A7513EA82E3AAEB186FDF2A5;
 		};
 		7A93E05CB0EB835B1331B7D7 = {
 			"isa" = "PBXBuildFile";
@@ -748,6 +781,7 @@
 			"isa" = "PBXSourcesBuildPhase";
 			"buildActionMask" = 2147483647;
 			"files" = (
+				E63A5F47C97AB867272258A4,
 				7A93E05CB0EB835B1331B7D7,
 				989B52009A94CD934FB5EC83,
 				EB3E8CA0874297CD57F513B4,
@@ -854,6 +888,83 @@
 				FC950075668C774EF863DECF,
 				17A176D87DCD8D8086A50B75,
 				3C20F72A1FA9E176C323B449,
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		9B3D8C0987AB9321676FE5D4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 82B96D714C539267D27AD641;
+		};
+		C360CD7AC192AAB69E60A4DC = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 988733DE7CCB2D18F8FDF783;
+		};
+		52E758BD34AF0FD7A447B3A8 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 8A43DB04DFE3A792F78F0228;
+		};
+		1CA411A44FFC833B7A6BDFA4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = D8FEE4E7F4D497F461462B13;
+		};
+		66DA280F8121806719A51F8B = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 8BA631D82288A7906BA35E6E;
+		};
+		D4488B2CC0107072D27D3187 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 5A171F31A25A950F51725104;
+		};
+		87C8806F085D9E937D6A4CEE = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 0AE84801629539539873D0C2;
+		};
+		33DADCEFDCAFA96908968DC6 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = A661E0890601E63AAEAFF913;
+		};
+		3BC534524822361C87CB243F = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 339D57E43FB42F7A2592F03C;
+		};
+		E6E919EC4BB99E5DDFF7892C = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				9B3D8C0987AB9321676FE5D4,
+				C360CD7AC192AAB69E60A4DC,
+				52E758BD34AF0FD7A447B3A8,
+				1CA411A44FFC833B7A6BDFA4,
+				66DA280F8121806719A51F8B,
+				D4488B2CC0107072D27D3187,
+				87C8806F085D9E937D6A4CEE,
+				33DADCEFDCAFA96908968DC6,
+				3BC534524822361C87CB243F,
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		79CB1659C228050F5CB929AD = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 2F8BFAFA241578BA57F10027;
+		};
+		28FF5130B4533E2CD9211CAF = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 1DDD10CB5796A04D01F7D50E;
+		};
+		C6D1DB24FEF5A86EBDB66EAB = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+				79CB1659C228050F5CB929AD,
+				28FF5130B4533E2CD9211CAF,
+			);
+			"runOnlyForDeploymentPostprocessing" = 0;
+		};
+		3C982B01884B80A03489D212 = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = 2147483647;
+			"files" = (
+
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
@@ -1259,6 +1370,16 @@
 				);
 			};
 		};
+		A422EF6FF8F3D5024C9D9E9D = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = B5FF4976087D94E5B7F211F2;
+			"settings" = {
+				"ATTRIBUTES" = (
+					"CodeSignOnCopy",
+					"RemoveHeadersOnCopy",
+				);
+			};
+		};
 		CFFF27C96089B93150F3553B = {
 			"isa" = "PBXCopyFilesBuildPhase";
 			"buildActionMask" = 2147483647;
@@ -1267,6 +1388,7 @@
 			"files" = (
 				0993E4A2BC1A5841BF40A8E8,
 				6E56D291C27C80D044F1357B,
+				A422EF6FF8F3D5024C9D9E9D,
 			);
 			"name" = "Embed App Extensions";
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -1294,6 +1416,18 @@
 			"isa" = "PBXTargetDependency";
 			"target" = BDFF5F97F1E34E085F97FAD0;
 			"targetProxy" = 71131EBF269DFD3FE47D04DC;
+		};
+		1A70B6029529916887BE879F = {
+			"isa" = "PBXContainerItemProxy";
+			"containerPortal" = 98F54143AB4E86B28C3AFEE0;
+			"proxyType" = 1;
+			"remoteGlobalIDString" = 02718D340DBF143923A63E6D;
+			"remoteInfo" = "WianTribeShare";
+		};
+		9E1CB7E61310C9F1C9540357 = {
+			"isa" = "PBXTargetDependency";
+			"target" = 02718D340DBF143923A63E6D;
+			"targetProxy" = 1A70B6029529916887BE879F;
 		};
 		ED8772ADEC3A6C25161BC957 = {
 			"isa" = "XCBuildConfiguration";
@@ -1531,6 +1665,71 @@
 			"defaultConfigurationIsVisible" = 0;
 			"defaultConfigurationName" = "Release";
 		};
+		31DD544122DEDF9DFFD004D0 = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"CODE_SIGN_STYLE" = "Automatic";
+				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "0.2.0";
+				"TARGETED_DEVICE_FAMILY" = "1,2";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"SUPPORTS_MACCATALYST" = "NO";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"PRODUCT_NAME" = "WianTribeShare";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.wiantribe.keyboard.share";
+				"INFOPLIST_FILE" = "Configuration/Share-Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+				"SWIFT_COMPILATION_MODE" = "singlefile";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf";
+				"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG";
+				"ENABLE_TESTABILITY" = "YES";
+			};
+			"name" = "Debug";
+		};
+		337A6EFD22883FE5EED3775C = {
+			"isa" = "XCBuildConfiguration";
+			"buildSettings" = {
+				"CODE_SIGN_STYLE" = "Automatic";
+				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
+				"CURRENT_PROJECT_VERSION" = "1";
+				"MARKETING_VERSION" = "0.2.0";
+				"TARGETED_DEVICE_FAMILY" = "1,2";
+				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
+				"SUPPORTS_MACCATALYST" = "NO";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"LD_RUNPATH_SEARCH_PATHS" = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				"PRODUCT_NAME" = "WianTribeShare";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "com.wiantribe.keyboard.share";
+				"INFOPLIST_FILE" = "Configuration/Share-Info.plist";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+				"SWIFT_COMPILATION_MODE" = "wholemodule";
+				"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+			};
+			"name" = "Release";
+		};
+		425B6692B6D77A16BBF4B2FC = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = (
+				31DD544122DEDF9DFFD004D0,
+				337A6EFD22883FE5EED3775C,
+			);
+			"defaultConfigurationIsVisible" = 0;
+			"defaultConfigurationName" = "Release";
+		};
 		874E7FD7A39CF1D6319F589D = {
 			"isa" = "PBXNativeTarget";
 			"buildConfigurationList" = 268D2D29669C504AD910B275;
@@ -1546,6 +1745,7 @@
 			"dependencies" = (
 				DE58E2B17C19600779694943,
 				C9BB08DF080B6DA80F51F963,
+				9E1CB7E61310C9F1C9540357,
 			);
 			"name" = "WianTribeKeyboard";
 			"productName" = "WianTribeKeyboard";
@@ -1588,6 +1788,25 @@
 			"productReference" = ABAC8EFEEA6A0ACB5D142940;
 			"productType" = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
+		02718D340DBF143923A63E6D = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = 425B6692B6D77A16BBF4B2FC;
+			"buildPhases" = (
+				E6E919EC4BB99E5DDFF7892C,
+				3C982B01884B80A03489D212,
+				C6D1DB24FEF5A86EBDB66EAB,
+			);
+			"buildRules" = (
+
+			);
+			"dependencies" = (
+
+			);
+			"name" = "WianTribeShare";
+			"productName" = "WianTribeShare";
+			"productReference" = B5FF4976087D94E5B7F211F2;
+			"productType" = "com.apple.product-type.app-extension";
+		};
 		98F54143AB4E86B28C3AFEE0 = {
 			"isa" = "PBXProject";
 			"attributes" = {
@@ -1600,6 +1819,9 @@
 						"CreatedOnToolsVersion" = "16.0";
 					};
 					BDFF5F97F1E34E085F97FAD0 = {
+						"CreatedOnToolsVersion" = "16.0";
+					};
+					02718D340DBF143923A63E6D = {
 						"CreatedOnToolsVersion" = "16.0";
 					};
 				};
@@ -1625,6 +1847,7 @@
 				874E7FD7A39CF1D6319F589D,
 				6525FA7ED291309A5276BE13,
 				BDFF5F97F1E34E085F97FAD0,
+				02718D340DBF143923A63E6D,
 			);
 		};
 	};

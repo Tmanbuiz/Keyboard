@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Package two sideloading IPAs from the Release build (macOS only).
 
-- WianTribeKeyboard.ipa: app + keyboard + iMessage sticker pack.
+- WianTribeKeyboard.ipa: app + keyboard + iMessage sticker pack + Share extension.
 - WianTribeKeyboard-keyboard-only.ipa: app + keyboard, for free Apple IDs that are short of App IDs.
 
 Every bundle is ad-hoc signed from the inside out and verified, so sideloading tools start from a
@@ -33,9 +33,11 @@ def check(app, with_stickers):
     assert extension_info["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.keyboard-service"
     assert extension_info["NSExtension"]["NSExtensionAttributes"]["RequestsOpenAccess"] is True
     stickers = app / "PlugIns/WianTribeStickers.appex"
-    assert stickers.is_dir() == with_stickers, "unexpected sticker pack state"
+    share = app / "PlugIns/WianTribeShare.appex"
+    assert stickers.is_dir() == with_stickers and share.is_dir() == with_stickers, "unexpected extension set"
     if with_stickers:
         assert plistlib.loads((stickers / "Info.plist").read_bytes())["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.message-payload-provider"
+        assert plistlib.loads((share / "Info.plist").read_bytes())["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.share-services"
     for container in [app, extension]:
         assert (container / "PrivacyInfo.xcprivacy").exists()
         assert (container / container.name.rsplit(".", 1)[0]).exists()
@@ -58,6 +60,7 @@ def package(name, with_stickers):
     shutil.copytree(built, app, symlinks=True)
     if not with_stickers:
         shutil.rmtree(app / "PlugIns/WianTribeStickers.appex")
+        shutil.rmtree(app / "PlugIns/WianTribeShare.appex")
     check(app, with_stickers)
     sign(app)
     ipa = output / f"{name}.ipa"

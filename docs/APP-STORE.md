@@ -5,7 +5,7 @@ What's ready in this repository, and what only you can do.
 ## Only you can do these
 
 1. **Join the Apple Developer Program** ($99 USD/year) as an individual or as WianTribe Inc. (organisation enrolment needs a D-U-N-S number).
-2. **Register bundle IDs** `com.wiantribe.keyboard`, `com.wiantribe.keyboard.extension` and `com.wiantribe.keyboard.stickers`. To share settings between the app and keyboard, add the App Group `group.com.wiantribe.keyboard` to the first two, then run `python3 Scripts/generate_project.py --shared-container`.
+2. **Register bundle IDs** `com.wiantribe.keyboard`, `com.wiantribe.keyboard.extension`, `com.wiantribe.keyboard.share` and `com.wiantribe.keyboard.stickers`. Add the App Group `group.com.wiantribe.keyboard` to the app, keyboard and share IDs, then run `python3 Scripts/generate_project.py --shared-container` before archiving. The App Group is required for the App Store build: it is how items saved by the Share menu, the Shortcut and the app reach the keyboard.
 3. **Test on real iPhones** using [DEVICE-TESTING.md](DEVICE-TESTING.md), ideally one older model and one with Apple Intelligence, plus an iPad.
 4. **Publish the privacy policy** ([PRIVACY.md](PRIVACY.md)) at a public URL, for example wiantribe.com/keyboard/privacy, after filling in the date and support email.
 5. **Have native speakers review** the app translations (Spanish, French, Portuguese, German, Arabic) in `Scripts/data/app-translations.json`, then run `python3 Scripts/build_strings.py`.
@@ -23,6 +23,8 @@ What's ready in this repository, and what only you can do.
 > WianTribe Keyboard is a custom keyboard. To try it: open the app, follow Home → "Add WianTribe Keyboard", then switch to it with the globe key in the Practice tab.
 >
 > Full Access is optional. Without it, typing, suggestions, swipe, emoji, handwriting and on-device translation all work. Full Access is used only for clipboard history (off by default), copying stickers/GIFs, haptics and an optional user-supplied HTTPS service. The keyboard does not use the microphone; voice transcription happens only in the containing app.
+>
+> Clipboard: there is no background monitoring. The keyboard reads the clipboard only while it is on screen and the user has turned on clipboard history (off by default); items can also be saved explicitly through the "Save to WianTribe" share extension, the "Save Clipboard to WianTribe" App Intent (Shortcuts, Siri, Back Tap, Action button) or the system Paste button in the app. Everything stays on device in the App Group.
 >
 > GIF search and server-based writing tools require the user's own service and are not configured in this build; the GIF tab explains this. No account or login is needed.
 
@@ -47,6 +49,7 @@ TYPE THE WAY YOU TALK
 
 MORE THAN A KEYBOARD
 • Clipboard history: see what you copied and paste it anywhere
+• Save any copy with a double-tap on the back of your iPhone, or Share → Save to WianTribe
 • Every emoji, with search in 16 languages and skin tones
 • Original stickers, including an iMessage sticker pack
 • Text editing panel with arrows, word jumps, copy, cut and paste

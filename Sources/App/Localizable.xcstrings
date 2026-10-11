@@ -35,6 +35,40 @@
         }
       }
     },
+    "1. Open Shortcuts, tap +, add the action Save Clipboard to WianTribe, and save it.\n2. Settings → Accessibility → Touch → Back Tap → Double Tap → choose that shortcut.\nNow copy anything, double-tap the back of the phone, and it's in your keyboard clipboard.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Abre Atajos, toca +, añade la acción «Save Clipboard to WianTribe» y guárdalo.\n2. Ajustes → Accesibilidad → Tocar → Toque posterior → Doble toque → elige ese atajo.\nAhora copia lo que quieras, toca dos veces la parte trasera y estará en el portapapeles del teclado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Ouvrez Raccourcis, touchez +, ajoutez l'action « Save Clipboard to WianTribe » et enregistrez.\n2. Réglages → Accessibilité → Toucher → Toucher le dos → Toucher deux fois → choisissez ce raccourci.\nCopiez ce que vous voulez, touchez deux fois le dos de l'iPhone : c'est dans le presse-papiers du clavier."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Abra Atalhos, toque em +, adicione a ação “Save Clipboard to WianTribe” e salve.\n2. Ajustes → Acessibilidade → Toque → Toque Traseiro → Toque Duplo → escolha esse atalho.\nAgora copie qualquer coisa, toque duas vezes na parte de trás e ela estará na área de transferência do teclado."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. Öffne Kurzbefehle, tippe auf +, füge die Aktion „Save Clipboard to WianTribe“ hinzu und sichere sie.\n2. Einstellungen → Bedienungshilfen → Tippen → Auf Rückseite tippen → Doppeltippen → diesen Kurzbefehl wählen.\nJetzt etwas kopieren, zweimal auf die Rückseite tippen – und es ist in der Zwischenablage der Tastatur."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1. افتح الاختصارات، واضغط +، وأضف الإجراء «Save Clipboard to WianTribe» واحفظه.\n2. الإعدادات ← تسهيلات الاستخدام ← اللمس ← النقر الخلفي ← نقر مزدوج ← اختر ذلك الاختصار.\nانسخ أي شيء ثم انقر مرتين على ظهر الهاتف، وسيظهر في حافظة لوحة المفاتيح."
+          }
+        }
+      }
+    },
     "A backend template is included in the project. No service is deployed or subscription activated by this app. Provider usage charges may apply to your service.": {
       "localizations": {
         "es": {
@@ -133,6 +167,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "لون التمييز"
+          }
+        }
+      }
+    },
+    "Action button, Control Center or Siri": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Botón de acción, Centro de control o Siri"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bouton Action, Centre de contrôle ou Siri"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Botão de Ação, Central de Controle ou Siri"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktionstaste, Kontrollzentrum oder Siri"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "زر الإجراءات أو مركز التحكم أو Siri"
           }
         }
       }
@@ -239,6 +307,40 @@
         }
       }
     },
+    "Assign the same shortcut to the Action button or a Control Center shortcut, or say “Save clipboard to WianTribe”.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asigna el mismo atajo al botón de acción o a un control del Centro de control, o di «Save clipboard to WianTribe»."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attribuez le même raccourci au bouton Action ou à une commande du Centre de contrôle, ou dites « Save clipboard to WianTribe »."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atribua o mesmo atalho ao Botão de Ação ou a um controle da Central de Controle, ou diga “Save clipboard to WianTribe”."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lege denselben Kurzbefehl auf die Aktionstaste oder ins Kontrollzentrum oder sag „Save clipboard to WianTribe“."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عيّن الاختصار نفسه لزر الإجراءات أو لعنصر في مركز التحكم، أو قل «Save clipboard to WianTribe»."
+          }
+        }
+      }
+    },
     "Auto capitals": {
       "localizations": {
         "es": {
@@ -303,6 +405,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "التصحيح التلقائي"
+          }
+        }
+      }
+    },
+    "Back Tap: double-tap the back of your iPhone": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque posterior: toca dos veces la parte trasera del iPhone"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toucher le dos : touchez deux fois l'arrière de l'iPhone"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toque Traseiro: toque duas vezes na parte de trás do iPhone"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf Rückseite tippen: zweimal auf die iPhone-Rückseite tippen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "النقر الخلفي: انقر مرتين على ظهر iPhone"
           }
         }
       }
@@ -949,6 +1085,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "نزّل لغات للترجمة على الجهاز"
+          }
+        }
+      }
+    },
+    "Everything you save here appears in the keyboard's 📋 straight away.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo lo que guardes aquí aparece al instante en 📋 del teclado."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout ce que vous enregistrez ici apparaît aussitôt dans 📋 du clavier."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo o que você salvar aqui aparece na hora no 📋 do teclado."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles, was du hier sicherst, erscheint sofort in 📋 der Tastatur."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل ما تحفظه هنا يظهر فورًا في 📋 على لوحة المفاتيح."
           }
         }
       }
@@ -1769,6 +1939,40 @@
         }
       }
     },
+    "Open Shortcuts": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Atajos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir Raccourcis"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir Atalhos"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurzbefehle öffnen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فتح الاختصارات"
+          }
+        }
+      }
+    },
     "Open WianTribe settings": {
       "localizations": {
         "es": {
@@ -2347,6 +2551,74 @@
         }
       }
     },
+    "Save copies without opening the keyboard": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda copias sin abrir el teclado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrez des copies sans ouvrir le clavier"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salve cópias sem abrir o teclado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopien speichern, ohne die Tastatur zu öffnen"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "احفظ النسخ دون فتح لوحة المفاتيح"
+          }
+        }
+      }
+    },
+    "Select text or a link in any app, tap Share, then Save to WianTribe. If you don't see it, tap More (…) and turn it on.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecciona texto o un enlace en cualquier app, toca Compartir y luego «Save to WianTribe». Si no aparece, toca Más (…) y actívalo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionnez du texte ou un lien dans n'importe quelle app, touchez Partager puis « Save to WianTribe ». S'il n'apparaît pas, touchez Plus (…) et activez-le."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecione texto ou um link em qualquer app, toque em Compartilhar e depois em “Save to WianTribe”. Se não aparecer, toque em Mais (…) e ative."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markiere Text oder einen Link in einer App, tippe auf Teilen und dann auf „Save to WianTribe“. Fehlt es, tippe auf Mehr (…) und schalte es ein."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حدّد نصًا أو رابطًا في أي تطبيق، واضغط مشاركة، ثم «Save to WianTribe». إن لم يظهر، اضغط المزيد (…) وفعّله."
+          }
+        }
+      }
+    },
     "Set up clipboard access": {
       "localizations": {
         "es": {
@@ -2411,6 +2683,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "الإعدادات"
+          }
+        }
+      }
+    },
+    "Share: Save to WianTribe": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir: Guardar en WianTribe"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partager : Enregistrer dans WianTribe"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartilhar: Salvar no WianTribe"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilen: In WianTribe sichern"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مشاركة: حفظ في WianTribe"
           }
         }
       }
@@ -2853,6 +3159,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "تحتفظ هذه النسخة بحافظة لوحة المفاتيح منفصلة عن التطبيق. افتح 📋 على لوحة المفاتيح لترى ما نسخته. سيظهر النص الذي تنسخه هنا هناك في المرة التالية التي تُفتح فيها لوحة المفاتيح."
+          }
+        }
+      }
+    },
+    "This sideloaded build keeps the app's and keyboard's clipboards separate. The App Store version shares them, so everything saved here appears in the keyboard.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versión instalada manualmente mantiene separados los portapapeles de la app y del teclado. La versión de App Store los comparte."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette version installée manuellement garde séparés les presse-papiers de l'app et du clavier. La version App Store les partage."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta versão instalada manualmente mantém separadas as áreas de transferência do app e do teclado. A versão da App Store as compartilha."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese manuell installierte Version hält die Zwischenablagen von App und Tastatur getrennt. Die App-Store-Version teilt sie."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحتفظ هذه النسخة المثبتة يدويًا بحافظتين منفصلتين للتطبيق ولوحة المفاتيح. أما نسخة App Store فتشاركهما."
           }
         }
       }
