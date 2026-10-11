@@ -6,7 +6,14 @@ import subprocess
 import time
 
 root = pathlib.Path(__file__).resolve().parents[1]
-def run(*args): return subprocess.check_output(args, text=True).strip()
+def run(*args):
+    result = subprocess.run(args, text=True, capture_output=True)
+    if result.returncode != 0:
+        # Surface the simulator's own message as a GitHub annotation.
+        message = (result.stderr or result.stdout).strip().replace("\n", " | ")[:900]
+        print(f"::error title=simctl {args[2] if len(args) > 2 else ''}::{message}")
+        raise SystemExit(result.returncode)
+    return result.stdout.strip()
 data = json.loads(run("xcrun", "simctl", "list", "--json"))
 runtimes = [r for r in data["runtimes"] if r.get("isAvailable") and "iOS" in r["name"]]
 runtime = sorted(runtimes, key=lambda r: tuple(map(int, r["version"].split("."))))[-1]

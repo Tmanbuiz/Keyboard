@@ -145,7 +145,7 @@ private struct PracticeView: View {
                     tip("arrow.uturn.backward", "After an autocorrection, tap the original word or press delete to undo it.")
                     tip("globe", "Tap EN / YO / NG on the keyboard to change language.")
                 }.padding(18).background(card, in: RoundedRectangle(cornerRadius: 16))
-                Text("Swipe and suggestions use a starter dictionary; accuracy will improve as we test real typing. Password fields and some apps use Apple's keyboard.")
+                Text("Suggestions, autocorrect and swipe use dictionaries for each of your languages. Password fields and some apps use Apple's keyboard.")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(22)
         }.background(ocean).navigationTitle("Practice").navigationBarTitleDisplayMode(.inline)
@@ -163,9 +163,10 @@ private struct ToolsView: View {
                 NavigationLink { VoiceView() } label: { tool("waveform", "Voice editor", "Speak, review and copy your transcript") }
                 NavigationLink { WriterView() } label: { tool("sparkles", "Writing assistant", "Grammar, tone and translation with your service") }
                 NavigationLink { PhrasesView() } label: { tool("doc.on.clipboard", "Clipboard", "Recent copies and pinned text") }
+                NavigationLink { TranslationLanguagesView() } label: { tool("globe", "Translation languages", "Download languages for on-device translation") }
             }
             Section {
-                Text("Typing, emoji and your clipboard work offline. Voice uses Apple's speech recognition. The writing assistant needs your own HTTPS service connection.")
+                Text("Typing, emoji, stickers and your clipboard work offline. Translation and rewriting run on your iPhone where Apple supports them; your own service covers other languages and GIF search.")
                     .font(.subheadline).foregroundStyle(.secondary)
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Your toolkit")
@@ -224,7 +225,7 @@ private struct SettingsView: View {
             Section {
                 Text(model.shared ? "App and keyboard share settings when Full Access is enabled." : "This sideloaded build keeps app and keyboard settings separate. Tap ⚙︎ inside the keyboard to change the keyboard itself.")
                     .font(.caption).foregroundStyle(.secondary)
-                Text("WianTribe Keyboard 0.1.0").font(.caption).foregroundStyle(.secondary)
+                Text("WianTribe Keyboard \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "")").font(.caption).foregroundStyle(.secondary)
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Make it yours")
             .confirmationDialog("Clear clipboard history, pinned text and learned words on this device?", isPresented: $clearData) {
@@ -232,6 +233,66 @@ private struct SettingsView: View {
             }
     }
 }
+
+/// Keyboards can't ask iOS to download translation languages, so the app does it.
+private struct TranslationLanguagesView: View {
+    @EnvironmentObject private var model: AppModel
+    var body: some View {
+        List {
+            Section {
+                Text("Translation in the keyboard runs on your iPhone with Apple's Translate models. Download each language once here; after that it works offline.")
+                    .font(.subheadline).foregroundStyle(.secondary)
+            }
+            if #available(iOS 18.0, *) {
+                Section("Your languages") {
+                    ForEach(model.preferences.activeLanguages + (model.preferences.activeLanguages.contains(.english) ? [] : [.english])) { language in
+                        TranslationDownloadRow(language: language)
+                    }
+                }
+            } else {
+                Section { Text("On-device translation needs iOS 18 or later.").foregroundStyle(.secondary) }
+            }
+        }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Translation languages")
+    }
+}
+
+#if canImport(Translation)
+import Translation
+
+@available(iOS 18.0, *)
+private struct TranslationDownloadRow: View {
+    let language: KeyboardLanguage
+    @State private var status = ""
+    @State private var configuration: TranslationSession.Configuration?
+    private var target: Locale.Language { Locale.Language(identifier: language.pack.primaryLanguage) }
+    private var source: Locale.Language { Locale.Language(identifier: language.code == "en" ? (Locale.current.language.languageCode?.identifier ?? "fr") : "en") }
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) { Text(language.title); Text(status).font(.caption).foregroundStyle(.secondary) }
+            Spacer()
+            Button("Download") { configuration = .init(source: source, target: target) }.buttonStyle(.bordered)
+                .disabled(status == "Ready" || status == "Not available")
+        }
+        .task { await refresh() }
+        .translationTask(configuration) { session in
+            do { try await session.prepareTranslation(); await refresh() }
+            catch { status = "Download didn't finish" }
+        }
+    }
+    private func refresh() async {
+        switch await LanguageAvailability().status(from: source, to: target) {
+        case .installed: status = "Ready"
+        case .supported: status = "Not downloaded yet"
+        default: status = "Not available"
+        }
+    }
+}
+#else
+private struct TranslationDownloadRow: View {
+    let language: KeyboardLanguage
+    var body: some View { Text(language.title) }
+}
+#endif
 
 private struct LanguagesView: View {
     @EnvironmentObject private var model: AppModel
@@ -333,7 +394,7 @@ private struct WriterView: View {
                     Button(action == .translate ? "Translate to \(language.title)" : action.title) { perform(action) }
                         .disabled(busy || !configured || text.isEmpty)
                 }
-                Text("Only the text above is sent when you tap an action. Review translations, especially Yoruba and Pidgin.")
+                Text("Runs on this iPhone when Apple supports the language. Otherwise only the text above is sent to your service. Review results before using them.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             if busy { Section { ProgressView("Working…") } }
@@ -372,8 +433,12 @@ private struct WriterView: View {
         request = Task { @MainActor in
             defer { busy = false }
             do {
-                let output = try await WritingService.perform(text: text, action: action, language: language)
-                if !Task.isCancelled { result = output }
+                // Apple's on-device models first; the person's own service only if they can't help.
+                var output: String?
+                if action == .translate { output = try? await OnDeviceWriting.translate(text, to: language) }
+                else if OnDeviceWriting.supportsRewrite(language: language.code) { output = try? await OnDeviceWriting.rewrite(text, action: action, language: language) }
+                if output == nil { output = try await WritingService.perform(text: text, action: action, language: language) }
+                if !Task.isCancelled { result = output ?? "" }
             } catch { if !Task.isCancelled { status = error.localizedDescription } }
         }
     }
@@ -387,11 +452,11 @@ private struct PrivacyView: View {
                 Text("Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.")
             }
             Section("When data can leave your device") {
-                Text("Writing tools send only text you explicitly select or enter to the HTTPS service you connect. The app does not include a developer-owned writing service. Check your provider's privacy terms.")
+                Text("Translation and rewriting run on this iPhone when Apple's on-device models support the language. Otherwise, writing tools and GIF search send only the text or search words you choose to the HTTPS service you connect. GIF previews load from GIPHY. The app does not include a developer-owned service.")
                 Text("Voice recording is available in this app, with microphone and speech permission. Apple's speech recognition may process audio on Apple's servers when on-device recognition is unavailable.")
             }
             Section("Full Access is optional") {
-                Text("Use the keyboard without Full Access for normal typing. Clipboard history, copying media, haptics, shared-container writes and online writing tools need Full Access. Allowing it does not start background text uploads.")
+                Text("Use the keyboard without Full Access for normal typing. Clipboard history, GIFs, copying stickers, haptics, shared-container writes and your online service need Full Access. Allowing it does not start background text uploads.")
             }
             Section("iOS limits") {
                 Text("Password fields and phone-number pads use Apple's keyboard. Apps may disable third-party keyboards. Media is copied to the clipboard; you paste it yourself in an app that accepts that format.")
