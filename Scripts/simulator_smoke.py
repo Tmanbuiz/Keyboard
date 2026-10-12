@@ -23,11 +23,23 @@ device = json.loads(manifest.read_text())["device"]
 try:
     run("xcrun", "simctl", "bootstatus", device, "-b")
     app = root / "build/simulator/Build/Products/Debug-iphonesimulator/WianTribeKeyboard.app"
-    subprocess.run(["python3", str(root / "Scripts/sign_simulator.py"), str(app)], check=True)
+    subprocess.run(["codesign", "-d", "--entitlements", "-", str(app)], check=False)
     run("xcrun", "simctl", "install", device, str(app))
     run("xcrun", "simctl", "status_bar", device, "override", "--time", "9:41", "--batteryState", "charged", "--batteryLevel", "100")
     bundle_id = plistlib.loads((app / "Info.plist").read_bytes())["CFBundleIdentifier"]
-    launched = run("xcrun", "simctl", "launch", device, bundle_id)
+    for attempt in range(3):
+        launch = subprocess.run(["xcrun", "simctl", "launch", device, bundle_id], text=True, capture_output=True)
+        if launch.returncode == 0:
+            launched = launch.stdout.strip()
+            break
+        print(launch.stderr.strip(), flush=True)
+        if attempt < 2: time.sleep(4)
+    else:
+        diagnostic = subprocess.run(["xcrun", "simctl", "spawn", device, "log", "show", "--style", "compact", "--last", "2m",
+            "--predicate", 'process == "SpringBoard" OR process == "runningboardd"'], text=True, capture_output=True)
+        (root / "build/logs/simulator-launch.log").write_text(diagnostic.stdout + diagnostic.stderr)
+        print(diagnostic.stdout[-5000:])
+        raise SystemExit("Simulator launch failed; see simulator-launch.log")
     print(launched)
     pid = int(launched.rsplit(":", 1)[-1].strip())
     time.sleep(12)  # Let one-time simulator setup notification banners disappear.
@@ -47,7 +59,7 @@ try:
             "xcodebuild", "test-without-building", "-project", str(root / "WianTribeKeyboard.xcodeproj"),
             "-scheme", "WianTribeKeyboard", "-configuration", "Debug", "-destination", f"id={device}",
             "-derivedDataPath", str(root / "build/simulator"), "-resultBundlePath", str(verification / "KeyboardRegistration.xcresult"),
-            "-parallel-testing-enabled", "NO", "CODE_SIGNING_ALLOWED=NO",
+            "-parallel-testing-enabled", "NO", "CODE_SIGNING_ALLOWED=YES", "CODE_SIGN_IDENTITY=-", "ENTITLEMENTS_REQUIRED=YES",
             "-only-testing:WianTribeKeyboardUITests/KeyboardRegistrationTests/testKeyboardCanBeAddedSelectedAndType"
         ], stdout=stream, stderr=subprocess.STDOUT, timeout=480)
     test_log = log.read_text()

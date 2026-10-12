@@ -14,6 +14,11 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Choose verification scope
+        id: scope
+        run: python3 Scripts/verification_scope.py
       - name: Check toolchain
         run: |
           mkdir -p build/logs
@@ -22,12 +27,16 @@ jobs:
       - name: Start isolated iPhone simulator
         run: python3 Scripts/prepare_simulator.py
       - name: Test typing engine
+        if: steps.scope.outputs.full_check != 'false'
         run: set -o pipefail; swift test --jobs 2 2>&1 | tee build/logs/swift-test.log
       - name: Test writing service boundaries
+        if: steps.scope.outputs.full_check != 'false'
         run: set -o pipefail; node --test Backend/*.test.mjs 2>&1 | tee build/logs/node-test.log
       - name: Build device app and package unsigned IPA
+        if: steps.scope.outputs.full_check != 'false'
         run: set -o pipefail; bash Scripts/build_ipa.sh 2>&1 | tee build/logs/device.log
       - name: Upload compiled sideloading package
+        if: steps.scope.outputs.full_check != 'false'
         uses: actions/upload-artifact@v4
         with:
           name: WianTribeKeyboard-personal-background-clipboard
@@ -44,7 +53,8 @@ jobs:
           set -o pipefail
           xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard \
             -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build-for-testing 2>&1 | tee build/logs/simulator.log
+            -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- \
+            ENTITLEMENTS_REQUIRED=YES build-for-testing 2>&1 | tee build/logs/simulator.log
       - name: Verify app launch and keyboard registration and typing
         run: python3 Scripts/simulator_smoke.py
       - name: Upload keyboard layout verification
