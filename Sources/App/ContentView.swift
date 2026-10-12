@@ -95,7 +95,7 @@ struct LayoutPreview: View {
             // The tool row as it appears on the keyboard when you aren't typing.
             HStack {
                 Text("EN").font(.caption.weight(.semibold))
-                ForEach(["face.smiling", "doc.on.clipboard", "sparkles", "translate", "pencil.and.scribble", "character.cursor.ibeam", "gearshape"], id: \.self) { symbol in
+                ForEach(["face.smiling", "doc.on.clipboard", "sparkles", "translate", "ellipsis.circle"], id: \.self) { symbol in
                     Spacer(minLength: 0); Image(systemName: symbol).font(.system(size: 15))
                 }
             }.padding(.horizontal, 10).padding(.bottom, 6)
@@ -169,6 +169,7 @@ private struct ToolsView: View {
         List {
             Section {
                 NavigationLink { VoiceView() } label: { tool("waveform", "Voice editor", "Speak, review and copy your transcript") }
+                NavigationLink { AISettingsView() } label: { tool("sparkles", "AI setup", "Connect Groq and choose the AI your keyboard uses") }
                 NavigationLink { WriterView() } label: { tool("sparkles", "Writing assistant", "Grammar, tone and translation with your service") }
                 NavigationLink { PhrasesView() } label: { tool("doc.on.clipboard", "Clipboard", "Recent copies and pinned text") }
                 NavigationLink { TranslationLanguagesView() } label: { tool("globe", "Translation languages", "Download languages for on-device translation") }
@@ -416,14 +417,12 @@ private struct PhrasesView: View {
 }
 
 private struct WriterView: View {
+    @EnvironmentObject private var model: AppModel
     @State private var text = ""
     @State private var result = ""
     @State private var language: KeyboardLanguage = LanguageCatalog.deviceLanguages().first ?? .english
-    @State private var endpoint = ""
-    @State private var token = ""
     @State private var status = ""
     @State private var busy = false
-    @State private var configured = ConnectionVault.load() != nil
     @State private var request: Task<Void, Never>?
     var body: some View {
         Form {
@@ -434,7 +433,7 @@ private struct WriterView: View {
                     Button(action == .translate ? "Translate to \(language.title)" : action.title) { perform(action) }
                         .disabled(busy || text.isEmpty)
                 }
-                Text("Runs on this iPhone when Apple supports the language. Otherwise only the text above is sent to your service. Review results before using them.")
+                Text("Uses your chosen AI: \(model.preferences.writingProvider.title). Review the result before using it.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             if busy { Section { ProgressView("Working…") } }
@@ -446,26 +445,10 @@ private struct WriterView: View {
                     Button("Use as input") { text = result; result = "" }
                 }
             }
-            Section("Optional service connection") {
-                TextField("https://your-service.example/write", text: $endpoint).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.URL)
-                SecureField("Access token", text: $token).textInputAutocapitalization(.never).autocorrectionDisabled()
-                Button("Save connection") {
-                    let connection = WritingConnection(endpoint: endpoint.trimmingCharacters(in: .whitespacesAndNewlines), token: token.trimmingCharacters(in: .whitespacesAndNewlines))
-                    configured = ConnectionVault.save(connection)
-                    status = configured ? "Connection saved in this app's Keychain" : "Enter a valid HTTPS URL and access token"
-                }
-                Button("Copy connection for keyboard") {
-                    guard let connection = ConnectionVault.load(), let data = try? JSONEncoder().encode(connection), let json = String(data: data, encoding: .utf8) else { return }
-                    // The concealed marker keeps this token out of clipboard history.
-                    UIPasteboard.general.setItems([["public.utf8-plain-text": json, "org.nspasteboard.ConcealedType": Data()]], options: [.localOnly: true, .expirationDate: Date().addingTimeInterval(120)])
-                    status = "Copied for two minutes. In the keyboard tap ✦ → Import writing connection. It contains your private access token."
-                }.disabled(!configured)
-                Button("Disconnect", role: .destructive) { ConnectionVault.save(nil); configured = false; token = ""; status = "Disconnected" }
-                Text("A backend template is included in the project. No service is deployed or subscription activated by this app. Provider usage charges may apply to your service.")
-                    .font(.caption).foregroundStyle(.secondary)
+            Section("AI connection") {
+                NavigationLink { AISettingsView() } label: { Label("AI setup", systemImage: "sparkles") }
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Writing assistant")
-            .onAppear { if let connection = ConnectionVault.load() { endpoint = connection.endpoint; token = connection.token } }
             .onDisappear { request?.cancel() }
     }
     private func perform(_ action: WritingAction) {
@@ -473,12 +456,8 @@ private struct WriterView: View {
         request = Task { @MainActor in
             defer { busy = false }
             do {
-                // Apple's on-device models first; the person's own service only if they can't help.
-                var output: String?
-                if action == .translate { output = try? await OnDeviceWriting.translate(text, to: language) }
-                else if OnDeviceWriting.supportsRewrite(language: language.code) { output = try? await OnDeviceWriting.rewrite(text, action: action, language: language) }
-                if output == nil { output = try await WritingService.perform(text: text, action: action, language: language) }
-                if !Task.isCancelled { result = output ?? "" }
+                let output = try await WritingRouter.perform(text: text, action: action, language: language, provider: model.preferences.writingProvider)
+                if !Task.isCancelled { result = output.text; status = "Result from \(output.provider)" }
             } catch { if !Task.isCancelled { status = error.localizedDescription } }
         }
     }

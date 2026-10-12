@@ -60,6 +60,10 @@ try:
     if tests.returncode:
         raise SystemExit("Keyboard registration/typing UI test failed; see keyboard-ui.log and xcresult")
     print("Actual keyboard appeared in Add New Keyboard, was selected, and typed Tolu")
+    exported = subprocess.run(["xcrun", "xcresulttool", "export", "attachments", "--path", str(verification / "KeyboardRegistration.xcresult"),
+        "--output-path", str(verification / "screenshots")], check=False, text=True, capture_output=True)
+    if exported.returncode:
+        print("Screenshot export was unavailable: " + exported.stderr[-800:])
 finally:
     subprocess.run(["xcrun", "simctl", "shutdown", device], check=False)
     subprocess.run(["xcrun", "simctl", "delete", device], check=False)

@@ -59,6 +59,7 @@ public struct KeyboardPreferences: Codable, Equatable {
     // Clipboard history is opt-in and stays on this device.
     public var clipboardHistory = false
     public var clipboardDays = 7
+    public var writingProvider: WritingProvider = .automatic
     public init() {}
 
     public static func defaultLanguages() -> [KeyboardLanguage] {
@@ -98,6 +99,7 @@ public struct KeyboardPreferences: Codable, Equatable {
         height = (try? c.decodeIfPresent(Double.self, forKey: .height)) ?? d.height
         clipboardHistory = (try? c.decodeIfPresent(Bool.self, forKey: .clipboardHistory)) ?? d.clipboardHistory
         clipboardDays = (try? c.decodeIfPresent(Int.self, forKey: .clipboardDays)) ?? d.clipboardDays
+        writingProvider = (try? c.decodeIfPresent(WritingProvider.self, forKey: .writingProvider)) ?? d.writingProvider
     }
 }
 
@@ -115,7 +117,7 @@ public struct SavedPhrase: Codable, Identifiable, Equatable {
 /// Writing Assist actions: rewrites change the style, formats change the shape of the text.
 /// The instructions are shared by Apple's on-device model and Backend/worker.mjs.
 public enum WritingAction: String, Codable, CaseIterable, Identifiable {
-    case grammar, professional, casual, polite, social, emojify, shorter, longer, summary, bullets, table, email, translate
+    case grammar, professional, casual, polite, social, emojify, shorter, longer, summary, bullets, table, email, compose, translate
     public var id: String { rawValue }
     public static let rewrites: [WritingAction] = [.grammar, .professional, .casual, .polite, .social, .emojify, .shorter, .longer]
     public static let formats: [WritingAction] = [.summary, .bullets, .table, .email]
@@ -134,6 +136,7 @@ public enum WritingAction: String, Codable, CaseIterable, Identifiable {
         case .bullets: return "Bullet points"
         case .table: return "Table"
         case .email: return "Email"
+        case .compose: return "Composer"
         case .translate: return "Translate"
         }
     }
@@ -152,6 +155,7 @@ public enum WritingAction: String, Codable, CaseIterable, Identifiable {
         case .bullets: return "Turn the text into a short list of key points, one per line, each starting with \"• \". Use the same language."
         case .table: return "Organise the information as a plain-text table: a header row, then one row per item, with columns separated by \" | \". Use the same language. Do not invent data; leave a cell empty if unknown."
         case .email: return "Format the text as a clear email: a greeting, short paragraphs and a closing line followed by [Your name]. Use the same language."
+        case .compose: return "Draft a natural, clear message from the person's topic, outline or request. Follow the requested tone and format. Use the requested language. Keep supplied facts and use placeholders for missing names or details; do not invent facts."
         case .translate: return "Translate the text into the requested language, preserving the meaning."
         }
     }

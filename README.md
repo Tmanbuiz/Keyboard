@@ -26,6 +26,7 @@ A native iOS keyboard extension and companion app, inspired by useful Android ke
 - ⌶ Text editing: arrows, word and line jumps, copy, cut, paste and delete word, with hold-to-repeat.
 - ✍︎ Handwriting: write with a finger; Apple's on-device Vision reads it, with alternatives to swap.
 - ✦ Translate and write: translation with Apple's on-device Translate models and grammar/tone rewriting with Apple Intelligence on iOS 26, falling back to your own service.
+- **Choose Groq:** connect your own Groq API key in Tools → AI setup, import the connection into the keyboard, and use Groq for writing and translation. The Samsung-style writing menu has a result card with Edit, Copy and Replace. [Groq setup](docs/GROQ.md).
 - ⚙︎ Settings and the language picker (hold the language key).
 
 **Companion app** in English, Spanish, French, Portuguese, German and Arabic: setup, practice, settings, languages, clipboard, translation language downloads, a writing assistant and a voice editor for every language Apple's speech recognition supports.

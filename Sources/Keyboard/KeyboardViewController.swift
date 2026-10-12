@@ -45,6 +45,14 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var accentValues: [String] = []
     var accentSelection = 0
     var onlineTask: Task<Void, Never>?
+    var writingPreview: WritingPreview?
+    var writingStyles = false
+    var writingBusy = false
+    var writingStatus = ""
+    var writingRequestID = UUID()
+    var writingEditing = false
+    var writingEditBuffer = WritingEditBuffer(text: "")
+    weak var writingEditTextView: UITextView?
     var clipboardTimer: Timer?
     var freshClip: (text: String, date: Date)?
     /// True when the clipboard changed but iOS withheld its text (Paste from Other Apps is set to Ask or Deny).
@@ -127,6 +135,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         searchMode = nil; searchQuery = ""; gifTask?.cancel(); handwriting?.stop()
         repeatDelete?.invalidate(); repeatDelete = nil
         suggestionWork?.cancel(); onlineTask?.cancel()
+        writingRequestID = UUID(); writingPreview = nil; writingBusy = false; writingStatus = ""
+        writingEditing = false; writingEditBuffer = WritingEditBuffer(text: "")
         removeAccentPopup()
     }
 
@@ -158,7 +168,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if heightConstraint?.constant != wantedHeight { heightConstraint?.constant = wantedHeight }
     }
 
-    var before: String { textDocumentProxy.documentContextBeforeInput ?? "" }
+    var before: String { writingEditing ? writingEditBuffer.before : (textDocumentProxy.documentContextBeforeInput ?? "") }
     var currentWord: String { TextContext.currentWord(in: before) }
     var plainTextField: Bool {
         let type = textDocumentProxy.keyboardType ?? .default
@@ -249,6 +259,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     func rebuildToolbar() {
         clear(toolbar)
         toolbar.distribution = .fillEqually
+        if writingEditing { buildWritingEditToolbar(); updateTopBar(); return }
+        if panel == "writing" || panel == "translate" { buildWritingToolbar(); updateTopBar(); return }
         if searchMode != nil { buildSearchToolbar(); updateTopBar(); return }
         if panel != nil {
             toolbar.addArrangedSubview(iconButton("keyboard", label: "Back to keyboard") { [weak self] in self?.showPanel(nil) })
@@ -265,8 +277,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let tools: [(String, String, String)] = [
             ("face.smiling", "emoji", "Emoji, GIFs and stickers"), ("doc.on.clipboard", "clips", "Clipboard"),
             ("sparkles", "writing", "AI writing assist"), ("translate", "translate", "Translate"),
-            ("pencil.and.scribble", "handwriting", "Handwriting"), ("character.cursor.ibeam", "edit", "Text editing"),
-            ("gearshape", "settings", "Keyboard settings")]
+            ("ellipsis.circle", "more", "More tools")]
         for (symbol, identifier, label) in tools {
             // Tapping the open tool again returns to the letters, as on Android.
             toolbar.addArrangedSubview(iconButton(symbol, label: label, selected: panel == identifier) { [weak self] in
@@ -300,6 +311,10 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     /// Shows either the tool icons or the suggestions while typing; panels and search show both rows.
     func updateTopBar() {
+        if writingEditing { toolbar.isHidden = false; suggestionBar.isHidden = true; return }
+        if panel == "writing" || panel == "translate" {
+            toolbar.isHidden = false; suggestionBar.isHidden = writingStatus.isEmpty; return
+        }
         let typing = panel == nil && searchMode == nil
         toolbar.isHidden = typing && !toolbarExpanded
         suggestionBar.isHidden = typing && toolbarExpanded
@@ -335,6 +350,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     func showPanel(_ identifier: String?) {
         panel = identifier
         onlineTask?.cancel()
+        writingRequestID = UUID(); writingBusy = false; writingStatus = ""; writingEditing = false
+        writingEditBuffer = WritingEditBuffer(text: "")
+        if identifier != "writing" && identifier != "translate" { writingPreview = nil; writingStyles = false }
         // The title is set first so a panel can replace it with its own hint while building.
         if identifier != nil { setStatus(panelTitle) }
         rebuildToolbar(); rebuildContent()
@@ -343,7 +361,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     var panelTitle: String {
-        switch panel { case "emoji": return "Emoji, GIFs & stickers"; case "clips": return "Clipboard"; case "writing": return "AI writing assist"; case "translate": return "Translate"; case "edit": return "Text editing"; case "handwriting": return "Write with your finger"; case "languages": return "Languages"; default: return "Make it yours" }
+        switch panel { case "emoji": return "Emoji, GIFs & stickers"; case "clips": return "Clipboard"; case "writing": return "AI writing assist"; case "translate": return "Translate"; case "edit": return "Text editing"; case "handwriting": return "Write with your finger"; case "languages": return "Languages"; case "more": return "More tools"; default: return "Make it yours" }
     }
 
     func rebuildContent() {
@@ -361,11 +379,12 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let stack = UIStackView(); stack.axis = .vertical; stack.spacing = 8; stack.translatesAutoresizingMaskIntoConstraints = false
             scroll.addSubview(stack)
             NSLayoutConstraint.activate([stack.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor, constant: 5), stack.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor, constant: -5), stack.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor, constant: 3), stack.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor, constant: -6), stack.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor, constant: -10)])
-            switch panel { case "clips": buildClipboard(stack); case "writing", "translate": buildWriting(stack); case "languages": buildLanguages(stack); default: buildSettings(stack) }
+            switch panel { case "clips": buildClipboard(stack); case "writing", "translate": buildWriting(stack); case "languages": buildLanguages(stack); case "more": buildMoreTools(stack); default: buildSettings(stack) }
             return
         }
         keys = UIStackView(); keys.axis = .vertical; keys.distribution = .fillEqually; keys.spacing = 6
         keys.translatesAutoresizingMaskIntoConstraints = false
+        if writingEditing { buildWritingEditPreview() }
         content.addSubview(keys)
         let width = keys.widthAnchor.constraint(equalTo: content.widthAnchor, multiplier: preferences.handMode == .full ? 1 : 0.86)
         let anchor: NSLayoutConstraint
@@ -374,13 +393,14 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         case .left: anchor = keys.leadingAnchor.constraint(equalTo: content.leadingAnchor)
         case .right: anchor = keys.trailingAnchor.constraint(equalTo: content.trailingAnchor)
         }
-        NSLayoutConstraint.activate([width, anchor, keys.topAnchor.constraint(equalTo: content.topAnchor), keys.bottomAnchor.constraint(equalTo: content.bottomAnchor)])
+        NSLayoutConstraint.activate([width, anchor, keys.topAnchor.constraint(equalTo: content.topAnchor, constant: writingEditing ? 60 : 0), keys.bottomAnchor.constraint(equalTo: content.bottomAnchor)])
         if mode == "letters" { buildLetters() } else { buildSymbols() }
         buildBottomRow()
         glideLayer.strokeColor = palette.accent.cgColor; glideLayer.lineWidth = 4
         glideLayer.fillColor = UIColor.clear.cgColor; glideLayer.lineCap = .round; glideLayer.lineJoin = .round
         content.layer.addSublayer(glideLayer)
         let pan = UIPanGestureRecognizer(target: self, action: #selector(glide(_:)))
+        pan.isEnabled = !writingEditing
         pan.delegate = self; pan.cancelsTouchesInView = true
         keys.addGestureRecognizer(pan); swipeGesture = pan
     }
@@ -475,7 +495,10 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         stack.addArrangedSubview(space)
         let period = punctuationKey(".", alternates: [".", "?", "!", "'", "\"", "…", "@", "#"])
         stack.addArrangedSubview(period)
-        let returnKey = button(searchMode == .gif ? "Search" : (searchMode == .emoji ? "Done" : returnTitle), function: true) { [weak self] in self?.returnPressed() }
+        let returnKey = button(writingEditing ? "Done" : (searchMode == .gif ? "Search" : (searchMode == .emoji ? "Done" : returnTitle)), function: true) { [weak self] in
+            guard let self else { return }
+            if self.writingEditing { self.finishWritingEdit(save: true) } else { self.returnPressed() }
+        }
         returnKey.accessibilityLabel = "Return"; stack.addArrangedSubview(returnKey)
         for key in narrowKeys + [comma, period] { key.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.105).isActive = true }
         returnKey.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.16).isActive = true
@@ -512,6 +535,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func insert(_ text: String) {
+        if writingEditing {
+            writingEditBuffer.insert(text); refreshWritingEditPreview()
+            if shift && !capsLock { shift = false; rebuildContent() }
+            return
+        }
         if searchMode != nil { searchInput(text); return }
         crashNotice = false
         collapseToolbar()
@@ -523,6 +551,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func space() {
+        if writingEditing { insert(" "); return }
         if searchMode != nil { searchInput(" "); return }
         let context = before, word = currentWord
         let now = Date.timeIntervalSinceReferenceDate
@@ -554,6 +583,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func delete() {
+        if writingEditing { writingEditBuffer.delete(); refreshWritingEditPreview(); updateShift(); return }
         if searchMode != nil { searchDelete(); return }
         glideChoices = []; lastSpace = 0
         if let correction, correction.canUndo(context: before) {
@@ -598,6 +628,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     @objc func moveCursor(_ gesture: UIPanGestureRecognizer) {
+        if writingEditing {
+            let offset = Int(gesture.translation(in: view).x / 12)
+            if offset != 0 { writingEditBuffer.move(offset); refreshWritingEditPreview(); gesture.setTranslation(.zero, in: view) }
+            return
+        }
         guard searchMode == nil else { return }
         correction = nil; glideChoices = []
         let offset = Int(gesture.translation(in: view).x / 12)
@@ -606,6 +641,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func refreshSuggestions() {
+        if writingEditing { return }
         if searchMode != nil { showSearchResults(); return }
         guard panel == nil else { return }
         if crashNotice && currentWord.isEmpty {
@@ -1041,118 +1077,6 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         controls.heightAnchor.constraint(equalToConstant: 26).isActive = true
         card.addArrangedSubview(body); card.addArrangedSubview(controls)
         return card
-    }
-
-    /// The text writing tools work on: the selection, or else the paragraph typed before the cursor.
-    func writingSource() -> (text: String, isSelection: Bool)? {
-        if let selected = textDocumentProxy.selectedText, !selected.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return (selected, true) }
-        let paragraph = before.split(separator: "\n", omittingEmptySubsequences: false).last.map(String.init) ?? ""
-        let text = String(paragraph.suffix(1500))
-        return text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : (text, false)
-    }
-
-    func buildWriting(_ stack: UIStackView) {
-        let onDevice = OnDeviceWriting.canRewrite
-        let translating = panel == "translate"
-        note("Works on selected text, or on what you've typed in this paragraph. " + (translating
-             ? "Translation runs on this iPhone once the languages are downloaded in the WianTribe app."
-             : (onDevice ? "Runs on this iPhone with Apple Intelligence when your language is supported."
-                         : "Uses your WianTribe service, because Apple Intelligence isn't available here.")), in: stack)
-        if translating { buildTranslateRows(stack) } else { buildAssistRows(stack) }
-        buildServiceRows(stack)
-    }
-
-    func buildTranslateRows(_ stack: UIStackView) {
-        var targets = preferences.activeLanguages
-        if !targets.contains(.english) { targets.append(.english) }
-        let translateRow = UIStackView(); translateRow.axis = .horizontal; translateRow.spacing = 5; translateRow.distribution = .fillEqually
-        for target in targets.prefix(4) {
-            let key = button("→ \(target.shortTitle)") { [weak self, weak stack] in
-                guard let self, let stack else { return }
-                self.runWriting(.translate, target: target, in: stack)
-            }
-            key.accessibilityLabel = "Translate to \(target.pack.englishName)"
-            translateRow.addArrangedSubview(key)
-        }
-        translateRow.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        note("Translate to:", in: stack)
-        stack.addArrangedSubview(translateRow)
-    }
-
-    func buildAssistRows(_ stack: UIStackView) {
-        // Writing Assist: style rewrites, then formats that change the shape of the text.
-        for (heading, actions) in [("Rewrite:", WritingAction.rewrites), ("Format:", WritingAction.formats)] {
-            note(heading, in: stack)
-            for start in stride(from: 0, to: actions.count, by: 2) {
-                let line = UIStackView(); line.axis = .horizontal; line.spacing = 5; line.distribution = .fillEqually
-                for action in actions[start..<min(start + 2, actions.count)] {
-                    let key = button(action.title) { [weak self, weak stack] in
-                        guard let self, let stack else { return }
-                        self.runWriting(action, target: self.preferences.language, in: stack)
-                    }
-                    key.titleLabel?.font = .systemFont(ofSize: KeyButton.fontSize(14), weight: .medium)
-                    line.addArrangedSubview(key)
-                }
-                line.heightAnchor.constraint(equalToConstant: 36).isActive = true
-                stack.addArrangedSubview(line)
-            }
-        }
-    }
-
-    func buildServiceRows(_ stack: UIStackView) {
-        if ConnectionVault.load() == nil {
-            note("Optional: connect your WianTribe service in the app for languages Apple doesn't cover and for GIF search, then import it here.", in: stack)
-            panelButton("Import service connection from clipboard", in: stack) { [weak self] in
-                guard let self else { return }
-                guard self.hasFullAccess else { self.setStatus("Allow Full Access is needed to import a connection"); return }
-                guard let text = UIPasteboard.general.string, let data = text.data(using: .utf8),
-                      let connection = try? JSONDecoder().decode(WritingConnection.self, from: data), connection.valid,
-                      ConnectionVault.save(connection) else { self.setStatus("Copy a valid connection from the WianTribe app first"); return }
-                self.setStatus("Service connected"); self.rebuildContent()
-            }
-        } else {
-            panelButton("Disconnect WianTribe service", in: stack) { [weak self] in ConnectionVault.save(nil); self?.rebuildContent(); self?.setStatus("Disconnected") }
-        }
-        note("Voice typing: use Apple's dictation button below the keyboard, or the companion app's Voice editor.", in: stack)
-    }
-
-    /// Tries Apple's on-device models first, then the person's own service.
-    func runWriting(_ action: WritingAction, target: KeyboardLanguage, in stack: UIStackView) {
-        guard let source = writingSource() else { setStatus("Type or select some text first"); return }
-        setStatus("Working…")
-        onlineTask?.cancel()
-        onlineTask = Task { @MainActor [weak self, weak stack] in
-            guard let self else { return }
-            var result: String?, via = "on this iPhone", failure: Error?
-            do {
-                if action == .translate { result = try await OnDeviceWriting.translate(source.text, to: target) }
-                else if OnDeviceWriting.supportsRewrite(language: self.preferences.language.code) {
-                    result = try await OnDeviceWriting.rewrite(source.text, action: action, language: target)
-                }
-            } catch { failure = error }
-            if result == nil, ConnectionVault.load() != nil {
-                guard self.hasFullAccess else { self.setStatus("Your service needs Allow Full Access"); return }
-                do { result = try await WritingService.perform(text: source.text, action: action, language: target); via = "by your service" }
-                catch { failure = error }
-            }
-            guard !Task.isCancelled, self.panel == "writing" || self.panel == "translate", let stack else { return }
-            guard let result else {
-                self.setStatus(failure?.localizedDescription ?? "Connect your WianTribe service in the app to use this here"); return
-            }
-            self.note("Result (\(via)):\n\(result)", in: stack)
-            self.panelButton(source.isSelection ? "Replace selection" : "Replace what I typed", in: stack) { [weak self] in
-                guard let self else { return }
-                if source.isSelection {
-                    guard self.textDocumentProxy.selectedText == source.text else { self.setStatus("Selection changed. Select the original text again"); return }
-                } else {
-                    guard self.before.hasSuffix(source.text) else { self.setStatus("The text changed. Try again"); return }
-                    for _ in source.text { self.textDocumentProxy.deleteBackward() }
-                }
-                self.textDocumentProxy.insertText(result); self.showPanel(nil)
-            }
-            self.panelButton("Insert after", in: stack) { [weak self] in self?.textDocumentProxy.insertText(" " + result); self?.showPanel(nil) }
-            self.setStatus("Scroll down to review the result")
-        }
     }
 
 }

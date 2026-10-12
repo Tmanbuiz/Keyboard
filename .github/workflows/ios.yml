@@ -45,6 +45,14 @@ jobs:
             -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build-for-testing 2>&1 | tee build/logs/simulator.log
       - name: Verify app launch and keyboard registration and typing
         run: python3 Scripts/simulator_smoke.py
+      - name: Upload keyboard layout verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Keyboard-layout-verification
+          path: build/verification/screenshots/
+          if-no-files-found: warn
+          retention-days: 1
       - name: Report compiler errors and warnings
         if: always()
         run: python3 Scripts/report_build.py build/logs

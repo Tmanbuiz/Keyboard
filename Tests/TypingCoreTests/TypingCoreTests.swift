@@ -167,7 +167,7 @@ final class TypingCoreTests: XCTestCase {
     }
 
     func testWritingAssistActionsAreComplete() {
-        XCTAssertEqual(Set(WritingAction.rewrites + WritingAction.formats + [.translate]), Set(WritingAction.allCases))
+        XCTAssertEqual(Set(WritingAction.rewrites + WritingAction.formats + [.translate, .compose]), Set(WritingAction.allCases))
         for action in WritingAction.allCases {
             XCTAssertFalse(action.title.isEmpty); XCTAssertGreaterThan(action.instruction.count, 20)
         }

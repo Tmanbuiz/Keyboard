@@ -24,6 +24,7 @@ Clearing the app's data, removing the keyboard or deleting the app removes this 
 Only when you choose these optional features:
 
 - **Your own service.** If you connect a writing or GIF service in the app, the keyboard sends only the text you select or type into a writing tool, or your GIF search words, to the HTTPS address you entered. That service is operated by you or the provider you choose, under their own privacy terms.
+- **Groq (optional).** When you explicitly select Groq and use a writing tool, the submitted text and writing instructions go directly to `api.groq.com`. Your API key stays in each process's Keychain; importing it into the keyboard uses a concealed, local pasteboard item that expires after two minutes and is removed after successful import. Normal typing does not send requests. Groq's account limits and data policies apply. The connection check retrieves the model list without submitting writing.
 - **GIFs.** GIF previews and files load from GIPHY's servers (giphy.com), which can see your device's IP address. See GIPHY's privacy policy.
 - **Voice editor.** When you record in the companion app, Apple's speech recognition converts your voice to text. It runs on your device when supported; otherwise Apple may process the audio under Apple's privacy policy. The keyboard itself never uses the microphone.
 

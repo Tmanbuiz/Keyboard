@@ -53,6 +53,79 @@ final class KeyboardRegistrationTests: XCTestCase {
         XCTAssertEqual((input.value as? String)?.lowercased(), "tolu")
         XCTAssertTrue(app.buttons["Space"].exists, "Keyboard was replaced after typing")
         attach("WianTribe typed Tolu", app)
+
+        try tap("Show tools", in: app)
+        try tap("AI writing assist", in: app)
+        for tool in ["Spelling and grammar", "Writing style", "Summarize", "Bullet point", "Table", "Composer"] {
+            XCTAssertTrue(app.buttons[tool].exists, "Missing AI menu tool: \(tool)")
+        }
+        attach("Samsung-style WianTribe writing menu", app)
+        try tap("Writing style", in: app)
+        XCTAssertTrue(app.buttons["Professional"].exists)
+        XCTAssertTrue(app.buttons["Polite"].exists)
+        try tap("All writing tools", in: app)
+        let provider = app.buttons["writing-provider-menu"]
+        XCTAssertTrue(provider.exists); provider.tap()
+        try tap("Groq", in: app)
+        XCTAssertTrue(app.buttons["AI provider: Groq"].exists)
+        attach("Groq selected in the keyboard", app)
+        try tap("Spelling and grammar", in: app)
+        let accessHint = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "Allow Full Access")).firstMatch
+        XCTAssertTrue(accessHint.waitForExistence(timeout: 8), app.debugDescription)
+        XCTAssertEqual((input.value as? String)?.lowercased(), "tolu", "AI must not replace the original without a result and a tap")
+        attach("Groq setup requirement shown without replacing text", app)
+        try tap("Back to keyboard", in: app)
+        XCTAssertTrue(app.buttons["Space"].exists)
+
+        // Enable online access, then use a public dummy key and a Debug/simulator-only
+        // result fixture to verify review/edit/replace without a live Groq account.
+        settings.activate()
+        try tap(keyboardName, in: settings)
+        let access = settings.switches.firstMatch
+        XCTAssertTrue(access.waitForExistence(timeout: 8), settings.debugDescription)
+        if access.value as? String == "0" {
+            access.tap()
+            if settings.alerts.firstMatch.waitForExistence(timeout: 2) { settings.alerts.buttons["Allow"].tap() }
+        }
+        app.activate()
+        try tap("Tools", in: app)
+        try tap("AI setup", in: app)
+        let keyField = app.secureTextFields["groq-api-key"]
+        XCTAssertTrue(keyField.waitForExistence(timeout: 8)); keyField.tap()
+        keyField.typeText("gsk_WIANTRIBE_UI_TEST_ONLY")
+        try tap("Save Groq and use it", in: app)
+        try tap("Copy AI connection for keyboard", in: app)
+        try tap("Practice", in: app)
+        input.tap()
+        for _ in 0..<5 {
+            if app.buttons["Clipboard"].waitForExistence(timeout: 2) || app.buttons["Show tools"].exists { break }
+            let globe = app.buttons.matching(NSPredicate(format: "label ==[c] %@", "Next keyboard")).firstMatch
+            XCTAssertTrue(globe.waitForExistence(timeout: 5)); globe.tap()
+        }
+        if app.buttons["Show tools"].exists { app.buttons["Show tools"].tap() }
+        try tap("AI writing assist", in: app)
+        app.buttons["writing-provider-menu"].tap()
+        try tap("Import AI connection", in: app)
+        if app.alerts.firstMatch.waitForExistence(timeout: 2), app.alerts.buttons["Allow Paste"].exists { app.alerts.buttons["Allow Paste"].tap() }
+        XCTAssertTrue(app.buttons["AI provider: Groq"].waitForExistence(timeout: 8))
+        try tap("Spelling and grammar", in: app)
+        XCTAssertTrue(app.staticTexts["writing-result"].waitForExistence(timeout: 8), app.debugDescription)
+        for action in ["Edit", "Copy", "Replace"] { XCTAssertTrue(app.buttons[action].exists) }
+        XCTAssertEqual((input.value as? String)?.lowercased(), "tolu")
+        attach("AI result card with Edit Copy Replace", app)
+        try tap("Edit", in: app)
+        try tap("Space", in: app)
+        for letter in ["g", "o", "o", "d"] {
+            let key = app.buttons.matching(NSPredicate(format: "label ==[c] %@", letter)).firstMatch
+            XCTAssertTrue(key.exists); key.tap()
+        }
+        XCTAssertEqual((input.value as? String)?.lowercased(), "tolu", "Editing the preview changed the host app")
+        attach("Editing AI result independently of the original", app)
+        try tap("Done", in: app)
+        try tap("Replace", in: app)
+        XCTAssertEqual((input.value as? String)?.lowercased(), "tolu. good")
+        XCTAssertTrue(app.buttons["Space"].exists)
+        attach("AI result inserted only after Replace", app)
     }
 
     private func tap(_ label: String, in app: XCUIApplication) throws {
