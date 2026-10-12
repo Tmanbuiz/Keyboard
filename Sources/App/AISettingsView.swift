@@ -2,6 +2,8 @@ import SwiftUI
 import UIKit
 
 struct AISettingsView: View {
+    private enum Entry: Hashable { case key, model, endpoint, token }
+    @FocusState private var entry: Entry?
     @EnvironmentObject private var model: AppModel
     @State private var key = ""
     @State private var groqModel = GroqConfiguration.defaultModel
@@ -23,15 +25,19 @@ struct AISettingsView: View {
             }
             Section("Your Groq account") {
                 SecureField("Groq API key", text: $key)
+                    .focused($entry, equals: .key).submitLabel(.done)
                     .textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityIdentifier("groq-api-key")
                 TextField("Groq model ID", text: $groqModel)
+                    .focused($entry, equals: .model).submitLabel(.done)
                     .textInputAutocapitalization(.never).autocorrectionDisabled().accessibilityIdentifier("groq-model")
                 Menu("Choose a model") {
                     ForEach(modelChoices, id: \.self) { choice in Button(choice) { groqModel = choice } }
                 }
                 Button("Save Groq and use it") {
                     let configuration = GroqConfiguration(key: key, model: groqModel)
-                    guard GroqVault.save(configuration) else { status = "Enter a valid Groq API key and model ID."; return }
+                    guard configuration.valid else { status = "Enter a valid Groq API key and model ID."; return }
+                    guard GroqVault.save(configuration) else { status = "This installation could not save the key securely. Share Keyboard setup → Share installation details to check its signing."; return }
+                    entry = nil
                     model.preferences.writingProvider = .groq
                     status = "Groq saved. Copy the connection below and import it into your keyboard."
                 }.accessibilityIdentifier("save-groq")
@@ -58,11 +64,13 @@ struct AISettingsView: View {
             Section("Other options") {
                 DisclosureGroup("Connect my own writing service") {
                     TextField("https://your-service.example/write", text: $endpoint)
+                        .focused($entry, equals: .endpoint).submitLabel(.done)
                         .textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.URL)
-                    SecureField("Access token", text: $token).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    SecureField("Access token", text: $token).focused($entry, equals: .token).submitLabel(.done)
+                        .textInputAutocapitalization(.never).autocorrectionDisabled()
                     Button("Save writing service") {
                         let value = WritingConnection(endpoint: endpoint.trimmingCharacters(in: .whitespacesAndNewlines), token: token.trimmingCharacters(in: .whitespacesAndNewlines))
-                        if ConnectionVault.save(value) { model.preferences.writingProvider = .service; status = "Writing service saved. Copy its AI connection above." }
+                        if ConnectionVault.save(value) { entry = nil; model.preferences.writingProvider = .service; status = "Writing service saved. Copy its AI connection above." }
                         else { status = "Enter a valid HTTPS address and access token." }
                     }
                     Button("Disconnect writing service", role: .destructive) { ConnectionVault.save(nil); token = ""; status = "Writing service disconnected in this app." }
@@ -71,6 +79,14 @@ struct AISettingsView: View {
                     .font(.caption).foregroundStyle(.secondary)
             }
         }.navigationTitle("AI setup")
+        .onSubmit { entry = nil }
+        .toolbar {
+            if entry != nil {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { entry = nil }.accessibilityLabel("Finish AI setup entry")
+                }
+            }
+        }
         .onAppear {
             if let saved = GroqVault.load() { key = saved.key; groqModel = saved.model }
             if let saved = ConnectionVault.load() { endpoint = saved.endpoint; token = saved.token }
@@ -86,6 +102,7 @@ struct AISettingsView: View {
         return value.valid ? value : nil
     }
     private func copyConnection() {
+        entry = nil
         guard let value = connection, let data = try? JSONEncoder().encode(value), let json = String(data: data, encoding: .utf8) else { return }
         UIPasteboard.general.setItems([["public.utf8-plain-text": json, "org.nspasteboard.ConcealedType": Data()]],
             options: [.localOnly: true, .expirationDate: Date().addingTimeInterval(120)])

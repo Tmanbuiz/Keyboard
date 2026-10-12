@@ -95,6 +95,7 @@ final class KeyboardRegistrationTests: XCTestCase {
             if settings.alerts.firstMatch.waitForExistence(timeout: 2) { settings.alerts.buttons["Allow"].tap() }
         }
         app.activate()
+        if app.buttons["Dismiss keyboard"].waitForExistence(timeout: 2) { app.buttons["Dismiss keyboard"].tap() }
         try tap("Tools", in: app)
         try tap("AI setup", in: app)
         let keyField = app.secureTextFields["groq-api-key"]

@@ -108,11 +108,11 @@ extension KeyboardViewController {
             let second = UIStackView(); second.axis = .horizontal; second.distribution = .fillEqually; second.spacing = 8
             second.addArrangedSubview(writingActionButton("Bullet point", symbol: "list.bullet", action: .bullets, horizontal: true))
             second.addArrangedSubview(writingActionButton("Table", symbol: "tablecells", action: .table, horizontal: true))
-            second.heightAnchor.constraint(equalToConstant: 32).isActive = true
+            second.heightAnchor.constraint(equalToConstant: 44).isActive = true
             formats.addArrangedSubview(second)
             let composer = writingCard(in: stack)
             let compose = writingActionButton("Composer", symbol: "square.and.pencil", action: .compose, horizontal: true)
-            compose.heightAnchor.constraint(equalToConstant: 32).isActive = true
+            compose.heightAnchor.constraint(equalToConstant: 44).isActive = true
             composer.addArrangedSubview(compose)
         }
         if !writingStatus.isEmpty { note(writingStatus, in: stack) }
@@ -138,21 +138,25 @@ extension KeyboardViewController {
 
     private func writingMenuButton(_ title: String, symbol: String, horizontal: Bool = false, action: @escaping () -> Void) -> KeyButton {
         let key = button("", action: action)
-        var configuration = UIButton.Configuration.plain()
-        configuration.title = title
-        configuration.image = UIImage(systemName: symbol, withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular))
-        configuration.imagePlacement = horizontal ? .leading : .top
-        configuration.imagePadding = horizontal ? 8 : 10
-        configuration.baseForegroundColor = palette.text
-        configuration.titleAlignment = .center
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 2, bottom: 4, trailing: 2)
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var attributes = incoming
-            attributes.font = .systemFont(ofSize: KeyButton.fontSize(horizontal ? 15 : 13), weight: .medium)
-            return attributes
-        }
-        key.configuration = configuration
-        key.titleLabel?.numberOfLines = 2
+        // KeyButton uses legacy title states for character keys. Keep the AI label
+        // in its own view so an empty legacy title cannot hide Configuration.title.
+        let icon = UIImageView(image: UIImage(systemName: symbol, withConfiguration: UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)))
+        icon.tintColor = palette.text; icon.contentMode = .scaleAspectFit
+        icon.widthAnchor.constraint(equalToConstant: 22).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        let label = UILabel(); label.text = title; label.textColor = palette.text
+        label.font = .systemFont(ofSize: KeyButton.fontSize(horizontal ? 15 : 13), weight: .medium)
+        label.textAlignment = .center; label.numberOfLines = horizontal ? 1 : 2
+        label.adjustsFontSizeToFitWidth = true; label.minimumScaleFactor = 0.75; label.isAccessibilityElement = false
+        let group = UIStackView(arrangedSubviews: [icon, label]); group.axis = horizontal ? .horizontal : .vertical
+        group.alignment = .center; group.spacing = horizontal ? 8 : 10
+        group.isUserInteractionEnabled = false; group.translatesAutoresizingMaskIntoConstraints = false
+        key.addSubview(group)
+        NSLayoutConstraint.activate([group.centerXAnchor.constraint(equalTo: key.centerXAnchor), group.centerYAnchor.constraint(equalTo: key.centerYAnchor),
+            group.leadingAnchor.constraint(greaterThanOrEqualTo: key.leadingAnchor, constant: 2),
+            group.trailingAnchor.constraint(lessThanOrEqualTo: key.trailingAnchor, constant: -2),
+            group.topAnchor.constraint(greaterThanOrEqualTo: key.topAnchor, constant: 4),
+            group.bottomAnchor.constraint(lessThanOrEqualTo: key.bottomAnchor, constant: -4)])
         key.normalColor = .clear; key.backgroundColor = .clear
         key.layer.borderWidth = 0; key.layer.shadowOpacity = 0
         key.accessibilityLabel = title.replacingOccurrences(of: "\n", with: " ")

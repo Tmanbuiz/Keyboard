@@ -128,12 +128,14 @@ struct LayoutPreview: View {
 private struct PracticeView: View {
     @State private var text = ""
     @State private var copied = false
+    @FocusState private var typing: Bool
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 Text("Try your new keyboard").font(.title.bold())
                 Text("Tap the box, then hold the globe key to select WianTribe.").foregroundStyle(.secondary)
                 TextEditor(text: $text).frame(height: 210).scrollContentBackground(.hidden)
+                    .focused($typing)
                     .padding(10).background(card, in: RoundedRectangle(cornerRadius: 16))
                     .overlay(alignment: .topLeading) {
                         if text.isEmpty { Text("Type something here…").foregroundStyle(.secondary).padding(18).allowsHitTesting(false) }
@@ -158,6 +160,13 @@ private struct PracticeView: View {
             }.padding(22)
         }.background(ocean).navigationTitle("Practice").navigationBarTitleDisplayMode(.inline)
             .onChange(of: text) { _, _ in copied = false }
+            .toolbar {
+                if typing {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Done") { typing = false }.accessibilityLabel("Dismiss keyboard")
+                    }
+                }
+            }
     }
     private func tip(_ icon: String, _ text: String) -> some View {
         HStack(alignment: .top, spacing: 12) { Image(systemName: icon).foregroundStyle(.mint).frame(width: 22); Text(text).font(.subheadline) }
