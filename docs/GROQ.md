@@ -8,11 +8,11 @@ Build 4 adds Groq as an explicit AI provider and a writing panel inspired by the
 2. Create or use a Groq API key at <https://console.groq.com/keys>. Enter it only in your WianTribe app.
 3. Open **WianTribe → Tools → AI setup**. Enter the key and choose a model. The initial model is `openai/gpt-oss-20b`; another model can be selected if your account supports it. **Test Groq connection** checks your key and model list without submitting any writing.
 4. Tap **Save Groq and use it**, then **Copy AI connection for keyboard**.
-5. Switch to WianTribe in any text field. Tap **✦ → Auto/Groq → Import AI connection**. This saves the key in the keyboard's own Keychain and selects Groq there too.
-6. Enable **Settings → General → Keyboard → Keyboards → WianTribe → Allow Full Access** for online requests.
+5. Enable **Settings → General → Keyboard → Keyboards → WianTribe → Allow Full Access** for online requests and connection import.
+6. Switch to WianTribe in any text field. Tap **✦ → Auto/Groq → Import AI connection**. This saves the key in the keyboard's own Keychain and selects Groq there too.
 7. Type or select text, open **✦**, and choose a writing tool. Review the result, edit it if necessary, then tap **Replace**. Composer uses the current text as the topic or request for a draft.
 
-The companion app and keyboard can have separate Keychains after sideloading. Copy/import is therefore necessary even if shared clipboard storage works. Connections are marked as concealed, local to the iPhone, expire after two minutes and are removed from the pasteboard after a successful import. They are excluded from WianTribe clipboard history.
+The companion app and keyboard can have separate Keychains after sideloading. Copy/import is therefore necessary even if shared clipboard storage works. Connections are marked as concealed, local to the iPhone, expire after two minutes and are removed from the pasteboard after a successful import. Clipboard capture also skips raw Groq keys and connection-transfer JSON when copied as ordinary text.
 
 ## Provider choices
 

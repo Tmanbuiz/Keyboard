@@ -175,4 +175,15 @@ final class TypingCoreTests: XCTestCase {
         XCTAssertEqual(try JSONDecoder().decode([WritingAction].self, from: Data(#"["grammar","casual"]"#.utf8)), [.grammar, .casual])
     }
 
+    func testClipboardSkipsRawGroqKeys() {
+        XCTAssertFalse(ClipboardHistory.shouldCapture("  gsk_PUBLIC_TEST_EXAMPLE_1234567890\n"))
+        XCTAssertTrue(ClipboardHistory.shouldCapture("Use Groq for rewriting this message."))
+    }
+
+    func testClipboardSkipsConnectionEvenWhenConcealedTypeIsLost() {
+        let connection = #"{"kind":"wiantribe-ai-connection","version":1,"groq":{"key":"gsk_PUBLIC_TEST_EXAMPLE_1234567890"}}"#
+        XCTAssertFalse(ClipboardHistory.shouldCapture(connection, types: ["public.utf8-plain-text"]))
+        XCTAssertTrue(ClipboardHistory.shouldCapture(#"{"kind":"meeting-note","key":"room 2"}"#))
+    }
+
 }

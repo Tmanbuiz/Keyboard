@@ -17,7 +17,13 @@ public enum ClipboardHistory {
     public static func shouldCapture(_ text: String, types: [String] = []) -> Bool {
         guard !types.contains(where: sensitiveTypes.contains) else { return false }
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        return !trimmed.isEmpty && text.count <= 20_000
+        guard !trimmed.isEmpty, text.count <= 20_000 else { return false }
+        if trimmed.lowercased().hasPrefix("gsk_"), GroqConfiguration(key: trimmed).valid { return false }
+        if trimmed.first == "{", let data = trimmed.data(using: .utf8) {
+            let object = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+            if object?["kind"] as? String == "wiantribe-ai-connection" { return false }
+        }
+        return true
     }
 
     /// Adds `text` as the newest item. A duplicate moves to the top and keeps its pin.

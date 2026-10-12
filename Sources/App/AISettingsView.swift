@@ -3,6 +3,7 @@ import UIKit
 
 struct AISettingsView: View {
     private enum Entry: Hashable { case key, model, endpoint, token }
+    private enum StatusSection: Equatable { case groq, keyboard, service }
     @FocusState private var entry: Entry?
     @EnvironmentObject private var model: AppModel
     @State private var key = ""
@@ -10,6 +11,7 @@ struct AISettingsView: View {
     @State private var endpoint = ""
     @State private var token = ""
     @State private var status = ""
+    @State private var statusSection: StatusSection = .groq
     @State private var checking = false
     @State private var availableModels: [String] = []
     @State private var checkTask: Task<Void, Never>?
@@ -34,6 +36,7 @@ struct AISettingsView: View {
                     ForEach(modelChoices, id: \.self) { choice in Button(choice) { groqModel = choice } }
                 }
                 Button("Save Groq and use it") {
+                    statusSection = .groq
                     let configuration = GroqConfiguration(key: key, model: groqModel)
                     guard configuration.valid else { status = "Enter a valid Groq API key and model ID."; return }
                     guard GroqVault.save(configuration) else { status = "This installation could not save the key securely. Share Keyboard setup → Share installation details to check its signing."; return }
@@ -41,12 +44,14 @@ struct AISettingsView: View {
                     model.preferences.writingProvider = .groq
                     status = "Groq saved. Copy the connection below and import it into your keyboard."
                 }.accessibilityIdentifier("save-groq")
+                inlineStatus(.groq)
                 Button(checking ? "Checking Groq…" : "Test Groq connection") { checkGroq() }
                     .disabled(checking || !GroqConfiguration(key: key, model: groqModel).valid)
                 Link("Get a Groq API key", destination: URL(string: "https://console.groq.com/keys")!)
                 Text("Your key stays in this device's Keychain. Only the text you ask AI to work on is sent to Groq. Internet access and your Groq account's usage limits apply.")
                     .font(.caption).foregroundStyle(.secondary)
                 Button("Forget Groq key", role: .destructive) {
+                    statusSection = .groq
                     checkTask?.cancel()
                     if GroqVault.save(nil) { key = ""; availableModels = []; status = "Groq key removed from this app. Disconnect Groq in the keyboard to remove its copy too." }
                     else { status = "Could not remove the key. Try again." }
@@ -55,12 +60,12 @@ struct AISettingsView: View {
             Section("Use AI in your keyboard") {
                 Button("Copy AI connection for keyboard") { copyConnection() }
                     .disabled(connection == nil).accessibilityIdentifier("copy-ai-connection")
+                inlineStatus(.keyboard)
                 Text("1. Save your connection above.\n2. Tap Copy AI connection for keyboard.\n3. Open any message and switch to WianTribe.\n4. Tap ✦ → Groq/Auto → Import AI connection.\nEnable Allow Full Access in iPhone Keyboard settings for Groq.")
                     .font(.caption).foregroundStyle(.secondary)
                 Text("The copied connection contains your private key, is local to this iPhone and expires after two minutes. It is excluded from WianTribe clipboard history.")
                     .font(.caption).foregroundStyle(.secondary)
             }
-            if !status.isEmpty { Section { Text(status).font(.caption).accessibilityIdentifier("ai-setup-status") } }
             Section("Other options") {
                 DisclosureGroup("Connect my own writing service") {
                     TextField("https://your-service.example/write", text: $endpoint)
@@ -69,11 +74,13 @@ struct AISettingsView: View {
                     SecureField("Access token", text: $token).focused($entry, equals: .token).submitLabel(.done)
                         .textInputAutocapitalization(.never).autocorrectionDisabled()
                     Button("Save writing service") {
+                        statusSection = .service
                         let value = WritingConnection(endpoint: endpoint.trimmingCharacters(in: .whitespacesAndNewlines), token: token.trimmingCharacters(in: .whitespacesAndNewlines))
                         if ConnectionVault.save(value) { entry = nil; model.preferences.writingProvider = .service; status = "Writing service saved. Copy its AI connection above." }
                         else { status = "Enter a valid HTTPS address and access token." }
                     }
-                    Button("Disconnect writing service", role: .destructive) { ConnectionVault.save(nil); token = ""; status = "Writing service disconnected in this app." }
+                    Button("Disconnect writing service", role: .destructive) { statusSection = .service; ConnectionVault.save(nil); token = ""; status = "Writing service disconnected in this app." }
+                    inlineStatus(.service)
                 }
                 Text("Automatic tries Apple's local models and then your writing service. Apple uses only local models. Each explicit online choice uses only that provider.")
                     .font(.caption).foregroundStyle(.secondary)
@@ -95,6 +102,11 @@ struct AISettingsView: View {
     }
 
     private var modelChoices: [String] { Array(Set(GroqConfiguration.suggestedModels + availableModels)).sorted() }
+    @ViewBuilder private func inlineStatus(_ section: StatusSection) -> some View {
+        if statusSection == section && !status.isEmpty {
+            Text(status).font(.caption).accessibilityIdentifier("ai-setup-status")
+        }
+    }
     private var connection: WritingConnectionTransfer? {
         let provider = model.preferences.writingProvider
         let value = WritingConnectionTransfer(provider: provider, groq: provider == .groq ? GroqVault.load() : nil,
@@ -102,6 +114,7 @@ struct AISettingsView: View {
         return value.valid ? value : nil
     }
     private func copyConnection() {
+        statusSection = .keyboard
         entry = nil
         guard let value = connection, let data = try? JSONEncoder().encode(value), let json = String(data: data, encoding: .utf8) else { return }
         UIPasteboard.general.setItems([["public.utf8-plain-text": json, "org.nspasteboard.ConcealedType": Data()]],
@@ -109,6 +122,7 @@ struct AISettingsView: View {
         status = "Copied. In WianTribe's keyboard tap ✦ → \(model.preferences.writingProvider.shortTitle) → Import AI connection."
     }
     private func checkGroq() {
+        statusSection = .groq
         let configuration = GroqConfiguration(key: key, model: groqModel)
         checking = true; status = ""; checkTask?.cancel()
         checkTask = Task { @MainActor in

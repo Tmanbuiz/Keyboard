@@ -23,6 +23,7 @@ device = json.loads(manifest.read_text())["device"]
 try:
     run("xcrun", "simctl", "bootstatus", device, "-b")
     app = root / "build/simulator/Build/Products/Debug-iphonesimulator/WianTribeKeyboard.app"
+    subprocess.run(["python3", str(root / "Scripts/sign_simulator.py"), str(app)], check=True)
     run("xcrun", "simctl", "install", device, str(app))
     run("xcrun", "simctl", "status_bar", device, "override", "--time", "9:41", "--batteryState", "charged", "--batteryLevel", "100")
     bundle_id = plistlib.loads((app / "Info.plist").read_bytes())["CFBundleIdentifier"]
