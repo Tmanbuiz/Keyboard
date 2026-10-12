@@ -288,7 +288,8 @@ extension KeyboardViewController {
         if preview.isSelection {
             guard textDocumentProxy.selectedText == preview.source else { setWritingStatus("The selection changed. Select the original text and try again."); return }
         } else {
-            guard (textDocumentProxy.documentContextBeforeInput ?? "").hasSuffix(preview.source) else { setWritingStatus("The original text changed. Run the writing tool again."); return }
+            guard textDocumentProxy.selectedText?.isEmpty != false,
+                  (textDocumentProxy.documentContextBeforeInput ?? "").hasSuffix(preview.source) else { setWritingStatus("The original text or selection changed. Run the writing tool again."); return }
             for _ in preview.source { textDocumentProxy.deleteBackward() }
         }
         textDocumentProxy.insertText(preview.text); showPanel(nil)
