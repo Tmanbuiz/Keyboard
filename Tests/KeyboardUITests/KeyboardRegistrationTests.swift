@@ -101,7 +101,11 @@ final class KeyboardRegistrationTests: XCTestCase {
         let keyField = app.secureTextFields["groq-api-key"]
         XCTAssertTrue(keyField.waitForExistence(timeout: 8)); keyField.tap()
         keyField.typeText("gsk_WIANTRIBE_UI_TEST_ONLY")
+        try tap("Finish AI setup entry", in: app)
         try tap("Save Groq and use it", in: app)
+        let savedStatus = app.staticTexts["ai-setup-status"]
+        XCTAssertTrue(savedStatus.waitForExistence(timeout: 8), app.debugDescription)
+        XCTAssertTrue(savedStatus.label.contains("Groq saved"), savedStatus.label)
         try tap("Copy AI connection for keyboard", in: app)
         try tap("Practice", in: app)
         input.tap()
@@ -143,7 +147,11 @@ final class KeyboardRegistrationTests: XCTestCase {
             for element in [app.buttons[label].firstMatch, app.staticTexts[label].firstMatch] {
                 if element.waitForExistence(timeout: 1), element.isHittable { element.tap(); return }
             }
-            app.swipeUp()
+            // A scroll can move a short row past the viewport. Follow its
+            // position rather than repeatedly scrolling beyond it.
+            let target = app.buttons[label].firstMatch.exists ? app.buttons[label].firstMatch : app.staticTexts[label].firstMatch
+            if target.exists, target.frame.midY < app.frame.midY { app.swipeDown() }
+            else { app.swipeUp() }
         }
         attach("Missing \(label)", app)
         XCTFail("Cannot find \(label). \(app.debugDescription)")
