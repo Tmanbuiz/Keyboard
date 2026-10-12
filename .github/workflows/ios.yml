@@ -19,6 +19,8 @@ jobs:
           mkdir -p build/logs
           xcodebuild -version | tee build/logs/toolchain.log
           echo "::notice title=Toolchain::$(xcodebuild -version | tr '\n' ' ') / $(xcrun --sdk iphoneos --show-sdk-version)"
+      - name: Start isolated iPhone simulator
+        run: python3 Scripts/prepare_simulator.py
       - name: Test typing engine
         run: set -o pipefail; swift test --jobs 2 2>&1 | tee build/logs/swift-test.log
       - name: Test writing service boundaries

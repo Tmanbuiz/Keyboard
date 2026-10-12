@@ -80,6 +80,13 @@ final class KeyboardRegistrationTests: XCTestCase {
         // Enable online access, then use a public dummy key and a Debug/simulator-only
         // result fixture to verify review/edit/replace without a live Groq account.
         settings.activate()
+        if !settings.navigationBars["Keyboards"].waitForExistence(timeout: 2) {
+            try tap("General", in: settings)
+            try tap("Keyboard", in: settings)
+            let list = settings.buttons["KEYBOARDS"]
+            XCTAssertTrue(list.waitForExistence(timeout: 8), settings.debugDescription)
+            list.tap()
+        }
         try tap(keyboardName, in: settings)
         let access = settings.switches.firstMatch
         XCTAssertTrue(access.waitForExistence(timeout: 8), settings.debugDescription)

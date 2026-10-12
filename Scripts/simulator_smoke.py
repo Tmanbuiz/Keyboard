@@ -16,14 +16,11 @@ def run(*args):
         print(f"::error title=simctl {args[2] if len(args) > 2 else ''}::{message}")
         raise SystemExit(result.returncode)
     return result.stdout.strip()
-data = json.loads(run("xcrun", "simctl", "list", "--json"))
-run("defaults", "write", "com.apple.iphonesimulator", "ConnectHardwareKeyboard", "-bool", "false")
-runtimes = [r for r in data["runtimes"] if r.get("isAvailable") and "iOS" in r["name"]]
-runtime = sorted(runtimes, key=lambda r: tuple(map(int, r["version"].split("."))))[-1]
-device_type = next(d for d in data["devicetypes"] if "iPhone 16 Pro" == d["name"])
-device = run("xcrun", "simctl", "create", "WianTribe Keyboard QA", device_type["identifier"], runtime["identifier"])
+manifest = root / "build/simulator-device.json"
+if not manifest.exists():
+    subprocess.run(["python3", str(root / "Scripts/prepare_simulator.py")], check=True)
+device = json.loads(manifest.read_text())["device"]
 try:
-    run("xcrun", "simctl", "boot", device)
     run("xcrun", "simctl", "bootstatus", device, "-b")
     app = root / "build/simulator/Build/Products/Debug-iphonesimulator/WianTribeKeyboard.app"
     run("xcrun", "simctl", "install", device, str(app))
@@ -57,13 +54,13 @@ try:
     for line in test_log.splitlines():
         if "error:" in line or "XCTAssert" in line or "Test Case" in line:
             print(line)
-    if tests.returncode:
-        raise SystemExit("Keyboard registration/typing UI test failed; see keyboard-ui.log and xcresult")
-    print("Actual keyboard appeared in Add New Keyboard, was selected, and typed Tolu")
     exported = subprocess.run(["xcrun", "xcresulttool", "export", "attachments", "--path", str(verification / "KeyboardRegistration.xcresult"),
         "--output-path", str(verification / "screenshots")], check=False, text=True, capture_output=True)
     if exported.returncode:
         print("Screenshot export was unavailable: " + exported.stderr[-800:])
+    if tests.returncode:
+        raise SystemExit("Keyboard registration/typing UI test failed; see keyboard-ui.log and xcresult")
+    print("Actual keyboard registered, typed, selected Groq, and reviewed/edited/replaced its test result")
 finally:
     subprocess.run(["xcrun", "simctl", "shutdown", device], check=False)
     subprocess.run(["xcrun", "simctl", "delete", device], check=False)

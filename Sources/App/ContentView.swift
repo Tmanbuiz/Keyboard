@@ -38,7 +38,7 @@ private struct HomeView: View {
                     Text("Let's get you typing").font(.title3.weight(.semibold))
                     setupStep("1", title: "Add WianTribe Keyboard", detail: "Open Settings → General → Keyboard → Keyboards → Add New Keyboard → WianTribe.")
                     setupStep("2", title: "Switch with the globe", detail: "Open a message, hold 🌐, then choose WianTribe Keyboard.")
-                    setupStep("3", title: "Make it yours", detail: "Tap ⚙︎ on the keyboard to choose your theme, layout and language.")
+                    setupStep("3", title: "Make it yours", detail: "Tap ••• → Keyboard settings to choose your theme and layout. Hold the language button to choose languages.")
                     NavigationLink {
                         KeyboardSetupView()
                     } label: { Label("Keyboard setup", systemImage: "keyboard").frame(maxWidth: .infinity).padding(.vertical, 8) }
@@ -175,7 +175,7 @@ private struct ToolsView: View {
                 NavigationLink { TranslationLanguagesView() } label: { tool("globe", "Translation languages", "Download languages for on-device translation") }
             }
             Section {
-                Text("Typing, emoji, stickers and your clipboard work offline. Translation and rewriting run on your iPhone where Apple supports them; your own service covers other languages and GIF search.")
+                Text("Typing, emoji, stickers and your clipboard work offline. Choose Groq or Apple's local models for writing and translation in AI setup. GIF search uses your separate writing service.")
                     .font(.subheadline).foregroundStyle(.secondary)
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Your toolkit")
@@ -471,7 +471,7 @@ private struct PrivacyView: View {
                 Text("Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.")
             }
             Section("When data can leave your device") {
-                Text("Translation and rewriting run on this iPhone when Apple's on-device models support the language. Otherwise, writing tools and GIF search send only the text or search words you choose to the HTTPS service you connect. GIF previews load from GIPHY. The app does not include a developer-owned service.")
+                Text("Apple writing and translation run locally where supported. When you choose Groq or your own writing service, only the text you submit to a writing tool is sent to that provider. Your key stays in this device's Keychain. GIF previews load from GIPHY through your separate service. Normal typing does not make AI requests.")
                 Text("Voice recording is available in this app, with microphone and speech permission. Apple's speech recognition may process audio on Apple's servers when on-device recognition is unavailable.")
             }
             Section("Full Access is optional") {

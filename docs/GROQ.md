@@ -29,6 +29,6 @@ Groq requires internet and is subject to your Groq account's usage limits and bi
 
 ## Verification and remaining check
 
-Automated checks cover Groq request/response handling with a mocked transport, provider routing policy, settings migration, Unicode result editing and backend boundaries. The iOS UI check adds and selects the actual keyboard, types text, opens the new menu and verifies the Groq setup requirement without replacing text. These checks do not use a real Groq key. A live writing request still needs to be tried on the user's signed iPhone after setup.
+Automated checks cover Groq request/response handling with a mocked transport, provider routing policy, settings migration, Unicode result editing and backend boundaries. The iOS UI check adds and selects the actual keyboard, types text, opens the new menu and verifies the Groq setup requirement without replacing text. It then uses a public dummy key and a Debug/simulator-only result fixture to check key import and Edit/Replace. The fixture is excluded from the device Release IPA. These checks do not use a real Groq key. A live writing request still needs to be tried on the user's signed iPhone after setup.
 
 Official references: [Groq API reference](https://console.groq.com/docs/api-reference), [available models](https://console.groq.com/docs/models), [API compatibility](https://console.groq.com/docs/openai).
