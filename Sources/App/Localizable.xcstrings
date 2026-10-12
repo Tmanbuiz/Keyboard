@@ -137,6 +137,74 @@
         }
       }
     },
+    "AI engine": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Motor de IA"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moteur d'IA"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mecanismo de IA"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI-Engine"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "محرك الذكاء الاصطناعي"
+          }
+        }
+      }
+    },
+    "AI writing": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escritura con IA"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écriture IA"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escrita com IA"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI-Schreiben"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الكتابة بالذكاء الاصطناعي"
+          }
+        }
+      }
+    },
     "Accent colour": {
       "localizations": {
         "es": {
@@ -473,6 +541,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "تعمل الكتابة الأساسية واقتراحات الإملاء والكتابة بالسحب والرموز التعبيرية على iPhone. لا يحتوي التطبيق على أدوات تحليل أو حزم إعلانات أو مسجل لضغطات المفاتيح."
+          }
+        }
+      }
+    },
+    "Choose “My own AI service only” to send writing tools and translation to the service you connect in Tools → Writing assistant, instead of Apple's on-device models. The keyboard has the same switch under ⚙︎.": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige «Solo mi propio servicio de IA» para enviar las herramientas de escritura y la traducción al servicio que conectes en Herramientas → Asistente de escritura, en lugar de usar los modelos de Apple. El teclado tiene el mismo ajuste en ⚙︎."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez « Mon propre service d'IA uniquement » pour envoyer les outils d'écriture et la traduction au service connecté dans Outils → Assistant d'écriture, au lieu des modèles d'Apple. Le clavier a le même réglage sous ⚙︎."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha “Somente meu próprio serviço de IA” para enviar as ferramentas de escrita e a tradução ao serviço conectado em Ferramentas → Assistente de escrita, em vez dos modelos da Apple. O teclado tem o mesmo ajuste em ⚙︎."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle „Nur mein eigener KI-Dienst“, um Schreibwerkzeuge und Übersetzung an den Dienst aus Werkzeuge → Schreibassistent zu senden statt an Apples Modelle. Die Tastatur hat denselben Schalter unter ⚙︎."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر «خدمة الذكاء الاصطناعي الخاصة بي فقط» لإرسال أدوات الكتابة والترجمة إلى الخدمة التي تربطها في الأدوات ← مساعد الكتابة بدلًا من نماذج Apple. توجد الإعدادات نفسها في لوحة المفاتيح تحت ⚙︎."
           }
         }
       }

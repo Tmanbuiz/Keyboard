@@ -88,3 +88,21 @@ test("every Writing Assist action is accepted", async () => {
     assert.equal(response.status, 200, action); assert.match(input.messages[0].content, /English/);
   }
 });
+test("your own OpenAI-compatible provider is used when configured, with the key kept server side", async () => {
+  let sent;
+  const fetcher = async (url, init) => { sent = { url, init }; return Response.json({ choices: [{ message: { content: "Polished text" } }] }); };
+  const env = environment({ AI: undefined, PROVIDER_URL: "https://api.openai.com/v1/chat/completions", PROVIDER_API_KEY: "sk-provider", MODEL: "gpt-4o-mini" });
+  const response = await worker.fetch(request({ text: "fix this", action: "professional", language: "en" }), env, {}, fetcher);
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { text: "Polished text" });
+  assert.equal(sent.url, "https://api.openai.com/v1/chat/completions");
+  assert.equal(sent.init.headers.Authorization, "Bearer sk-provider");
+  const body = JSON.parse(sent.init.body);
+  assert.equal(body.model, "gpt-4o-mini"); assert.equal(body.messages[1].content, "fix this");
+});
+test("provider failures don't leak the provider key", async () => {
+  const fetcher = async () => new Response("sk-provider bad", { status: 500 });
+  const env = environment({ AI: undefined, PROVIDER_URL: "https://example.test/v1/chat/completions", PROVIDER_API_KEY: "sk-provider", MODEL: "m" });
+  const response = await worker.fetch(request(), env, {}, fetcher);
+  assert.equal(response.status, 502); assert.equal((await response.text()).includes("sk-provider"), false);
+});

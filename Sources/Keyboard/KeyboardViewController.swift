@@ -854,6 +854,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         for theme in KeyboardTheme.allCases {
             panelButton("\(preferences.theme == theme ? "✓ " : "")\(theme.title)", in: stack) { [weak self] in self?.preferences.theme = theme; self?.savePreferences() }
         }
+        panelButton("AI: \(preferences.aiEngine.title)", in: stack) { [weak self] in
+            guard let self else { return }
+            self.preferences.aiEngine = self.preferences.aiEngine == .auto ? .service : .auto
+            self.savePreferences()
+        }
         panelButton("Accent colour: \(preferences.accent.title)", in: stack) { [weak self] in
             guard let self else { return }
             let all = KeyAccent.allCases
@@ -1051,7 +1056,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func buildWriting(_ stack: UIStackView) {
-        let onDevice = OnDeviceWriting.canRewrite
+        let onDevice = OnDeviceWriting.canRewrite && preferences.aiEngine == .auto
         let translating = panel == "translate"
         note("Works on selected text, or on what you've typed in this paragraph. " + (translating
              ? "Translation runs on this iPhone once the languages are downloaded in the WianTribe app."
@@ -1123,12 +1128,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         onlineTask = Task { @MainActor [weak self, weak stack] in
             guard let self else { return }
             var result: String?, via = "on this iPhone", failure: Error?
-            do {
+            let useApple = self.preferences.aiEngine == .auto
+            if !useApple && ConnectionVault.load() == nil {
+                self.setStatus("Connect your AI service: WianTribe app → Tools → Writing assistant"); return
+            }
+            if useApple { do {
                 if action == .translate { result = try await OnDeviceWriting.translate(source.text, to: target) }
                 else if OnDeviceWriting.supportsRewrite(language: self.preferences.language.code) {
                     result = try await OnDeviceWriting.rewrite(source.text, action: action, language: target)
                 }
-            } catch { failure = error }
+            } catch { failure = error } }
             if result == nil, ConnectionVault.load() != nil {
                 guard self.hasFullAccess else { self.setStatus("Your service needs Allow Full Access"); return }
                 do { result = try await WritingService.perform(text: source.text, action: action, language: target); via = "by your service" }

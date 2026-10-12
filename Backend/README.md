@@ -4,6 +4,27 @@ The app works without this service. Nothing is deployed automatically. This temp
 
 It uses Cloudflare Workers AI, an AI binding and the Workers Rate Limiting API. Only `POST /write` (writing tools) and `GET /gifs` (GIF search) are served, both behind the access token. It returns `{ "text": "edited text" }`, never writes text history, disables observability in the supplied configuration and never logs request bodies/tokens. Cloudflare and model-provider terms/data policies still apply. Review them before sending private text.
 
+## Use your own AI
+
+By default the service uses Cloudflare Workers AI. To use another AI instead, set these (any OpenAI-compatible chat completions API works):
+
+| Provider | `PROVIDER_URL` | Example `MODEL` |
+|---|---|---|
+| OpenAI | `https://api.openai.com/v1/chat/completions` | `gpt-4o-mini` |
+| Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions` | `gemini-2.0-flash` |
+| Anthropic Claude | `https://api.anthropic.com/v1/chat/completions` | `claude-haiku-4-5` |
+| Groq | `https://api.groq.com/openai/v1/chat/completions` | `llama-3.3-70b-versatile` |
+| OpenRouter | `https://openrouter.ai/api/v1/chat/completions` | any model it lists |
+
+```sh
+npx wrangler@4 secret put PROVIDER_API_KEY   # your provider's API key; stays on the server
+npx wrangler@4 secret put PROVIDER_URL
+npx wrangler@4 secret put MODEL
+npx wrangler@4 deploy
+```
+
+Check each provider's current model names and OpenAI-compatibility docs; they change over time. Then, in the app or the keyboard's ⚙︎, set **AI engine → My own AI service only** to stop using Apple's on-device models.
+
 ## Manual setup
 
 With a Cloudflare account and billing/usage settings you choose:

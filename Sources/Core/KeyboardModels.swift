@@ -44,6 +44,7 @@ public struct KeyboardPreferences: Codable, Equatable {
     public var keyBorders = false
     /// Default emoji skin tone: 0 is the standard yellow, 1–5 are light to dark.
     public var skinTone = 0
+    public var aiEngine: AIEngine = .auto
     public var handMode: HandMode = .full
     public var numberRow = true
     public var autocorrect = true
@@ -86,6 +87,7 @@ public struct KeyboardPreferences: Codable, Equatable {
         keyPreview = (try? c.decodeIfPresent(Bool.self, forKey: .keyPreview)) ?? d.keyPreview
         keyBorders = (try? c.decodeIfPresent(Bool.self, forKey: .keyBorders)) ?? d.keyBorders
         skinTone = (try? c.decodeIfPresent(Int.self, forKey: .skinTone)) ?? d.skinTone
+        aiEngine = (try? c.decodeIfPresent(AIEngine.self, forKey: .aiEngine)) ?? d.aiEngine
         handMode = (try? c.decodeIfPresent(HandMode.self, forKey: .handMode)) ?? d.handMode
         numberRow = (try? c.decodeIfPresent(Bool.self, forKey: .numberRow)) ?? d.numberRow
         autocorrect = (try? c.decodeIfPresent(Bool.self, forKey: .autocorrect)) ?? d.autocorrect
@@ -114,6 +116,13 @@ public struct SavedPhrase: Codable, Identifiable, Equatable {
 
 /// Writing Assist actions: rewrites change the style, formats change the shape of the text.
 /// The instructions are shared by Apple's on-device model and Backend/worker.mjs.
+/// Which AI handles writing tools and translation.
+public enum AIEngine: String, Codable, CaseIterable, Identifiable {
+    case auto, service
+    public var id: String { rawValue }
+    public var title: String { self == .auto ? "Apple first, then my service" : "My own AI service only" }
+}
+
 public enum WritingAction: String, Codable, CaseIterable, Identifiable {
     case grammar, professional, casual, polite, social, emojify, shorter, longer, summary, bullets, table, email, translate
     public var id: String { rawValue }

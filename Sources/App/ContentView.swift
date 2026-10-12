@@ -214,6 +214,11 @@ private struct SettingsView: View {
                 Toggle("Key pop-up preview", isOn: $model.preferences.keyPreview)
             }
             Section {
+                Picker("AI engine", selection: $model.preferences.aiEngine) { ForEach(AIEngine.allCases) { Text($0.title).tag($0) } }
+            } header: { Text("AI writing") } footer: {
+                Text("Choose “My own AI service only” to send writing tools and translation to the service you connect in Tools → Writing assistant, instead of Apple's on-device models. The keyboard has the same switch under ⚙︎.")
+            }
+            Section {
                 Toggle("Clipboard history", isOn: $model.preferences.clipboardHistory)
                 Picker("Keep recent clips", selection: $model.preferences.clipboardDays) {
                     ForEach(ClipboardHistory.dayOptions, id: \.self) { Text("\($0) day\($0 == 1 ? "" : "s")").tag($0) }
@@ -469,10 +474,11 @@ private struct WriterView: View {
         request = Task { @MainActor in
             defer { busy = false }
             do {
-                // Apple's on-device models first; the person's own service only if they can't help.
+                // Apple's on-device models first (unless the person chose their own AI only), then their service.
                 var output: String?
-                if action == .translate { output = try? await OnDeviceWriting.translate(text, to: language) }
-                else if OnDeviceWriting.supportsRewrite(language: language.code) { output = try? await OnDeviceWriting.rewrite(text, action: action, language: language) }
+                let preferences = KeyboardStore().preferences
+                if preferences.aiEngine == .auto, action == .translate { output = try? await OnDeviceWriting.translate(text, to: language) }
+                else if preferences.aiEngine == .auto, OnDeviceWriting.supportsRewrite(language: language.code) { output = try? await OnDeviceWriting.rewrite(text, action: action, language: language) }
                 if output == nil { output = try await WritingService.perform(text: text, action: action, language: language) }
                 if !Task.isCancelled { result = output ?? "" }
             } catch { if !Task.isCancelled { status = error.localizedDescription } }

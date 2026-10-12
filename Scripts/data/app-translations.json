@@ -852,5 +852,26 @@
 "pt": "Esta versão instalada manualmente mantém separadas as áreas de transferência do app e do teclado. A versão da App Store as compartilha.",
 "de": "Diese manuell installierte Version hält die Zwischenablagen von App und Tastatur getrennt. Die App-Store-Version teilt sie.",
 "ar": "تحتفظ هذه النسخة المثبتة يدويًا بحافظتين منفصلتين للتطبيق ولوحة المفاتيح. أما نسخة App Store فتشاركهما."
+},
+"AI writing": {
+"es": "Escritura con IA",
+"fr": "Écriture IA",
+"pt": "Escrita com IA",
+"de": "KI-Schreiben",
+"ar": "الكتابة بالذكاء الاصطناعي"
+},
+"AI engine": {
+"es": "Motor de IA",
+"fr": "Moteur d'IA",
+"pt": "Mecanismo de IA",
+"de": "KI-Engine",
+"ar": "محرك الذكاء الاصطناعي"
+},
+"Choose “My own AI service only” to send writing tools and translation to the service you connect in Tools → Writing assistant, instead of Apple's on-device models. The keyboard has the same switch under ⚙︎.": {
+"es": "Elige «Solo mi propio servicio de IA» para enviar las herramientas de escritura y la traducción al servicio que conectes en Herramientas → Asistente de escritura, en lugar de usar los modelos de Apple. El teclado tiene el mismo ajuste en ⚙︎.",
+"fr": "Choisissez « Mon propre service d'IA uniquement » pour envoyer les outils d'écriture et la traduction au service connecté dans Outils → Assistant d'écriture, au lieu des modèles d'Apple. Le clavier a le même réglage sous ⚙︎.",
+"pt": "Escolha “Somente meu próprio serviço de IA” para enviar as ferramentas de escrita e a tradução ao serviço conectado em Ferramentas → Assistente de escrita, em vez dos modelos da Apple. O teclado tem o mesmo ajuste em ⚙︎.",
+"de": "Wähle „Nur mein eigener KI-Dienst“, um Schreibwerkzeuge und Übersetzung an den Dienst aus Werkzeuge → Schreibassistent zu senden statt an Apples Modelle. Die Tastatur hat denselben Schalter unter ⚙︎.",
+"ar": "اختر «خدمة الذكاء الاصطناعي الخاصة بي فقط» لإرسال أدوات الكتابة والترجمة إلى الخدمة التي تربطها في الأدوات ← مساعد الكتابة بدلًا من نماذج Apple. توجد الإعدادات نفسها في لوحة المفاتيح تحت ⚙︎."
 }
 }
