@@ -152,7 +152,7 @@ def phase(label, isa, paths):
     return add(label, isa, buildActionMask=2147483647, files=files, runOnlyForDeploymentPostprocessing=0)
 
 app_sources = phase("app-sources", "PBXSourcesBuildPhase", [p for p in all_files if not p.startswith(("Sources/Keyboard/", "Sources/Share/", "Sources/ClipboardReader/")) and (personal or not p.startswith("Sources/PersonalClipboard/"))])
-keyboard_sources = phase("keyboard-sources", "PBXSourcesBuildPhase", [p for p in all_files if not p.startswith(("Sources/App/", "Sources/Share/", "Sources/ClipboardReader/", "Sources/PersonalClipboard/"))])
+keyboard_sources = phase("keyboard-sources", "PBXSourcesBuildPhase", [p for p in all_files if not p.startswith(("Sources/App/", "Sources/Diagnostics/", "Sources/Share/", "Sources/ClipboardReader/", "Sources/PersonalClipboard/"))])
 # The Share extension only needs the shared model and storage.
 storage_sources = ["Sources/Shared/KeyboardStore.swift"] + (["Sources/Shared/PersonalClipboardCapture.swift"] if personal else [])
 share_sources = phase("share-sources", "PBXSourcesBuildPhase", [p for p in all_files if p.startswith(("Sources/Core/", "Sources/Share/")) or p in storage_sources])
@@ -200,7 +200,7 @@ def configurations(label, settings):
 
 project_configs = configurations("project", project_settings)
 common_target = {"CODE_SIGN_STYLE": "Automatic", "CODE_SIGN_ENTITLEMENTS": "Configuration/Shared.entitlements" if options.shared_container else "Configuration/Sideload.entitlements",
-                 "CURRENT_PROJECT_VERSION": "2", "MARKETING_VERSION": "0.2.0", "TARGETED_DEVICE_FAMILY": "1,2",
+                 "CURRENT_PROJECT_VERSION": "3", "MARKETING_VERSION": "0.2.0", "TARGETED_DEVICE_FAMILY": "1,2",
                  "SUPPORTED_PLATFORMS": "iphoneos iphonesimulator", "SUPPORTS_MACCATALYST": "NO", "GENERATE_INFOPLIST_FILE": "NO",
                  "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/Frameworks"], "PRODUCT_NAME": "$(TARGET_NAME)"}
 if personal:

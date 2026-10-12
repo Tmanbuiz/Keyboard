@@ -10,6 +10,7 @@ private struct KeyboardInstallation {
     let executablePresent: Bool
     let identifierMatches: Bool
     let sharedClipboard: Bool
+    let signingReport: String
 
     init() {
         appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? "WianTribe Keyboard"
@@ -25,6 +26,7 @@ private struct KeyboardInstallation {
         } else { executablePresent = false }
         identifierMatches = keyboard?.bundleIdentifier?.hasPrefix(appID + ".") == true
         sharedClipboard = KeyboardStore().isShared
+        signingReport = keyboard.map { SigningInspection.inspect($0) } ?? "Keyboard missing"
     }
 
     var report: String {
@@ -45,6 +47,9 @@ private struct KeyboardInstallation {
         Shared clipboard available in app: \(sharedClipboard)
         App group: \(KeyboardStore.appGroup)
         Bundle checks do not verify iOS registration, keyboard enablement or Full Access.
+
+        Installed keyboard signing check:
+        \(signingReport)
         """
     }
 }
@@ -77,6 +82,10 @@ struct KeyboardSetupView: View {
                 }
                 Button("Check again") { installation = KeyboardInstallation() }
                 ShareLink(item: installation.report) { Label("Share installation details", systemImage: "square.and.arrow.up") }
+            }
+            Section("Installed signature") {
+                Text(installation.signingReport).font(.caption).textSelection(.enabled)
+                Text("If the keyboard returns to Apple’s keyboard, share installation details so the installed signature can be compared with the crash report.").font(.caption).foregroundStyle(.secondary)
             }
             Section("Clipboard permissions") {
                 Text("After adding the keyboard, tap its name under Keyboards and enable Allow Full Access for clipboard controls.")
