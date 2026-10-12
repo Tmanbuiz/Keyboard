@@ -102,19 +102,23 @@ final class KeyboardRegistrationTests: XCTestCase {
         XCTAssertTrue(keyField.waitForExistence(timeout: 8)); keyField.tap()
         keyField.typeText("gsk_WIANTRIBE_UI_TEST_ONLY")
         try tap("Finish AI setup entry", in: app)
+        dismissPasswordOffer(in: app)
         try tap("Save Groq and use it", in: app)
         let savedStatus = app.staticTexts["ai-setup-status"]
         XCTAssertTrue(savedStatus.waitForExistence(timeout: 8), app.debugDescription)
         XCTAssertTrue(savedStatus.label.contains("Groq saved"), savedStatus.label)
         try tap("Copy AI connection for keyboard", in: app)
         try tap("Practice", in: app)
+        dismissPasswordOffer(in: app)
+        input.tap()
+        dismissPasswordOffer(in: app)
         input.tap()
         for _ in 0..<5 {
             if app.buttons["Clipboard"].waitForExistence(timeout: 2) || app.buttons["Show tools"].exists { break }
             let globe = app.buttons.matching(NSPredicate(format: "label ==[c] %@", "Next keyboard")).firstMatch
             XCTAssertTrue(globe.waitForExistence(timeout: 5)); globe.tap()
         }
-        if app.buttons["Show tools"].exists { app.buttons["Show tools"].tap() }
+        if !app.buttons["AI writing assist"].exists, app.buttons["Show tools"].exists { app.buttons["Show tools"].tap() }
         try tap("AI writing assist", in: app)
         app.buttons["writing-provider-menu"].tap()
         try tap("Import AI connection", in: app)
@@ -140,10 +144,17 @@ final class KeyboardRegistrationTests: XCTestCase {
         attach("AI result inserted only after Replace", app)
     }
 
+    private func dismissPasswordOffer(in app: XCUIApplication, wait: Bool = true) {
+        let decline = app.buttons["Not Now"].firstMatch
+        let present = wait ? decline.waitForExistence(timeout: 2) : decline.exists
+        if present, decline.isHittable { decline.tap() }
+    }
+
     private func tap(_ label: String, in app: XCUIApplication) throws {
         // Settings rows often expose their label as static text; app controls
         // may expose it as a button or tab. Try exact labels, scrolling as needed.
         for _ in 0..<7 {
+            dismissPasswordOffer(in: app, wait: false)
             for element in [app.buttons[label].firstMatch, app.staticTexts[label].firstMatch] {
                 if element.waitForExistence(timeout: 1), element.isHittable { element.tap(); return }
             }
