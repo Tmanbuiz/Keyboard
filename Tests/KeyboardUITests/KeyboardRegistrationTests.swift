@@ -112,6 +112,14 @@ final class KeyboardRegistrationTests: XCTestCase {
         dismissPasswordOffer(in: app)
         input.tap()
         dismissPasswordOffer(in: app)
+        // Copy again after the password offer is dismissed so the transfer is
+        // fresh and no system sheet can intercept the copy action.
+        if app.buttons["Dismiss keyboard"].exists { app.buttons["Dismiss keyboard"].tap() }
+        try tap("Tools", in: app)
+        if !app.buttons["Copy AI connection for keyboard"].exists { try tap("AI setup", in: app) }
+        try tap("Copy AI connection for keyboard", in: app)
+        XCTAssertTrue(app.staticTexts["ai-setup-status"].label.contains("Copied"))
+        try tap("Practice", in: app)
         input.tap()
         for _ in 0..<5 {
             if app.buttons["Clipboard"].waitForExistence(timeout: 2) || app.buttons["Show tools"].exists { break }
@@ -122,8 +130,21 @@ final class KeyboardRegistrationTests: XCTestCase {
         try tap("AI writing assist", in: app)
         app.buttons["writing-provider-menu"].tap()
         try tap("Import AI connection", in: app)
-        if app.alerts.firstMatch.waitForExistence(timeout: 2), app.alerts.buttons["Allow Paste"].exists { app.alerts.buttons["Allow Paste"].tap() }
+        let allowPaste = app.buttons["Allow Paste"].firstMatch
+        if allowPaste.waitForExistence(timeout: 2), allowPaste.isHittable {
+            allowPaste.tap()
+            app.buttons["writing-provider-menu"].tap()
+            try tap("Import AI connection", in: app)
+        }
+        let connected = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "connected and selected")).firstMatch
+        XCTAssertTrue(connected.waitForExistence(timeout: 8), app.debugDescription)
         XCTAssertTrue(app.buttons["AI provider: Groq"].waitForExistence(timeout: 8))
+        try tap("Back to keyboard", in: app)
+        input.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.05)).press(forDuration: 1)
+        let selectAll = app.buttons["Select All"].firstMatch
+        if selectAll.waitForExistence(timeout: 2), selectAll.isHittable { selectAll.tap() }
+        if !app.buttons["AI writing assist"].exists, app.buttons["Show tools"].exists { app.buttons["Show tools"].tap() }
+        try tap("AI writing assist", in: app)
         try tap("Spelling and grammar", in: app)
         XCTAssertTrue(app.staticTexts["writing-result"].waitForExistence(timeout: 8), app.debugDescription)
         for action in ["Edit", "Copy", "Replace"] { XCTAssertTrue(app.buttons[action].exists) }
@@ -155,8 +176,10 @@ final class KeyboardRegistrationTests: XCTestCase {
         // may expose it as a button or tab. Try exact labels, scrolling as needed.
         for _ in 0..<7 {
             dismissPasswordOffer(in: app, wait: false)
-            for element in [app.buttons[label].firstMatch, app.staticTexts[label].firstMatch] {
-                if element.waitForExistence(timeout: 1), element.isHittable { element.tap(); return }
+            for query in [app.buttons.matching(identifier: label), app.staticTexts.matching(identifier: label)] {
+                if query.firstMatch.waitForExistence(timeout: 1) {
+                    for element in query.allElementsBoundByIndex where element.isHittable { element.tap(); return }
+                }
             }
             // A scroll can move a short row past the viewport. Follow its
             // position rather than repeatedly scrolling beyond it.
