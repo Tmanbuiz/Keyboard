@@ -1,4 +1,5 @@
 import UIKit
+import UIKit.UIGestureRecognizerSubclass
 
 struct KeyboardPalette {
     let background: UIColor
@@ -99,14 +100,104 @@ final class KeyButton: UIButton {
             accessibilityHint = "Hold for \(hint) and more characters"
         }
         addTarget(self, action: #selector(tap), for: .touchUpInside)
+        addTarget(self, action: #selector(pressed), for: .touchDown)
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) is unavailable") }
     override var isHighlighted: Bool {
         didSet { backgroundColor = isHighlighted ? normalColor.withAlphaComponent(0.55) : normalColor }
     }
+
+    /// The key currently held down, so overlapping taps can be typed in the order they started.
+    private static weak var held: KeyButton?
+    /// Set when this key was typed early because another key went down while it was still held.
+    private var committedEarly = false
+
+    @objc private func pressed() {
+        committedEarly = false
+        // Fast typists press the next key before lifting the last one. Like Apple's keyboard,
+        // type the earlier key the moment the next one goes down, so nothing is lost or reordered.
+        if let other = Self.held, other !== self, other.isTracking, other.window != nil {
+            other.commitEarly()
+        }
+        Self.held = self
+    }
+
+    private func commitEarly() {
+        guard !longPressConsumed, !committedEarly else { return }
+        committedEarly = true
+        // Stop this key's hold gesture so its accent pop-up doesn't open after it was typed.
+        for gesture in gestureRecognizers ?? [] where gesture is UILongPressGestureRecognizer {
+            gesture.isEnabled = false; gesture.isEnabled = true
+        }
+        onTap?()
+    }
+
     @objc private func tap() {
+        if Self.held === self { Self.held = nil }
+        if committedEarly { committedEarly = false; return }
         guard !longPressConsumed else { longPressConsumed = false; return }
         onTap?()
+    }
+}
+
+/// The key area. Taps that land in the small gaps between keys go to the nearest key,
+/// so a slightly-off tap still types something instead of nothing.
+final class KeyAreaView: UIStackView {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let hit = super.hitTest(point, with: event)
+        if hit is KeyButton || !bounds.insetBy(dx: -4, dy: -4).contains(point) { return hit }
+        var best: (key: KeyButton, distance: CGFloat)?
+        func visit(_ view: UIView) {
+            for sub in view.subviews where !sub.isHidden && sub.alpha > 0.01 && sub.isUserInteractionEnabled {
+                if let key = sub as? KeyButton {
+                    let frame = key.convert(key.bounds, to: self)
+                    let dx = max(frame.minX - point.x, 0, point.x - frame.maxX)
+                    let dy = max(frame.minY - point.y, 0, point.y - frame.maxY)
+                    let distance = (dx * dx + dy * dy).squareRoot()
+                    if distance < (best?.distance ?? .greatestFiniteMagnitude) { best = (key, distance) }
+                } else { visit(sub) }
+            }
+        }
+        visit(self)
+        if let best, best.distance <= 14 { return best.key }
+        return hit
+    }
+}
+
+/// A pan that only starts after the finger has clearly travelled, and never while a second
+/// finger is down. Quick taps that wobble a few points, or two overlapping taps, stay taps
+/// instead of being swallowed as a swipe or a cursor drag.
+final class DeliberatePanGestureRecognizer: UIPanGestureRecognizer {
+    var startDistance: CGFloat = 30
+    private var start: CGPoint?
+
+    override init(target: Any?, action: Selector?) {
+        super.init(target: target, action: action)
+        maximumNumberOfTouches = 1
+        delaysTouchesEnded = false
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        if start != nil || touches.count > 1 {
+            // A second finger: a tap is in progress, not a swipe.
+            if state == .possible { state = .failed } else { touches.forEach { ignore($0, for: event) } }
+            return
+        }
+        start = touches.first?.location(in: view)
+        super.touchesBegan(touches, with: event)
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        if state == .possible, let start, let point = touches.first?.location(in: view),
+           hypot(point.x - start.x, point.y - start.y) < startDistance {
+            return
+        }
+        super.touchesMoved(touches, with: event)
+    }
+
+    override func reset() {
+        super.reset()
+        start = nil
     }
 }
 

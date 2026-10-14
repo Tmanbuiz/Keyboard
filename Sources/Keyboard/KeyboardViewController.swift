@@ -14,7 +14,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     let toolbar = UIStackView()
     let suggestionBar = UIStackView()
     let content = UIView()
-    var keys = UIStackView()
+    var keys: UIStackView = KeyAreaView()
     var heightConstraint: NSLayoutConstraint?
     var panel: String?
     var mode = "letters"
@@ -31,6 +31,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var generation = 0
     var currentSuggestions: [WordSuggestion] = []
     var letterButtons: [KeyButton] = []
+    weak var shiftKey: KeyButton?
+    lazy var haptic = UISelectionFeedbackGenerator()
     var swipeGesture: UIPanGestureRecognizer?
     var glidePath: [GlidePoint] = []
     var glideLayer = CAShapeLayer()
@@ -79,6 +81,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             safeMode = true; crashNotice = true
         }
         hasDictationKey = false // Keep Apple's system dictation button where iOS provides one.
+        view.isMultipleTouchEnabled = true // overlapping taps from fast typing
         root.axis = .vertical; root.spacing = 5
         root.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(root)
@@ -226,7 +229,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     func feedback() {
         if preferences.keySounds { UIDevice.current.playInputClick() }
-        if preferences.haptics && hasFullAccess { UISelectionFeedbackGenerator().selectionChanged() }
+        if preferences.haptics && hasFullAccess { haptic.selectionChanged(); haptic.prepare() }
     }
 
     /// Shows the enlarged character above a key while it is held down.
@@ -363,7 +366,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             switch panel { case "clips": buildClipboard(stack); case "writing", "translate": buildWriting(stack); case "languages": buildLanguages(stack); default: buildSettings(stack) }
             return
         }
-        keys = UIStackView(); keys.axis = .vertical; keys.distribution = .fillEqually; keys.spacing = 6
+        keys = KeyAreaView(); keys.axis = .vertical; keys.distribution = .fillEqually; keys.spacing = 6
         keys.translatesAutoresizingMaskIntoConstraints = false
         content.addSubview(keys)
         let width = keys.widthAnchor.constraint(equalTo: content.widthAnchor, multiplier: preferences.handMode == .full ? 1 : 0.86)
@@ -379,7 +382,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         glideLayer.strokeColor = palette.accent.cgColor; glideLayer.lineWidth = 4
         glideLayer.fillColor = UIColor.clear.cgColor; glideLayer.lineCap = .round; glideLayer.lineJoin = .round
         content.layer.addSublayer(glideLayer)
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(glide(_:)))
+        let pan = DeliberatePanGestureRecognizer(target: self, action: #selector(glide(_:)))
+        // A swipe starts only after the finger crosses most of a key, so quick taps stay taps.
+        pan.startDistance = max(26, min(40, (view.bounds.width > 0 ? view.bounds.width : 375) / 12))
         pan.delegate = self; pan.cancelsTouchesInView = true
         keys.addGestureRecognizer(pan); swipeGesture = pan
     }
@@ -423,6 +428,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 if pack.isCased {
                     let shiftKey = button(capsLock ? "⇪" : "⇧", function: true) { [weak self] in self?.toggleShift() }
                     shiftKey.accessibilityLabel = capsLock ? "Caps lock on" : "Shift"
+                    self.shiftKey = shiftKey
                     buttons.insert(shiftKey, at: 0)
                 }
                 buttons.append(deleteKey())
@@ -470,7 +476,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         stack.addArrangedSubview(comma)
         let space = button(pack.name) { [weak self] in self?.space() }
         space.accessibilityLabel = "Space"; space.accessibilityHint = "Drag to move the cursor"
-        let cursor = UIPanGestureRecognizer(target: self, action: #selector(moveCursor(_:))); space.addGestureRecognizer(cursor)
+        let cursor = DeliberatePanGestureRecognizer(target: self, action: #selector(moveCursor(_:)))
+        cursor.startDistance = 18; space.addGestureRecognizer(cursor)
         stack.addArrangedSubview(space)
         let period = punctuationKey(".", alternates: [".", "?", "!", "'", "\"", "…", "@", "#"])
         stack.addArrangedSubview(period)
@@ -516,7 +523,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         collapseToolbar()
         correction = nil; glideChoices = []; lastSpace = 0; freshClip = nil
         textDocumentProxy.insertText(text)
-        if shift && !capsLock { shift = false; rebuildContent() }
+        if shift && !capsLock { shift = false; applyCase() }
         if text.hasSuffix("\n") { updateShift() }
         refreshSuggestions()
     }
@@ -579,7 +586,25 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if now - lastShift < 0.3 { capsLock = true; shift = true }
         else if capsLock { capsLock = false; shift = false }
         else { shift.toggle() }
-        lastShift = now; rebuildContent()
+        lastShift = now; applyCase()
+    }
+
+    /// Updates letter labels for shift and caps lock in place. Rebuilding every key here would
+    /// drop a tap that is already landing on the next key.
+    func applyCase() {
+        guard panel == nil, mode == "letters", !letterButtons.isEmpty else { rebuildContent(); return }
+        let upper = shift || capsLock
+        for key in letterButtons {
+            guard let letter = key.letter else { continue }
+            let title = upper ? pack.uppercased(String(letter)) : String(letter)
+            UIView.performWithoutAnimation { key.setTitle(title, for: .normal); key.layoutIfNeeded() }
+            key.accessibilityLabel = title
+        }
+        if let shiftKey {
+            UIView.performWithoutAnimation { shiftKey.setTitle(capsLock ? "⇪" : "⇧", for: .normal); shiftKey.layoutIfNeeded() }
+            shiftKey.accessibilityLabel = capsLock ? "Caps lock on" : "Shift"
+            shiftKey.accessibilityValue = shift ? "On" : nil
+        }
     }
 
     func updateShift(rebuild: Bool = true) {
@@ -593,7 +618,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         case .words: wanted = before.isEmpty || before.last?.isWhitespace == true
         default: wanted = plainTextField && TextContext.shouldCapitalize(after: before)
         }
-        if wanted != shift { shift = wanted; if rebuild && panel == nil && mode == "letters" { rebuildContent() } }
+        if wanted != shift { shift = wanted; if rebuild && panel == nil && mode == "letters" { applyCase() } }
     }
 
     @objc func moveCursor(_ gesture: UIPanGestureRecognizer) {
@@ -737,7 +762,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             glideSuffix = String(before.suffix(64))
             if glideSuffix.isEmpty { glideChoices = [] }
             if !capsLock { shift = false }
-            rebuildContent(); refreshSuggestions()
+            applyCase(); refreshSuggestions()
         } else if gesture.state == .cancelled || gesture.state == .failed { glideLayer.path = nil }
     }
 
