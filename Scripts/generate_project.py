@@ -86,7 +86,7 @@ app_id = identifier("target-app")
 keyboard_id = identifier("target-keyboard")
 stickers_id = identifier("target-stickers")
 share_id = identifier("target-share")
-sticker_catalog = "Sources/Stickers/Stickers.xcassets"
+sticker_catalog = "Sources/Stickers/Stickers.xcstickers"
 all_files = sorted({str(p.relative_to(ROOT)) for p in (ROOT / "Sources").rglob("*.swift")})
 resources = ["Sources/Core/Resources/Languages.json", "Configuration/PrivacyInfo.xcprivacy"]
 # Dictionaries and emoji data are only needed by the keyboard, so the app stays small.
@@ -96,7 +96,7 @@ all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets
 refs = {}
 for path in all_paths:
     suffix = pathlib.Path(path).suffix
-    filetype = {".swift": "sourcecode.swift", ".json": "text.json", ".txt": "text", ".png": "image.png", ".gif": "image.gif", ".plist": "text.plist.xml", ".entitlements": "text.plist.entitlements", ".xcprivacy": "text.xml", ".xcassets": "folder.assetcatalog", ".xcstrings": "text.json.xcstrings"}[suffix]
+    filetype = {".swift": "sourcecode.swift", ".json": "text.json", ".txt": "text", ".png": "image.png", ".gif": "image.gif", ".plist": "text.plist.xml", ".entitlements": "text.plist.entitlements", ".xcprivacy": "text.xml", ".xcassets": "folder.assetcatalog", ".xcstickers": "folder.stickers", ".xcstrings": "text.json.xcstrings"}[suffix]
     refs[path] = add("file-" + path, "PBXFileReference", lastKnownFileType=filetype, path=path, sourceTree="<group>")
 app_product = add("product-app", "PBXFileReference", explicitFileType="wrapper.application", includeInIndex=0, path="WianTribeKeyboard.app", sourceTree="BUILT_PRODUCTS_DIR")
 keyboard_product = add("product-keyboard", "PBXFileReference", explicitFileType="wrapper.app-extension", includeInIndex=0, path="WianTribeKeyboardExtension.appex", sourceTree="BUILT_PRODUCTS_DIR")

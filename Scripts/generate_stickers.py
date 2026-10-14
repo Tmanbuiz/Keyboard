@@ -2,7 +2,7 @@
 """Draw WianTribe's original text stickers (needs Pillow and the Poppins Bold font).
 
 Writes keyboard copies to Sources/Keyboard/Media/sticker-*.png and the iMessage sticker pack
-asset catalog to Sources/Stickers/Stickers.xcassets. Outputs are committed.
+sticker catalog to Sources/Stickers/Stickers.xcstickers. Outputs are committed.
 """
 import json
 import math
@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 MEDIA = ROOT / "Sources/Keyboard/Media"
-CATALOG = ROOT / "Sources/Stickers/Stickers.xcassets"
+CATALOG = ROOT / "Sources/Stickers/Stickers.xcstickers"
 FONT = next((p for p in ["/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf", "/Library/Fonts/Poppins-Bold.ttf",
                          "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"] if pathlib.Path(p).exists()), None)
 SIZE = 408  # Apple's recommended size for a regular sticker at @3x

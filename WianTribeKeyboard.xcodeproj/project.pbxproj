@@ -552,10 +552,10 @@
 			"path" = "Configuration/Share-Info.plist";
 			"sourceTree" = "<group>";
 		};
-		07C1832D3EC03FCD6200D73F = {
+		D17FFA0B9555AF75D7BB0AB1 = {
 			"isa" = "PBXFileReference";
-			"lastKnownFileType" = "folder.assetcatalog";
-			"path" = "Sources/Stickers/Stickers.xcassets";
+			"lastKnownFileType" = "folder.stickers";
+			"path" = "Sources/Stickers/Stickers.xcstickers";
 			"sourceTree" = "<group>";
 		};
 		F845250E9A63D882499EE398 = {
@@ -709,7 +709,7 @@
 				F5E19338E9E7A9B69CDCE6CC,
 				01F4E10BA1910D137C16C823,
 				D36322D872D619CFEFC63F4A,
-				07C1832D3EC03FCD6200D73F,
+				D17FFA0B9555AF75D7BB0AB1,
 				F845250E9A63D882499EE398,
 				04C7981C5E70EE187BBB08AF,
 				A896A87432FDB683A804D1DF,
@@ -1338,15 +1338,15 @@
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
-		6974A27EB7F2C7F5F70AAC0D = {
+		354FAF5A1A90FFD19EE8F78F = {
 			"isa" = "PBXBuildFile";
-			"fileRef" = 07C1832D3EC03FCD6200D73F;
+			"fileRef" = D17FFA0B9555AF75D7BB0AB1;
 		};
 		9AD045E385C0ECC79BFC7CCF = {
 			"isa" = "PBXResourcesBuildPhase";
 			"buildActionMask" = 2147483647;
 			"files" = (
-				6974A27EB7F2C7F5F70AAC0D,
+				354FAF5A1A90FFD19EE8F78F,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};
