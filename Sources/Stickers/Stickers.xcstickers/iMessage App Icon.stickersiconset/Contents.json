@@ -80,7 +80,8 @@
       "idiom": "ios-marketing",
       "size": "1024x768",
       "scale": "1x",
-      "filename": "icon-ios-marketing-1024x768@1x.png"
+      "filename": "icon-ios-marketing-1024x768@1x.png",
+      "platform": "ios"
     }
   ],
   "info": {

@@ -150,7 +150,7 @@ def main():
         canvas.paste(icon, ((pixels[0] - side) // 2, (pixels[1] - side) // 2))
         canvas.save(icons / filename)
         entry = {"idiom": idiom, "size": size, "scale": scale, "filename": filename}
-        if idiom == "universal": entry["platform"] = "ios"
+        if idiom == "universal" or size == "1024x768": entry["platform"] = "ios"  # Xcode only assigns the Messages store icon with this
         images.append(entry)
     (icons / "Contents.json").write_text(json.dumps({"images": images, "info": {"author": "xcode", "version": 1}}, indent=2))
     print(f"{len(STICKERS)} stickers written")

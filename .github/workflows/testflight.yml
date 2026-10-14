@@ -83,7 +83,16 @@ jobs:
           appex="build/WianTribeKeyboard.xcarchive/Products/Applications/WianTribeKeyboard.app/PlugIns/WianTribeStickers.appex"
           echo "::notice title=Sticker files::$(ls "$appex" | tr '\n' ' ')"
           echo "::notice title=Sticker Info.plist::$(plutil -convert json -o - "$appex/Info.plist" | head -c 900)"
-          grep -n "actool" build/logs/archive.log | grep -i sticker | head -2 | while read -r line; do echo "::notice title=actool::${line:0:900}"; done
+          n=$(grep -n "actool .*xcstickers" build/logs/archive.log | head -1 | cut -d: -f1)
+          if [ -n "$n" ]; then
+            cmd=$(sed -n "${n}p" build/logs/archive.log | sed 's#/Users/runner/Library/Developer/Xcode/DerivedData/[^/]*/Build/Intermediates.noindex/ArchiveIntermediates/WianTribeKeyboard/IntermediateBuildFilesPath/WianTribeKeyboard.build/Release-iphoneos/##g')
+            for i in 0 900 1800 2700; do part="${cmd:$i:900}"; [ -n "$part" ] && echo "::notice title=actool command $i::$part"; done
+            sed -n "$((n+1)),$((n+25))p" build/logs/archive.log | grep -v "^$" | head -20 | while read -r line; do echo "::notice title=actool output::${line:0:500}"; done
+          fi
+          partial=$(find ~/Library/Developer/Xcode/DerivedData -path "*WianTribeStickers.build*" -name "assetcatalog_generated_info*.plist" | head -1)
+          [ -n "$partial" ] && echo "::notice title=actool partial plist::$(plutil -convert json -o - "$partial" | head -c 900)"
+          out=$(find ~/Library/Developer/Xcode/DerivedData -path "*WianTribeStickers.build/assetcatalog_output*" -type f | sed 's#.*/assetcatalog_output/##' | tr '\n' ' ')
+          echo "::notice title=actool produced::$out"
           grep -n -i "warning" build/logs/archive.log | grep -i -E "sticker|xcstickers|iMessage" | head -5 | while read -r line; do echo "::warning::${line:0:600}"; done
       - name: Upload to App Store Connect
         run: |
