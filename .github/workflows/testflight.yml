@@ -1,0 +1,83 @@
+name: Upload to TestFlight
+# Run from the Actions tab ("Run workflow"). Signs with your Apple Developer account through an
+# App Store Connect API key and uploads the build to App Store Connect / TestFlight. No Mac needed.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+jobs:
+  upload:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    env:
+      TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check secrets are set
+        run: |
+          missing=""
+          for name in APPLE_TEAM_ID ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8; do
+            [ -n "$(printenv "SECRET_$name")" ] || missing="$missing $name"
+          done
+          if [ -n "$missing" ]; then echo "::error title=Missing secrets::Add these in Settings → Secrets and variables → Actions:$missing"; exit 1; fi
+        env:
+          SECRET_APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          SECRET_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          SECRET_ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          SECRET_ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      - name: Save the API key for Xcode
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/keys"
+          printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/keys/AuthKey.p8"
+          chmod 600 "$RUNNER_TEMP/keys/AuthKey.p8"
+      - name: Generate the App Store project (with the shared App Group)
+        run: python3 Scripts/generate_project.py --shared-container
+      - name: Archive
+        run: |
+          set -o pipefail
+          mkdir -p build/logs
+          xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/WianTribeKeyboard.xcarchive \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            DEVELOPMENT_TEAM="$TEAM_ID" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            archive 2>&1 | tee build/logs/archive.log
+      - name: Upload to App Store Connect
+        run: |
+          set -o pipefail
+          cat > build/ExportOptions.plist <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>teamID</key><string>${TEAM_ID}</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+            <key>uploadSymbols</key><true/>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath build/WianTribeKeyboard.xcarchive \
+            -exportOptionsPlist build/ExportOptions.plist -exportPath build/export \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey.p8" \
+            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+            2>&1 | tee build/logs/upload.log
+          echo "::notice title=Uploaded::Build ${{ github.run_number }} was sent to App Store Connect. It appears in TestFlight after Apple finishes processing (usually 10–30 minutes)."
+      - name: Report errors
+        if: failure()
+        run: |
+          grep -hE "error:|Error Domain|No profiles|No Account|provisioning|ITMS-" build/logs/*.log 2>/dev/null | sort -u | head -30 | while read -r line; do
+            echo "::error::${line:0:900}"
+          done
+      - name: Remove the key file
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/keys"

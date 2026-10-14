@@ -1,5 +1,7 @@
 # App Store preparation
 
+To test on your iPhone through TestFlight (no Mac needed), follow [TESTFLIGHT.md](TESTFLIGHT.md).
+
 What's ready in this repository, and what only you can do.
 
 ## Only you can do these
