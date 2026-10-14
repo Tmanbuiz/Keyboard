@@ -33,9 +33,37 @@ jobs:
       - name: Save the API key for Xcode
         env:
           ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        # Accepts the key however it was pasted (Windows line endings, squashed onto one line,
+        # stray spaces or quotes, or only the middle part) and rebuilds a clean PEM file.
+        # Never prints the key itself.
         run: |
           mkdir -p "$RUNNER_TEMP/keys"
-          printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/keys/AuthKey.p8"
+          python3 - "$RUNNER_TEMP/keys/AuthKey.p8" <<'PY'
+          import base64, os, re, sys
+          raw = os.environ.get("ASC_KEY_P8", "")
+          text = raw.replace("\r", "").strip().strip('"').strip("'")
+          text = text.replace("\\n", "\n")
+          body = re.sub(r"-----(BEGIN|END)[A-Z ]*-----", "", text)
+          body = re.sub(r"[^A-Za-z0-9+/=]", "", body)
+          def fail(msg):
+              print(f"::error title=ASC_KEY_P8 looks wrong::{msg} Open the AuthKey_XXXX.p8 file you downloaded in Notepad, press Ctrl+A then Ctrl+C, and paste it as the new value of the ASC_KEY_P8 secret (Settings → Secrets and variables → Actions → ASC_KEY_P8 → Update).")
+              sys.exit(1)
+          if not body:
+              fail("The secret is empty.")
+          if re.fullmatch(r"[A-Z0-9]{10}", body) or "-" in raw and len(body) < 60:
+              fail("It looks like an ID was pasted instead of the key file's contents.")
+          try:
+              der = base64.b64decode(body + "=" * (-len(body) % 4), validate=False)
+          except Exception:
+              fail("The contents are not a valid key.")
+          if len(der) < 100 or der[0] != 0x30:
+              fail(f"The contents are not a valid key ({len(body)} characters found; an Apple key has about 200).")
+          lines = [body[i:i + 64] for i in range(0, len(body), 64)]
+          pem = "-----BEGIN PRIVATE KEY-----\n" + "\n".join(lines) + "\n-----END PRIVATE KEY-----\n"
+          with open(sys.argv[1], "w") as f:
+              f.write(pem)
+          print(f"Key file prepared ({len(body)} characters).")
+          PY
           chmod 600 "$RUNNER_TEMP/keys/AuthKey.p8"
       - name: Generate the App Store project (with the shared App Group)
         run: python3 Scripts/generate_project.py --shared-container
