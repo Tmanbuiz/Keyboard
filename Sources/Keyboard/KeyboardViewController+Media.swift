@@ -9,6 +9,7 @@ extension KeyboardViewController {
         switch identifier {
         case "emoji": buildMediaPanel(); return true
         case "edit": buildEditPanel(); return true
+        case "writing", "translate": buildWritingPanel(); return true
         case "handwriting": buildHandwritingPanel(); return true
         default: return false
         }

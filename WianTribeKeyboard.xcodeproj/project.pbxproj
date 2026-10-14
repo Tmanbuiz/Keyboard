@@ -96,6 +96,12 @@
 			"path" = "Sources/Keyboard/KeyboardViewController+Media.swift";
 			"sourceTree" = "<group>";
 		};
+		2179CD4116747FD802231F8E = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Keyboard/KeyboardViewController+Writing.swift";
+			"sourceTree" = "<group>";
+		};
 		4BB3554BB30FADCFB923D0C5 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -633,6 +639,7 @@
 				7D80314045ABE958B579369D,
 				2774DE97D320F0D6D0FEC4CF,
 				F8D1A26AD1514724D0424B1E,
+				2179CD4116747FD802231F8E,
 				4BB3554BB30FADCFB923D0C5,
 				C57AEA25FACDC276759ED7B8,
 				A661E0890601E63AAEAFF913,
@@ -843,6 +850,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = F8D1A26AD1514724D0424B1E;
 		};
+		71828C3D43980C7E4BFDA884 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 2179CD4116747FD802231F8E;
+		};
 		19917022ADD92703C49017A9 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 4BB3554BB30FADCFB923D0C5;
@@ -882,6 +893,7 @@
 				19A1DD505CB4113BD4F7AF55,
 				2CDF958D9C52104C7D7A5288,
 				B94719946FB18F58BEA038C0,
+				71828C3D43980C7E4BFDA884,
 				19917022ADD92703C49017A9,
 				2F39957C15CC5646CA348845,
 				B6E271107EF1ECDD9EE6EA59,
