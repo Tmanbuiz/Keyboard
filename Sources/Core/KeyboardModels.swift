@@ -49,6 +49,8 @@ public struct KeyboardPreferences: Codable, Equatable {
     public var numberRow = true
     public var autocorrect = true
     public var predictions = true
+    /// Offer emoji in the suggestion bar for words like "love" or "pizza".
+    public var emojiPredictions = true
     public var swipeTyping = true
     public var autoCapitalization = true
     public var doubleSpacePeriod = true
@@ -92,6 +94,7 @@ public struct KeyboardPreferences: Codable, Equatable {
         numberRow = (try? c.decodeIfPresent(Bool.self, forKey: .numberRow)) ?? d.numberRow
         autocorrect = (try? c.decodeIfPresent(Bool.self, forKey: .autocorrect)) ?? d.autocorrect
         predictions = (try? c.decodeIfPresent(Bool.self, forKey: .predictions)) ?? d.predictions
+        emojiPredictions = (try? c.decodeIfPresent(Bool.self, forKey: .emojiPredictions)) ?? d.emojiPredictions
         swipeTyping = (try? c.decodeIfPresent(Bool.self, forKey: .swipeTyping)) ?? d.swipeTyping
         autoCapitalization = (try? c.decodeIfPresent(Bool.self, forKey: .autoCapitalization)) ?? d.autoCapitalization
         doubleSpacePeriod = (try? c.decodeIfPresent(Bool.self, forKey: .doubleSpacePeriod)) ?? d.doubleSpacePeriod

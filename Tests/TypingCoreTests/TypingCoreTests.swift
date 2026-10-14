@@ -175,4 +175,16 @@ final class TypingCoreTests: XCTestCase {
         XCTAssertEqual(try JSONDecoder().decode([WritingAction].self, from: Data(#"["grammar","casual"]"#.utf8)), [.grammar, .casual])
     }
 
+    func testEmojiPredictions() {
+        let catalog = EmojiCatalog.shared
+        catalog.warmUp()
+        XCTAssertEqual(catalog.predictions(for: "love", languages: ["en"]).first?.emoji.replacingOccurrences(of: "\u{FE0F}", with: ""), "❤")
+        XCTAssertEqual(catalog.predictions(for: "Pizza", languages: ["en"]).first?.emoji, "🍕")
+        XCTAssertTrue(catalog.predictions(for: "the", languages: ["en"]).isEmpty)
+        XCTAssertTrue(catalog.predictions(for: "x", languages: ["en"]).isEmpty)
+        XCTAssertTrue(catalog.predictions(for: "zzqqxx", languages: ["en"]).isEmpty)
+        // A recently used emoji is offered first.
+        let recent = catalog.predictions(for: "love", languages: ["en"], recent: ["🥰"])
+        XCTAssertEqual(recent.first?.emoji, "🥰")
+    }
 }

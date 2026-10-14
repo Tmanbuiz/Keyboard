@@ -120,6 +120,13 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         store.sessionOpen = true
         reloadPreferences()
         startClipboardWatch()
+        // Build the emoji tables just after the keyboard appears, off the first-frame path.
+        if preferences.emojiPredictions && !safeMode && !EmojiCatalog.shared.isWarm {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                guard self?.view.window != nil else { return }
+                EmojiCatalog.shared.warmUp()
+            }
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -651,6 +658,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let engine = self.engine, learned = store.learned, pairs = store.learnedPairs, supplemental = self.supplemental
         let checkerLanguage = Self.checkerLanguage(for: pack)
         let thisGeneration = generation
+        // Emoji for the word being typed, or for the word just finished when the cursor follows a space.
+        let emojiWord = word.isEmpty ? (context.last?.isWhitespace == true && context.last != "\n" ? previous : "") : word
+        let emojiLanguages = preferences.emojiPredictions ? preferences.activeLanguages.map(\.code) : []
+        let recentEmoji = preferences.emojiPredictions ? store.recentEmoji : []
+        let tone = preferences.skinTone
         let work = DispatchWorkItem { [weak self] in
             guard let self else { return }
             var native: [String] = []
@@ -661,12 +673,19 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 if native.isEmpty { native = self.checker.guesses(forWordRange: range, in: word, language: checkerLanguage) ?? [] }
             }
             let results = engine.suggestions(for: word, previous: previous, learned: learned, learnedPairs: pairs, supplemental: supplemental + Array(native.prefix(12)))
+            let emoji = emojiLanguages.isEmpty || emojiWord.isEmpty ? [] :
+                EmojiCatalog.shared.predictions(for: emojiWord, languages: emojiLanguages, recent: recentEmoji, limit: word.isEmpty ? 3 : 1).map { $0.toned(tone) }
             DispatchQueue.main.async {
                 guard self.generation == thisGeneration, self.before == context, self.panel == nil else { return }
                 self.currentSuggestions = results
                 var choices: [(String, () -> Void)] = results.map { result in (result.text, { [weak self] in self?.chooseSuggestion(result.text, expectedContext: context) }) }
                 if !word.isEmpty { choices.insert((word, { [weak self] in self?.chooseSuggestion(word, expectedContext: context) }), at: 0) }
                 if word.isEmpty, let clipChoice { choices.insert(clipChoice, at: 0) }
+                // Emoji take the last slot while typing a word, or fill the bar right after one.
+                let emojiChoices: [(String, () -> Void)] = emoji.map { symbol in (symbol, { [weak self] in self?.chooseEmojiSuggestion(symbol, expectedContext: context) }) }
+                if !emojiChoices.isEmpty {
+                    choices = word.isEmpty ? Array((choices.prefix(clipChoice == nil ? 0 : 1) + emojiChoices).prefix(3)) : Array(choices.prefix(2)) + emojiChoices
+                }
                 self.showSuggestions(Array(choices.prefix(3)))
             }
         }
@@ -705,6 +724,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             store.learn(pack.lowercased(word))
             store.learnPair(previous: TextContext.previousWord(in: expectedContext), word: pack.lowercased(word))
         }
+        updateShift(); refreshSuggestions()
+    }
+
+    /// Types a suggested emoji: after the word being typed ("love ❤️ "), or straight after the last word's space.
+    func chooseEmojiSuggestion(_ emoji: String, expectedContext: String) {
+        guard before == expectedContext else { refreshSuggestions(); return }
+        crashNotice = false; correction = nil; glideChoices = []
+        let needsSpace = !(before.last?.isWhitespace ?? true)
+        textDocumentProxy.insertText((needsSpace ? " " : "") + emoji + " ")
+        store.useEmoji(emoji)
         updateShift(); refreshSuggestions()
     }
 
@@ -890,7 +919,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             self.preferences.accent = all[((all.firstIndex(of: self.preferences.accent) ?? 0) + 1) % all.count]
             self.savePreferences()
         }
-        for (title, keyPath) in [("Key sounds", \KeyboardPreferences.keySounds), ("Key pop-up preview", \KeyboardPreferences.keyPreview), ("Key outlines", \KeyboardPreferences.keyBorders), ("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Clipboard history", \KeyboardPreferences.clipboardHistory), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
+        for (title, keyPath) in [("Key sounds", \KeyboardPreferences.keySounds), ("Key pop-up preview", \KeyboardPreferences.keyPreview), ("Key outlines", \KeyboardPreferences.keyBorders), ("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Emoji suggestions", \KeyboardPreferences.emojiPredictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Clipboard history", \KeyboardPreferences.clipboardHistory), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
             panelButton("\(preferences[keyPath: keyPath] ? "✓ " : "○ ")\(title)", in: stack) { [weak self] in
                 guard let self else { return }; self.preferences[keyPath: keyPath].toggle(); self.savePreferences()
             }

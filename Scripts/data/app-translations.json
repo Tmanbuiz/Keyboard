@@ -873,5 +873,12 @@
 "pt": "Escolha “Somente meu próprio serviço de IA” para enviar as ferramentas de escrita e a tradução ao serviço conectado em Ferramentas → Assistente de escrita, em vez dos modelos da Apple. O teclado tem o mesmo ajuste em ⚙︎.",
 "de": "Wähle „Nur mein eigener KI-Dienst“, um Schreibwerkzeuge und Übersetzung an den Dienst aus Werkzeuge → Schreibassistent zu senden statt an Apples Modelle. Die Tastatur hat denselben Schalter unter ⚙︎.",
 "ar": "اختر «خدمة الذكاء الاصطناعي الخاصة بي فقط» لإرسال أدوات الكتابة والترجمة إلى الخدمة التي تربطها في الأدوات ← مساعد الكتابة بدلًا من نماذج Apple. توجد الإعدادات نفسها في لوحة المفاتيح تحت ⚙︎."
+},
+"Emoji suggestions": {
+"es": "Sugerencias de emoji",
+"fr": "Suggestions d’emoji",
+"pt": "Sugestões de emoji",
+"de": "Emoji-Vorschläge",
+"ar": "اقتراحات الرموز التعبيرية"
 }
 }

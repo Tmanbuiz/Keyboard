@@ -29,10 +29,21 @@ public final class EmojiCatalog {
         return (try? JSONDecoder().decode([EmojiItem].self, from: data)) ?? []
     }()
     private lazy var byEmoji: [String: EmojiItem] = Dictionary(items.map { ($0.emoji, $0) }, uniquingKeysWith: { first, _ in first })
+    /// Lookup ignoring the invisible emoji-style selector (U+FE0F), which data sources use inconsistently.
+    private lazy var byBareEmoji: [String: String] = Dictionary(items.map { ($0.emoji.replacingOccurrences(of: "\u{FE0F}", with: ""), $0.emoji) }, uniquingKeysWith: { first, _ in first })
     private var keywords: [String: [(String, String)]] = [:]
     private let lock = NSLock()
 
     public init() {}
+
+    /// Set once warmUp() has built the lookup tables, so background prediction never builds them concurrently.
+    public private(set) var isWarm = false
+    /// Builds the emoji lookup tables. Call on the main thread before asking for predictions.
+    public func warmUp() {
+        guard !isWarm else { return }
+        _ = byEmoji.count; _ = byBareEmoji.count
+        isWarm = true
+    }
 
     public func releaseKeywords() { lock.lock(); keywords = [:]; lock.unlock() }
 
@@ -59,6 +70,63 @@ public final class EmojiCatalog {
         let order = Dictionary(items.enumerated().map { ($1.emoji, $0) }, uniquingKeysWith: { first, _ in first })
         return scores.keys.sorted { scores[$0]! == scores[$1]! ? (order[$0] ?? 0) < (order[$1] ?? 0) : scores[$0]! > scores[$1]! }
             .prefix(limit).compactMap { byEmoji[$0] }
+    }
+
+    /// Words too common to suggest an emoji for.
+    static let predictionStopWords: Set<String> = ["a", "an", "and", "the", "of", "with", "in", "on", "at", "to", "for", "is", "it", "its", "my", "me", "i", "you", "your", "we", "be", "or", "by", "as", "so", "no", "up", "out", "off", "face", "person", "man", "woman", "button", "sign", "symbol", "mark", "light", "medium", "dark", "skin", "tone"]
+
+    /// The emoji most people mean by common words, in order.
+    static let favourites: [String: [String]] = [
+        "love": ["❤️", "😍", "🥰"], "loves": ["❤️", "😍"], "loved": ["❤️", "🥰"], "heart": ["❤️", "💕", "💖"], "kiss": ["😘", "💋"], "hug": ["🤗", "🫂"], "hugs": ["🤗", "🫂"],
+        "happy": ["😊", "😄", "🥳"], "smile": ["😊", "😁"], "laugh": ["😂", "🤣"], "lol": ["😂", "🤣", "😆"], "lmao": ["🤣", "😂"], "haha": ["😂", "😆"], "funny": ["😂", "🤣"], "joke": ["😂", "😜"],
+        "sad": ["😢", "😞", "😔"], "cry": ["😭", "😢"], "crying": ["😭", "😢"], "angry": ["😠", "😡"], "mad": ["😡", "😤"], "sorry": ["🙏", "😔", "🥺"], "please": ["🙏", "🥺"],
+        "thanks": ["🙏", "😊", "❤️"], "thank": ["🙏", "😊"], "welcome": ["🤗", "😊"], "hello": ["👋", "😊"], "hi": ["👋", "😊"], "hey": ["👋"], "bye": ["👋", "😘"],
+        "yes": ["👍", "✅"], "ok": ["👌", "👍"], "okay": ["👌", "👍"], "good": ["👍", "😊"], "great": ["👍", "🙌", "😃"], "nice": ["👌", "😎"], "cool": ["😎", "🆒"], "wow": ["😮", "🤩"], "awesome": ["🤩", "🙌"], "amazing": ["🤩", "😍"], "perfect": ["👌", "💯"],
+        "congrats": ["🎉", "👏", "🥳"], "congratulations": ["🎉", "👏", "🥳"], "party": ["🥳", "🎉", "🎊"], "birthday": ["🎂", "🥳", "🎉"], "cake": ["🎂", "🍰"], "gift": ["🎁"], "celebrate": ["🎉", "🥳"],
+        "fire": ["🔥"], "lit": ["🔥"], "hot": ["🔥", "🥵"], "cold": ["🥶", "❄️"], "sun": ["☀️", "😎"], "rain": ["🌧️", "☔"], "snow": ["❄️", "☃️"],
+        "money": ["💰", "💵", "🤑"], "cash": ["💵", "💰"], "rich": ["🤑", "💰"], "work": ["💼", "💻"], "school": ["🏫", "📚"], "study": ["📚", "✏️"], "home": ["🏠", "🏡"], "car": ["🚗"], "travel": ["✈️", "🌍"], "plane": ["✈️"],
+        "food": ["🍲", "🍔", "😋"], "eat": ["🍽️", "😋"], "hungry": ["😋", "🍔"], "pizza": ["🍕"], "coffee": ["☕"], "tea": ["🍵", "☕"], "beer": ["🍺", "🍻"], "wine": ["🍷"], "chicken": ["🍗", "🐔"], "rice": ["🍚"],
+        "sleep": ["😴", "💤"], "tired": ["😴", "😩"], "night": ["🌙", "😴"], "morning": ["☀️", "☕"], "sick": ["🤒", "🤧"], "pray": ["🙏"], "prayer": ["🙏"], "amen": ["🙏"], "god": ["🙏"], "church": ["⛪", "🙏"],
+        "baby": ["👶", "🍼"], "family": ["👨‍👩‍👧‍👦", "❤️"], "friend": ["🤝", "😊"], "friends": ["👯", "🤝"], "dog": ["🐶", "🐕"], "cat": ["🐱", "🐈"],
+        "music": ["🎶", "🎵"], "dance": ["💃", "🕺"], "game": ["🎮"], "football": ["⚽", "🏈"], "soccer": ["⚽"], "win": ["🏆", "🥇"], "winner": ["🏆", "🥇"],
+        "think": ["🤔"], "idea": ["💡"], "wait": ["⏳", "🤚"], "time": ["⏰", "⌛"], "phone": ["📱"], "call": ["📞", "📱"], "email": ["📧"],
+        "shock": ["😱", "😲"], "scared": ["😨", "😱"], "omg": ["😱", "😲"], "shy": ["🙈", "😊"], "wink": ["😉"], "cute": ["🥰", "😊"], "beautiful": ["😍", "✨"], "strong": ["💪"], "gym": ["💪", "🏋️"],
+        "done": ["✅", "👍"], "stop": ["✋", "🛑"], "check": ["✅"], "star": ["⭐", "🌟"], "flower": ["🌸", "💐"], "flowers": ["💐", "🌸"], "rainbow": ["🌈"], "world": ["🌍"],
+        "nigeria": ["🇳🇬"], "canada": ["🇨🇦"], "usa": ["🇺🇸"], "uk": ["🇬🇧"],
+        "amor": ["❤️", "😍"], "gracias": ["🙏", "😊"], "merci": ["🙏", "😊"], "danke": ["🙏", "😊"], "obrigado": ["🙏", "😊"], "obrigada": ["🙏", "😊"], "feliz": ["😊", "🥳"], "fiesta": ["🥳", "🎉"],
+        "ese": ["🙏"], "oluwa": ["🙏"], "ife": ["❤️"]
+    ]
+
+    /// Emoji to offer in the suggestion bar for a whole word just typed, e.g. "love" → ❤️.
+    /// Emoji the person used recently come first, then emoji whose name starts with the word.
+    public func predictions(for word: String, languages: [String], recent: [String] = [], limit: Int = 3) -> [EmojiItem] {
+        let term = word.lowercased().trimmingCharacters(in: .punctuationCharacters)
+        guard isWarm, term.count >= 2, term.count <= 24, !Self.predictionStopWords.contains(term),
+              term.allSatisfy({ $0.isLetter || $0.isNumber }) else { return [] }
+        var best: [String: (rank: Int, length: Int)] = [:]
+        for code in Array(Set(languages + ["en"])) {
+            for (emoji, words) in keywordList(code) {
+                let list = words.split(separator: " ")
+                guard let position = list.firstIndex(where: { $0 == term }) else { continue }
+                let candidate = (rank: position, length: list.count)
+                if let current = best[emoji], (current.rank, current.length) <= (candidate.rank, candidate.length) { continue }
+                best[emoji] = candidate
+            }
+        }
+        // Hand-picked favourites for everyday words come before the keyword ranking.
+        for (index, favourite) in (Self.favourites[term] ?? []).enumerated() {
+            guard let emoji = byEmoji[favourite]?.emoji ?? byBareEmoji[favourite.replacingOccurrences(of: "\u{FE0F}", with: "")] else { continue }
+            best[emoji] = (rank: -100 + index, length: 0)
+        }
+        guard !best.isEmpty else { return [] }
+        let recentOrder = Dictionary(recent.enumerated().map { ($1, $0) }, uniquingKeysWith: { first, _ in first })
+        let sorted = best.keys.sorted { a, b in
+            let ra = recentOrder[a] ?? Int.max, rb = recentOrder[b] ?? Int.max
+            if ra != rb { return ra < rb }
+            let sa = best[a]!, sb = best[b]!
+            return (sa.rank, sa.length, a) < (sb.rank, sb.length, b)
+        }
+        return sorted.prefix(limit).compactMap { byEmoji[$0] }
     }
 
     private func keywordList(_ code: String) -> [(String, String)] {

@@ -206,6 +206,7 @@ private struct SettingsView: View {
                 }
                 Toggle("Autocorrect", isOn: $model.preferences.autocorrect)
                 Toggle("Word suggestions", isOn: $model.preferences.predictions)
+                Toggle("Emoji suggestions", isOn: $model.preferences.emojiPredictions)
                 Toggle("Swipe typing", isOn: $model.preferences.swipeTyping)
                 Toggle("Auto capitals", isOn: $model.preferences.autoCapitalization)
                 Toggle("Double-space period", isOn: $model.preferences.doubleSpacePeriod)

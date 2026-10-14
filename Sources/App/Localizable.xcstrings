@@ -1191,6 +1191,40 @@
         }
       }
     },
+    "Emoji suggestions": {
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugerencias de emoji"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggestions d’emoji"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sugestões de emoji"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emoji-Vorschläge"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اقتراحات الرموز التعبيرية"
+          }
+        }
+      }
+    },
     "Everything you save here appears in the keyboard's 📋 straight away.": {
       "localizations": {
         "es": {
