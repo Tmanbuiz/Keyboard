@@ -2,6 +2,8 @@ name: Upload to TestFlight
 # Run from the Actions tab ("Run workflow"). Signs with your Apple Developer account through an
 # App Store Connect API key and uploads the build to App Store Connect / TestFlight. No Mac needed.
 on:
+  push:
+    branches: ['testflight/release']
   workflow_dispatch:
 permissions:
   contents: read

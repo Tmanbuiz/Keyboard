@@ -1,4 +1,5 @@
 import privateService from './worker.mjs';
+import { initializeAuth, appleAuth, accountClient, accountAction } from './apple-auth.mjs';
 
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 function json(body, status = 200) {
@@ -63,7 +64,7 @@ async function admin(request, env, database, path) {
     const endpoint = new URL('/write', request.url).toString();
     return json({ id, dailyLimit: limit, connection: { endpoint, token } }, 201);
   }
-  const match = /^\/admin\/users\/([a-zA-Z0-9-]{36})\/revoke$/.exec(path);
+  const match = /^\/admin\/users\/([a-zA-Z0-9_-]{1,80})\/revoke$/.exec(path);
   if (match && request.method === 'POST') {
     const result = await database.prepare('UPDATE clients SET active = 0 WHERE id = ?').bind(match[1]).run();
     return result.meta.changes ? json({ revoked: true }) : json({ error: 'Not found' }, 404);
@@ -82,21 +83,26 @@ async function serve(request, env, context, fetcher) {
     if (!env.DB || !env.WRITING_LIMITER || !env.PROVIDER_API_KEY || !env.MODEL || !dailyCap(env) || !env.ADMIN_TOKEN || env.ADMIN_TOKEN.length < 32)
       return json({ status: 'not-configured' }, 503);
     await env.DB.prepare('SELECT id FROM clients LIMIT 1').first();
-    return json({ status: 'ready', access: 'invite-only' });
+    if (env.APPLE_SIGNIN_ENABLED === 'true') await initializeAuth(env.DB);
+    return json({ status: 'ready', access: env.APPLE_SIGNIN_ENABLED === 'true' ? 'apple-sign-in' : 'invite-only' });
   }
   if (!env.DB || !env.WRITING_LIMITER || !dailyCap(env)) return json({ error: 'Service not configured' }, 503);
   const database = env.DB.withSession('first-primary');
+  if (path === '/auth/challenge' || path === '/auth/apple') return appleAuth(request, env, database, fetcher);
+  if (env.APPLE_SIGNIN_ENABLED === 'true') await initializeAuth(env.DB);
   if (path.startsWith('/admin/')) return admin(request, env, database, path);
-  if (path !== '/write' && path !== '/gifs' && path !== '/me') return json({ error: 'Not found' }, 404);
-  if (request.method !== (path === '/write' ? 'POST' : 'GET')) return json({ error: 'Method not allowed' }, 405);
+  if (path !== '/write' && path !== '/gifs' && path !== '/me' && path !== '/auth/logout' && path !== '/account/delete') return json({ error: 'Not found' }, 404);
+  if (request.method !== (['/write', '/auth/logout', '/account/delete'].includes(path) ? 'POST' : 'GET')) return json({ error: 'Method not allowed' }, 405);
   const token = bearer(request);
   if (!token) return json({ error: 'Unauthorized' }, 401);
   // One-way token hashes are stored; raw credentials never enter the database.
-  const client = await database.prepare('SELECT id, daily_limit FROM clients WHERE token_hash = ? AND active = 1')
+  let client = env.APPLE_SIGNIN_ENABLED === 'true' ? await accountClient(database, token) : null;
+  if (!client) client = await database.prepare('SELECT id, daily_limit FROM clients WHERE token_hash = ? AND active = 1')
     .bind(await hashToken(token)).first();
   if (!client) return json({ error: 'Unauthorized' }, 401);
   const { success } = await env.WRITING_LIMITER.limit({ key: `client:${client.id}` });
   if (!success) return json({ error: 'Too many requests. Try again later.' }, 429);
+  if (path === '/auth/logout' || path === '/account/delete') return accountAction(request, env, database, client, token);
   const day = new Date().toISOString().slice(0, 10);
   if (path === '/me') {
     const usage = await database.prepare('SELECT COUNT(*) AS used FROM usage_events WHERE client_id = ? AND day = ?').bind(client.id, day).first();
@@ -128,6 +134,15 @@ export default {
   },
   async scheduled(_event, env, context) {
     // Keep only 30 days of usage metadata. No submitted text or AI results are stored.
-    context.waitUntil(env.DB.prepare('DELETE FROM usage_events WHERE created_at < ?').bind(Date.now() - 30 * 86400000).run());
+    context.waitUntil((async () => {
+      await env.DB.prepare('DELETE FROM usage_events WHERE created_at < ?').bind(Date.now() - 30 * 86400000).run();
+      if (env.APPLE_SIGNIN_ENABLED === 'true') {
+        await initializeAuth(env.DB);
+        await env.DB.batch([
+          env.DB.prepare('DELETE FROM auth_challenges WHERE expires_at < ?').bind(Date.now()),
+          env.DB.prepare('DELETE FROM account_sessions WHERE expires_at < ?').bind(Date.now())
+        ]);
+      }
+    })());
   }
 };

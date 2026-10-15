@@ -1136,17 +1136,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     func buildServiceRows(_ stack: UIStackView) {
         if ConnectionVault.load() == nil {
-            note("Optional: connect your WianTribe service in the app for languages Apple doesn't cover and for GIF search, then import it here.", in: stack)
-            panelButton("Import service connection from clipboard", in: stack) { [weak self] in
-                guard let self else { return }
-                guard self.hasFullAccess else { self.setStatus("Allow Full Access is needed to import a connection"); return }
-                guard let text = UIPasteboard.general.string, let data = text.data(using: .utf8),
-                      let connection = try? JSONDecoder().decode(WritingConnection.self, from: data), connection.valid,
-                      ConnectionVault.save(connection) else { self.setStatus("Copy a valid connection from the WianTribe app first"); return }
-                self.setStatus("Service connected"); self.rebuildContent()
-            }
+            note("Open WianTribe → Tools → AI account and sign in with Apple. Your keyboard connects automatically. Allow Full Access is required for online AI.", in: stack)
         } else {
-            panelButton("Disconnect WianTribe service", in: stack) { [weak self] in ConnectionVault.save(nil); self?.rebuildContent(); self?.setStatus("Disconnected") }
+            note("WianTribe AI is connected. Manage your account or sign out in WianTribe → Tools → AI account.", in: stack)
         }
         note("Voice typing: use Apple's dictation button below the keyboard, or the companion app's Voice editor.", in: stack)
     }

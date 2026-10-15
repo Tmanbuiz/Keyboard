@@ -75,6 +75,7 @@ write_plist("Share-Info.plist", {
 })
 write_plist("Sideload.entitlements", {})
 write_plist("Shared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"]})
+write_plist("AppShared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"], "com.apple.developer.applesignin": ["Default"]})
 write_plist("PrivacyInfo.xcprivacy", {
     "NSPrivacyTracking": False, "NSPrivacyTrackingDomains": [], "NSPrivacyCollectedDataTypes": [],
     "NSPrivacyAccessedAPITypes": [{"NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
@@ -92,7 +93,7 @@ resources = ["Sources/Core/Resources/Languages.json", "Configuration/PrivacyInfo
 # Dictionaries and emoji data are only needed by the keyboard, so the app stays small.
 keyboard_data = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Core/Resources").glob("*") if p.is_file() and p.name != "Languages.json")
 media = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Keyboard/Media").glob("*") if p.is_file())
-all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Stickers-Info.plist", "Configuration/Share-Info.plist", sticker_catalog, "Sources/App/Localizable.xcstrings", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements"]
+all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Stickers-Info.plist", "Configuration/Share-Info.plist", sticker_catalog, "Sources/App/Localizable.xcstrings", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements", "Configuration/AppShared.entitlements"]
 refs = {}
 for path in all_paths:
     suffix = pathlib.Path(path).suffix
@@ -150,7 +151,7 @@ common_target = {"CODE_SIGN_STYLE": "Automatic", "CODE_SIGN_ENTITLEMENTS": "Conf
                  "CURRENT_PROJECT_VERSION": "1", "MARKETING_VERSION": "0.2.0", "TARGETED_DEVICE_FAMILY": "1,2",
                  "SUPPORTED_PLATFORMS": "iphoneos iphonesimulator", "SUPPORTS_MACCATALYST": "NO", "GENERATE_INFOPLIST_FILE": "NO",
                  "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/Frameworks"], "PRODUCT_NAME": "$(TARGET_NAME)"}
-app_configs = configurations("app", {**common_target, "PRODUCT_BUNDLE_IDENTIFIER": "com.wiantribe.keyboard", "INFOPLIST_FILE": "Configuration/App-Info.plist",
+app_configs = configurations("app", {**common_target, "CODE_SIGN_ENTITLEMENTS": "Configuration/AppShared.entitlements" if options.shared_container else "Configuration/Sideload.entitlements", "PRODUCT_BUNDLE_IDENTIFIER": "com.wiantribe.keyboard", "INFOPLIST_FILE": "Configuration/App-Info.plist",
                                        "ASSETCATALOG_COMPILER_APPICON_NAME": "AppIcon", "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": "AccentColor"})
 keyboard_configs = configurations("keyboard", {**common_target, "PRODUCT_BUNDLE_IDENTIFIER": "com.wiantribe.keyboard.extension", "INFOPLIST_FILE": "Configuration/Keyboard-Info.plist",
                                                 "APPLICATION_EXTENSION_API_ONLY": "YES", "SKIP_INSTALL": "YES",

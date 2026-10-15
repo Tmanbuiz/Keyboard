@@ -6,7 +6,7 @@ WianTribe Keyboard is designed so that what you type stays on your iPhone. This 
 
 ## What we collect
 
-**Nothing.** WianTribe does not run any server that receives your typing, and the app contains no analytics, advertising or tracking code. We do not sell or share data, because we do not have any.
+The app contains no analytics, advertising or tracking SDK. Basic typing stays on your device. Optional online AI uses WianTribe’s Cloudflare service and Groq. We do not sell your data.
 
 ## What stays on your iPhone
 
@@ -23,17 +23,18 @@ Clearing the app's data, removing the keyboard or deleting the app removes this 
 
 Only when you choose these optional features:
 
-- **Your own service.** If you connect a writing or GIF service in the app, the keyboard sends only the text you select or type into a writing tool, or your GIF search words, to the HTTPS address you entered. That service is operated by you or the provider you choose, under their own privacy terms.
+- **WianTribe AI.** Sign in with Apple connects the app and keyboard. We request no name or email. Cloudflare verifies Apple identity tokens and stores an app-specific hash of your Apple identifier, hashed session credentials, account status and usage counts. Raw Apple identity tokens are not persisted. Sessions expire after 30 days; expired sessions and sign-in challenges are cleaned up daily. Only text you submit to online writing tools is forwarded to Groq. Our service does not save submitted text or AI output. Infrastructure providers process requests under their terms.
+- **Account deletion.** Delete AI account in Tools → AI account to remove account and session records and revoke all WianTribe sessions. App-specific pseudonymous usage records remain up to 30 days to enforce limits. You can separately remove WianTribe from Sign in with Apple in your Apple Account settings. Clipboard and learned words can be deleted in app settings.
 - **GIFs.** GIF previews and files load from GIPHY's servers (giphy.com), which can see your device's IP address. See GIPHY's privacy policy.
 - **Voice editor.** When you record in the companion app, Apple's speech recognition converts your voice to text. It runs on your device when supported; otherwise Apple may process the audio under Apple's privacy policy. The keyboard itself never uses the microphone.
 
 ## Allow Full Access
 
-iOS asks whether to "Allow Full Access" for third-party keyboards. You can type normally without it. It is needed only for clipboard history, GIFs, copying stickers, haptics and connecting to your own online service. Turning it on does not start any background uploads.
+iOS asks whether to "Allow Full Access" for third-party keyboards. You can type normally without it. It is needed only for clipboard history, GIFs, copying stickers, haptics and online AI. Turning it on does not start any background uploads.
 
 ## Children
 
-The app is not directed at children under 13 and does not knowingly collect information from anyone.
+The app is not directed at children under 13 and does not knowingly collect personal information from children.
 
 ## Changes
 

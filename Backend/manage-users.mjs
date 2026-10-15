@@ -11,7 +11,7 @@ if (!secret || secret.length < 32) throw Error('Set the owner ADMIN_TOKEN enviro
 let path = '/admin/users', method = 'GET', body;
 if (action === 'invite') { method = 'POST'; body = JSON.stringify({ label: value, dailyLimit: Number(daily || 20) }); }
 if (action === 'revoke') {
-  if (!/^[a-zA-Z0-9-]{36}$/.test(value || '')) throw Error('Provide a user ID returned by list');
+  if (!/^[a-zA-Z0-9_-]{1,80}$/.test(value || '')) throw Error('Provide a user ID returned by list');
   path += '/' + value + '/revoke'; method = 'POST';
 }
 const response = await fetch(new URL(path, endpoint), { method, redirect: 'error', signal: AbortSignal.timeout(30000),

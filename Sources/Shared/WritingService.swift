@@ -5,46 +5,63 @@ struct WritingConnection: Codable {
     var endpoint: String
     var token: String
     var savedAt: Date? = nil
+    var expiresAt: Date? = nil
+    var appleUserID: String? = nil
     var valid: Bool {
         guard let url = URL(string: endpoint) else { return false }
-        return url.scheme == "https" && url.host != nil && url.user == nil && url.password == nil && !token.isEmpty
+        return url.scheme == "https" && url.host != nil && url.user == nil && url.password == nil && !token.isEmpty && (expiresAt.map { $0 > Date() } ?? true)
     }
 }
 
 enum ConnectionVault {
     private static let service = "com.wiantribe.keyboard.writing"
+    static var hasSharedStorage: Bool {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: KeyboardStore.appGroup) != nil
+    }
+    private static func query(shared: Bool) -> [String: Any] {
+        var value: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service, kSecAttrAccount as String: "connection"]
+        // Apple permits App Group identifiers as Keychain access groups. Only this app and its
+        // entitled extensions can read the item; no credentials are written to UserDefaults/files.
+        if shared { value[kSecAttrAccessGroup as String] = KeyboardStore.appGroup }
+        return value
+    }
     static func load() -> WritingConnection? {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                   kSecAttrService as String: service, kSecAttrAccount as String: "connection",
-                                   kSecReturnData as String: true, kSecMatchLimit as String: kSecMatchLimitOne]
-        var result: CFTypeRef?
-        guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
-              let data = result as? Data else { return nil }
-        guard let connection = try? JSONDecoder().decode(WritingConnection.self, from: data) else { return nil }
-        if let revoked = KeyboardStore().writingRevokedAt,
-           (connection.savedAt ?? .distantPast) <= revoked { return nil }
-        return connection
+        for shared in hasSharedStorage ? [true, false] : [false] {
+            var lookup = query(shared: shared)
+            lookup[kSecReturnData as String] = true; lookup[kSecMatchLimit as String] = kSecMatchLimitOne
+            var result: CFTypeRef?
+            guard SecItemCopyMatching(lookup as CFDictionary, &result) == errSecSuccess,
+                  let data = result as? Data,
+                  let connection = try? JSONDecoder().decode(WritingConnection.self, from: data), connection.valid else { continue }
+            if let revoked = KeyboardStore().writingRevokedAt, (connection.savedAt ?? .distantPast) <= revoked { continue }
+            return connection
+        }
+        return nil
     }
     @discardableResult static func save(_ connection: WritingConnection?) -> Bool {
-        if let connection, !connection.valid { return false }
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
-                                   kSecAttrService as String: service, kSecAttrAccount as String: "connection"]
         guard var connection else {
-            let result = SecItemDelete(query as CFDictionary)
-            guard result == errSecSuccess || result == errSecItemNotFound else { return false }
+            var success = true
+            for shared in hasSharedStorage ? [true, false] : [false] {
+                let result = SecItemDelete(query(shared: shared) as CFDictionary)
+                if result != errSecSuccess && result != errSecItemNotFound { success = false }
+            }
             KeyboardStore().writingRevokedAt = Date()
-            return true
+            return success
         }
+        guard connection.valid else { return false }
         connection.savedAt = Date()
-        guard connection.valid, let data = try? JSONEncoder().encode(connection) else { return false }
+        guard let data = try? JSONEncoder().encode(connection) else { return false }
+        let lookup = query(shared: hasSharedStorage)
         let attributes: [String: Any] = [kSecValueData as String: data,
             kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly]
-        let updated = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-        if updated == errSecSuccess { return true }
-        guard updated == errSecItemNotFound else { return false }
-        var insert = query
-        attributes.forEach { insert[$0.key] = $0.value }
-        return SecItemAdd(insert as CFDictionary, nil) == errSecSuccess
+        let updated = SecItemUpdate(lookup as CFDictionary, attributes as CFDictionary)
+        var success = updated == errSecSuccess
+        if updated == errSecItemNotFound {
+            var insert = lookup; attributes.forEach { insert[$0.key] = $0.value }
+            success = SecItemAdd(insert as CFDictionary, nil) == errSecSuccess
+        }
+        return success
     }
 }
 
@@ -52,11 +69,11 @@ enum WritingError: LocalizedError {
     case notConfigured, invalidText, rejected, invalidResponse, unauthorized, rateLimited, dailyLimit, unavailable
     var errorDescription: String? {
         switch self {
-        case .unauthorized: return "The service token was rejected. Save the correct connection and reconnect the keyboard."
+        case .unauthorized: return "Your AI session expired or was revoked. Open WianTribe → AI account and sign in again."
         case .dailyLimit: return "Your daily AI allowance has been reached. It resets at midnight UTC."
         case .rateLimited: return "Too many requests. Wait a minute and try again."
         case .unavailable: return "Your AI service is unavailable. Try again later."
-        case .notConfigured: return "Connect your writing service first."
+        case .notConfigured: return "Open WianTribe → AI account and sign in to use online AI."
         case .invalidText: return "Select or enter between 1 and 3,000 characters."
         case .rejected: return "The writing service rejected this request. Check the connection or try again later."
         case .invalidResponse: return "The writing service returned an invalid response."

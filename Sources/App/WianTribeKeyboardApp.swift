@@ -10,7 +10,7 @@ struct WianTribeKeyboardApp: App {
             ContentView().environmentObject(model)
                 .tint(Color.mint)
                 .preferredColorScheme(.dark)
-                .onChange(of: scenePhase) { _, phase in if phase == .active { model.reload() } }
+                .onChange(of: scenePhase) { _, phase in if phase == .active { model.reload(); Task { await AIAccountModel.shared.reload() } } }
         }
     }
 }
