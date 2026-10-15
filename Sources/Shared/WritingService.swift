@@ -49,10 +49,11 @@ enum ConnectionVault {
 }
 
 enum WritingError: LocalizedError {
-    case notConfigured, invalidText, rejected, invalidResponse, unauthorized, rateLimited, unavailable
+    case notConfigured, invalidText, rejected, invalidResponse, unauthorized, rateLimited, dailyLimit, unavailable
     var errorDescription: String? {
         switch self {
         case .unauthorized: return "The service token was rejected. Save the correct connection and reconnect the keyboard."
+        case .dailyLimit: return "Your daily AI allowance has been reached. It resets at midnight UTC."
         case .rateLimited: return "Too many requests. Wait a minute and try again."
         case .unavailable: return "Your AI service is unavailable. Try again later."
         case .notConfigured: return "Connect your writing service first."
@@ -91,7 +92,10 @@ enum WritingService {
         switch response.statusCode {
         case 200...299: break
         case 401, 403: throw WritingError.unauthorized
-        case 429: throw WritingError.rateLimited
+        case 429:
+            struct LimitResponse: Decodable { let code: String? }
+            if (try? JSONDecoder().decode(LimitResponse.self, from: data).code) == "daily_limit" { throw WritingError.dailyLimit }
+            throw WritingError.rateLimited
         case 500...599: throw WritingError.unavailable
         default: throw WritingError.rejected
         }

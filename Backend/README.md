@@ -1,5 +1,7 @@
 # Optional private writing and GIF service
 
+For the invited-user Cloudflare/Groq rollout with individual tokens and daily quotas, use [CLOUDFLARE-SETUP.md](CLOUDFLARE-SETUP.md) and `wrangler.public.jsonc`. The configuration below remains a separate private-testing option.
+
 The app works without this service. Nothing is deployed automatically. This template is for the owner's private testing, with one long random access token; it is not a public multi-user subscription backend.
 
 It uses Cloudflare Workers AI, an AI binding and the Workers Rate Limiting API. Only `POST /write` (writing tools) and `GET /gifs` (GIF search) are served, both behind the access token. It returns `{ "text": "edited text" }`, never writes text history, disables observability in the supplied configuration and never logs request bodies/tokens. Cloudflare and model-provider terms/data policies still apply. Review them before sending private text.

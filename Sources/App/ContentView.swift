@@ -469,7 +469,16 @@ private struct WriterView: View {
                     Button("Use as input") { text = result; result = "" }
                 }
             }
-            Section("Optional service connection") {
+            Section("WianTribe AI connection") {
+                PasteButton(payloadType: String.self) { values in
+                    guard let value = values.first, let data = value.data(using: .utf8),
+                          let connection = try? JSONDecoder().decode(WritingConnection.self, from: data), connection.valid else {
+                        status = "Copy the connection supplied by WianTribe first"; return
+                    }
+                    configured = ConnectionVault.save(connection)
+                    if configured { endpoint = connection.endpoint; token = connection.token }
+                    status = configured ? "Connection imported. Test it below, then copy it to your keyboard." : "The connection could not be saved"
+                }
                 TextField("https://your-service.example/write", text: $endpoint).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.URL)
                 SecureField("Access token", text: $token).textInputAutocapitalization(.never).autocorrectionDisabled()
                 Button("Save connection") {
@@ -495,7 +504,7 @@ private struct WriterView: View {
                     status = "Copied for two minutes. In the keyboard tap ✦ → Import writing connection. It contains your private access token."
                 }.disabled(!configured)
                 Button("Disconnect", role: .destructive) { ConnectionVault.save(nil); configured = false; token = ""; status = "Disconnected. Imported keyboard connections are also invalidated in builds with shared storage." }
-                Text("A backend template is included in the project. No service is deployed or subscription activated by this app. Provider usage charges may apply to your service.")
+                Text("Import the connection provided by WianTribe. Your access token identifies your account and its usage allowance. It is not a Groq API key.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Writing assistant")

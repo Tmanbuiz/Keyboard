@@ -1,0 +1,48 @@
+name: Deploy Cloudflare user API
+on:
+  workflow_dispatch:
+    inputs:
+      database_id:
+        description: Cloudflare D1 database ID for wiantribe-keyboard-users
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: cloudflare-user-api
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      KEYBOARD_DATABASE_ID: ${{ inputs.database_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Test authentication and quotas
+        run: node --test Backend/*.test.mjs
+      - name: Prepare deployment configuration
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, uuid
+          for name in ['CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID']:
+              if not os.environ.get(name):
+                  raise SystemExit('Missing GitHub Actions secret: ' + name)
+          database_id = str(uuid.UUID(os.environ['KEYBOARD_DATABASE_ID']))
+          path = pathlib.Path('Backend/wrangler.public.jsonc')
+          config = json.loads(path.read_text())
+          config['d1_databases'][0]['database_id'] = database_id
+          pathlib.Path('Backend/wrangler.generated.json').write_text(json.dumps(config, indent=2))
+          PY
+      - name: Apply schema and deploy Worker
+        working-directory: Backend
+        run: |
+          npx --yes wrangler@4.36.0 d1 migrations apply DB --remote --config wrangler.generated.json
+          npx --yes wrangler@4.36.0 deploy --config wrangler.generated.json
+      - name: Explain runtime secret setup
+        run: echo 'Deployment finished. In the Cloudflare Worker Settings, add runtime secrets PROVIDER_API_KEY (your Groq key) and ADMIN_TOKEN (a random owner-only secret of at least 32 characters). Check /health before inviting users. No provider key is needed in GitHub.'

@@ -208,14 +208,14 @@ extension KeyboardViewController {
                     self.enterSearch(.writing); self.searchQuery = result
                     self.rebuildToolbar(); self.refreshSuggestions()
                 }], height: 44))
-        } else {
+        } else if writingError != nil {
             actions.addArrangedSubview(writingTile("Try again", symbol: nil, horizontal: true) { [weak self] in
                 guard let self, let target = self.writingTarget else { return }
                 self.runWritingAssist(action, target: target)
             })
         }
         stack.addArrangedSubview(card)
-        caption(writingResult != nil ? "Result \(writingVia)." : (action == .translate ? "Translating…" : "Check for errors and suggested improvements."), in: stack)
+        caption(writingResult != nil ? "Result \(writingVia)." : (writingError != nil ? "Request stopped. Your text has not been changed." : (action == .translate ? "Translating…" : "Working…")), in: stack)
     }
 
     /// Tries Apple's on-device models first, then the person's own service.

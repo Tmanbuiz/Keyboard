@@ -11,3 +11,6 @@ Backend/.wrangler/
 *.p12
 __pycache__/
 *.pyc
+
+Backend/wrangler.generated.json
+user-connection-*.json
