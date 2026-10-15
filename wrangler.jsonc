@@ -1,0 +1,44 @@
+{
+  "name": "wiantribe-keyboard-api",
+  "main": "Backend/public-worker.mjs",
+  "compatibility_date": "2026-10-01",
+  "vars": {
+    "MODEL": "llama-3.3-70b-versatile",
+    "GLOBAL_DAILY_LIMIT": "500"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "wiantribe-keyboard-users",
+      "database_id": "14819c91-27fb-42cd-854e-ea9c7c91d733",
+      "migrations_dir": "Backend/migrations"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "WRITING_LIMITER",
+      "namespace_id": "9173002",
+      "simple": {
+        "limit": 10,
+        "period": 60
+      }
+    },
+    {
+      "name": "AUTH_LIMITER",
+      "namespace_id": "9173003",
+      "simple": {
+        "limit": 60,
+        "period": 60
+      }
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "15 3 * * *"
+    ]
+  },
+  "observability": {
+    "enabled": false
+  },
+  "account_id": "e0322348ccaceec8c3f253628259e3f3"
+}
