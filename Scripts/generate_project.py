@@ -77,7 +77,13 @@ write_plist("Sideload.entitlements", {})
 write_plist("Shared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"]})
 write_plist("AppShared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"], "com.apple.developer.applesignin": ["Default"]})
 write_plist("PrivacyInfo.xcprivacy", {
-    "NSPrivacyTracking": False, "NSPrivacyTrackingDomains": [], "NSPrivacyCollectedDataTypes": [],
+    "NSPrivacyTracking": False, "NSPrivacyTrackingDomains": [],
+    "NSPrivacyCollectedDataTypes": [
+        {"NSPrivacyCollectedDataType": kind, "NSPrivacyCollectedDataTypeLinked": True,
+         "NSPrivacyCollectedDataTypeTracking": False,
+         "NSPrivacyCollectedDataTypePurposes": ["NSPrivacyCollectedDataTypePurposeAppFunctionality"]}
+        for kind in ["NSPrivacyCollectedDataTypeUserID", "NSPrivacyCollectedDataTypeProductInteraction"]
+    ],
     "NSPrivacyAccessedAPITypes": [{"NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
                                    "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "1C8F.1"]}]
 })

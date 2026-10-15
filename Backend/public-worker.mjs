@@ -83,7 +83,11 @@ async function serve(request, env, context, fetcher) {
     if (!env.DB || !env.WRITING_LIMITER || !env.PROVIDER_API_KEY || !env.MODEL || !dailyCap(env) || !env.ADMIN_TOKEN || env.ADMIN_TOKEN.length < 32)
       return json({ status: 'not-configured' }, 503);
     await env.DB.prepare('SELECT id FROM clients LIMIT 1').first();
-    if (env.APPLE_SIGNIN_ENABLED === 'true') await initializeAuth(env.DB);
+    if (env.APPLE_SIGNIN_ENABLED === 'true') {
+      const allowance = Number(env.APPLE_DAILY_LIMIT || '20');
+      if (!env.APPLE_CLIENT_ID || !Number.isSafeInteger(allowance) || allowance < 1 || allowance > 1000) return json({ status: 'not-configured' }, 503);
+      await initializeAuth(env.DB);
+    }
     return json({ status: 'ready', access: env.APPLE_SIGNIN_ENABLED === 'true' ? 'apple-sign-in' : 'invite-only' });
   }
   if (!env.DB || !env.WRITING_LIMITER || !dailyCap(env)) return json({ error: 'Service not configured' }, 503);

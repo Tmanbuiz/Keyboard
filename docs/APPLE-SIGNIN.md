@@ -14,6 +14,8 @@ After the feature branch checks pass, merge to main so Cloudflare’s connected 
 
 Default allowance: 20 requests per account per UTC day, 500 across all accounts; attempts count. Sessions last 30 days with at most five active sessions per account. Logout revokes one session. Deleting the account revokes every session; a stable pseudonymous usage bucket prevents deletion from resetting the daily quota. The bucket expires after 30 days. Submitted writing and results are not stored by the Worker. Provider terms still apply.
 
+App Store Connect privacy answers must reflect account identifiers and usage counts, linked to the account and used for app functionality. The generated privacy manifest declares these categories; it does not update App Store Connect answers automatically.
+
 ## Device acceptance checks
 
 Install the processed TestFlight build, sign in, open the keyboard in another app, and use grammar/translation without copying credentials. Check Full Access off/on, quota display, expiry/sign-in again, sign-out, deleting the account, Apple credential revocation, and a second device. Verify the Cloudflare provider key is configured with a successful real writing request.
