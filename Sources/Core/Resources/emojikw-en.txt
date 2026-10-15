@@ -48,11 +48,14 @@
 😮‍💨	face exhaling blow blowing exhale exhaling exhausted face gasp groan relief sigh smiley smoke whisper whistle
 🤥	lying face face liar lie lying pinocchio
 🫨	shaking face crazy daze earthquake face omg panic shaking shock surprise vibrate whoa wow
+🙂‍↔️	head shaking horizontally head horizontally no shake shaking
+🙂‍↕️	head shaking vertically head nod shaking vertically yes
 😌	relieved face calm face peace relief relieved zen
 😔	pensive face awful bored dejected died disappointed face losing lost pensive sad sucks
 😪	sleepy face crying face good night sad sleep sleeping sleepy tired
 🤤	drooling face drooling face
 😴	sleeping face bed bedtime face good goodnight nap night sleep sleeping tired whatever yawn zzz
+🫩	face with bags under eyes bags bored exhausted eyes face fatigued late sleepy tired weary
 😷	face with medical mask cold dentist dermatologist doctor dr face germs mask medical medicine sick
 🤒	face with thermometer face ill sick thermometer
 🤕	face with head-bandage bandage face head-bandage hurt injury ouch
@@ -80,6 +83,7 @@
 😯	hushed face epic face hushed omg stunned surprised whoa woah
 😲	astonished face astonished cost face no omg shocked totally way
 😳	flushed face amazed awkward crazy dazed dead disbelief embarrassed face flushed geez heat hot impressed jeez what wow
+🫪	distorted face anxiety bloated panic shocked surprised vulnerable
 🥺	pleading face begging big eyes face mercy not pleading please pretty puppy sad why
 🥹	face holding back tears admiration aww back cry embarrassed face feelings grateful gratitude holding joy please proud resist sad tears
 😦	frowning face with open mouth caught face frown frowning guard mouth open scared scary surprise what wow
@@ -153,6 +157,7 @@
 💋	kiss mark dating emotion heart kiss kissing lips mark romance sexy
 💯	hundred points 100 a+ agree clearly definitely faithful fleek full hundred keep perfect point score true truth yup
 💢	anger symbol anger angry comic mad symbol upset
+🫯	fight cloud argument brawl debate disagreement fight ruckus wrestle
 💥	collision bomb boom collide comic explode
 💫	dizzy comic shining shooting star stars
 💦	sweat droplets comic drip droplet droplets drops splashing squirt sweat water wet work workout
@@ -397,6 +402,7 @@
 🧟‍♂️	man zombie apocalypse dead halloween horror man scary undead walking zombie
 🧟‍♀️	woman zombie apocalypse dead halloween horror scary undead walking woman zombie
 🧌	troll fairy fantasy monster tale trolling
+🫈	hairy creature bigfoot cryptid forest giant hairy sasquatch woodwose yeti
 💆	person getting massage face getting headache massage person relax relaxing salon soothe spa tension therapy treatment
 💆‍♂️	man getting massage face getting headache man massage relax relaxing salon soothe spa tension therapy treatment
 💆‍♀️	woman getting massage face getting headache massage relax relaxing salon soothe spa tension therapy treatment woman
@@ -406,24 +412,43 @@
 🚶	person walking amble gait hike man pace pedestrian person stride stroll walk walking
 🚶‍♂️	man walking amble gait hike man pace pedestrian stride stroll walk walking
 🚶‍♀️	woman walking amble gait hike man pace pedestrian stride stroll walk walking woman
+🚶‍➡️	person walking: facing right amble facing gait hike man pace pedestrian person right stride stroll walk walking
+🚶‍♀️‍➡️	woman walking: facing right amble facing gait hike man pace pedestrian right stride stroll walk walking woman
+🚶‍♂️‍➡️	man walking: facing right amble facing gait hike man pace pedestrian right stride stroll walk walking
 🧍	person standing person stand standing
 🧍‍♂️	man standing man stand standing
 🧍‍♀️	woman standing stand standing woman
 🧎	person kneeling kneel kneeling knees person
 🧎‍♂️	man kneeling kneel kneeling knees man
 🧎‍♀️	woman kneeling kneel kneeling knees woman
+🧎‍➡️	person kneeling: facing right facing kneel kneeling knees person right
+🧎‍♀️‍➡️	woman kneeling: facing right facing kneel kneeling knees right woman
+🧎‍♂️‍➡️	man kneeling: facing right facing kneel kneeling knees man right
 🧑‍🦯	person with white cane accessibility blind cane person probing white
+🧑‍🦯‍➡️	person with white cane: facing right accessibility blind cane facing person probing right white
 👨‍🦯	man with white cane accessibility blind cane man probing white
+👨‍🦯‍➡️	man with white cane: facing right accessibility blind cane facing man probing right white
 👩‍🦯	woman with white cane accessibility blind cane probing white woman
+👩‍🦯‍➡️	woman with white cane: facing right accessibility blind cane facing probing right white woman
 🧑‍🦼	person in motorized wheelchair accessibility motorized person wheelchair
+🧑‍🦼‍➡️	person in motorized wheelchair: facing right accessibility facing motorized person right wheelchair
 👨‍🦼	man in motorized wheelchair accessibility man motorized wheelchair
+👨‍🦼‍➡️	man in motorized wheelchair: facing right accessibility facing man motorized right wheelchair
 👩‍🦼	woman in motorized wheelchair accessibility motorized wheelchair woman
+👩‍🦼‍➡️	woman in motorized wheelchair: facing right accessibility facing motorized right wheelchair woman
 🧑‍🦽	person in manual wheelchair accessibility manual person wheelchair
+🧑‍🦽‍➡️	person in manual wheelchair: facing right accessibility facing manual person right wheelchair
 👨‍🦽	man in manual wheelchair accessibility man manual wheelchair
+👨‍🦽‍➡️	man in manual wheelchair: facing right accessibility facing man manual right wheelchair
 👩‍🦽	woman in manual wheelchair accessibility manual wheelchair woman
+👩‍🦽‍➡️	woman in manual wheelchair: facing right accessibility facing manual right wheelchair woman
 🏃	person running fast hurry marathon move person quick race racing run rush speed
 🏃‍♂️	man running fast hurry man marathon move quick race racing run rush speed
 🏃‍♀️	woman running fast hurry marathon move quick race racing run rush speed woman
+🏃‍➡️	person running: facing right facing fast hurry marathon move person quick race racing right run rush speed
+🏃‍♀️‍➡️	woman running: facing right facing fast hurry marathon move quick race racing right run rush speed woman
+🏃‍♂️‍➡️	man running: facing right facing fast hurry man marathon move quick race racing right run rush speed
+🧑‍🩰	ballet dancer ballet dancer
 💃	woman dancing dance dancer dancing elegant festive flair flamenco groove let’s salsa tango woman
 🕺	man dancing dance dancer dancing elegant festive flair flamenco groove let’s man salsa tango
 🕴️	person in suit levitating business levitating person suit
@@ -526,7 +551,12 @@
 👥	busts in silhouette bff bust busts everyone friend friends people silhouette
 🫂	people hugging comfort embrace farewell friendship goodbye hello hug hugging love people thanks
 👪️	family child
+🧑‍🧑‍🧒	family: adult, adult, child adult child family
+🧑‍🧑‍🧒‍🧒	family: adult, adult, child, child adult child family
+🧑‍🧒	family: adult, child adult child family
+🧑‍🧒‍🧒	family: adult, child, child adult child family
 👣	footprints barefoot clothing footprint omw print walk
+🫆	fingerprint clue crime detective forensics identity mystery print safety trace
 🐵	monkey face animal banana face monkey
 🐒	monkey animal banana
 🦍	gorilla animal
@@ -614,6 +644,7 @@
 🪽	wing angelic ascend aviation bird fly flying heavenly mythology soar
 🐦‍⬛	black bird animal beak bird black caw corvid crow ornithology raven rook
 🪿	goose animal bird duck flock fowl gaggle gander geese honk ornithology silly
+🐦‍🔥	phoenix ascend ascension emerge fantasy firebird glory immortal rebirth reincarnation reinvent renewal revival revive rise transform
 🐸	frog animal face
 🐊	crocodile animal zoo
 🐢	turtle animal terrapin tortoise
@@ -626,6 +657,7 @@
 🐳	spouting whale animal beach face ocean spouting whale
 🐋	whale animal beach ocean
 🐬	dolphin animal beach flipper ocean
+🫍	orca marine ocean whale
 🦭	seal animal lion ocean sea
 🐟️	fish animal dinner fishes fishing pisces zodiac
 🐠	tropical fish animal fish fishes tropical
@@ -684,11 +716,13 @@
 🪹	empty nest branch empty home nest nesting
 🪺	nest with eggs bird branch egg eggs nest nesting
 🍄	mushroom fungus toadstool
+🪾	leafless tree bare barren branches dead drought leafless tree trunk winter wood
 🍇	grapes dionysus fruit grape
 🍈	melon cantaloupe fruit
 🍉	watermelon fruit
 🍊	tangerine c citrus fruit nectarine orange vitamin
 🍋	lemon citrus fruit sour
+🍋‍🟩	lime acidity citrus cocktail fruit garnish key margarita mojito refreshing salsa sour tangy tequila tropical zest
 🍌	banana fruit potassium
 🍍	pineapple colada fruit pina tropical
 🥭	mango food fruit tropical
@@ -720,6 +754,8 @@
 🌰	chestnut almond plant
 🫚	ginger root beer ginger health herb natural root spice
 🫛	pea pod beans beanstalk edamame legume pea pod soybean vegetable veggie
+🍄‍🟫	brown mushroom food fungi fungus mushroom nature pizza portobello shiitake shroom spore sprout toppings truffle vegetable vegetarian veggie
+🫜	root vegetable beet food garden radish root salad turnip vegetable vegetarian
 🍞	bread carbs food grain loaf restaurant toast wheat
 🥐	croissant bread breakfast crescent food french roll
 🥖	baguette bread baguette bread food french
@@ -821,6 +857,7 @@
 🧭	compass direction magnetic navigation orienteering
 🏔️	snow-capped mountain cold mountain snow snow-capped
 ⛰️	mountain
+🛘	landslide avalanche danger disaster earthquake mountain mudslide rocks
 🌋	volcano eruption mountain nature
 🗻	mount fuji fuji mount mountain nature
 🏕️	camping
@@ -1182,6 +1219,7 @@
 📻️	radio entertainment tbt video
 🎷	saxophone instrument music sax
 🎺	trumpet instrument music
+🪊	trombone brass instrument jazz music sad slide
 🪗	accordion box concertina instrument music squeeze squeezebox
 🎸	guitar instrument music strat
 🎹	musical keyboard instrument keyboard music musical piano
@@ -1191,6 +1229,7 @@
 🪘	long drum beat conga drum instrument long rhythm
 🪇	maracas cha dance instrument music party percussion rattle shake shaker
 🪈	flute band fife flautist instrument marching music orchestra piccolo pipe recorder woodwind
+🪉	harp cupid instrument love music orchestra
 📱	mobile phone cell communication mobile phone telephone
 📲	mobile phone with arrow arrow build call cell communication mobile phone receive telephone
 ☎️	telephone phone
@@ -1246,6 +1285,7 @@
 🏷️	label tag
 🪙	coin dollar euro gold metal money rich silver treasure
 💰️	money bag bag bank bet billion cash cost dollar gold million money moneybag paid paying pot rich win
+🪎	treasure chest gem gold jewels loot money prize silver valuables wealth
 💴	yen banknote bank banknote bill currency money note yen
 💵	dollar banknote bank banknote bill currency dollar money note
 💶	euro banknote 100 bank banknote bill currency euro money note rich
@@ -1323,11 +1363,13 @@
 ⚖️	balance scale balance justice libra scale scales tool weight zodiac
 🦯	white cane accessibility blind cane probing white
 🔗	link links
+⛓️‍💥	broken chain break breaking broken chain cuffs freedom
 ⛓️	chains chain
 🪝	hook catch crook curve ensnare point selling
 🧰	toolbox box chest mechanic red tool
 🧲	magnet attraction horseshoe magnetic negative positive shape u
 🪜	ladder climb rung step
+🪏	shovel bury dig garden hole plant scoop snow spade
 ⚗️	alembic chemistry tool
 🧪	test tube chemist chemistry experiment lab science test tube
 🧫	petri dish bacteria biologist biology culture dish lab petri
@@ -1513,6 +1555,7 @@
 ©️	copyright c
 ®️	registered r
 ™️	trade mark mark tm trade trademark
+🫟	splatter drip holi ink liquid mess paint spill stain
 #️⃣	keycap: # keycap
 *️⃣	keycap: * keycap
 0️⃣	keycap: 0 0 keycap zero
@@ -1658,6 +1701,7 @@
 🇨🇳	flag: china cn flag
 🇨🇴	flag: colombia co flag
 🇨🇵	flag: clipperton island cp flag
+🇨🇶	flag: sark cq flag
 🇨🇷	flag: costa rica cr flag
 🇨🇺	flag: cuba cu flag
 🇨🇻	flag: cape verde cv flag

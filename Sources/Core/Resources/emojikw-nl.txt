@@ -48,11 +48,14 @@
 😮‍💨	gezicht dat uitademt blazen fluisteren fluiten kreunen naar adem snakken opgelucht roken rook smiley uitademen uitgeput
 🤥	liegend gezicht gezicht leugen leugenaar liegen pinokkio
 🫨	schuddend gezicht aardbeving gek gezicht omg paniek schok schudden trillen verbijstering verrassing wauw wow
+🙂‍↔️	hoofd dat horizontaal beweegt nee schudden
+🙂‍↕️	hoofd dat verticaal beweegt ja knikken
 😌	opgelucht gezicht gezicht kalmte opgelucht opluchting vrede zen
 😔	peinzend gezicht afgewezen balen gezicht moedeloos peinzend smiley teleurgesteld terneergeslagen triest verdrietig verloren
 😪	slaperig gezicht gezicht huilen slaap smiley traan
 🤤	kwijlend gezicht gezicht kwijlend
 😴	slapend gezicht bedtijd dutje gapen gezicht moe slaap slaap lekker slapen smiley vermoeid welterusten zzz
+🫩	gezicht met wallen onder de ogen moe slaperig uitgeput
 😷	gezicht met doktersmasker besmet dokter doktersmasker gezicht gezicht met masker koud masker medicijn medisch masker smiley virus ziek
 🤒	gezicht met thermometer gezicht niet lekker thermometer ziek
 🤕	gezicht met een verband om het hoofd gewond gezicht gezicht met hoofdverband pijn verband verwonding
@@ -80,6 +83,7 @@
 😯	verstomd gezicht geschokt gezicht omg smiley verbaasd verrast verstomd wauw wow
 😲	verbaasd gezicht geschokt gezicht kosten nee omg totaal verbaasd
 😳	blozend gezicht beschaamd blozend dood gek gezicht heet hitte jeetje onder de indruk ongeloof ongemakkelijk sjonge verbaasd verbijsterd wat wauw
+🫪	verwrongen gezicht geschokt kwetsbaar onrust opgeblazen paniek verrast
 🥺	smekend gezicht alsjeblieft genade gezicht grote ogen smeken smekende blik smiley verdrietig waarom niet zielig gezicht
 🥹	gezicht dat tranen tegenhoudt alsjeblieft aww beschaamd bewondering dankbaar dankbaarheid gevoelens gezicht houden huilen tegen tranen trots verdrietig vreugde weerstaan
 😦	fronsend gezicht met open mond bang betrapt eng frons fronsen gezicht hoede mond open verrassing wat wauw
@@ -153,6 +157,7 @@
 💋	lipafdruk afdruk daten emotie kus kusafdruk liefde lippen romantiek sexy zoen
 💯	maximumscore 100 100 punten beste cijfer fantastisch foutloos getal geweldig score top zeker
 💢	woedesymbool boos cartoonesk kwaad ontdaan strip symbool teken woede
+🫯	vechtwolk debat onenigheid ruzie tumult vechtpartij woordenwisseling worsteling
 💥	botsing boem bom botsen ontploffen strip
 💫	duizelig cartoonesk ster strip vallende ster
 💦	zweetdruppels druppels spetteren sporten strip water work-out zweet
@@ -397,6 +402,7 @@
 🧟‍♂️	mannelijke zombie lopende dode ondode
 🧟‍♀️	vrouwelijke zombie lopende dode ondode
 🧌	trol fantasie monster trollen
+🫈	harig wezen bigfoot cryptide harig reus sasquatch wildeman woud yeti
 💆	persoon die hoofdmassage krijgt gespannen gezicht gezichtsmassage hoofdpijn massage ontspannen persoon relaxen salon spa spanning
 💆‍♂️	man die hoofdmassage krijgt geduld gezicht gezichtmassage man man krijgt gezichtsmassage massage masseren ontspannen ontspannend persoon relaxen relaxing
 💆‍♀️	vrouw die hoofdmassage krijgt gezicht massage vrouw
@@ -406,24 +412,43 @@
 🚶	voetganger lopen persoon slenteren stappen struien wandelaar wandelen
 🚶‍♂️	wandelende man lopen man wandelen
 🚶‍♀️	wandelende vrouw kuieren lopen persoon slenteren voetganger vrouw wandelaar wandelen
+🚶‍➡️	voetganger: naar rechts gericht gericht lopen naar persoon rechts slenteren stappen struien voetganger wandelaar wandelen
+🚶‍♀️‍➡️	wandelende vrouw: naar rechts gericht gericht kuieren lopen naar persoon rechts slenteren voetganger vrouw wandelaar wandelen wandelende vrouw
+🚶‍♂️‍➡️	wandelende man: naar rechts gericht gericht lopen man naar rechts wandelen wandelende man
 🧍	staande persoon persoon staan staand
 🧍‍♂️	staande man man staand
 🧍‍♀️	staande vrouw staand vrouw
 🧎	knielende persoon knielen knielend knieën persoon
 🧎‍♂️	knielende man knielend man
 🧎‍♀️	knielende vrouw knielend vrouw
+🧎‍➡️	knielende persoon: naar rechts gericht gericht knielen knielend knieën naar persoon rechts
+🧎‍♀️‍➡️	knielende vrouw: naar rechts gericht gericht knielend knielende vrouw naar rechts vrouw
+🧎‍♂️‍➡️	knielende man: naar rechts gericht gericht knielend knielende man man naar rechts
 🧑‍🦯	persoon met taststok blind toegankelijkheid
+🧑‍🦯‍➡️	persoon met taststok: naar rechts gericht blind gericht naar persoon met taststok rechts toegankelijkheid
 👨‍🦯	man met taststok blind man man met blindenstok toegankelijkheid
+👨‍🦯‍➡️	man met taststok: naar rechts gericht blind gericht man man met blindenstok man met taststok naar rechts toegankelijkheid
 👩‍🦯	vrouw met taststok blind toegankelijkheid vrouw vrouw met blindenstok
+👩‍🦯‍➡️	vrouw met taststok: naar rechts gericht blind gericht naar rechts toegankelijkheid vrouw vrouw met blindenstok vrouw met taststok
 🧑‍🦼	persoon in elektrische rolstoel rolstoel toegankelijkheid
+🧑‍🦼‍➡️	persoon in elektrische rolstoel: naar rechts gericht gericht naar persoon in elektrische rolstoel rechts rolstoel toegankelijkheid
 👨‍🦼	man in elektrische rolstoel elektrisch man rolstoel toegankelijkheid
+👨‍🦼‍➡️	man in elektrische rolstoel: naar rechts gericht elektrisch gericht man naar rechts rolstoel toegankelijkheid
 👩‍🦼	vrouw in elektrische rolstoel elektrisch rolstoel toegankelijkheid vrouw
+👩‍🦼‍➡️	vrouw in elektrische rolstoel: naar rechts gericht elektrisch gericht naar rechts rolstoel toegankelijkheid vrouw
 🧑‍🦽	persoon in rolstoel rolstoel toegankelijkheid
+🧑‍🦽‍➡️	persoon in rolstoel: naar rechts gericht gericht naar persoon in rolstoel rechts rolstoel toegankelijkheid
 👨‍🦽	man in rolstoel handmatig man rolstoel toegankelijkheid
+👨‍🦽‍➡️	man in rolstoel: naar rechts gericht gericht handmatig man naar rechts rolstoel toegankelijkheid
 👩‍🦽	vrouw in rolstoel handmatig rolstoel toegankelijkheid vrouw
+👩‍🦽‍➡️	vrouw in rolstoel: naar rechts gericht gericht handmatig naar rechts rolstoel toegankelijkheid vrouw
 🏃	hardloper hardlopen hollen joggen man marathon persoon rennen snel sport
 🏃‍♂️	rennende man hardlopen man marathon rennen
 🏃‍♀️	rennende vrouw atleet baan beroep haasten hardlopen kom eraan marathon persoon rennen snel sport vlug vrouw werk
+🏃‍➡️	hardloper: naar rechts gericht gericht hardlopen hardloper hollen joggen man marathon naar persoon rechts rennen snel sport
+🏃‍♀️‍➡️	rennende vrouw: naar rechts gericht atleet baan beroep gericht haasten hardlopen kom eraan marathon naar persoon rechts rennen rennende vrouw snel sport vlug vrouw werk
+🏃‍♂️‍➡️	rennende man: naar rechts gericht gericht hardlopen man marathon naar rechts rennen rennende man
+🧑‍🩰	balletdanser ballet danser
 💃	dansende vrouw dansen dansende vrouw met rode jurk danseres elegant feest flamenco persoon salsa tango vrouw
 🕺	dansende man dansen disco feest festival flamenco man persoon salsa tango
 🕴️	zwevende man in pak pak persoon zaken zwevend
@@ -526,7 +551,12 @@
 👥	silhouet van twee personen bff buste bustes in silhouet schaduw silhouet vrienden
 🫂	personen in een omhelzing bedankt dag hallo knuffel knuffelen liefde omhelzing persoon vriendschap
 👪️	gezin kind
+🧑‍🧑‍🧒	gezin: volwassene, volwassene, kind gezin kind volwassene
+🧑‍🧑‍🧒‍🧒	gezin: volwassene, volwassene, kind, kind gezin kind volwassene
+🧑‍🧒	gezin: volwassene, kind gezin kind volwassene
+🧑‍🧒‍🧒	gezin: volwassene, kind, kind gezin kind volwassene
 👣	voetafdrukken afdruk blote voeten kleding lopen onderweg voetafdruk
+🫆	vingerafdruk forensisch identiteit veiligheid
 🐵	apengezicht aap banaan dier gezicht
 🐒	aap banaan dier
 🦍	gorilla dier
@@ -614,6 +644,7 @@
 🪽	vleugel engelachtig luchtvaart mythologie vliegen vogel
 🐦‍⬛	merel dier kauw kraai kraaiachtige ornithologie raaf roek snavel vogel zwart
 🪿	gans gevogelte onnozel snateren vogel
+🐦‍🔥	feniks as fantasie hergeboorte herrezen mythe reïncarnatie vogel vuurvogel
 🐸	kikker dier gezicht
 🐊	krokodil dier dierentuin
 🐢	schildpad dier waterschildpad
@@ -626,6 +657,7 @@
 🐳	spuitende walvis dier gezicht oceaan spuitend strand walvis
 🐋	walvis dier oceaan strand
 🐬	dolfijn dier flipper oceaan strand
+🫍	orka oceaan walvis zee
 🦭	zeehond dier leeuw oceaan zee
 🐟️	vis dier eten pisces sterrenbeeld vissen
 🐠	tropische vis dier tropisch vis vissen
@@ -684,11 +716,13 @@
 🪹	leeg nest leeg nest nestelen tak thuis
 🪺	nest met eieren ei eieren nest nestelen tak vogel
 🍄	paddenstoel schimmel zwam
+🪾	boom zonder bladeren boom boomstam dood droogte hout kaal leeg takken winter zonder bladeren
 🍇	druiven dionysus druif fruit
 🍈	meloen fruit kanteloep
 🍉	watermeloen fruit
 🍊	mandarijn c citrus fruit nectarine sinaasappel vitamine
 🍋	citroen citrus fruit zuur
+🍋‍🟩	limoen citrus cocktail fruit groen margarita sap tropisch vrucht zuur
 🍌	banaan fruit kalium
 🍍	ananas eten fruit tropisch voedsel
 🥭	mango eten fruit tropisch
@@ -720,6 +754,8 @@
 🌰	kastanje amandel plant
 🫚	gemberwortel bier gember specerij wortel
 🫛	erwtendop bonen dop edamame erwt groente peul peulvrucht
+🍄‍🟫	bruine paddestoel bruine paddenstoel champignon eten groente natuur paddenstoel paddo pizza schimmel shiitake
+🫜	knol biet groente raap tuin wortel
 🍞	brood eten koolhydraten tarwe voedsel
 🥐	croissant brood eten frans ontbijt voedsel
 🥖	stokbrood brood eten frans
@@ -821,6 +857,7 @@
 🧭	kompas magnetisch navigatie oriëntatielopen oriënteringslopen richting
 🏔️	berg met besneeuwde toppen berg koud sneeuw
 ⛰️	berg
+🛘	aardverschuiving aardbeving berg gevaar lawine modderlawine ramp stenen
 🌋	vulkaan berg lava magma natuur vulkaanuitbarsting
 🗻	berg fuji berg fuji natuur vulkaan
 🏕️	kamperen camping tent
@@ -1182,6 +1219,7 @@
 📻️	radio entertainment muziek
 🎷	saxofoon instrument muziek muziekinstrument sax
 🎺	trompet instrument muziek muziekinstrument
+🪊	trombone droevig instrument jazz koper muziek schuiven
 🪗	accordeon bandoneon concertina instrument muziek trek trekzak
 🎸	gitaar instrument muziek muziekinstrument strat stratocaster
 🎹	piano instrument keyboard muziek muziekinstrument
@@ -1191,6 +1229,7 @@
 🪘	hoge trom beat conga hoog instrument ritme trom
 🪇	sambaballen instrument muziek percussie ratelen schudden
 🪈	fluit blokfluit dwarsfluit houtblazer muziek pijperfluit
+🪉	harp cupido instrument liefde muziek orkestra
 📱	mobiele telefoon bellen communicatie mobiel smartphone telefoon
 📲	mobiel met pijl bellen mobiel mobiele telefoon ontvangen pijl smartphone telefoon
 ☎️	telefoon rode telefoon met hoorn vaste telefoon
@@ -1246,6 +1285,7 @@
 🏷️	label
 🪙	munt dollar euro geld goud metaal rijk schat zilver
 💰️	zak met geld dollar geld geldzak rijk zak
+🪎	schatkist buit edelsteen geld goud juwelen kostbaarheden prijs rijkdom zilver
 💴	yenbiljet bankbiljet biljet briefgeld briefje geld valuta yen
 💵	dollarbiljet bankbiljet biljet briefgeld briefje dollar geld valuta
 💶	eurobiljet bankbiljet biljet briefgeld briefje euro geld valuta
@@ -1323,11 +1363,13 @@
 ⚖️	weegschaal balans dierenriem gerechtigheid gewichten horoscoop libra recht sterrenbeeld weegschaal in balans
 🦯	taststok blind blindenstok lopen toegankelijkheid
 🔗	schakels twee ringen
+⛓️‍💥	gebroken ketting boeien breek gebroken ketting vrijheid
 ⛓️	kettingen ketting
 🪝	haak aanbeveling bocht hengel kronkel vangen verstrikken vissen
 🧰	gereedschapskist doos gereedschap kist monteur rode kist
 🧲	magneet aantrekking aantrekkingskracht hoefijzer magnetisch positief negatief uvormig
 🪜	ladder klimmen omhoog omlaag sport trede voorwerp
+🪏	schop gat graven schep spade
 ⚗️	distilleerkolf gereedschap scheikunde
 🧪	reageerbuis chemicus experiment lab laboratorium scheikunde scheikundige wetenschap
 🧫	petrischaal bacterie bacteriën biologe biologie bioloog cultuur kweek lab laboratorium
@@ -1513,6 +1555,7 @@
 ©️	copyright c
 ®️	gedeponeerd r
 ™️	handelsmerksymbool handel handelsmerk merk tm
+🫟	gespat druppel geknoei gemors gespat holi inkt verf vlek vloeistof
 #️⃣	toets: # toets
 *️⃣	toets: * toets
 0️⃣	toets: 0 0 nul toets
@@ -1658,6 +1701,7 @@
 🇨🇳	vlag: china cn vlag
 🇨🇴	vlag: colombia co vlag
 🇨🇵	vlag: clipperton cp vlag
+🇨🇶	vlag: sark cq vlag
 🇨🇷	vlag: costa rica cr vlag
 🇨🇺	vlag: cuba cu vlag
 🇨🇻	vlag: kaapverdië cv vlag

@@ -4,13 +4,29 @@ import UIKit
 /// emoji fast and light on memory, which matters inside a keyboard extension.
 final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     enum Item {
-        case emoji(String, toned: Bool)
+        case emoji(String, toned: Bool, name: String? = nil)
         case remoteImage(URL, label: String)
         case image(UIImage, label: String)
     }
 
-    var items: [Item] = [] { didSet { collection.reloadData(); collection.setContentOffset(.zero, animated: false) } }
+    var items: [Item] = [] { didSet { collection.reloadData(); collection.setContentOffset(.zero, animated: false); updateEmptyState() } }
     var columns = 8
+    var adaptiveEmojiColumns = false
+    var emptyMessage = "" { didSet { updateEmptyState() } }
+    private var lastLayoutSize = CGSize.zero
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if bounds.size != lastLayoutSize {
+            lastLayoutSize = bounds.size
+            collection.collectionViewLayout.invalidateLayout()
+        }
+    }
+    private func updateEmptyState() {
+        guard items.isEmpty else { collection.backgroundView = nil; return }
+        let label = UILabel(); label.text = emptyMessage; label.numberOfLines = 0
+        label.textAlignment = .center; label.font = .systemFont(ofSize: 15); label.textColor = palette.text.withAlphaComponent(0.6)
+        collection.backgroundView = label
+    }
     var onSelect: ((Int) -> Void)?
     var onLongPress: ((Int, UIView) -> Void)?
     private let palette: KeyboardPalette
@@ -26,6 +42,8 @@ final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewD
         collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         super.init(frame: .zero)
         collection.backgroundColor = .clear
+        collection.alwaysBounceVertical = true
+        collection.contentInset = UIEdgeInsets(top: 4, left: 0, bottom: 8, right: 0)
         collection.register(MediaCell.self, forCellWithReuseIdentifier: "cell")
         collection.dataSource = self; collection.delegate = self
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -47,8 +65,9 @@ final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.bounds.width - CGFloat(columns - 1) * 2) / CGFloat(columns)
-        if case .emoji = items[indexPath.item] { return CGSize(width: floor(width), height: 40) }
+        let count = adaptiveEmojiColumns ? max(6, min(12, Int(collectionView.bounds.width / 44))) : columns
+        let width = max(1, (collectionView.bounds.width - CGFloat(count - 1) * 2) / CGFloat(count))
+        if case .emoji = items[indexPath.item] { return CGSize(width: floor(width), height: 48) }
         return CGSize(width: floor(width), height: floor(width * 0.8))
     }
 
@@ -72,7 +91,7 @@ private final class MediaCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        label.font = .systemFont(ofSize: 28); label.textAlignment = .center
+        label.font = .systemFont(ofSize: 32); label.textAlignment = .center
         imageView.contentMode = .scaleAspectFill; imageView.clipsToBounds = true; imageView.layer.cornerRadius = 6
         badge.font = .systemFont(ofSize: 8, weight: .bold); badge.text = "GIF"; badge.textColor = .white
         badge.backgroundColor = UIColor.black.withAlphaComponent(0.55); badge.textAlignment = .center
@@ -95,9 +114,9 @@ private final class MediaCell: UICollectionViewCell {
 
     func configure(_ item: MediaGridView.Item, palette: KeyboardPalette, cache: NSCache<NSURL, UIImage>) {
         switch item {
-        case .emoji(let emoji, let toned):
+        case .emoji(let emoji, let toned, let name):
             label.isHidden = false; imageView.isHidden = true; badge.isHidden = true
-            label.text = emoji; accessibilityLabel = emoji
+            label.text = emoji; accessibilityLabel = name ?? emoji
             accessibilityHint = toned ? "Hold for skin tones" : nil
         case .image(let image, let text):
             label.isHidden = true; imageView.isHidden = false; badge.isHidden = true

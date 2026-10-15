@@ -70,7 +70,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var searchMode: SearchMode?
     var searchQuery = ""
     var clipQuery = ""
-    var emojiGroup = -1 // -1 is recently used
+    var emojiQuery = ""
+    var emojiGroup = 0 // -1 is recently used
     var mediaTab = "emoji"
     var gifResults: [GifResult] = []
     var gifTask: Task<Void, Never>?
@@ -173,7 +174,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         super.viewDidLayoutSubviews()
         glideLayer.frame = content.bounds
         // iPad keys get more room; landscape iPhone keeps the keyboard short so the text stays visible.
-        let base = CGFloat(preferences.height) * (traitCollection.userInterfaceIdiom == .pad ? 1.2 : 1)
+        let base = CGFloat(preferences.height) * (traitCollection.userInterfaceIdiom == .pad ? 1.2 : 1) + (panel == "emoji" ? 80 : 0)
         let wantedHeight = traitCollection.verticalSizeClass == .compact ? min(base, 205) : base
         if heightConstraint?.constant != wantedHeight { heightConstraint?.constant = wantedHeight }
     }
@@ -321,8 +322,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     /// Shows either the tool icons or the suggestions while typing; panels and search show both rows.
     func updateTopBar() {
         let typing = panel == nil && searchMode == nil
-        toolbar.isHidden = typing && !toolbarExpanded
-        suggestionBar.isHidden = typing && toolbarExpanded
+        toolbar.isHidden = panel == "emoji" || (typing && !toolbarExpanded)
+        suggestionBar.isHidden = panel == "emoji" || (typing && toolbarExpanded)
     }
 
     func collapseToolbar() {

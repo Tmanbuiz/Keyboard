@@ -48,11 +48,14 @@
 😮‍💨	cara exhalando alivio bocanada exhalar jadear resoplido silbar
 🤥	cara de mentiroso cara mentiroso nariz pinocho
 🫨	cara temblorosa shock temblar terremoto vibrar
+🙂‍↔️	cabeza negando cabeza moviéndose horizontalmente negar no
+🙂‍↕️	cabeza asintiendo asentir cabeza moviéndose verticalmente sí
 😌	cara de alivio aliviado cara
 😔	cara desanimada alicaído cara desanimado pensativo
 😪	cara de sueño cara dormir sueño
 🤤	cara babeando baba babeando cara
 😴	cara durmiendo cara dormido sueño zzz
+🫩	cara con ojeras agotado agotamiento cansado cansancio cara extenuación extenuado ojeras ojos sueño
 😷	cara con mascarilla médica cara enfermo malo máscara
 🤒	cara con termómetro cara enfermo malo termómetro
 🤕	cara con la cabeza vendada cara dolor herida venda
@@ -80,6 +83,7 @@
 😯	cara estupefacta alucinado cara estupefacto sorprendido
 😲	cara asombrada alucinado asombrado cara pasmado
 😳	cara sonrojada cara colorado sonrojado
+🫪	cara deformada ansiedad conmocionado hinchado pánico sorprendido vulnerable
 🥺	cara suplicante implorar ojos adorables piedad por favor
 🥹	cara aguantándose las lágrimas emocionado emoción llorar orgulloso resistir triste
 😦	cara con el ceño fruncido y la boca abierta boca abierta cara ceño fruncido con boca abierta
@@ -153,6 +157,7 @@
 💋	marca de beso beso labios romance
 💯	cien puntos 100 pleno puntos
 💢	símbolo de enfado cómic enfadado enfado
+🫯	nube de pelea alboroto altercado bronca desacuerdo discusión lucha pelea
 💥	colisión cómic
 💫	símbolo de mareo cómic emoción estrella mareo
 💦	gotas de sudor cómic emoción sudor
@@ -397,6 +402,7 @@
 🧟‍♂️	zombi hombre caminante muerto viviente no muerto
 🧟‍♀️	zombi mujer caminante muerta viviente no muerta
 🧌	trol cuento de hadas fantasía monstruo
+🫈	criatura peluda bigfoot bosque críptido gigante monstruo peludo sasquatch yeti
 💆	persona recibiendo masaje cara facial masaje salón
 💆‍♂️	hombre recibiendo masaje cara facial masaje salón
 💆‍♀️	mujer recibiendo masaje cara facial masaje salón
@@ -406,24 +412,43 @@
 🚶	persona caminando andar caminando caminar
 🚶‍♂️	hombre caminando andar caminata hombre marcha
 🚶‍♀️	mujer caminando andar caminata marcha mujer
+🚶‍➡️	persona caminando: hacia la derecha andar caminando caminar derecha hacia la persona caminando
+🚶‍♀️‍➡️	mujer caminando: hacia la derecha andar caminata derecha hacia la marcha mujer mujer caminando
+🚶‍♂️‍➡️	hombre caminando: hacia la derecha andar caminata derecha hacia hombre hombre caminando la marcha
 🧍	persona de pie de pie levantada levantado levantarse
 🧍‍♂️	hombre de pie de pie hombre levantado levantarse
 🧍‍♀️	mujer de pie de pie levantada levantarse mujer
 🧎	persona de rodillas arrodillada arrodillado arrodillarse de rodillas
 🧎‍♂️	hombre de rodillas arrodillado arrodillarse de rodillas hombre
 🧎‍♀️	mujer de rodillas arrodillada arrodillarse de rodillas mujer
+🧎‍➡️	persona de rodillas: hacia la derecha arrodillada arrodillado arrodillarse de rodillas derecha hacia la persona de rodillas
+🧎‍♀️‍➡️	mujer de rodillas: hacia la derecha arrodillada arrodillarse de rodillas derecha hacia la mujer mujer de rodillas
+🧎‍♂️‍➡️	hombre de rodillas: hacia la derecha arrodillado arrodillarse de rodillas derecha hacia hombre hombre de rodillas la
 🧑‍🦯	persona con bastón accesibilidad ciego invidente
+🧑‍🦯‍➡️	persona con bastón: hacia la derecha accesibilidad ciego derecha hacia invidente la persona con bastón
 👨‍🦯	hombre con bastón accesibilidad bastón ciego hombre invidente
+👨‍🦯‍➡️	hombre con bastón: hacia la derecha accesibilidad bastón ciego derecha hacia hombre hombre con bastón invidente la
 👩‍🦯	mujer con bastón accesibilidad bastón ciega invidente mujer
+👩‍🦯‍➡️	mujer con bastón: hacia la derecha accesibilidad bastón ciega derecha hacia invidente la mujer mujer con bastón
 🧑‍🦼	persona en silla de ruedas eléctrica accesibilidad silla de ruedas
+🧑‍🦼‍➡️	persona en silla de ruedas eléctrica: hacia la derecha accesibilidad derecha hacia la persona en silla de ruedas eléctrica silla de ruedas
 👨‍🦼	hombre en silla de ruedas eléctrica accesibilidad hombre silla de ruedas
+👨‍🦼‍➡️	hombre en silla de ruedas eléctrica: hacia la derecha accesibilidad derecha hacia hombre hombre en silla de ruedas eléctrica la silla de ruedas
 👩‍🦼	mujer en silla de ruedas eléctrica accesibilidad mujer silla de ruedas
+👩‍🦼‍➡️	mujer en silla de ruedas eléctrica: hacia la derecha accesibilidad derecha hacia la mujer mujer en silla de ruedas eléctrica silla de ruedas
 🧑‍🦽	persona en silla de ruedas manual accesibilidad silla de ruedas
+🧑‍🦽‍➡️	persona en silla de ruedas manual: hacia la derecha accesibilidad derecha hacia la persona en silla de ruedas manual silla de ruedas
 👨‍🦽	hombre en silla de ruedas manual accesibilidad hombre silla de ruedas
+👨‍🦽‍➡️	hombre en silla de ruedas manual: hacia la derecha accesibilidad derecha hacia hombre hombre en silla de ruedas manual la silla de ruedas
 👩‍🦽	mujer en silla de ruedas manual accesibilidad mujer silla de ruedas
+👩‍🦽‍➡️	mujer en silla de ruedas manual: hacia la derecha accesibilidad derecha hacia la mujer mujer en silla de ruedas manual silla de ruedas
 🏃	persona corriendo carrera deporte maratón
 🏃‍♂️	hombre corriendo carrera correr hombre maratón
 🏃‍♀️	mujer corriendo carrera correr maratón mujer
+🏃‍➡️	persona corriendo: hacia la derecha carrera deporte derecha hacia la maratón persona corriendo
+🏃‍♀️‍➡️	mujer corriendo: hacia la derecha carrera correr derecha hacia la maratón mujer mujer corriendo
+🏃‍♂️‍➡️	hombre corriendo: hacia la derecha carrera correr derecha hacia hombre hombre corriendo la maratón
+🧑‍🩰	bailarina de ballet bailarina bailarín ballet
 💃	mujer bailando bailar mujer
 🕺	hombre bailando bailar hombre
 🕴️	persona trajeada levitando levitar negocios persona traje
@@ -526,7 +551,12 @@
 👥	dos siluetas de bustos bustos siluetas
 🫂	personas abrazándose abrazo adiós despedida gracias saludo
 👪️	familia
+🧑‍🧑‍🧒	familia: adulto, adulto, niño adulto familia niño
+🧑‍🧑‍🧒‍🧒	familia: adulto, adulto, niño, niño adulto familia niño
+🧑‍🧒	familia: adulto, niño adulto familia niño
+🧑‍🧒‍🧒	familia: adulto, niño, niño adulto familia niño
 👣	huellas de pies huellas pies
+🫆	huella dactilar delito detective forense huella huella digital identidad misterio rastro seguridad
 🐵	cara de mono cara mono
 🐒	mono macaco simio
 🦍	gorila primate simio
@@ -614,6 +644,7 @@
 🪽	ala angelical ave mitología pájaro volar ángel
 🐦‍⬛	pájaro negro cuervo grajo mirlo negro pájaro
 🪿	oca ave ganso graznar pájaro
+🐦‍🔥	fénix ave de fuego ave fénix fantasía reencarnación renacer
 🐸	rana cara
 🐊	cocodrilo caimán
 🐢	tortuga galápago
@@ -626,6 +657,7 @@
 🐳	ballena soltando un chorro ballena chorro de agua
 🐋	ballena cachalote cetáceo
 🐬	delfín cetáceo
+🫍	orca ballena mar marino océano
 🦭	foca león marino
 🐟️	pez pececillo pescado piscis zodiaco
 🐠	pez tropical pez tropical
@@ -684,11 +716,13 @@
 🪹	nido vacío anidación anidamiento anidar
 🪺	nido con huevos anidación anidamiento anidar
 🍄	champiñón hongo seta
+🪾	árbol sin hojas deshojado estéril invierno madera muerto ramas sequía sin hojas tronco árbol
 🍇	uvas agracejo fruta racimo uva
 🍈	melón fruta
 🍉	sandía fruta
 🍊	mandarina fruta naranja
 🍋	limón citrón cítrico fruta
+🍋‍🟩	lima cítrico fruta tropical
 🍌	plátano banana fruta
 🍍	piña ananás fruta
 🥭	mango fruta tropical
@@ -720,6 +754,8 @@
 🌰	castaña castaño fruto seco
 🫚	raíz de jengibre cerveza especia garganta raíz
 🫛	vaina edamame guisante judías legumbre soja verdura
+🍄‍🟫	champiñón marrón comida hongo naturaleza seta vegetal
+🫜	túberculo comestible chirivía comida ensalada huerto nabo raíz remolacha rábano vegetariano verdura
 🍞	pan de molde pan rebanada tostada
 🥐	cruasán bollo comida croissant francés
 🥖	baguete baguette barra comida francés pan
@@ -821,6 +857,7 @@
 🧭	brújula compás magnético navegación orientación
 🏔️	montaña con nieve frío montaña nieve
 ⛰️	montaña monte
+🛘	desprendimiento alud avalancha desastre montaña peligro rocas terremoto
 🌋	volcán erupción erupción volcánica
 🗻	monte fuji fuji montaña monte naturaleza
 🏕️	camping acampada campamento vacaciones
@@ -1182,6 +1219,7 @@
 📻️	radio
 🎷	saxofón instrumento instrumento musical música saxo
 🎺	trompeta instrumento instrumento musical música
+🪊	trombón instrumento jazz metal música triste viento
 🪗	acordeón concertina
 🎸	guitarra instrumento instrumento musical música
 🎹	teclado musical instrumento instrumento musical música piano teclado
@@ -1191,6 +1229,7 @@
 🪘	tamboril conga ritmo tambor
 🪇	maracas agitar brasil instrumento movimiento música percusión
 🪈	flauta flautín instrumento instrumento de viento madera música
+🪉	arpa amor cupido harpa instrumento música orquesta
 📱	teléfono móvil celular móvil teléfono
 📲	móvil con una flecha flecha llamada móvil recibir teléfono
 ☎️	teléfono
@@ -1246,6 +1285,7 @@
 🏷️	etiqueta
 🪙	moneda dinero metal oro plata tesoro
 💰️	bolsa de dinero bolsa bolsa de dólares dinero
+🪎	cofre de tesoro botín dinero joyas objetos de valor oro piedras preciosas plata premio riqueza
 💴	billete de yen billete billete de banco dinero yen
 💵	billete de dólar billete billete de banco dinero dólar
 💶	billete de euro billete billete de banco dinero euro
@@ -1323,11 +1363,13 @@
 ⚖️	balanza justicia libra peso zodiaco
 🦯	bastón accesibilidad ceguera ciega ciego invidente
 🔗	eslabón
+⛓️‍💥	cadena rota cadena esposas libertad romper rotura
 ⛓️	cadenas cadena
 🪝	gancho agarrar anzuelo atrapar garfio
 🧰	caja de herramientas armario herramienta mecánico
 🧲	imán atracción herradura magnético
 🪜	escalera escalar escalerilla escalón peldaño
+🪏	pala agujero cavar enterrar excavar hoyo huerto nieve planta
 ⚗️	alambique herramienta química
 🧪	tubo de ensayo ciencia experimento laboratorio química químico
 🧫	placa de petri bacterias biología biólogo cultivo laboratorio
@@ -1513,6 +1555,7 @@
 ©️	copyright c símbolo
 ®️	marca registrada r símbolo de marca registrada
 ™️	símbolo de marca comercial marca comercial
+🫟	salpicadura gotear líquido mancha manchar pintura salpicar tinta
 #️⃣	teclas: # teclas
 *️⃣	teclas: * teclas
 0️⃣	tecla: 0 0 cero tecla
@@ -1658,6 +1701,7 @@
 🇨🇳	bandera: china cn bandera
 🇨🇴	bandera: colombia co bandera
 🇨🇵	bandera: isla clipperton cp bandera
+🇨🇶	bandera: sark cq bandera
 🇨🇷	bandera: costa rica cr bandera
 🇨🇺	bandera: cuba cu bandera
 🇨🇻	bandera: cabo verde cv bandera

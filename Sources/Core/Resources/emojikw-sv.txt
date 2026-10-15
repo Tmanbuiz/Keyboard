@@ -48,11 +48,14 @@
 😮‍💨	ansikte andas ut andas ut ansikte ledsen pustar suckar
 🤥	ljugande ansikte ansikte ljugande ljuger lögn näsa pinocchio växer
 🫨	skakande ansikte ansikte chock förvirring galet jordbävning panik shock skakande vibrera överraskad
+🙂‍↔️	huvud skakar horisontellt horisontellt huvud nej skakar
+🙂‍↕️	huvud skakar vertikalt huvud ja nickar skakar vertikalt
 😌	lättat ansikte ansikte lugn lättat lättnad
 😔	funderande ansikte ansikte funderande funderar ledsen sörjer tänker
 😪	sömnigt ansikte ansikte gråtande sömnig trött
 🤤	dreglande ansikte ansikte dreglar
 😴	sovande ansikte ansikte gäsp snarkar sover sängdags sömnig trött zzz
+🫩	ansikte med påsar under ögonen ansikte rödögd sent sömnig trött utmattad
 😷	ansikte med munskydd ansikte baciller läkare munskydd sjuk smitta virus
 🤒	ansikte med termometer ansikte feber sjuk termometer
 🤕	ansikte med bandage på huvudet aj ansikte bandage huvud skadad
@@ -80,6 +83,7 @@
 😯	hyssjat ansikte ansikte gapar hyssjad stum överraskad
 😲	chockat ansikte ansikte chockad förvånad inte otroligt sant
 😳	rodnande ansikte ansikte generad omtumlad pinsamt rodnar skäms
+🫪	ansikte i närbild chockad förstoppad orolig panik rädd vettskrämd överraskad
 🥺	bönfallande ansikte ansikte bönfallande hundögon ledsen nåd snälla tigga varför
 🥹	ansikte som håller tillbaka tårarna ansikte glädjetårar gråter känslosam ledsen stolt tårar tårfyllda ögon
 😦	ogillande ansikte med öppen mun ansikte bister mun oförstående ogillande rädd vad öppen
@@ -153,6 +157,7 @@
 💋	läppavtryck kyssmärke kärlek läppar
 💯	100 poäng full pott
 💢	symbol för ilska arg ilska symbol
+🫯	slagsmål brottas bråk fajt fajtas fight slåss våld
 💥	explosion kollision serietidning smäll
 💫	omtumlad serietidning stjärna stjärnfall yr
 💦	stänkande svett droppar serietidning stänkande svettig
@@ -397,6 +402,7 @@
 🧟‍♂️	manlig zombie levande död odöd vandöd
 🧟‍♀️	kvinnlig zombie levande död odöd vandöd
 🧌	troll fantasy monster saga sägen
+🫈	hårig varelse bigfoot hårig jätte sasquatch yeti
 💆	person som blir masserad ansiktsmassage behandling kvinna som blir masserad massage
 💆‍♂️	man som blir masserad avslappning huvudmassage man man som får massage massage
 💆‍♀️	kvinna som blir masserad avslappning huvudmassage kvinna kvinna som får massage massage
@@ -406,24 +412,43 @@
 🚶	fotgängare lunka man som går promenerar vandra
 🚶‍♂️	man som går fotgängare gå man man går
 🚶‍♀️	kvinna som går fotgängare gå kvinna kvinna går
+🚶‍➡️	fotgängare: åt höger fotgängare höger lunka man som går promenerar vandra åt
+🚶‍♀️‍➡️	kvinna som går: åt höger fotgängare gå höger kvinna kvinna går kvinna som går åt
+🚶‍♂️‍➡️	man som går: åt höger fotgängare gå höger man man går man som går åt
 🧍	stående person person stående
 🧍‍♂️	stående man man stående
 🧍‍♀️	stående kvinna kvinna stående
 🧎	knäsittande person knäsittande knästående person på knäna
 🧎‍♂️	knäsittande man knäsittande knästående man
 🧎‍♀️	knäsittande kvinna knäsittande knästående kvinna
+🧎‍➡️	knäsittande person: åt höger höger knäsittande knästående person på knäna åt
+🧎‍♀️‍➡️	knäsittande kvinna: åt höger höger knäsittande knästående kvinna åt
+🧎‍♂️‍➡️	knäsittande man: åt höger höger knäsittande knästående man åt
 🧑‍🦯	person med vit käpp hjälpmedel synskadad
+🧑‍🦯‍➡️	person med vit käpp: åt höger hjälpmedel höger person med vit käpp synskadad åt
 👨‍🦯	man med vit käpp blind blindkäpp man man med blindkäpp vit käpp
+👨‍🦯‍➡️	man med vit käpp: åt höger blind blindkäpp höger man man med blindkäpp man med vit käpp vit käpp åt
 👩‍🦯	kvinna med vit käpp blind blindkäpp kvinna kvinna med blindkäpp vit käpp
+👩‍🦯‍➡️	kvinna med vit käpp: åt höger blind blindkäpp höger kvinna kvinna med blindkäpp kvinna med vit käpp vit käpp åt
 🧑‍🦼	person i permobil eldriven rullstol elektrisk rullstol tillträde
+🧑‍🦼‍➡️	person i permobil: åt höger eldriven rullstol elektrisk rullstol höger person i permobil tillträde åt
 👨‍🦼	man i permobil man permobil rullstol
+👨‍🦼‍➡️	man i permobil: åt höger höger man man i permobil permobil rullstol åt
 👩‍🦼	kvinna i permobil kvinna permobil rullstol
+👩‍🦼‍➡️	kvinna i permobil: åt höger höger kvinna kvinna i permobil permobil rullstol åt
 🧑‍🦽	person i manuell rullstol rullstol tillträde
+🧑‍🦽‍➡️	person i manuell rullstol: åt höger höger person i manuell rullstol rullstol tillträde åt
 👨‍🦽	man i manuell rullstol man rullstol
+👨‍🦽‍➡️	man i manuell rullstol: åt höger höger man man i manuell rullstol rullstol åt
 👩‍🦽	kvinna i manuell rullstol kvinna rullstol
+👩‍🦽‍➡️	kvinna i manuell rullstol: åt höger höger kvinna kvinna i manuell rullstol rullstol åt
 🏃	person som springer löpare löpning maraton person som löper
 🏃‍♂️	man som springer jogga löpa man man springer
 🏃‍♀️	kvinna som springer jogga kvinna kvinna springer löpa
+🏃‍➡️	person som springer: åt höger höger löpare löpning maraton person som löper person som springer åt
+🏃‍♀️‍➡️	kvinna som springer: åt höger höger jogga kvinna kvinna som springer kvinna springer löpa åt
+🏃‍♂️‍➡️	man som springer: åt höger höger jogga löpa man man som springer man springer åt
+🧑‍🩰	balettdansare balett ballerina dansare
 💃	dansande kvinna dans människor
 🕺	dansande man dans man
 🕴️	svävande man i kostym kostym människor svävar
@@ -526,7 +551,12 @@
 👥	figurer i silhuett figurer människor
 🫂	personer kramas adjö hej kram tack
 👪️	familj barn mamma människor pappa
+🧑‍🧑‍🧒	familj: vuxen, vuxen, barn barn familj vuxna
+🧑‍🧑‍🧒‍🧒	familj: vuxen, vuxen, barn, barn barn familj vuxen
+🧑‍🧒	familj: vuxen, barn barn familj vuxen
+🧑‍🧒‍🧒	familj: vuxen, barn, barn barn familj vuxen
 👣	fotavtryck avtryck fötter
+🫆	fingeravtryck identitet kriminalteknik säkerhet
 🐵	apansikte apa djur
 🐒	apa djur
 🦍	gorilla djur
@@ -614,6 +644,7 @@
 🪽	vinge flyga flyger fågel himmelsk mytologi stiga änglalik
 🐦‍⬛	koltrast djur fågel korp kraxa kråka näbb råka svart
 🪿	gås and anka dum flock fä fågel fånig kackel rolig
+🐦‍🔥	fenix eldfågel fantasy förnyelse pånyttfödelse reinkarnation
 🐸	grodansikte djur groda
 🐊	krokodil djur
 🐢	sköldpadda havssköldpadda padda
@@ -626,6 +657,7 @@
 🐳	val som sprutar vatten djur val vatten
 🐋	val djur
 🐬	delfin djur
+🫍	späckhuggare hav ocean val
 🦭	säl sjölejon
 🐟️	fisk fiskarna stjärntecken
 🐠	tropisk fisk djur fisk tropisk
@@ -684,11 +716,13 @@
 🪹	tomt bo rede ruva
 🪺	bo med ägg fågelbo rede med ägg ruva
 🍄	svamp flugsvamp växt
+🪾	träd utan löv kargt torka vinter
 🍇	vindruvor frukt
 🍈	melon frukt
 🍉	vattenmelon frukt melon vattenmelonskiva
 🍊	mandarin citrusfrukt frukt
 🍋	citron citrusfrukt frukt
+🍋‍🟩	lime citrusfrukt frukt tropisk
 🍌	banan frukt
 🍍	ananas frukt
 🥭	mango frukt tropisk frukt
@@ -720,6 +754,8 @@
 🌰	kastanj växt
 🫚	ingefära hälsa krydda kryddväxt rot öl ört
 🫛	ärtskida bönor bönstjälk edamame grönsaker sojaböna ärta
+🍄‍🟫	brun svamp brun flugsvamp brunsvamp grönsaker mat natur sopp svamp tryffel trädgårdschampinjon
+🫜	rotfrukt grönsak rova rödbeta trädgård
 🍞	bröd limpa
 🥐	croissant bröd fransk mat
 🥖	baguette bröd fransk mat
@@ -821,6 +857,7 @@
 🧭	kompass magnetisk navigation orientering
 🏔️	snöklätt berg berg kallt snö snöklädda berg
 ⛰️	berg
+🛘	jordskred berg fallande fara ras stenar
 🌋	vulkan vulkanutbrott
 🗻	fuji berg fuji
 🏕️	camping tält
@@ -1182,6 +1219,7 @@
 📻️	radio video
 🎷	saxofon musik musikinstrument
 🎺	trumpet musik musikinstrument
+🪊	trombon bleckblås instrument jazz musik sorgen
 🪗	dragspel ackordeon dragharmonika
 🎸	gitarr elgitarr musik musikinstrument
 🎹	klaviatur musik musikinstrument piano
@@ -1191,6 +1229,7 @@
 🪘	congatrumma djembe rytm takt trumma
 🪇	maracas instrument musik skaka slaginstrument slagverk
 🪈	flöjt band blockflöjt flöjtist instrument musik orkester panflöjt pickolaflöjt träblås
+🪉	harpa amor instrument musik orkester romantik
 📱	mobiltelefon mobil telefon
 📲	mobiltelefon med pil mobil ringa telefon
 ☎️	telefon
@@ -1246,6 +1285,7 @@
 🏷️	etikett
 🪙	mynt guld pengar silver skatt
 💰️	pengapåse pengar säck
+🪎	skattkista guld pengar pris rikedom ädelstenar
 💴	yensedel pengar sedel yen
 💵	dollarsedel dollar pengar sedel
 💶	eurosedel euro pengar sedel
@@ -1323,11 +1363,13 @@
 ⚖️	balansvåg rättvisa våg vågen
 🦯	blindkäpp blind tillgänglighet
 🔗	länk länkar länksymbol två ringar
+⛓️‍💥	bruten länk boja bryta frihet kedja
 ⛓️	kedjor kedja
 🪝	krok hake klo snärja
 🧰	verktygslåda låda mekaniker verktyg
 🧲	magnet hästsko magnetisk
 🪜	stege klätterstege klättra steg
+🪏	spade begrava gräva hål plantera scoop skopa skyffel trädgård
 ⚗️	retort kemi
 🧪	provrör experiment kemi kemist labb vetenskap
 🧫	petriskål bakterie biolog biologi labb
@@ -1513,6 +1555,7 @@
 ©️	upphovsrättssymbol copyright upphovsrätt
 ®️	registrerat varumärke registrerat
 ™️	skyddat varumärke varumärke
+🫟	stänk fläck färg holi utspill
 #️⃣	keycap: \x{23}
 *️⃣	keycap: *
 0️⃣	tangent: 0 0 noll tangent
@@ -1658,6 +1701,7 @@
 🇨🇳	flagga: kina cn flagga
 🇨🇴	flagga: colombia co flagga
 🇨🇵	flagga: clippertonön cp flagga
+🇨🇶	flagga: sark cq flagga
 🇨🇷	flagga: costa rica cr flagga
 🇨🇺	flagga: kuba cu flagga
 🇨🇻	flagga: kap verde cv flagga

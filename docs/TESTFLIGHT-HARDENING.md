@@ -29,3 +29,12 @@ This change protects AI edits and clipboard deletion, introduces private typing,
 10. Repeat portrait/landscape, large text, VoiceOver, iPad, no network, and Full Access disabled. Watch for extension memory termination during AI/large media use.
 
 Automated backend tests use fake model responses. They cannot prove live Groq availability or output quality. Device tests are still required for UIKit proxy/selection behaviour and keyboard memory limits.
+
+## Emoji browser update
+
+- Emoji 17.0 data from pinned `emojibase-data@17.0.0`, preserving Unicode order, names and multilingual search keywords. Its MIT license is included in Licenses.
+- 1,914 base emoji, plus skin-tone and multi-person variants. Platform gates select Emoji 15.0 on iOS 17.0, 15.1 from 17.4, 16.0 from 18.4 and 17.0 from 26.4.
+- Compact category rail, Smileys opening category, separate Emoji/GIF/Stickers tabs and a larger scrolling grid with adaptive columns and English accessibility names.
+- Search submission shows a full results grid. Choosing any category clears the query. Empty Recents stays empty until an emoji is used.
+- Hold a supported emoji for a scrollable skin-tone grid, including mixed-tone combinations. Single-person choices update the default tone; mixed-tone choices do not change that global setting.
+- Test scrolling to the last flag, switching all categories, empty recents, search with no matches, mixed skin tones and rotation on iPhone/iPad. Emoji designs use the device's Apple emoji font.

@@ -48,11 +48,14 @@
 😮‍💨	gesicht, das ausatmet ausatmen erleichtert erschöpft gesicht husten puh pusten schnaufen seufz seufzen smiley
 🤥	lügendes gesicht gesicht lüge nase pinocchio schwindel
 🫨	zitterndes doppelgesicht doppelgesicht erdbeben gesicht omg panik schock smiley verrückt vibrieren wow zittern überrascht
+🙂‍↔️	kopfschütteln kopfschütteln nein schütteln
+🙂‍↕️	kopfnicken ja kopfnicken nicken
 😌	erleichtertes gesicht augen entspannt erleichtert geschlossen gesicht smiley zen zufrieden
 😔	nachdenkliches gesicht enttäuscht gesicht nachdenklich schrecklich smiley traurig verlieren verloren
 😪	schläfriges gesicht gesicht gute müde nacht schläfrig smiley traurig
 🤤	sabberndes gesicht gesicht sabbern smiley
 😴	schlafendes gesicht dösen einschlafen gesicht gute nacht gähnen langweilig mittagsschlaf müde nickerchen schlaf schlafen smiley zzz
+🫩	gesicht mit augenringen augenringe erschöpft gesicht müde schläfrig smiley übermüdet
 😷	gesicht mit atemschutzmaske arzt atemschutzmaske bazillen erkältet gesicht krank krankheit mund mundschutz schutzmaske smiley viren virus
 🤒	gesicht mit fieberthermometer fieber gesicht krank messen smiley thermometer
 🤕	gesicht mit kopfverband aua autsch gesicht kopf schmerzen smiley verband verletzung
@@ -80,6 +83,7 @@
 😯	verdutztes gesicht erstaunt gesicht omg smiley sprachlos verdutzt
 😲	erstauntes gesicht erstaunt gesicht nee omg schockiert smiley verwundert
 😳	errötetes gesicht mit großen augen augen erröten gesicht groß peinlich rot scham schämen smiley verlegen wangen überrascht
+🫪	verzerrtes gesicht angst aufgedunsen besorgt panik panisch schockiert ängstlich überrascht
 🥺	bettelndes gesicht anflehen augen betteln bettelnd bitte bitten flehend gesicht groß kulleraugen smiley traurig welpenaugen
 🥹	gesicht, das tränen zurückhält aufgebracht dankbar freude freudentränen gerührt gesicht rührung smiley stolz tränen weinen zurückhalten
 😦	entsetztes gesicht entsetzt gesicht mund offen schockiert smiley verwundert
@@ -153,6 +157,7 @@
 💋	kussabdruck gefühl knutsch kuss kussabdruck küssen liebe lippen lippenstift romantisch sexy
 💯	100 punkte 100 100 punkte punktestand volle punktzahl
 💢	ärger comic wut ärger
+🫯	kampfwolke handgemenge kampf krawall prügelei rauferei schlägerei streit wortgefecht
 💥	zusammenstoß bombe boom comic explodieren explosion kollidieren kollision zusammenstoß zusammenstoßen
 💫	schwindlig benommen benommenheit comic komet stern sterne sternschnuppe
 💦	schweißtropfen comic feucht nass schweiß schweißtropfen schwitzen trainieren training tropfen wasser
@@ -397,6 +402,7 @@
 🧟‍♂️	männlicher zombie männlicher zombie untoter wandelnder toter
 🧟‍♀️	weiblicher zombie untote wandelnde tote weiblicher zombie
 🧌	troll fantasy gruslig kobold monster märchen ork troll ungeheuer
+🫈	haariges wesen bigfoot fabelwesen gigant haarig kryptid riese sasquatch wald wilder mann woodwose yeti
 💆	person, die eine kopfmassage bekommt behandlung die eine kopfmassage bekommt entspannen kopfmassage kopfschmerzen massage migräne person person, die eine kopfmassage bekommt salon spa therapie
 💆‍♂️	mann, der eine kopfmassage bekommt der eine kopfmassage bekommt entspannen kopfmassage kopfschmerzen mann mann, der eine kopfmassage bekommt massage salon
 💆‍♀️	frau, die eine kopfmassage bekommt behandlung entspannen entspannend frau gesicht kopf kopfmassage kopfschmerzen kopfweh lindern massage relaxen salon spa therapie verspannung
@@ -406,24 +412,43 @@
 🚶	fußgänger(in) fußgänger fußgänger(in) fußgängerin gehen gehend person schlendern schlurfen wandern
 🚶‍♂️	fußgänger fußgänger gehen mann spaziergang
 🚶‍♀️	fußgängerin frau fußgängerin gehen schlendern spazieren spaziergang
+🚶‍➡️	fußgänger(in): nach rechts fußgänger fußgänger(in) fußgängerin gehen gehend nach person rechts schlendern schlurfen wandern
+🚶‍♀️‍➡️	fußgängerin: nach rechts frau fußgängerin gehen nach rechts schlendern spazieren spaziergang
+🚶‍♂️‍➡️	fußgänger: nach rechts fußgänger gehen mann nach rechts spaziergang
 🧍	stehende person mensch person stand stehen stehende person
 🧍‍♂️	stehender mann mann stehen stehender mann
 🧍‍♀️	stehende frau frau stehen stehende frau
 🧎	kniende person fersensitz knien kniend kniende person meditation meditieren mensch person seiza zazen
 🧎‍♂️	kniender mann kniend kniender mann mann
 🧎‍♀️	kniende frau frau kniend kniende frau
+🧎‍➡️	kniende person: nach rechts fersensitz knien kniend kniende person meditation meditieren mensch nach person rechts seiza zazen
+🧎‍♀️‍➡️	kniende frau: nach rechts frau kniend kniende frau nach rechts
+🧎‍♂️‍➡️	kniender mann: nach rechts kniend kniender mann mann nach rechts
 🧑‍🦯	person mit langstock barrierefreiheit blind person mit blindenstock person mit langstock
+🧑‍🦯‍➡️	person mit langstock: nach rechts barrierefreiheit blind nach person mit blindenstock person mit langstock rechts
 👨‍🦯	mann mit langstock barrierefreiheit behinderung blind mann mann mit blindenstock mann mit gehstock mann mit langstock mensch person sehbehindert
+👨‍🦯‍➡️	mann mit langstock: nach rechts barrierefreiheit behinderung blind mann mann mit blindenstock mann mit gehstock mann mit langstock mensch nach person rechts sehbehindert
 👩‍🦯	frau mit langstock barrierefreiheit behinderung blind frau frau mit blindenstock frau mit gehstock frau mit langstock mensch person
+👩‍🦯‍➡️	frau mit langstock: nach rechts barrierefreiheit behinderung blind frau frau mit blindenstock frau mit gehstock frau mit langstock mensch nach person rechts
 🧑‍🦼	person in elektrischem rollstuhl barrierefreiheit person in elektrischem rollstuhl rollstuhl
+🧑‍🦼‍➡️	person in elektrischem rollstuhl: nach rechts barrierefreiheit nach person in elektrischem rollstuhl rechts rollstuhl
 👨‍🦼	mann in elektrischem rollstuhl barrierefreiheit behinderung mann mann in elektrischem rollstuhl mann in rollstuhl mensch person rollstuhl
+👨‍🦼‍➡️	mann in elektrischem rollstuhl: nach rechts barrierefreiheit behinderung mann mann in elektrischem rollstuhl mann in rollstuhl mensch nach person rechts rollstuhl
 👩‍🦼	frau in elektrischem rollstuhl barrierefreiheit behinderung frau frau in elektrischem rollstuhl frau in rollstuhl mensch person rollstuhl
+👩‍🦼‍➡️	frau in elektrischem rollstuhl: nach rechts barrierefreiheit behinderung frau frau in elektrischem rollstuhl frau in rollstuhl mensch nach person rechts rollstuhl
 🧑‍🦽	person in manuellem rollstuhl barrierefreiheit person in manuellem rollstuhl rollstuhl
+🧑‍🦽‍➡️	person in manuellem rollstuhl: nach rechts barrierefreiheit nach person in manuellem rollstuhl rechts rollstuhl
 👨‍🦽	mann in manuellem rollstuhl barrierefreiheit behinderung mann mann in manuellem rollstuhl mann in rollstuhl mensch person rollstuhl
+👨‍🦽‍➡️	mann in manuellem rollstuhl: nach rechts barrierefreiheit behinderung mann mann in manuellem rollstuhl mann in rollstuhl mensch nach person rechts rollstuhl
 👩‍🦽	frau in manuellem rollstuhl barrierefreiheit behinderung frau frau in manuellem rollstuhl frau in rollstuhl mensch person rollstuhl
+👩‍🦽‍➡️	frau in manuellem rollstuhl: nach rechts barrierefreiheit behinderung frau frau in manuellem rollstuhl frau in rollstuhl mensch nach person rechts rollstuhl
 🏃	laufende person eilig joggen laufen laufende person läufer läuferin marathon person rennen schnell sport
 🏃‍♂️	laufender mann joggen jogger laufen laufender mann marathon
 🏃‍♀️	laufende frau athlet athletin frau joggen joggerin laufen laufende frau läufer läuferin marathon rennen renner rennerin rennt schell
+🏃‍➡️	laufende person: nach rechts eilig joggen laufen laufende person läufer läuferin marathon nach person rechts rennen schnell sport
+🏃‍♀️‍➡️	laufende frau: nach rechts athlet athletin frau joggen joggerin laufen laufende frau läufer läuferin marathon nach rechts rennen renner rennerin rennt schell
+🏃‍♂️‍➡️	laufender mann: nach rechts joggen jogger laufen laufender mann marathon nach rechts
+🧑‍🩰	balletttänzerin ballett tänzerin
 💃	tanzende frau elegant festlich flair flamenco frau salsa schwung tango tanz tanzen tänzerin
 🕺	tanzender mann elegant festlich flair flamenco mann salsa schwung tango tanz tanzen tänzer
 🕴️	schwebender mann im anzug anzug geschäftlich mann schwebender mann im anzug
@@ -526,7 +551,12 @@
 👥	silhouette mehrerer büsten büsten personen silhouette mehrerer büsten
 🫂	sich umarmende personen abschied danke drücken drücker freundschaft hallo liebe sich umarmende personen tschüss umarmung
 👪️	familie familie junge kind mutter vater
+🧑‍🧑‍🧒	familie: 2 erwachsene, 1 kind erwachsene erwachsener familie kind
+🧑‍🧑‍🧒‍🧒	familie: 2 erwachsene, 2 kinder erwachsene erwachsener familie kind
+🧑‍🧒	familie: 1 erwachsene(r), 1 kind erwachsene erwachsener familie kind
+🧑‍🧒‍🧒	familie: 1 erwachsene(r), 2 kinder erwachsene erwachsener familie kind
 👣	fußabdrücke abdruck auf dem weg fuß fußabdruck fußabdrücke
+🫆	fingerabdruck fingerabdruck forensik identität sicherheit
 🐵	affengesicht affe affengesicht banane dschungel gesicht tier zoo
 🐒	affe affe tier
 🦍	gorilla affe gesicht gorilla tier
@@ -614,6 +644,7 @@
 🪽	flügel engel engelsflügel federn fliegen flug flügel himmlisch mythologie vogel
 🐦‍⬛	schwarzer vogel amsel krächzen krähe rabe schnabel schwarz schwarzer vogel tier vogel
 🪿	gans blöd dumm dumme gans gans ganter geflügel gänserich schnattern tier vogel
+🐦‍🔥	phönix asche fabelwesen fantasy feuer feuervogel phönix reinkarnation tier vogel wiedergeburt
 🐸	frosch frosch froschgesicht gesicht grün quak tier
 🐊	krokodil krokodil reptil schnappi tier
 🐢	schildkröte schildkröte tier
@@ -626,6 +657,7 @@
 🐳	blasender wal blasender wal meer ozean tier wal
 🐋	wal ozean tier wal
 🐬	delfin delfin meer ozean strand tier
+🫍	orca meer meeressäuger meerestier orka ozean wal
 🦭	seehund meer ozean robbe seehund seelöwe tier
 🐟️	fisch aquarium fisch fische meehr sternzeichen tier tierkreis
 🐠	tropenfisch fisch tier tropenfisch
@@ -684,11 +716,13 @@
 🪹	leeres nest heim leeres nest nest nestbau nisten vogelnest zuhause
 🪺	nest mit eiern heim nest nest mit blauen eiern nest mit eiern nestbau nisten vogelnest zuhause
 🍄	fliegenpilz fliegenpilz giftig pilz
+🪾	kahler baum dürr kahl kahler baum karg trocken winter
 🍇	trauben frucht obst traube trauben wein
 🍈	honigmelone cantaloupe frucht honigmelone melone obst
 🍉	wassermelone frucht melone obst wasser wassermelone
 🍊	mandarine apfelsine frucht mandarine obst orange vitamin
 🍋	zitrone frucht obst sauer zitrone zitrusfrucht
+🍋‍🟩	limette cocktail essen frucht limette obst saft sauer tequila tropisch zitrusfrucht
 🍌	banane banane frucht obst schale
 🍍	ananas ananas frucht obst
 🥭	mango essen frucht früchte mango obst shaker tropisch
@@ -720,6 +754,8 @@
 🌰	kastanie kastanie marone
 🫚	ingwer gesund gewürz ginger ale ingwer ingwerbier scharf wurzel würzig
 🫛	erbsenschote bohne edamame erbse erbsen erbsenschote essen gemüse hülsenfrucht hülsenfrüchte schote
+🍄‍🟫	brauner pilz braun essen fungus gemüse lebensmittel natur pflanze pilz wald
+🫜	wurzelgemüse bete garten gemüse rote bete rübe wurzel
 🍞	brot brot brotlaib essen kohlenhydrate laib brot toast weizen weißbrot
 🥐	croissant corissant croissant französisch frühstück frühstückshörnchen
 🥖	baguette baguette brot französisch frühstück
@@ -821,6 +857,7 @@
 🧭	kompass himmelsrichtung kompass magnetisch navigation orientierung richtung windrose
 🏔️	schneebedeckter berg berg gebirge kalt schnee schneebedeckter berg
 ⛰️	berg berg gebirge
+🛘	erdrutsch berg erdbeben felsen gefahr katastrophe lawine murenabgang murgang schlammlawine
 🌋	vulkan ausbruch berg lava vulkan vulkanausbruch wetter
 🗻	fuji berg fuji vulkan
 🏕️	camping campen camping zelt zelten
@@ -1182,6 +1219,7 @@
 📻️	radio musik radio
 🎷	saxofon instrument musik musikinstrument saxofon
 🎺	trompete instrument musik musikinstrument trompete
+🪊	posaune blasinstrument blechblasinstrument blechbläser instrument jazz musik schieben traurig ziehen
 🪗	akkordeon akkordeon akkordeons concertina harmonika instrument musik musikinstrument quetschkommode quetschkommoden schifferklavier spielen ziehharmonika ziehharmonikas
 🎸	gitarre gitarre instrument musik musikinstrument
 🎹	klaviatur instrument klaviatur klavier musik musikinstrument piano tastatur tasten
@@ -1191,6 +1229,7 @@
 🪘	afrikanische trommel afrikanische trommel conga handtrommel instrument musikinstrument rhythmus trommel trommeln
 🪇	maracas cha-cha-cha instrument maracas musik musikinstrument musizieren party percussion rassel rasseln tanz tanzen
 🪈	flöte band blaskapelle flöte holzblasinstrument instrument musik musikinstrument musizieren orchester spielmannszug
+🪉	harfe amor cupido harfe instrument liebe musik orchester
 📱	mobiltelefon handy iphone mobiltelefon smartphone telefonieren
 📲	mobiltelefon mit pfeil anruf anrufen handy iphone kommunikation mobiltelefon mobiltelefon mit pfeil pfeil whatsapp
 ☎️	telefon anruf anrufen festnetz telefon
@@ -1246,6 +1285,7 @@
 🏷️	etikett etikett label marke
 🪙	münze bezahlen dollar euro geld gold goldesel metall münze reich schatz silber sparen
 💰️	geldsack geld geldsack moneten reich sack
+🪎	schatztruhe beute edelstein geld gold juwelen preis reichtum silber wertgegenstände
 💴	yen-banknote geld geldschein yen yen-banknote
 💵	dollar-banknote dollar dollar-banknote geld geldschein währung
 💶	euro-banknote euro euro-banknote euroschein geld geldschein
@@ -1323,11 +1363,13 @@
 ⚖️	waage gerechtigkeit gewicht waage werkzeug wiegen
 🦯	blindenstock barrierefreiheit behinderung blind blindenstock gehstock
 🔗	linksymbol kettenglieder linksymbol verknüpfen verknüpfung verknüpfungssymbol zwei ringe
+⛓️‍💥	gebrochene kette brechen freiheit gebrochen gebrochene kette handschellen kette zerbrechen
 ⛓️	ketten eisen kette ketten
 🪝	haken angelhaken aufhaken aufhängen einhaken haken hängen metallhaken
 🧰	werkzeugkasten box handkasten kasten kiste mechaniker rote kiste werkzeug werkzeugkasten werkzeugkiste werkzeugkoffer
 🧲	magnet anziehung anziehungskraft hufeisen magnet magnetisch pole positiv negativ u-form
 🪜	leiter hochsteigen holzleiter klettern leiter sprosse stufe
+🪏	schaufel graben loch schaufel schippe spaten
 ⚗️	destillierapparat destillierapparat werkzeug
 🧪	reagenzglas chemie chemikalie chemiker experiment labor reagenzglas substanz versuche wissenschaft
 🧫	petrischale bakterien bakterienkultur biologe biologie biologin kultur labor petrischale pipette probe
@@ -1513,6 +1555,7 @@
 ©️	copyright c copyright
 ®️	registered-trademark markenzeichen r registered-trademark
 ™️	markenzeichen markenzeichen tm trademark
+🫟	spritzer farbe fleck holi klecks spritzer tinte
 #️⃣	taste: # taste
 *️⃣	taste: * taste
 0️⃣	taste: 0 0 null taste
@@ -1658,6 +1701,7 @@
 🇨🇳	flagge: china cn flagge
 🇨🇴	flagge: kolumbien co flagge
 🇨🇵	flagge: clipperton-insel cp flagge
+🇨🇶	flagge: sark cq flagge
 🇨🇷	flagge: costa rica cr flagge
 🇨🇺	flagge: kuba cu flagge
 🇨🇻	flagge: cabo verde cv flagge

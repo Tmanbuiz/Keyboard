@@ -48,11 +48,14 @@
 😮‍💨	twarz wypuszczająca powietrze buźka dym gwizd ulga westchnienie wydech wydmuchiwać powietrze wykończony wypuszczać powietrze zmęczenie
 🤥	twarz kłamcy buźka długi nos kłamać kłamca pinokio
 🫨	wstrząśnięta twarz drganie niespodzianka omg oszołomienie szaleństwo szok trzęsienie ziemi twarz wibracje wow wstrząs łał
+🙂‍↔️	głowa kręcąca się poziomo nie potrząśnięcie
+🙂‍↕️	głowa kiwająca się pionowo przytaknięcie tak
 😌	twarz z wyrazem ulgi buźka błogość odprężenie odprężona buźka uf ulga uśmiech
 😔	zamyślona twarz buźka smutek zamyślenie zamyślona buźka
 😪	senna twarz buźka sen senność spać śpiąca buźka
 🤤	śliniąca się twarz buźka cieknie mi ślinka głodny mniam ślina ślinka
 😴	śpiąca twarz buźka chrapanie dobranoc drzemka noc nuda sen spanie spać twarz ziew zmęczenie zzz śpiący
+🫩	twarz z workami pod oczami podkrążone oczy senność worki pod oczami zmęczenie
 😷	twarz w masce medycznej buźka choroba lekarz maska operacja pielęgniarka twarz
 🤒	twarz z termometrem buźka choroba gorączka smutek temperatura termometr
 🤕	twarz z bandażem bandaż buźka czoło głowa rana skaleczenie smutny
@@ -80,6 +83,7 @@
 😯	zdumiona twarz buźka o zaskoczenie zaskoczona buźka zdumienie zdziwienie
 😲	zadziwiona twarz buźka och! zaskoczenie zaskoczona buźka zdziwienie
 😳	twarz z rumieńcami buźka rumieńce twarz z wypiekami wow wstyd wypieki zaskoczenie zdziwienie
+🫪	wykrzywiona twarz bezradność niepokój opuchlizna panika szok zaskoczenie
 🥺	błagająca twarz buźka błaganie błagać duże oczy litość oczy poprosić prosić proszę smutek smutna smutne smutny słodkie oczy twarz ładnie prosić żebranie żebrać
 🥹	twarz powstrzymująca łzy duma opór podziw proszę płacz smutek smutna twarz uczucia wdzięczność wzruszenie zawstydzenie zdenerwowanie łzy łzy szczęścia łzy wzruszenia
 😦	zachmurzona twarz z otwartymi ustami buźka co? nie wierzę opadła mi szczęka opadła szczena rozzłoszczona buźka zawód zdziwienie
@@ -153,6 +157,7 @@
 💋	ślad po pocałunku odcisk ust pocałunek usta
 💯	sto punktów 100 setka sto stówa stówka
 💢	symbol gniewu gniew komiks złość
+🫯	chmura walki awantura dyskusja kłótnia raban różnica zdań walka
 💥	kolizja komiks wybuch zderzenie
 💫	zawroty głowy gwiazda gwiazdka kosmos noc orbita spadająca gwiazda
 💦	krople potu deszcz krople pot wilgoć woda
@@ -397,6 +402,7 @@
 🧟‍♂️	mężczyzna zombie chodzące trupy halloween horror mężczyzna nieumarli strach straszny zombie
 🧟‍♀️	kobieta zombie chodzące trupy halloween horror kobieta nieumarli strach straszny zombie
 🧌	troll bajka fantazja potwór
+🫈	włochate stworzenie człowiek z lasu gigant kryptyda las sasquatch wielka stopa włochate yeti
 💆	osoba podczas masażu ból głowy masaż masaż głowy odprężenie osoba podczas masażu relaks salon masażu spa
 💆‍♂️	mężczyzna podczas masażu ból głowy masaż masaż głowy mężczyzna odprężenie podczas masażu relaks salon masażu spa
 💆‍♀️	kobieta podczas masażu ból głowy kobieta masaż masaż głowy odprężenie podczas masażu relaks salon masażu spa
@@ -406,24 +412,43 @@
 🚶	idąca osoba chodzenie idąca iść na piechotę osoba piechur pieszo spacer
 🚶‍♂️	idący mężczyzna chodzenie idący iść mężczyzna na piechotę piechur pieszo spacer
 🚶‍♀️	idąca kobieta chodzenie idąca iść kobieta na piechotę piechur pieszo spacer
+🚶‍➡️	idąca osoba: zwrócony w prawo chodzenie idąca iść na piechotę osoba piechur pieszo prawo spacer w zwrócony
+🚶‍♀️‍➡️	idąca kobieta: zwrócony w prawo chodzenie idąca iść kobieta na piechotę piechur pieszo prawo spacer w zwrócony
+🚶‍♂️‍➡️	idący mężczyzna: zwrócony w prawo chodzenie idący iść mężczyzna na piechotę piechur pieszo prawo spacer w zwrócony
 🧍	stojąca osoba stać stoi
 🧍‍♂️	stojący mężczyzna mężczyzna stać
 🧍‍♀️	stojąca kobieta kobieta stać
 🧎	klęcząca osoba klęczeć klęczki kolana na kolanach
 🧎‍♂️	klęczący mężczyzna klęczeć mężczyzna
 🧎‍♀️	klęcząca kobieta klęczeć kobieta
+🧎‍➡️	klęcząca osoba: zwrócony w prawo klęczeć klęczki klęcząca osoba kolana na kolanach prawo w zwrócony
+🧎‍♀️‍➡️	klęcząca kobieta: zwrócony w prawo klęczeć klęcząca kobieta kobieta prawo w zwrócony
+🧎‍♂️‍➡️	klęczący mężczyzna: zwrócony w prawo klęczeć klęczący mężczyzna mężczyzna prawo w zwrócony
 🧑‍🦯	osoba z białą laską dostępność niewidoma niewidomy
+🧑‍🦯‍➡️	osoba z białą laską: zwrócony w prawo dostępność niewidoma niewidomy osoba z białą laską prawo w zwrócony
 👨‍🦯	mężczyzna z białą laską dostępność mężczyzna niewidomy
+👨‍🦯‍➡️	mężczyzna z białą laską: zwrócony w prawo dostępność mężczyzna mężczyzna z białą laską niewidomy prawo w zwrócony
 👩‍🦯	kobieta z białą laską dostępność kobieta niewidoma
+👩‍🦯‍➡️	kobieta z białą laską: zwrócony w prawo dostępność kobieta kobieta z białą laską niewidoma prawo w zwrócony
 🧑‍🦼	osoba na elektrycznym wózku inwalidzkim dostępność wózek inwalidzki
+🧑‍🦼‍➡️	osoba na elektrycznym wózku inwalidzkim: zwrócony w prawo dostępność osoba na elektrycznym wózku inwalidzkim prawo w wózek inwalidzki zwrócony
 👨‍🦼	mężczyzna na elektrycznym wózku inwalidzkim dostępność mężczyzna wózek inwalidzki
+👨‍🦼‍➡️	mężczyzna na elektrycznym wózku inwalidzkim: zwrócony w prawo dostępność mężczyzna mężczyzna na elektrycznym wózku inwalidzkim prawo w wózek inwalidzki zwrócony
 👩‍🦼	kobieta na elektrycznym wózku inwalidzkim dostępność kobieta wózek inwalidzki
+👩‍🦼‍➡️	kobieta na elektrycznym wózku inwalidzkim: zwrócony w prawo dostępność kobieta kobieta na elektrycznym wózku inwalidzkim prawo w wózek inwalidzki zwrócony
 🧑‍🦽	osoba na wózku inwalidzkim dostępność wózek inwalidzki
+🧑‍🦽‍➡️	osoba na wózku inwalidzkim: zwrócony w prawo dostępność osoba na wózku inwalidzkim prawo w wózek inwalidzki zwrócony
 👨‍🦽	mężczyzna na wózku inwalidzkim dostępność mężczyzna wózek inwalidzki
+👨‍🦽‍➡️	mężczyzna na wózku inwalidzkim: zwrócony w prawo dostępność mężczyzna mężczyzna na wózku inwalidzkim prawo w wózek inwalidzki zwrócony
 👩‍🦽	kobieta na wózku inwalidzkim dostępność kobieta wózek inwalidzki
+👩‍🦽‍➡️	kobieta na wózku inwalidzkim: zwrócony w prawo dostępność kobieta kobieta na wózku inwalidzkim prawo w wózek inwalidzki zwrócony
 🏃	biegnąca osoba bieg biegacz biegaczka bieganie biegnąca maraton osoba pośpiech sport szybko w ruchu
 🏃‍♂️	biegnący mężczyzna bieg biegacz biegnący maraton mężczyzna osoba pośpiech sport szybko w ruchu
 🏃‍♀️	biegnąca kobieta bieg biegaczka biegnąca kobieta maraton osoba pośpiech sport szybko w ruchu
+🏃‍➡️	biegnąca osoba: zwrócony w prawo bieg biegacz biegaczka bieganie biegnąca maraton osoba pośpiech prawo sport szybko w w ruchu zwrócony
+🏃‍♀️‍➡️	biegnąca kobieta: zwrócony w prawo bieg biegaczka biegnąca kobieta maraton osoba pośpiech prawo sport szybko w w ruchu zwrócony
+🏃‍♂️‍➡️	biegnący mężczyzna: zwrócony w prawo bieg biegacz biegnący maraton mężczyzna osoba pośpiech prawo sport szybko w w ruchu zwrócony
+🧑‍🩰	baletnica balet tancerka tancerz
 💃	tańcząca kobieta impreza kobieta tancerka taniec tańczyć tańcząca zabawa zawód
 🕺	tańczący mężczyzna impreza mężczyzna tancerz taniec tańczyć tańczący zabawa zawód
 🕴️	lewitujący mężczyzna w garniturze biznesmen garnitur lewitacja lewitować mężczyzna
@@ -526,7 +551,12 @@
 👥	sylwetki popiersi osoby sylwetki
 🫂	obejmujące się osoby cześć do widzenia dzięki objęcia osoby pocieszenie przyjaźń przytulenie uścisk wsparcie
 👪️	rodzina dziecko mama matka ojciec rodzice tata
+🧑‍🧑‍🧒	rodzina: dorosły, dorosły, dziecko dorosły dziecko
+🧑‍🧑‍🧒‍🧒	rodzina: dorosły, dorosły, dziecko, dziecko dorosły dziecko
+🧑‍🧒	rodzina: dorosły, dziecko dorosły dziecko
+🧑‍🧒‍🧒	rodzina: dorosły, dziecko, dziecko dorosły dziecko
 👣	ślady stóp odciski stóp stopy ślady
+🫆	odcisk palca bezpieczeństwo tożsamość
 🐵	głowa małpy buźka głowa małpka zwierzę
 🐒	małpa małpka zwierzę
 🦍	goryl zwierzę
@@ -614,6 +644,7 @@
 🪽	skrzydło anielskie latający latanie lotnictwo mitologia niebiańskie ptak wznosić się
 🐦‍⬛	czarny ptak czarny dziób gawron krakanie kruk krukowate ptak wrona zwierzę
 🪿	gęś drób gąsior gęganie gęsi głuptas kaczka ptak stado zwierzę
+🐦‍🔥	feniks mityczny nieśmiertelność odrodzenie ognisty powstać ptak reinkarnacja z popiołów
 🐸	głowa żaby buźka głowa płaz ropucha traszka zwierzę żaba żabka
 🐊	krokodyl aligator gad jaszczur zwierzę
 🐢	żółw powolny skorupa zwierzę
@@ -626,6 +657,7 @@
 🐳	wieloryb tryskający wodą fontanna morze ocean strumień tryskający wodą wieloryb woda wody zwierzę
 🐋	wieloryb morze ocean zwierzę
 🐬	delfin morze ocean zwierzę
+🫍	orka morski ocean wieloryb
 🦭	foka foczka lew morski ssak zwierzę
 🐟️	ryba morze ocean rybka ryby woda zodiak zwierzę
 🐠	ryba tropikalna morze ryba rybka tropikalna tropiki woda zwierzę
@@ -684,11 +716,13 @@
 🪹	puste gniazdo gniazdo gniazdowanie gnieżdżenie ptasie puste
 🪺	gniazdo z jajkami gniazdo gniazdowanie gnieżdżenie jajka ptasie z jajkami zniesione jaja
 🍄	grzyb muchomor muchomorek trujący
+🪾	drzewo bez liści bez liści drzewo susza zima
 🍇	winogrona jedzenie owoce
 🍈	melon jedzenie owoc
 🍉	arbuz arbuza jedzenie kawałek lato owoc
 🍊	mandarynka cytrus jedzenie owoc pomarańcza
 🍋	cytryna cytrus jedzenie kwaśny owoc żółty
+🍋‍🟩	limonka cytrus kwaśne limetka mojito owoc soczysty tequila tropikalny
 🍌	banan egzotyczny jedzenie owoc
 🍍	ananas egzotyczny jedzenie owoc
 🥭	mango jedzenie owoc shaker tropikalna tropikalne tropikalny
@@ -720,6 +754,8 @@
 🌰	kasztan jedzenie kasztan jadalny orzech orzeszek
 🫚	korzeń imbiru imbir imbiru korzeń naturalne przyprawa zdrowie zioła zioło
 🫛	strąk grochu edamame fasola groch grochu roślina soja sojowa strączek strączkowa strąk warzywo łuskać
+🍄‍🟫	brązowy grzyb borowik brązowy grzyb jedzenie natura shiitake warzywo
+🫜	warzywo korzeniowe burak korzeń ogród rzepa warzywo
 🍞	chleb bochenek chleba jedzenie kawałek pieczywo
 🥐	rogalik croissant francuski jedzenie pieczywo rogal
 🥖	bagietka bułka chleb jedzenie pieczywo
@@ -821,6 +857,7 @@
 🧭	kompas kierunek magnetyczny magnetyzm nawigacja orientacja orientacja w terenie strony świata
 🏔️	góra z czapą lodową góra góry wycieczka z czapą lodową zima śnieg
 ⛰️	góra góry wycieczka
+🛘	osuwisko góra katastrofa lawina lawina błotna niebezpieczeństwo skały trzęsienie ziemi
 🌋	wulkan erupcja góra lawa
 🗻	góra fudżi fudżi góra natura
 🏕️	kemping kamping namiot obóz wakacje
@@ -1182,6 +1219,7 @@
 📻️	radio odbiornik radioodbiornik radiowy
 🎷	saksofon instrument muzyka orkiestra
 🎺	trąbka grać instrument muzyka orkiestra
+🪊	puzon instrument instrument dęty blaszany jazz muzyka smutek suwak
 🪗	akordeon bajan harmonia instrument klawisze koncertyna muzyka
 🎸	gitara instrument muzyka
 🎹	klawisze fortepian instrument keyboard klawiatura muzyka pianino
@@ -1191,6 +1229,7 @@
 🪘	konga bęben bębenek bębnić instrument muzyka rytm tamburyn
 🪇	marakasy cza cza grzechotać grzechotki impreza instrument muzyka perkusja perkusyjny potrząsać taniec
 🪈	flet drewniany dęty fujarka grać gwizdać instrument muzyka na flecie orkiestra piccolo pikolo piszczałka prosty
+🪉	harfa amorek instrument miłość muzyka orkiestra
 📱	telefon komórkowy komóra komórka smartfon telefon
 📲	telefon komórkowy ze strzałką dzwonić komórka odebrać połączenie smartfon smartfon ze strzałką strzałka telefon
 ☎️	telefon aparat telefoniczny
@@ -1246,6 +1285,7 @@
 🏷️	przywieszka do kluczy breloczek etykieta plakietka przywieszka
 🪙	moneta bogactwo dolar euro metalowa pieniądze skarb srebrna złota
 💰️	worek z pieniędzmi bogaty dolary kasa pieniądze pieniędzy worek z pieniędzmi
+🪎	skrzynia skarbów bogactwo kamień szlachetny klejnot kosztowności nagroda pieniądze srebro złoto łup
 💴	banknot jena bank banknot jeny pieniądze płacić rachunek waluta
 💵	banknot dolara bank banknot dolary pieniądze płacić rachunek waluta
 💶	banknot euro bank banknot euro pieniądze płacić rachunek waluta
@@ -1323,11 +1363,13 @@
 ⚖️	waga szalkowa ciężar narzędzie równowaga sprawiedliwość szalki waga ważyć zodiak
 🦯	biała laska dostępność niewidomy
 🔗	ogniwa hiperłącze link ogniwo połączenie
+⛓️‍💥	zerwany łańcuch kajdany wolność zerwanie zerwać łańcuch
 ⛓️	łańcuchy ogniwa łańcuch
 🪝	hak haczyk połknąć zaczep zahaczyć zakrzywiony zawiesić złapać złowić
 🧰	skrzynka na narzędzia czerwona klucze kombinerki mechanik na narzędzia narzędzia narzędzie skrzynka z narzędziami
 🧲	magnes kształt u magnetyczny magnetyzm odpychanie podkowa przyciąganie
 🪜	drabina do góry hierarchia ranking stopnie szczebel wspinać się
+🪏	łopata dziura kopać szpadel
 ⚗️	alembik chemia kolba menzurka naczynie probówka szklane
 🧪	probówka chemia chemik eksperyment laboratorium nauka
 🧫	płytka petriego badania bakteria bakterie biolog biologia kultura laboratorium płytka petriego szalka petriego
@@ -1513,6 +1555,7 @@
 ©️	znak praw autorskich c copyright prawa autorskie znak
 ®️	zarejestrowany znak towarowy r towarowy zarejestrowany
 ™️	znak towarowy tm zastrzeżony znak towarowy
+🫟	rozbryzg farba holi plama rozlanie
 #️⃣	klawisz: # klawisz
 *️⃣	klawisz: * klawisz
 0️⃣	klawisz: 0 0 klawisz zero
@@ -1658,6 +1701,7 @@
 🇨🇳	flaga: chiny cn flaga
 🇨🇴	flaga: kolumbia co flaga
 🇨🇵	flaga: wyspa clippertona cp flaga
+🇨🇶	flaga: sark cq flaga
 🇨🇷	flaga: kostaryka cr flaga
 🇨🇺	flaga: kuba cu flaga
 🇨🇻	flaga: republika zielonego przylądka cv flaga

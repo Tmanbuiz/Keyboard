@@ -29,83 +29,122 @@ extension KeyboardViewController {
     // MARK: Emoji, GIFs and stickers
 
     func buildMediaPanel() {
-        let tabs = UIStackView(); tabs.axis = .horizontal; tabs.spacing = 3
-        let scroll = UIScrollView(); scroll.showsHorizontalScrollIndicator = false
-        tabs.translatesAutoresizingMaskIntoConstraints = false
-        scroll.addSubview(tabs)
-        NSLayoutConstraint.activate([tabs.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor), tabs.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor),
-                                     tabs.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor), tabs.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor),
-                                     tabs.heightAnchor.constraint(equalTo: scroll.frameLayoutGuide.heightAnchor)])
-        func tab(_ title: String, _ label: String, selected: Bool, action: @escaping () -> Void) {
-            let key = button(title, function: !selected, action: action)
-            key.accessibilityLabel = label
-            if selected { key.layer.borderWidth = 1.5; key.layer.borderColor = palette.accent.cgColor }
-            key.widthAnchor.constraint(greaterThanOrEqualToConstant: title.count > 2 ? 64 : 40).isActive = true
-            tabs.addArrangedSubview(key)
-        }
-        tab("🔍", "Search emoji", selected: false) { [weak self] in self?.enterSearch(.emoji) }
-        tab("🕘", "Recently used", selected: mediaTab == "emoji" && emojiGroup == -1) { [weak self] in self?.mediaTab = "emoji"; self?.emojiGroup = -1; self?.rebuildContent() }
-        for group in EmojiCatalog.groups {
-            tab(group.icon, group.name, selected: mediaTab == "emoji" && emojiGroup == group.id) { [weak self] in
-                self?.mediaTab = "emoji"; self?.emojiGroup = group.id; self?.rebuildContent()
-            }
-        }
-        tab("GIF", "GIFs", selected: mediaTab == "gif") { [weak self] in self?.mediaTab = "gif"; self?.rebuildContent() }
-        tab("Stickers", "Stickers", selected: mediaTab == "stickers") { [weak self] in self?.mediaTab = "stickers"; self?.rebuildContent() }
+        let body = UIStackView(); body.axis = .vertical; body.spacing = 4
+        let keyboard = button("ABC", function: true) { [weak self] in self?.showPanel(nil) }
+        keyboard.accessibilityLabel = "Back to keyboard"
+        let emoji = button("Emoji", function: mediaTab != "emoji") { [weak self] in self?.mediaTab = "emoji"; self?.rebuildContent() }
+        let gif = button("GIF", function: mediaTab != "gif") { [weak self] in self?.mediaTab = "gif"; self?.rebuildContent() }
+        let stickers = button("Stickers", function: mediaTab != "stickers") { [weak self] in self?.mediaTab = "stickers"; self?.rebuildContent() }
         let backspace = button("⌫", function: true) { [weak self] in self?.textDocumentProxy.deleteBackward() }
         backspace.accessibilityLabel = "Delete"
-        backspace.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        let header = UIStackView(arrangedSubviews: [scroll, backspace]); header.spacing = 3
+        let modeRow = UIStackView(arrangedSubviews: [keyboard, emoji, gif, stickers, backspace])
+        modeRow.distribution = .fillEqually; modeRow.spacing = 4
+        modeRow.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        body.addArrangedSubview(modeRow)
 
+        if mediaTab == "emoji" {
+            let rail = UIScrollView(); rail.showsHorizontalScrollIndicator = false
+            let categories = UIStackView(); categories.axis = .horizontal; categories.distribution = .fillEqually; categories.spacing = 1
+            categories.translatesAutoresizingMaskIntoConstraints = false; rail.addSubview(categories)
+            NSLayoutConstraint.activate([
+                categories.leadingAnchor.constraint(equalTo: rail.contentLayoutGuide.leadingAnchor), categories.trailingAnchor.constraint(equalTo: rail.contentLayoutGuide.trailingAnchor),
+                categories.topAnchor.constraint(equalTo: rail.contentLayoutGuide.topAnchor), categories.bottomAnchor.constraint(equalTo: rail.contentLayoutGuide.bottomAnchor),
+                categories.heightAnchor.constraint(equalTo: rail.frameLayoutGuide.heightAnchor),
+                categories.widthAnchor.constraint(greaterThanOrEqualTo: rail.frameLayoutGuide.widthAnchor), rail.heightAnchor.constraint(equalToConstant: 36)])
+            func category(_ title: String, label: String, selected: Bool = false, action: @escaping () -> Void) {
+                let key = button(title, function: !selected, action: action)
+                key.accessibilityLabel = label; key.accessibilityTraits = selected ? [.button, .selected] : .button
+                key.titleLabel?.font = .systemFont(ofSize: 21)
+                key.widthAnchor.constraint(greaterThanOrEqualToConstant: 29).isActive = true
+                if selected { key.layer.borderWidth = 1.5; key.layer.borderColor = palette.accent.cgColor }
+                categories.addArrangedSubview(key)
+            }
+            category("⌕", label: "Search emoji") { [weak self] in self?.enterSearch(.emoji) }
+            category("◷", label: "Recently used", selected: emojiGroup == -1 && emojiQuery.isEmpty) { [weak self] in
+                self?.emojiGroup = -1; self?.emojiQuery = ""; self?.rebuildContent()
+            }
+            for group in EmojiCatalog.groups {
+                category(group.icon, label: group.name, selected: emojiGroup == group.id && emojiQuery.isEmpty) { [weak self] in
+                    self?.emojiGroup = group.id; self?.emojiQuery = ""; self?.rebuildContent()
+                }
+            }
+            body.addArrangedSubview(rail)
+            let heading = UILabel(); heading.textColor = palette.text.withAlphaComponent(0.7)
+            heading.font = .systemFont(ofSize: 12, weight: .medium)
+            heading.text = emojiQuery.isEmpty ? (emojiGroup == -1 ? "RECENTLY USED" : EmojiCatalog.groups.first { $0.id == emojiGroup }?.name.uppercased()) : "RESULTS FOR “\(emojiQuery)” · tap a category to clear"
+            heading.heightAnchor.constraint(equalToConstant: 19).isActive = true
+            body.addArrangedSubview(heading)
+        }
         let grid = MediaGridView(palette: palette)
         switch mediaTab {
         case "gif": fillGifs(grid)
         case "stickers": fillStickers(grid)
         default: fillEmoji(grid)
         }
-        layoutPanel(header: header, body: grid)
+        body.addArrangedSubview(grid)
+        layoutPanel(header: nil, body: body)
     }
 
     private func fillEmoji(_ grid: MediaGridView) {
         let catalog = EmojiCatalog.shared, tone = preferences.skinTone
         let list: [EmojiItem]
-        if emojiGroup == -1 {
-            list = store.recentEmoji.compactMap { emoji in catalog.item(for: emoji).map { $0.skins?.contains(emoji) == true ? EmojiItem(emoji: emoji, group: $0.group, skins: nil) : $0 } }
-            if list.isEmpty { emojiGroup = 0; return fillEmoji(grid) }
+        if !emojiQuery.isEmpty {
+            list = catalog.search(emojiQuery, languages: preferences.activeLanguages.map(\.code), limit: 500)
+        } else if emojiGroup == -1 {
+            list = store.recentEmoji.compactMap { emoji in catalog.item(for: emoji).map { $0.availableVariants.contains(emoji) ? EmojiItem(emoji: emoji, group: $0.group, skins: nil, version: $0.version, name: $0.name) : $0 } }
+            // Empty recents stays empty instead of silently switching categories.
         } else { list = catalog.items(in: emojiGroup) }
-        grid.columns = 8
-        grid.items = list.map { .emoji($0.toned(tone), toned: $0.skins != nil) }
+        grid.adaptiveEmojiColumns = true
+        grid.items = list.map { .emoji($0.toned(tone), toned: !$0.availableVariants.isEmpty, name: $0.name) }
+        grid.emptyMessage = emojiQuery.isEmpty ? "Your recently used emoji will appear here" : "No emoji found. Try another word or category."
         grid.onSelect = { [weak self] index in
             guard let self, list.indices.contains(index) else { return }
             let emoji = list[index].toned(tone)
             self.textDocumentProxy.insertText(emoji); self.store.useEmoji(emoji)
         }
         grid.onLongPress = { [weak self] index, cell in
-            guard let self, list.indices.contains(index), let skins = list[index].skins else { return }
-            self.showSkinTones([list[index].emoji] + skins, over: cell)
+            guard let self, list.indices.contains(index) else { return }
+            let item = list[index]
+            guard !item.availableVariants.isEmpty else { return }
+            self.showSkinTones([item.emoji] + item.availableVariants, defaultSkins: item.skins ?? [], over: cell)
         }
     }
 
     /// Lets the person pick a skin tone; the choice becomes the default for every emoji that has tones.
-    private func showSkinTones(_ options: [String], over cell: UIView) {
+    private func showSkinTones(_ options: [String], defaultSkins: [String], over cell: UIView) {
         removeAccentPopup()
-        let popup = UIStackView(); popup.axis = .horizontal; popup.distribution = .fillEqually; popup.spacing = 2
-        popup.backgroundColor = palette.function; popup.layer.cornerRadius = 8; popup.clipsToBounds = true
-        for (index, option) in options.enumerated() {
-            let key = button(option) { [weak self] in
-                guard let self else { return }
-                self.removeAccentPopup()
-                self.textDocumentProxy.insertText(option); self.store.useEmoji(option)
-                self.preferences.skinTone = index
-                self.store.preferences = self.preferences
-                self.rebuildContent()
+        let popup = UIStackView(); popup.axis = .vertical; popup.spacing = 2
+        popup.backgroundColor = palette.function; popup.layer.cornerRadius = 12; popup.clipsToBounds = true
+        let scroll = UIScrollView(); scroll.showsVerticalScrollIndicator = true
+        let rows = UIStackView(); rows.axis = .vertical; rows.spacing = 2; rows.translatesAutoresizingMaskIntoConstraints = false
+        scroll.addSubview(rows); popup.addArrangedSubview(scroll)
+        NSLayoutConstraint.activate([rows.leadingAnchor.constraint(equalTo: scroll.contentLayoutGuide.leadingAnchor), rows.trailingAnchor.constraint(equalTo: scroll.contentLayoutGuide.trailingAnchor),
+                                     rows.topAnchor.constraint(equalTo: scroll.contentLayoutGuide.topAnchor), rows.bottomAnchor.constraint(equalTo: scroll.contentLayoutGuide.bottomAnchor),
+                                     rows.widthAnchor.constraint(equalTo: scroll.frameLayoutGuide.widthAnchor)])
+        let columns = min(6, options.count)
+        for start in stride(from: 0, to: options.count, by: columns) {
+            let row = UIStackView(); row.axis = .horizontal; row.spacing = 2; row.distribution = .fillEqually
+            row.heightAnchor.constraint(equalToConstant: 44).isActive = true
+            for offset in 0..<columns {
+                guard start + offset < options.count else { row.addArrangedSubview(UIView()); continue }
+                let option = options[start + offset]
+                let key = button(option) { [weak self] in
+                    guard let self else { return }
+                    self.removeAccentPopup(); self.textDocumentProxy.insertText(option); self.store.useEmoji(option)
+                    if option == options.first { self.preferences.skinTone = 0 }
+                    else if let index = defaultSkins.firstIndex(of: option) { self.preferences.skinTone = index + 1 }
+                    self.store.preferences = self.preferences; self.rebuildContent()
+                }
+                key.titleLabel?.font = .systemFont(ofSize: 29)
+                row.addArrangedSubview(key)
             }
-            key.titleLabel?.font = .systemFont(ofSize: 26)
-            popup.addArrangedSubview(key)
+            rows.addArrangedSubview(row)
         }
-        let width = min(view.bounds.width - 8, CGFloat(options.count) * 44)
+        let width = min(view.bounds.width - 8, CGFloat(columns) * 46)
+        let height = min(view.bounds.height - 16, CGFloat((options.count + columns - 1) / columns) * 46)
         let frame = cell.convert(cell.bounds, to: view)
-        popup.frame = CGRect(x: min(max(4, frame.midX - width / 2), view.bounds.width - width - 4), y: max(0, frame.minY - 50), width: width, height: 46)
+        popup.frame = CGRect(x: min(max(4, frame.midX - width / 2), view.bounds.width - width - 4),
+                             y: min(max(4, frame.minY - height), view.bounds.height - height - 4), width: width, height: height)
         view.addSubview(popup); accentPopup = popup
     }
 
@@ -244,7 +283,7 @@ extension KeyboardViewController {
             gifResults = []
             exitSearch(returnTo: "gif")
             loadGifs(query)
-        } else { exitSearch(returnTo: "emoji") }
+        } else { emojiQuery = query; exitSearch(returnTo: "emoji") }
     }
 
     /// Live emoji results in the suggestion bar as the person types.

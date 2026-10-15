@@ -48,11 +48,14 @@
 😮‍💨	udåndende ansigt ansigt ekshalerende fløjt hvisken lettelse pift pyha smiley udmattet udånding ånde ud
 🤥	løgneransigt ansigt lang næse lyver løgn pinocchio
 🫨	rystende ansigt ansigt chok jordskælv omg overraskelse panik ryster skør vibrer vibrerer wow
+🙂‍↔️	ryster på hovedet vandret hovedrysten nej
+🙂‍↕️	ryster på hovedet lodret ja nikke
 😌	lettet ansigt ansigt fred lettelse ro
 😔	eftertænksomt ansigt ansigt eftertænksom nedslået
 😪	søvnigt ansigt ansigt dyb søvn græder ked af det træt
 🤤	savlende ansigt ansigt savl savler
 😴	sovende ansigt ansigt godnat sengetid sove søvn søvnig træt zzz
+🫩	ansigt med poser under øjnene ansigt poser søvnig træt udmattet øjne
 😷	ansigt med mundbind doktor forkølet læge maske mundbind syg
 🤒	ansigt med termometer ansigt syg termometer
 🤕	ansigt med bandage ansigt bandage skade smerte
@@ -80,6 +83,7 @@
 😯	tavst ansigt ansigt forbavset overrasket stille ansigt
 😲	overrasket ansigt chokeret omg wow åh nej
 😳	rødmende ansigt omtumlet røde kinder rødme ør
+🫪	forvrænget ansigt angst chokeret oppustet overrasket panik sårbar ængstelig
 🥺	bønfaldende ansigt ansigt barmhjertighed bede hundeøjne trygle
 🥹	ansigt, der holder tårer tilbage ansigt beundre beundring flov følelser glædestårer græde ked af det modstå nårh pinligt stolt så er du sød taknemmelig taknemmelighed trist tristhed
 😦	måbende ansigt med åben mund ansigt overrasket åben mund
@@ -153,6 +157,7 @@
 💋	læbeaftryk kys læber romantik sexy
 💯	100 point 100 alle rigtige hundrede perfekt point rigtigt
 💢	vrede følelse tegn for vrede
+🫯	slagsmålssky debat kamp rabalder skænderi slagsmål uenighed vrede
 💥	kollision bombe eksplosion følelser kollisionstegn
 💫	svimmel følelser se stjerner stjerneskud
 💦	sveddråber dråber følelser sved vanddråber
@@ -397,6 +402,7 @@
 🧟‍♂️	mandlig zombie levende død mand
 🧟‍♀️	kvindelig zombie kvinde levende død
 🧌	trold eventyr fantasy monster provokation provokere troll troller trolling
+🫈	behåret væsen behåret bigfoot kæmpe sasquatch skov skovmand vildmand woodwose yeti
 💆	ansigtsmassage afslapning afslappende ansigt behandling hovedpine lindre massage person får massage salon slapper af spa spændinger terapi wellness
 💆‍♂️	mand får ansigtsmassage ansigt mand massage
 💆‍♀️	kvinde får ansigtsmassage ansigt kvinde massage
@@ -406,24 +412,43 @@
 🚶	fodgænger gang gå gående gående person gåtur hike skridt slente tempo vandre vandring
 🚶‍♂️	mand går fodgænger gang gå gåtur hike mand vandre vandretur vandring
 🚶‍♀️	kvinde går fodgænger gang gå gåtur hike kvinde vandre vandretur vandring
+🚶‍➡️	fodgænger: mod højre fodgænger gang gå gående gående person gåtur hike højre mod skridt slente tempo vandre vandring
+🚶‍♀️‍➡️	kvinde går: mod højre fodgænger gang gå gåtur hike højre kvinde kvinde går mod vandre vandretur vandring
+🚶‍♂️‍➡️	mand går: mod højre fodgænger gang gå gåtur hike højre mand mand går mod vandre vandretur vandring
 🧍	stående person person stå stående står
 🧍‍♂️	stående mand mand stående står
 🧍‍♀️	stående kvinde kvinde stående står
 🧎	knælende person knælende på knæ
 🧎‍♂️	knælende mand mand
 🧎‍♀️	knælende kvinde kvinde
+🧎‍➡️	knælende person: mod højre højre knælende knælende person mod på knæ
+🧎‍♀️‍➡️	knælende kvinde: mod højre højre knælende kvinde kvinde mod
+🧎‍♂️‍➡️	knælende mand: mod højre højre knælende mand mand mod
 🧑‍🦯	person med blindestok adgangsforhold blind handicap synshandicap
+🧑‍🦯‍➡️	person med blindestok: mod højre adgangsforhold blind handicap højre mod person med blindestok synshandicap
 👨‍🦯	mand med blindestok blind blindestok handicap mand synshandicap tilgængelighed
+👨‍🦯‍➡️	mand med blindestok: mod højre blind blindestok handicap højre mand mand med blindestok mod synshandicap tilgængelighed
 👩‍🦯	kvinde med blindestok blind blindestok handicap kvinde synshandicap tilgængelighed
+👩‍🦯‍➡️	kvinde med blindestok: mod højre blind blindestok handicap højre kvinde kvinde med blindestok mod synshandicap tilgængelighed
 🧑‍🦼	person i elkørestol adgang adgangsforhold handicap kørestol
+🧑‍🦼‍➡️	person i elkørestol: mod højre adgang adgangsforhold handicap højre kørestol mod person i elkørestol
 👨‍🦼	mand i elektrisk kørestol adgangsforhold handicap handikap kørestol mand mand i elkørestol rullestol tilgængelighed
+👨‍🦼‍➡️	mand i elektrisk kørestol: mod højre adgangsforhold handicap handikap højre kørestol mand mand i elektrisk kørestol mand i elkørestol mod rullestol tilgængelighed
 👩‍🦼	kvinde i elektrisk kørestol adgangsforhold handicap handikap kvinde kvinde i elkørestol kørestol rullestol tilgængelighed
+👩‍🦼‍➡️	kvinde i elektrisk kørestol: mod højre adgangsforhold handicap handikap højre kvinde kvinde i elektrisk kørestol kvinde i elkørestol kørestol mod rullestol tilgængelighed
 🧑‍🦽	person i manuel kørestol adgang adgangsforhold handicap kørestol
+🧑‍🦽‍➡️	person i manuel kørestol: mod højre adgang adgangsforhold handicap højre kørestol mod person i manuel kørestol
 👨‍🦽	mand i manuel kørestol adgangsforhold handicap handikap kørestol mand rullestol tilgængelighed
+👨‍🦽‍➡️	mand i manuel kørestol: mod højre adgangsforhold handicap handikap højre kørestol mand mand i manuel kørestol mod rullestol tilgængelighed
 👩‍🦽	kvinde i manuel kørestol adgangsforhold handicap handikap kvinde kørestol rullestol tilgængelighed
+👩‍🦽‍➡️	kvinde i manuel kørestol: mod højre adgangsforhold handicap handikap højre kvinde kvinde i manuel kørestol kørestol mod rullestol tilgængelighed
 🏃	løber bevægelse bevæger er på vej hastighed hurtig hurtigt kommer nu løb løbende person løbetræning maraton skynd dig sport tempo
 🏃‍♂️	mand løber løb løbetræning løbetur mand maraton
 🏃‍♀️	kvinde løber kvinde løb løbetræning løbetur maraton
+🏃‍➡️	løber: mod højre bevægelse bevæger er på vej hastighed hurtig hurtigt højre kommer nu løb løbende person løber løbetræning maraton mod skynd dig sport tempo
+🏃‍♀️‍➡️	kvinde løber: mod højre højre kvinde kvinde løber løb løbetræning løbetur maraton mod
+🏃‍♂️‍➡️	mand løber: mod højre højre løb løbetræning løbetur mand mand løber maraton mod
+🧑‍🩰	balletdanser ballet danser
 💃	danser dans fest flamenco kvinde salsa tango
 🕺	dansende mand dans danser mand
 🕴️	svævende forretningsmand forretning forretningsmand jakkesæt mand
@@ -526,7 +551,12 @@
 👥	buster i silhuet buster
 🫂	knus farvel goddag hej kram omfavne tak trøste venskab
 👪️	familie barn far menneske mor par
+🧑‍🧑‍🧒	familie: voksen, voksen, barn barn familie forældre menneske voksen voksne
+🧑‍🧑‍🧒‍🧒	familie: voksen, voksen, barn, barn barn børn familie forældre menneske to voksen voksne
+🧑‍🧒	familie: voksen, barn barn familie forælder menneske voksen
+🧑‍🧒‍🧒	familie: voksen, barn, barn barn børn familie forælder menneske voksen
 👣	fodspor fødder
+🫆	fingeraftryk identitet retsmedicin sikkerhed
 🐵	abehoved abe dyr hoved
 🐒	abe banan dyr
 🦍	gorilla abe dyr hoved
@@ -614,6 +644,7 @@
 🪽	vinge engleagtig flyve flyver flyvning fugl himlen himmel mytologi opad svæve svæver
 🐦‍⬛	sort fugl dyr fugl krage kragefugl næb ravn råge skræppe sort
 🪿	gås and dyr fjerkræ fjollet fugl gæs skræp ænder
+🐦‍🔥	føniks fantasi forny fornyelse genfødsel genskabe genskabelse ildfugl opstige opstigning reinkarnation reinkarnere transformere udødelig
 🐸	frø frøhoved
 🐊	krokodille dyr
 🐢	skildpadde dyr langsom
@@ -626,6 +657,7 @@
 🐳	hval med vandsprøjt blåhval dyr hav hval ocean vandsprøjt
 🐋	hval dyr
 🐬	delfin dyr
+🫍	spækhugger hav hval marine
 🦭	sæl dyr hav ocean søløve
 🐟️	fisk dyr
 🐠	tropisk fisk dyr fisk
@@ -684,11 +716,13 @@
 🪹	tom rede hjem rede redebygning
 🪺	rede med æg fugl rede redebygning æg
 🍄	svamp fluesvamp plante
+🪾	træ uden blade gold tørke vinter
 🍇	vindruer frugt vin
 🍈	melon frugt
 🍉	vandmelon frugt sommer
 🍊	appelsin citrus frugt mandarin
 🍋	citron citrus frugt gul
+🍋‍🟩	lime citrus citrusfrugt cocktail forfriskende frugt grøn juice margarita mojito pynt salsa sur surhed syrlig tequila troperne tropisk
 🍌	banan frugt
 🍍	ananas frugt
 🥭	mango frugt tropisk
@@ -720,6 +754,8 @@
 🌰	kastanje plante
 🫚	ingefærrod ginger ale ingefær krydderi naturlig rod sundhed
 🫛	ærtebælg bælg bælgfrugt bønner edamame grøntsag soyabønne ært
+🍄‍🟫	brun svamp grøntsag ingrediens på pizza mad natur paddehat pizzaingrediens portobello svamp trøffel vegetar vegetarisk
+🫜	rodfrugt grøntsag have majroe rod roe
 🍞	brød bage toastbrød
 🥐	croissant brød fransk mad morgenbrød morgenmad
 🥖	flute baguette brød franskbrød mad
@@ -821,6 +857,7 @@
 🧭	kompas magnetisk navigation orientering verdenshjørne
 🏔️	sneklædt bjerg bjerg koldt sne tinde
 ⛰️	bjerg
+🛘	jordskred bjerg fare jordskælv katastrofe klipper lavine mudderskred sten ulykke
 🌋	vulkan vulkanudbrud
 🗻	fuji-bjerget bjerg fuji fuji-bjerget
 🏕️	camping telt
@@ -1182,6 +1219,7 @@
 📻️	radio æteren
 🎷	saxofon instrument musik musikinstrument sax
 🎺	trompet instrument musik musikinstrument
+🪊	basun instrument jazz messing musik sørgmodig trækbasun
 🪗	akkordeon bandoneon harmonika koncertina musette musik
 🎸	guitar elektrisk guitar elguitar instrument musik musikinstrument strengeinstrument
 🎹	klaver instrument keyboard musik musikinstrument
@@ -1191,6 +1229,7 @@
 🪘	høj tromme beat conga rytme slagtøj taktslag tromme
 🪇	maracas danse fest instrument musik rangle ryste slagtøj
 🪈	fløjte band blokfløjte fløjtenist instrument marchorkester musik orgelpibe orkester træblæseinstrument
+🪉	harpe amor instrument kærlighed musik orkester
 📱	mobil mobiltelefon
 📲	mobil med pil indgående opkald lav et opkald modtag et opkald
 ☎️	telefon fastnet
@@ -1246,6 +1285,7 @@
 🏷️	mærkat etiket label seddel
 🪙	mønt guld metal penge rig skat sølv
 💰️	pengepose dollar penge
+🪎	skattekiste bytte diamanter gevinst guld juveler penge rigdom rov smykke sølv værdigenstande
 💴	yenseddel penge yen
 💵	dollarseddel dollar penge pengesedler seddelbundt sedler
 💶	euroseddel euro penge
@@ -1323,11 +1363,13 @@
 ⚖️	vægt balance jura retfærdighed stjernetegn værktøj
 🦯	blindestok blind handicap
 🔗	link kæde link-tegn
+⛓️‍💥	brudt kæde bryde brække frihed håndjern knække kæde
 ⛓️	kæder kæde
 🪝	krog besnære fange fangst få på krogen hage klo lokkemiddel
 🧰	værktøjskasse håndværker mekaniker skruenøgle værktøj
 🧲	magnet hestesko magnetisk tiltrækning
 🪜	stige bestige klatre ribbe trin
+🪏	skovl grave hul skovle spade
 ⚗️	kolbe kemi værktøj
 🧪	reagensglas eksperiment forskning kemi kemiker laboratorium
 🧫	petriskål bakterie biolog biologi dyrkning laboratorie
@@ -1513,6 +1555,7 @@
 ©️	copyright copyright-tegn ophavsret
 ®️	registreret varemærke registreret
 ™️	varemærke tm
+🫟	klat holi maling plet spild
 #️⃣	keycap: \x{23}
 *️⃣	keycap: *
 0️⃣	tast: 0 0 keycap nul
@@ -1658,6 +1701,7 @@
 🇨🇳	kina cn
 🇨🇴	colombia co
 🇨🇵	clippertonøen cp
+🇨🇶	sark cq
 🇨🇷	costa rica cr
 🇨🇺	cuba cu
 🇨🇻	kap verde cv

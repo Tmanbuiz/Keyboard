@@ -48,11 +48,14 @@
 😮‍💨	hämmästynyt haukkoa henkeään helpotus hymiö hämmästyä kuiskaus puhaltaa tupakointi uupunut vihellys
 🤥	valehteleva kasvot valehdella valehtelija
 🫨	tärisevä hymiö maanjäristys naama omg paniikki shokissa tärähdys vapiseva värisevä yllättynyt
+🙂‍↔️	ravistaa päätä vaakasuunnassa ei pudistus
+🙂‍↕️	ravistaa päätä pystysuunnassa kyllä nyökkäys
 😌	helpottunut helpotus naama
 😔	pohdiskeleva ajatteleva lannistunut mietteliäs naama
 😪	unelias naama uni
 🤤	kuolaava kasvot kuola kuolata naama
 😴	nukkuva naama uni väsynyt yö zzz
+🫩	silmäpussit pussit silmien alla uninen uupunut väsynyt
 😷	naama ja hengityssuoja flunssa lääke lääkäri naama sairas suoja
 🤒	naama ja kuumemittari kasvot kipeä kuume lämpö lämpömittari naama sairas
 🤕	naama ja pääside kipeä loukkaantunut naama sairas side vamma
@@ -80,6 +83,7 @@
 😯	järkyttynyt naama sanaton yllättynyt
 😲	ällistynyt ihmetys järkyttynyt naama tosi
 😳	punastunut naama naama punastunut tyrmistynyt vau
+🫪	vääristyneet kasvot ahdistus haavoittuvainen järkyttynyt paniikki turvonnut yllättynyt
 🥺	anova koiranpentuilme sääli
 🥹	kyyneliä pidättelevä naama hämmentynyt itku kiitollinen pidätellä itkua surullinen tunteellinen tunteet vihainen ylpeä
 😦	surullinen ja suu auki auki naama surullinen suu
@@ -153,6 +157,7 @@
 💋	huulipunajälki huulet jälki pusu
 💯	sata pistettä 100 pisteet täydet
 💢	viha pettynyt sarjakuva vihainen
+🫯	tappelupilvi argumentti erimielisyys metakka nujakka paini tappelu väittely
 💥	törmäys pum sarjakuva
 💫	pyörryttävä sarjakuva tähti
 💦	hikipisarat hiki sarjakuva vesi
@@ -397,6 +402,7 @@
 🧟‍♂️	mieszombi elävä kuollut tahdoton voodoo zombie
 🧟‍♀️	naiszombi elävä kuollut tahdoton voodoo zombie
 🧌	trolli fantasia hirviö mörkö mörökölli peikko rölli satuolento trollata
+🫈	karvainen otus isojalka jätti karvainen kryptidi lumimies metsä sasquatch villi-ihminen
 💆	hieronta henkilö hieroja kasvot pääkipu salonki
 💆‍♂️	hieronnassa oleva mies hieronta mies pääkipu rentoutuminen salonki
 💆‍♀️	hieronnassa oleva nainen hieronta nainen
@@ -406,24 +412,43 @@
 🚶	jalankulkija ihminen kävelijä kävellä kävely patikointi
 🚶‍♂️	kävelevä mies kävely mies patikointi
 🚶‍♀️	kävelevä nainen kävely nainen patikointi
+🚶‍➡️	jalankulkija: kohti oikeaa ihminen kohti kävelijä kävellä kävely oikeaa patikointi
+🚶‍♀️‍➡️	kävelevä nainen: kohti oikeaa kohti kävelevä nainen kävely nainen oikeaa patikointi
+🚶‍♂️‍➡️	kävelevä mies: kohti oikeaa kohti kävelevä mies kävely mies oikeaa patikointi
 🧍	seisova henkilö ihminen seisoa seisova
 🧍‍♂️	seisova mies mies seisova
 🧍‍♀️	seisova nainen nainen seisova
 🧎	polvistuva ihminen ihminen polvi polvillaan polvistua polvistuminen
 🧎‍♂️	polvistuva mies mies polvistuva
 🧎‍♀️	polvistuva nainen nainen polvistuva
+🧎‍➡️	polvistuva ihminen: kohti oikeaa ihminen kohti oikeaa polvi polvillaan polvistua polvistuminen
+🧎‍♀️‍➡️	polvistuva nainen: kohti oikeaa kohti nainen oikeaa polvistuva
+🧎‍♂️‍➡️	polvistuva mies: kohti oikeaa kohti mies oikeaa polvistuva
 🧑‍🦯	henkilö ja valkoinen keppi esteettömyys sokea
+🧑‍🦯‍➡️	henkilö ja valkoinen keppi: kohti oikeaa esteettömyys henkilö ja valkoinen keppi kohti oikeaa sokea
 👨‍🦯	mies ja valkoinen keppi esteettömyys mies sokea valkoinen keppi
+👨‍🦯‍➡️	mies ja valkoinen keppi: kohti oikeaa esteettömyys kohti mies oikeaa sokea valkoinen keppi
 👩‍🦯	nainen ja valkoinen keppi esteettömyys nainen sokea
+👩‍🦯‍➡️	nainen ja valkoinen keppi: kohti oikeaa esteettömyys kohti nainen nainen ja valkoinen keppi oikeaa sokea
 🧑‍🦼	henkilö moottoroidussa pyörätuolissa esteettömyys pyörätuoli
+🧑‍🦼‍➡️	henkilö moottoroidussa pyörätuolissa: kohti oikeaa esteettömyys henkilö moottoroidussa pyörätuolissa kohti oikeaa pyörätuoli
 👨‍🦼	mies moottoroidussa pyörätuolissa esteettömyys mies pyörätuoli
+👨‍🦼‍➡️	mies moottoroidussa pyörätuolissa: kohti oikeaa esteettömyys kohti mies mies moottoroidussa pyörätuolissa oikeaa pyörätuoli
 👩‍🦼	nainen moottoroidussa pyörätuolissa esteettömyys nainen pyörätuoli
+👩‍🦼‍➡️	nainen moottoroidussa pyörätuolissa: kohti oikeaa esteettömyys kohti nainen nainen moottoroidussa pyörätuolissa oikeaa pyörätuoli
 🧑‍🦽	henkilö käsikäyttöisessä pyörätuolissa esteettömyys pyörätuoli
+🧑‍🦽‍➡️	henkilö käsikäyttöisessä pyörätuolissa: kohti oikeaa esteettömyys henkilö käsikäyttöisessä pyörätuolissa kohti oikeaa pyörätuoli
 👨‍🦽	mies käsikäyttöisessä pyörätuolissa esteettömyys mies pyörätuoli
+👨‍🦽‍➡️	mies käsikäyttöisessä pyörätuolissa: kohti oikeaa esteettömyys kohti mies mies käsikäyttöisessä pyörätuolissa oikeaa pyörätuoli
 👩‍🦽	nainen käsikäyttöisessä pyörätuolissa esteettömyys nainen pyörätuoli
+👩‍🦽‍➡️	nainen käsikäyttöisessä pyörätuolissa: kohti oikeaa esteettömyys kohti nainen nainen käsikäyttöisessä pyörätuolissa oikeaa pyörätuoli
 🏃	juoksija juokseminen maratoni urheilu
 🏃‍♂️	juokseva mies juokseminen juoksija lenkki mies
 🏃‍♀️	juokseva nainen juokseminen juoksija lenkki nainen urheilu
+🏃‍➡️	juoksija: kohti oikeaa juokseminen kohti maratoni oikeaa urheilu
+🏃‍♀️‍➡️	juokseva nainen: kohti oikeaa juokseminen juoksija kohti lenkki nainen oikeaa urheilu
+🏃‍♂️‍➡️	juokseva mies: kohti oikeaa juokseminen juokseva mies juoksija kohti lenkki mies oikeaa
+🧑‍🩰	balettitanssija baletti tanssija
 💃	tanssiva nainen juhlat nainen salsa tanssi tanssija
 🕺	tanssiva mies mies mies tanssii salsa tango tanssi
 🕴️	levitoiva mies puvussa bisnes mies puku
@@ -526,7 +551,12 @@
 👥	kaksi rintasiluettia rintakuva siluetti
 🫂	halaus hei kiitos näkemiin rakkaus ystävä
 👪️	perhe isä lapsi äiti
+🧑‍🧑‍🧒	perhe: aikuinen, aikuinen, lapsi aikuinen lapsi perhe: aikuinen
+🧑‍🧑‍🧒‍🧒	perhe: aikuinen, aikuinen, lapsi, lapsi aikuinen lapsi perhe: aikuinen
+🧑‍🧒	perhe: aikuinen, lapsi aikuinen lapsi perhe
+🧑‍🧒‍🧒	perhe: aikuinen, lapsi, lapsi aikuinen lapsi perhe
 👣	jalanjäljet jalanjäljki jälki vaatteet vartalo
+🫆	sormenjälki henkilöllisyys johtolanka rikostutkinta turvallisuus
 🐵	apinan naama apina banaani eläin naama
 🐒	apina banaani eläin
 🦍	gorilla eläin
@@ -614,6 +644,7 @@
 🪽	siipi enkeli lentäminen lentää liitää lintu mytologia
 🐦‍⬛	mustarastas eläin korppi lintu luonto musta mustavaris nokka siivekäs varis
 🪿	hanhi eläin hanhen huuto hassu lintu luonto siivekäs
+🐦‍🔥	feeniks fantasia jälleensyntymä jälleensyntynyt kuolematon muuttua reinkarnaatio tulilintu uudelleensyntynyt uudistuminen
 🐸	sammakko naama sammakon naama
 🐊	krokotiili eläin eläintarha
 🐢	kilpikonna
@@ -626,6 +657,7 @@
 🐳	suihkuttava valas naama suihkuttaa valas valtameri vesi
 🐋	valas eläin valtameri
 🐬	delfiini eläin flipper meri pyöriäinen
+🫍	miekkavalas merellinen meri valas
 🦭	hylje eläin meri merileijona
 🐟️	kala horoskooppi horoskooppimerkki kalat
 🐠	trooppinen kala kala trooppinen
@@ -684,11 +716,13 @@
 🪹	tyhjä pesä koti linnunpesä pesiminen pesintä pesä
 🪺	munia pesässä linnunpesä muna munat muninta pesiminen pesintä
 🍄	sieni rihmasto
+🪾	lehdetön puu kelo kuivuus lehdetön oksat paljas talvi
 🍇	viinirypäleet hedelmä kasvi rypäle viinirypäle
 🍈	meloni cantaloupe hedelmä kasvi
 🍉	vesimeloni hedelmä kasvi
 🍊	mandariini appelsiini c-vitamiini hedelmä kasvi
 🍋	sitruuna hedelmä kasvi sitrus
+🍋‍🟩	limetti cocktail hapan hedelmä kirpeä koriste lime margarita mojito raikas salsa sitrus tequila trooppinen vihreä
 🍌	banaani hedelmä kasvi
 🍍	ananas hedelmä kasvi
 🥭	mango hedelmä ruoka tehosekoitin trooppinen
@@ -720,6 +754,8 @@
 🌰	kastanja kasvi pähkinä
 🫚	inkivääri juuri mauste olut ruoka
 🫛	herneenpalko edamame herne palko palkokasvi pavut ruoka vihannes
+🍄‍🟫	ruskea herkkusieni itiö kasvis kasvissyöjä luonto pizzan täytteet portobello ruoka ruskea sieni sieni siitake tryffeli vegetaristi vihannes
+🫜	juures juuri juurikas kasvis kasvissyöjä nauris puutarha retiisi ruoka salaatti
 🍞	leipä aamiainen paahtoleipä pala ravintola vehnä
 🥐	voisarvi croissant leipä ranskalainen ruoka
 🥖	patonki leipä ranskalainen ruoka
@@ -821,6 +857,7 @@
 🧭	kompassi magneettinen navigointi suunnistus
 🏔️	lumihuippuinen vuori kylmä lumi vuori
 ⛰️	vuori vuoristo
+🛘	maanvyörymä kivet maanjäristys mutavyöry onnettomuus vaara vuori vyöry
 🌋	tulivuori sää tulivuorenpurkaus vuori
 🗻	fuji-vuori fuji fuji-vuori vuori
 🏕️	telttailu leiri leirintäalue teltta
@@ -1182,6 +1219,7 @@
 📻️	radio vastaanotin viihde
 🎷	saksofoni instrumentti musiikki
 🎺	trumpetti instrumentti musiikki torvi
+🪊	pasuuna instrumentti jazz liukua musiikki surullinen vaski
 🪗	harmonikka haitari hanuri
 🎸	kitara instrumentti musiikki
 🎹	koskettimet instrumentti musiikki piano syntikka
@@ -1191,6 +1229,7 @@
 🪘	congarumpu conga kongo rumpu rytmi soitin
 🪇	marakassit esine instrumentti kalina lyömäsoittimet musiikki ravista ravistaa rämistä soitin
 🪈	huilu esine instrumentti musiikki nokkahuilu orkesteri pilli puupuhallin soitin säkkipilli urkupilli
+🪉	harppu musiikki orkesteri rakkaus soitin
 📱	kännykkä matkapuhelin mobiili mobiililaite puhelin
 📲	kännykkä ja nuoli matkapuhelin nuoli puhelin puhelu saapuva
 ☎️	puhelin lankapuhelin
@@ -1246,6 +1285,7 @@
 🏷️	lappu etiketti kortti lipuke
 🪙	kolikko aarre hopea kulta metalli raha
 💰️	rahasäkki raha rahapussi säkki
+🪎	aarrearkku arvoesineet hopea jalokivi korut kulta palkinto raha ryöstösaalis vauraus
 💴	yen-seteli pankki raha seteli valuutta yen
 💵	dollariseteli dollari pankki raha seteli valuutta
 💶	euroseteli euro pankki raha seteli valuutta
@@ -1323,11 +1363,13 @@
 ⚖️	vaaka horoskooppi horoskooppimerkki oikeus punnus työkalu
 🦯	valkoinen keppi esteettömyys sokea
 🔗	lenkki ketju
+⛓️‍💥	katkennut ketju irti kahleista katketa ketju käsiraudat vapaus
 ⛓️	ketjut ketju
 🪝	koukku haka koukuttaa
 🧰	työkalulaatikko laatikko mekaaninen pakki työkalu työkalupakki
 🧲	magneetti hevosenkenkä magneettinen negatiivinen positiivinen puoleensavetävä
 🪜	tikkaat askelma kiivetä tikapuut
+🪏	lapio haudata kaivaa kasvi kuoppa puutarha
 ⚗️	tislauskolvi kemia työkalu
 🧪	koeputki kemia kemisti koe laboratorio tiede
 🧫	petrimalja bakteerikasvusto bakteerit biologi laboratorio viljely
@@ -1513,6 +1555,7 @@
 ©️	tekijänoikeusmerkki c tekijänoikeus
 ®️	rekisteröity-merkki r rekisteröity
 ™️	tavaramerkki merkki tm
+🫟	roiske holi maali tahra
 #️⃣	näppäin: # näppäin
 *️⃣	näppäin: * näppäin
 0️⃣	näppäin: 0 0 nolla näppäin
@@ -1658,6 +1701,7 @@
 🇨🇳	lippu: kiina cn lippu
 🇨🇴	lippu: kolumbia co lippu
 🇨🇵	lippu: clippertoninsaari cp lippu
+🇨🇶	lippu: sark cq lippu
 🇨🇷	lippu: costa rica cr lippu
 🇨🇺	lippu: kuuba cu lippu
 🇨🇻	lippu: kap verde cv lippu

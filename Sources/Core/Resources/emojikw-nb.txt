@@ -48,11 +48,14 @@
 😮‍💨	puster ut fjes gisper hviske lettet plystre pust sliten sukk utpust utslitt
 🤥	lyver fjes løgn pinocchio
 🫨	skjelvende fjes ansikt jordskjelv omg overraskelse panikk riste sjokk skjelvende sprøtt vibrere wow ør
+🙂‍↔️	ristende hode nei rister på hodet
+🙂‍↕️	nikkende hode ja nikker
 😌	lettet fjes
 😔	tankefull alvorlig fjes lei seg
 😪	søvnig fjes
 🤤	sikler fjes sikle
 😴	sover fjes gjesp god natt godnatt natt snork sove søvn trett trøtt
+🫩	fjes med poser under øynene fjes kjedelig poser sliten søvnig trøtt utslitt øyne
 😷	fjes med munnbind bakteriemaske fjes sykdom
 🤒	fjes med termometer fjes syk termometer
 🤕	bandasjert hode bandasje fjes skade skadet
@@ -80,6 +83,7 @@
 😯	overrasket fjes stum
 😲	sjokkert fjes overrasket stum
 😳	rødmer fjes rød
+🫪	fordreid fjes angst oppblåst overrasket panikk sjokkert sårbar
 🥺	bedende fjes nåde trygler valpeøyne
 🥹	fjes som holder tilbake tårene beundring følelser glede gråte rørt stolt takknemlig trist tårer ååå
 😦	oppgitt fjes overrasket sjokkert med åpen munn
@@ -153,6 +157,7 @@
 💋	kyssemerke kyss lepper romantikk
 💯	hundre poeng 100 full pott poeng
 💢	sinne følelse sinnesymbol sint tegneserie
+🫯	slåsskampsky bryting bråk diskusjon krangel slagsmål slåssing slåsskamp uenighet
 💥	krasj følelse kollisjon smell tegneserie
 💫	svimmel se stjerner stjerner tegneserie
 💦	svettedråper dråper sprut sprutende svette tegneserie
@@ -397,6 +402,7 @@
 🧟‍♂️	mannlig zombie udød vandød
 🧟‍♀️	kvinnelig zombie udød vandød
 🧌	troll eventyr fantasi fantasy monster nettroll
+🫈	hårete vesen bigfoot gigant hårete kjempe kryptid skog uhyre vesen villmann yeti
 💆	ansiktsmassasje ansikt anspent avslapning hodepine massasje person skjønnhetssalong terapi
 💆‍♂️	mann som får ansiktsmassasje ansikt avslapning hodemassasje mann massasje velvære
 💆‍♀️	kvinne som får ansiktsmassasje ansikt avslapning hodemassasje kvinne massasje velvære
@@ -406,24 +412,43 @@
 🚶	fotgjenger fottur gå gående går gåtur person spasere steg tur
 🚶‍♂️	mannlig fotgjenger fotgjenger gå mann tur
 🚶‍♀️	kvinnelig fotgjenger fotgjenger gå kvinne tur
+🚶‍➡️	fotgjenger: vendt mot høyre fotgjenger fottur gå gående går gåtur høyre mot person spasere steg tur vendt
+🚶‍♀️‍➡️	kvinnelig fotgjenger: vendt mot høyre fotgjenger gå høyre kvinne kvinnelig fotgjenger mot tur vendt
+🚶‍♂️‍➡️	mannlig fotgjenger: vendt mot høyre fotgjenger gå høyre mann mannlig fotgjenger mot tur vendt
 🧍	person som står person stå
 🧍‍♂️	mann som står mann står
 🧍‍♀️	kvinne som står kvinne står
 🧎	person som kneler knele kneler
 🧎‍♂️	mann som kneler kneler mann
 🧎‍♀️	kvinne som kneler kneler kvinne
+🧎‍➡️	person som kneler: vendt mot høyre høyre knele kneler mot person som kneler vendt
+🧎‍♀️‍➡️	kvinne som kneler: vendt mot høyre høyre kneler kvinne kvinne som kneler mot vendt
+🧎‍♂️‍➡️	mann som kneler: vendt mot høyre høyre kneler mann mann som kneler mot vendt
 🧑‍🦯	person med blindestokk blind tilgjengelighet
+🧑‍🦯‍➡️	person med blindestokk: vendt mot høyre blind høyre mot person med blindestokk tilgjengelighet vendt
 👨‍🦯	mann med blindestokk blind mann tilgjengelighet
+👨‍🦯‍➡️	mann med blindestokk: vendt mot høyre blind høyre mann mann med blindestokk mot tilgjengelighet vendt
 👩‍🦯	kvinne med blindestokk blind kvinne tilgjengelighet
+👩‍🦯‍➡️	kvinne med blindestokk: vendt mot høyre blind høyre kvinne kvinne med blindestokk mot tilgjengelighet vendt
 🧑‍🦼	person i motorisert rullestol rullestol tilgjengelighet
+🧑‍🦼‍➡️	person i motorisert rullestol: vendt mot høyre høyre mot person i motorisert rullestol rullestol tilgjengelighet vendt
 👨‍🦼	mann i motorisert rullestol mann motorisert rullestol tilgjengelighet
+👨‍🦼‍➡️	mann i motorisert rullestol: vendt mot høyre høyre mann mot motorisert rullestol tilgjengelighet vendt
 👩‍🦼	kvinne i motorisert rullestol kvinne motorisert rullestol tilgjengelighet
+👩‍🦼‍➡️	kvinne i motorisert rullestol: vendt mot høyre høyre kvinne mot motorisert rullestol tilgjengelighet vendt
 🧑‍🦽	person i manuell rullestol rullestol tilgjengelighet
+🧑‍🦽‍➡️	person i manuell rullestol: vendt mot høyre høyre mot person i manuell rullestol rullestol tilgjengelighet vendt
 👨‍🦽	mann i manuell rullestol mann manuell rullestol tilgjengelighet
+👨‍🦽‍➡️	mann i manuell rullestol: vendt mot høyre høyre mann manuell mot rullestol tilgjengelighet vendt
 👩‍🦽	kvinne i manuell rullestol kvinne manuell rullestol tilgjengelighet
+👩‍🦽‍➡️	kvinne i manuell rullestol: vendt mot høyre høyre kvinne manuell mot rullestol tilgjengelighet vendt
 🏃	løper fart fort idrett jogger jogging løp maraton person rask sport
 🏃‍♂️	mannlig løper jogge løpe mann maraton
 🏃‍♀️	kvinnelig løper jogge kvinne løpe maraton
+🏃‍➡️	løper: vendt mot høyre fart fort høyre idrett jogger jogging løp maraton mot person rask sport vendt
+🏃‍♀️‍➡️	kvinnelig løper: vendt mot høyre høyre jogge kvinne kvinnelig løper løpe maraton mot vendt
+🏃‍♂️‍➡️	mannlig løper: vendt mot høyre høyre jogge løpe mann mannlig løper maraton mot vendt
+🧑‍🩰	ballettdanser ballett danser
 💃	dansende kvinne dans kvinne
 🕺	dansende mann dans mann
 🕴️	svevende mann i dress business dress forretningsmann mann
@@ -526,7 +551,12 @@
 👥	silhuett av byster byste menneske silhuett
 🫂	klem farvel ha det hadet hei kjærlighet omfavnelse takk trøst venner vennskap
 👪️	familie barn far mennesker mor
+🧑‍🧑‍🧒	familie: voksen, voksen, barn barn familie voksen
+🧑‍🧑‍🧒‍🧒	familie: voksen, voksen, barn, barn barn familie voksen
+🧑‍🧒	familie: voksen, barn barn familie voksen
+🧑‍🧒‍🧒	familie: voksen, barn, barn barn familie voksen
 👣	fotavtrykk avtrykk fot fotspor kropp spor
+🫆	fingeravtrykk avtrykk etterforskning identitet innbrudd krim sikkerhet spor teknisk tyveri
 🐵	apefjes ape dyr fjes
 🐒	ape dyr
 🦍	gorilla ape dyr
@@ -614,6 +644,7 @@
 🪽	vinge engel engleaktig englevinge fly flyr fugl himmelsk mytologi
 🐦‍⬛	svart fugl dyr fugl kra kråke nebb ravn svart
 🪿	gås and dum dyr fjærkre fugl gasse gjess klukk tute
+🐦‍🔥	føniks dyr fantasy fugl gjenopplive gjenoppstå ildfugl reinkarnasjon udødelig
 🐸	frosk dyr fjes
 🐊	krokodille dyr
 🐢	skilpadde dyr
@@ -626,6 +657,7 @@
 🐳	sprutende hval dyr hval spruter
 🐋	hval dyr
 🐬	delfin dyr flipper hav strand
+🫍	spekkhogger hav hval sjø
 🦭	sel dyr hav sjøløve
 🐟️	fisk dyr fiskene stjernebilde stjernetegn
 🐠	tropisk fisk dyr fisk tropisk
@@ -684,11 +716,13 @@
 🪹	tomt rede bygge grein gren heim hjem rede reir tomt
 🪺	rede med egg egg fugl grein gren heim hjem rede reir tomt
 🍄	sopp fluesopp
+🪾	bladløst tre dødt stamme tre tørke tørt ufruktbart vinter
 🍇	druer drueklase frukt
 🍈	melon cantaloupe frukt honningmelon
 🍉	vannmelon frukt melon
 🍊	mandarin appelsin c frukt klementin sitrus vitamin
 🍋	sitron frukt sitrus
+🍋‍🟩	lime cocktail frukt garnityr margarita mojito salsa sitrus syrlig tequila tropisk zest
 🍌	banan frukt
 🍍	ananas frukt
 🥭	mango frukt tropisk
@@ -720,6 +754,8 @@
 🌰	kastanje kastanjenøtt nøtt
 🫚	ingefærrot helse ingefær krydder naturlig rot sunn urt øl
 🫛	ertebelg belg bønne bønner erter grønnsak soyabønne sukkerert
+🍄‍🟫	brun sopp mat matsopp natur pizzafyll portobello sjampinjong sopp trøffel vegetar vegetarianer
+🫜	rotgrønnsak bete grønnsak hage kålrot nepe turnips
 🍞	brød loff
 🥐	croissant brød fransk mat
 🥖	bagett baguette brød fransk mat
@@ -821,6 +857,7 @@
 🧭	kompass magnetisk navigasjon orientering
 🏔️	snødekt fjell fjell kaldt snø
 ⛰️	fjell berg
+🛘	jordskred fare fjell jordskjelv katastrofe lavine skred steiner steinsprang
 🌋	vulkan utbrudd vulkanutbrudd
 🗻	fuji-fjellet fjell fuji fuji-fjellet
 🏕️	telttur camping
@@ -1182,6 +1219,7 @@
 📻️	radio radiosignaler teknologi
 🎷	saksofon instrument musikk musikkinstrument sax
 🎺	trompet instrument musikk musikkinstrument
+🪊	trombone brass instrument jazz messing musikk trekkbasun trist
 🪗	trekkspill accordeon concertina danseband gammaldans gammeldans musikk spell spill
 🎸	gitar instrument musikk musikkinstrument
 🎹	piano instrument keyboard musikk musikkinstrument tangenter
@@ -1191,6 +1229,7 @@
 🪘	langtromme beat conga musikk perkusjon rytme tromme
 🪇	marakas cha dans fest instrument maracas musikk perkusjon riste rytme
 🪈	fløyte band blokkfløyte instrument korps musikk orkester treblåseinstrument treblåser
+🪉	harpe amor instrument kjærlighet musikk orkester
 📱	mobiltelefon mobil telefon
 📲	mobiltelefon med pil anrop mobiltelefon pil ring telefon
 ☎️	telefon fasttelefon ringe
@@ -1246,6 +1285,7 @@
 🏷️	etikett merke
 🪙	mynt dollar euro gull kroner metall penger rik rikdom skatt sølv
 💰️	pengesekk dollar penger sekk
+🪎	skattkiste edelstener gull juveler penger premie rikdom skatt sølv velstand verdisaker
 💴	yenseddel penger seddel yen
 💵	dollarseddel dollar penger seddel
 💶	euroseddel euro penger seddel
@@ -1323,11 +1363,13 @@
 ⚖️	likearmet skålvekt balanse rettferdighet stjernetegn vekt vekten verktøy
 🦯	blindestokk blind tilgjengelighet
 🔗	lenke link to ringer
+⛓️‍💥	brutt lenke brutt lenke ødelagt
 ⛓️	kjetting kjede
 🪝	krok buet fange laste lasting lossing løfte løftekrok salgspunkt
 🧰	verktøykasse kasse rød boks skrin verktøy
 🧲	magnet hestesko magnetisk tiltrekning
 🪜	stige klatre steg trinn
+🪏	spade grave hull skuffe spa
 ⚗️	destillerkolbe destillasjonskolbe kjemi verktøy
 🧪	prøverør eksperiment forskning kjemi kjemiker lab reagensrør
 🧫	petriskål bakterie biolog biologi kultur lab
@@ -1513,6 +1555,7 @@
 ©️	opphavsrett copyright
 ®️	registrert varemerke r varemerkesymbol
 ™️	varemerke tm trademark
+🫟	sprut farge flekk holi maling søl
 #️⃣	taster: # taster
 *️⃣	taster: * taster
 0️⃣	taster: 0 0 null tast taster
@@ -1658,6 +1701,7 @@
 🇨🇳	flagg: kina cn flagg
 🇨🇴	flagg: colombia co flagg
 🇨🇵	flagg: clippertonøya cp flagg
+🇨🇶	flagg: sark cq flagg
 🇨🇷	flagg: costa rica cr flagg
 🇨🇺	flagg: cuba cu flagg
 🇨🇻	flagg: kapp verde cv flagg

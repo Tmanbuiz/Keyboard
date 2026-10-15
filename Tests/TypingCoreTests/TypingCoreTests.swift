@@ -206,4 +206,24 @@ final class TypingCoreTests: XCTestCase {
         let data = try JSONEncoder().encode(preferences)
         XCTAssertTrue(try JSONDecoder().decode(KeyboardPreferences.self, from: data).privateMode)
     }
+
+    func testEmojiCatalogIncludesCurrentSetAndAllCategories() {
+        let catalog = EmojiCatalog(maxVersion: 17)
+        XCTAssertGreaterThan(catalog.items.count, 1900)
+        XCTAssertEqual(Set(catalog.items.map(\.group)), Set(EmojiCatalog.groups.map(\.id)))
+        XCTAssertEqual(Set(catalog.items.map(\.emoji)).count, catalog.items.count)
+        XCTAssertNotNil(catalog.item(for: "🫩"))
+    }
+    func testEmojiVersionsDoNotExposeNewCharactersOnOlderSystems() {
+        XCTAssertNil(EmojiCatalog(maxVersion: 15).item(for: "🫩"))
+        XCTAssertNotNil(EmojiCatalog(maxVersion: 16).item(for: "🫩"))
+        XCTAssertTrue(EmojiCatalog(maxVersion: 15).items.allSatisfy { ($0.version ?? 0) <= 15 })
+    }
+    func testEmojiCatalogIncludesMixedToneHandshakesAndSearch() {
+        let catalog = EmojiCatalog(maxVersion: 17)
+        let mixed = "🫱🏻‍🫲🏿"
+        XCTAssertTrue(catalog.item(for: "🤝")?.availableVariants.contains(mixed) == true)
+        XCTAssertEqual(catalog.item(for: mixed)?.emoji, "🤝")
+        XCTAssertFalse(catalog.search("face", languages: ["en"], limit: 500).isEmpty)
+    }
 }

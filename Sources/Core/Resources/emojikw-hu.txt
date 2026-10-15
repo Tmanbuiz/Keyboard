@@ -48,11 +48,14 @@
 😮‍💨	levegőt kifújó arc arc fáradt füst fütty kifúj kilégzés kimerült megkönnyebbülés suttogás sóhaj sóhajtás zihálás
 🤥	hazudó arc arc hazudik hazudó hazudó fej hazudós hazug hosszú orr orr pinokkió szmájli
 🫨	rázkódó arc arc földrengés meglepődés rezeg rázkódó
+🙂‍↔️	vízszintes fejrázás fej fejcsóválás fejrázás nem vízszintes
+🙂‍↕️	függőleges fejrázás bólintás fej függőleges igen
 😌	megkönnyebbült arc arc béke békés megkönnyebbült nyugodt szmájli
 😔	elgondolkodó arc arc borzasztó csalódott elgondolkodó elkeseredett rossz szmájli szomorú tűnődő unott veszít
 😪	álmos arc arc fáradt szmájli szomorú sír álmos ásít
 🤤	nyáladzó fej arc fej folyik a nyála nyál nyáladzó szmájli
 😴	alvó arc alszik alvás arc fáradt jó éjszakát jó éjt lefekvés lefekvés ideje szmájli szundi zzz álmos
+🫩	arc táskás szemekkel arc elnyűtt fáradt kifáradt kimerült késő szemek táskás unatkozik álmos
 😷	arc egészségügyi maszkkal arc beteg betegség egészségügyi maszk gyógyszer maszk orvos szmájli
 🤒	arc lázmérővel arc beteg láza van lázas lázmérő szmájli
 🤕	arc bekötött fejjel arc beütötte a fejét fej fáj kötés szmájli sérülés
@@ -80,6 +83,7 @@
 😯	meglepődött arc arc döbbent elképedt meglepett meglepődött szmájli tátott száj tátva maradt a szája
 😲	lenyűgözött arc arc csodálkozó döbbent elcsodálkozott elképedt lenyűgözött megdöbbent szmájli
 😳	elpirult arc arc elképedt elpirul elvörösödik hitetlen kellemetlen kidülledt szemek kipirult kételkedő kétkedő melege van mi okol szmájli zavarban van
+🫪	eltorzult arc aggodalmas felpuffadt lesokkolt meglepődött pánikoló sebezhető
 🥺	esedező arc arc bociszemek kegyelem kerek szem kiskutyaszemek kérlek kérlek szépen kérlelő könyörgős könyörög lécci légyszi megszán miért ne szomorú sóvárog
 🥹	könnyeivel küszködő arc büszke dühös ellenáll szomorú sír örömteli
 😦	rosszalló arc nyitott szájjal arc ijedt ijesztő meglepett nyitott száj rosszallás szmájli
@@ -153,6 +157,7 @@
 💋	csóknyom ajkak csók romantika rúzs rúzsfolt rúzsnyom szenvedély
 💯	száz pont 100 a+ aha egyetértés egyértelműen hűséges igaz igazság megtartás mindenképpen mutatás remek száz találat teljes tökéletes
 💢	a düh szimbóluma dühös képregény mérges
+🫯	verekedésfelhő birkózás csetepaté dulakodás egyet nem értés verekedés vita
 💥	ütközés bumm csattanás képregény robbanás
 💫	szédülés csillag csillagokat lát fényes hullócsillag képregény
 💦	izzadságcseppek csepp cseppek csobbanás edzés fröccsenés izzadság képregény víz
@@ -397,6 +402,7 @@
 🧟‍♂️	férfi zombi sétáló halott élőhalott élőholt
 🧟‍♀️	női zombi sétáló halott élőhalott élőholt
 🧌	troll képzelet szörny tündérmese
+🫈	szőrös lény erdő jeti nagyláb sasquatch vadember óriás
 💆	arcmasszázs arc fejfájás feszültség kozmetika masszázs masszíroz relaxáció relaxál szalon szépségszalon
 💆‍♂️	férfi arcmasszázson arc arcmasszázs enyhít fejfájás feszültség férfi kozmetika masszázs masszíroz relaxáció relaxál szalon szépségszalon
 💆‍♀️	nő arcmasszázson arc masszázs nő
@@ -406,24 +412,43 @@
 🚶	gyalogos férfi gyaloglás séta sétáló túra
 🚶‍♂️	sétáló férfi férfi séta sétáló túra
 🚶‍♀️	sétáló nő gyalog gyalogol gyalogos megy nő séta sétáló túra
+🚶‍➡️	gyalogos: jobbra néző férfi gyaloglás gyalogos jobbra néző séta sétáló túra
+🚶‍♀️‍➡️	sétáló nő: jobbra néző gyalog gyalogol gyalogos jobbra megy néző nő séta sétáló túra
+🚶‍♂️‍➡️	sétáló férfi: jobbra néző férfi jobbra néző séta sétáló túra
 🧍	álló ember áll álló
 🧍‍♂️	álló férfi férfi áll
 🧍‍♀️	álló nő nő áll
 🧎	térdelő ember térdel térdelő
 🧎‍♂️	térdelő férfi férfi térdel
 🧎‍♀️	térdelő nő nő térdel
+🧎‍➡️	térdelő ember: jobbra néző jobbra néző térdel térdelő térdelő ember
+🧎‍♀️‍➡️	térdelő nő: jobbra néző jobbra néző nő térdel térdelő nő
+🧎‍♂️‍➡️	térdelő férfi: jobbra néző férfi jobbra néző térdel térdelő férfi
 🧑‍🦯	ember fehér bottal akadálymentesség vak
+🧑‍🦯‍➡️	ember fehér bottal: jobbra néző akadálymentesség ember fehér bottal jobbra néző vak
 👨‍🦯	férfi fehér bottal akadálymentesség férfi látássérült vak
+👨‍🦯‍➡️	férfi fehér bottal: jobbra néző akadálymentesség férfi férfi fehér bottal jobbra látássérült néző vak
 👩‍🦯	nő fehér bottal akadálymentesség nő vak
+👩‍🦯‍➡️	nő fehér bottal: jobbra néző akadálymentesség jobbra néző nő nő fehér bottal vak
 🧑‍🦼	ember motoros kerekesszékben akadálymentesség kerekesszék
+🧑‍🦼‍➡️	ember motoros kerekesszékben: jobbra néző akadálymentesség ember motoros kerekesszékben jobbra kerekesszék néző
 👨‍🦼	férfi motoros kerekesszékben akadálymentesség férfi kerekesszék mozgáskorlátozott tolószék
+👨‍🦼‍➡️	férfi motoros kerekesszékben: jobbra néző akadálymentesség férfi férfi motoros kerekesszékben jobbra kerekesszék mozgáskorlátozott néző tolószék
 👩‍🦼	nő motoros kerekesszékben akadálymentesség kerekesszék mozgáskorlátozott nő tolószék
+👩‍🦼‍➡️	nő motoros kerekesszékben: jobbra néző akadálymentesség jobbra kerekesszék mozgáskorlátozott néző nő nő motoros kerekesszékben tolószék
 🧑‍🦽	kerekesszékes ember akadálymentesség kerekesszék
+🧑‍🦽‍➡️	kerekesszékes ember: jobbra néző akadálymentesség jobbra kerekesszék kerekesszékes ember néző
 👨‍🦽	férfi kézi hajtású kerekesszékben akadálymentesség férfi kerekesszék mozgáskorlátozott mozgássérült tolószék
+👨‍🦽‍➡️	férfi kézi hajtású kerekesszékben: jobbra néző akadálymentesség férfi férfi kézi hajtású kerekesszékben jobbra kerekesszék mozgáskorlátozott mozgássérült néző tolószék
 👩‍🦽	nő kézi hajtású kerekesszékben akadálymentesség kerekesszék mozgáskorlátozott nő tolószék
+👩‍🦽‍➡️	nő kézi hajtású kerekesszékben: jobbra néző akadálymentesség jobbra kerekesszék mozgáskorlátozott néző nő nő kézi hajtású kerekesszékben tolószék
 🏃	futó fut futás gyors maraton siet sport
 🏃‍♂️	futó férfi fut futás férfi maraton verseny
 🏃‍♀️	futó nő fut futás futó futónő gyors gyorsaság maraton nő női futó sebesség siet sport verseny
+🏃‍➡️	futó: jobbra néző fut futás futó gyors jobbra maraton néző siet sport
+🏃‍♀️‍➡️	futó nő: jobbra néző fut futás futó futónő gyors gyorsaság jobbra maraton néző nő női futó sebesség siet sport verseny
+🏃‍♂️‍➡️	futó férfi: jobbra néző fut futás futó férfi férfi jobbra maraton néző verseny
+🧑‍🩰	balett-táncos balett táncos
 💃	táncoló nő nő salsa tangó tánc táncol táncoló táncos táncosnő
 🕺	táncoló férfi flamenco férfi salsa tangó tánc táncol táncos
 🕴️	öltönyös, lebegő ember lebegő ember öltöny öltönyös üzletember
@@ -526,7 +551,12 @@
 👥	két ember sziluettje melltől felfelé ember emberek mellszobor sziluett
 🫂	egymást ölelő emberek barátság helló köszönet szerelem viszlát ölel ölelkezés ölelkező emberek ölelés üdv
 👪️	család gyerek
+🧑‍🧑‍🧒	család: felnőtt, felnőtt, gyerek család felnőtt gyerek
+🧑‍🧑‍🧒‍🧒	család: felnőtt, felnőtt, gyerek, gyerek család felnőtt gyerek
+🧑‍🧒	család: felnőtt, gyerek család felnőtt gyerek
+🧑‍🧒‍🧒	család: felnőtt, gyerek, gyerek család felnőtt gyerek
 👣	lábnyomok lábnyom mezítláb nyom nyomok úton
+🫆	ujjlenyomat biztonság bűncselekmény lenyomat nyom nyomozó nyomravezető jel rejtély személyazonosság törvényszék
 🐵	majomfej fej majom állat
 🐒	majom banán állat
 🦍	gorilla állat
@@ -614,6 +644,7 @@
 🪽	szárny angyal angyalszárny madár mitológia repül repülés
 🐦‍⬛	fekete madár fekete holló madár varjú vetési varjú
 🪿	liba bolondos gágog madár szárnyas
+🐦‍🔥	főnix fantasy feltámad halhatatlan reinkarnáció tűzmadár újjászületés
 🐸	békafej béka fej állat
 🐊	krokodil állat
 🐢	teknős teknőc teknősbéka állat
@@ -626,6 +657,7 @@
 🐳	fröcskölő bálna bálna fej fröcskölés állat
 🐋	bálna tengerpart állat óceán
 🐬	delfin flipper tengerpart állat óceán
+🫍	kardszárnyú delfin bálna tengeri állat óceán
 🦭	fóka oroszlánfóka tenger állat
 🐟️	hal csillagjegy halak halászat halászik horoszkóp állat állatöv étel
 🐠	trópusi hal díszhal hal trópusi állat
@@ -684,11 +716,13 @@
 🪹	üres fészek fészek fészekrakás
 🪺	fészek tojásokkal fészek fészekrakás tojások
 🍄	gomba növény
+🪾	levél nélküli fa csupasz fa faanyag halott kiszáradt levél nélküli terméketlen tél törzs ágak
 🍇	szőlő gyümölcs növény étel
 🍈	sárgadinnye gyümölcs növény étel
 🍉	görögdinnye dinnye gyümölcs növény étel
 🍊	mandarin c-vitamin gyümölcs narancs nektarin növény
 🍋	citrom citrusféle gyümölcs keserű növény étel
+🍋‍🟩	lime citrus friss gyümölcs koktél lé margarita mojito salsa tequila trópusi zöld
 🍌	banán gyümölcs kálium
 🍍	ananász gyümölcs növény étel
 🥭	mangó déligyümölcs gyümölcs trópusi étel
@@ -720,6 +754,8 @@
 🌰	gesztenye mogyoró növény étel
 🫚	gyömbérgyökér fűszer gyökér gyömbér sör
 🫛	borsóhüvely bab borsó edamame hüvely hüvelyes zöldség
+🍄‍🟫	barna gomba gomba portobello szarvasgomba természet vega vegetariánus vegán étel
+🫜	gyökérzöldség cékla fehérrépa gyökér kert retek saláta vegetáriánus zöldség étel
 🍞	kenyér vekni étel
 🥐	croissant francia kifli péksütemény péksüti reggeli étel
 🥖	bagett francia kenyér étel
@@ -821,6 +857,7 @@
 🧭	iránytű irány mágneses navigáció tájékozódás
 🏔️	hegy hótakaróval hegy hideg hó
 ⛰️	hegy hegység
+🛘	földcsuszamlás földrengés hegy katasztrófa lavina sziklák sárlavina veszély
 🌋	vulkán katasztrófa kitörés természet tűzhányó vulkánkitörés
 🗻	fudzsi-hegy fudzsi fudzsi-hegy hegy
 🏕️	sátorozás kemping kempingezés sátor
@@ -1182,6 +1219,7 @@
 📻️	rádió rádiókészülék
 🎷	szaxofon hangszer szaxi zene
 🎺	trombita hangszer zene
+🪊	harsona hangszer jazz rézfúvós szomorú zene
 🪗	harmonika hangszer tangóharmonika zene
 🎸	gitár elektromos gitár hangszer zene
 🎹	zenei billentyűzet billentyűzet hangszer szintetizátor zene zongora
@@ -1191,6 +1229,7 @@
 🪘	hosszú dob dob hangszer konga ritmus ütem
 🪇	rumbatök csörgő hangszer ráz zene ütőhangszer
 🪈	fuvola blockflöte fafúvós fife furulya zene
+🪉	hárfa hangszer szerelem zene zenekar ámor
 📱	mobiltelefon kommunikáció mobil rádiótelefon telefon
 📲	mobiltelefon nyíllal hívás kommunikáció, hívásfogadás mobil mobiltelefon nyíl rádiótelefon telefon
 ☎️	telefon
@@ -1246,6 +1285,7 @@
 🏷️	címke cédula árcédula
 🪙	érme arany dollár euró ezüst fém kincs pénz
 💰️	pénzeszsák bank dollár drága fizet gazdag nyer pénz zsák
+🪎	kincsesláda arany drágakő ezüst gazdagság jutalom pénz zsákmány ékszerek érték
 💴	jen bankjegy bank bankjegy bankó jen köteg papírpénz pénz pénznem valuta
 💵	dollár bankjegy bank bankjegy bankó dollár köteg papírpénz pénz pénznem valuta
 💶	euró bankjegy bank bankjegy bankó euró gazdag papírpénz pénz pénznem valuta
@@ -1323,11 +1363,13 @@
 ⚖️	kétkarú mérleg eszköz felszerelés igazság jog mérleg súly tömeg
 🦯	fehér bot akadálymentesség vak
 🔗	kapocs láncszem
+⛓️‍💥	elszakadt lánc bilincs elszakít lánc szabadság szakítás
 ⛓️	lánc láncszemek
 🪝	kampó csapda fogás horog
 🧰	szerszámosláda barkácsolás doboz láda piros doboz szerelő szerszám szerszámok szerszámos doboz szerszámos láda
 🧲	mágnes mágneses negatív patkó patkómágnes pozitív vonz vonzás vonzódás
 🪜	létra fok létrafok mászás
+🪏	ásó elás hó kert lapát lyuk ás ültet
 ⚗️	lombik eszköz felszerelés kémia
 🧪	kémcső kémia kísérlet labor laboratórium tudomány vegyi anyag vegyipar vegyész vegyészet
 🧫	petri-csésze baktérium biológia biológus labor laboratórium petri-csésze tenyészet tenyésztés
@@ -1513,6 +1555,7 @@
 ©️	copyright (szerzői jog által védett) szerzői jog védett
 ®️	registered (bejegyzett) bejegyzett védjegy
 ™️	védjegy bejegyzett védjegy tm
+🫟	fröccsenés csepp festék folt folyadék kiömlik rendetlenség tinta
 #️⃣	gombfej: # gombfej
 *️⃣	gombfej: * gombfej
 0️⃣	gombfej: 0 0 gombfej nulla
@@ -1658,6 +1701,7 @@
 🇨🇳	zászló: kína cn zászló
 🇨🇴	zászló: kolumbia co zászló
 🇨🇵	zászló: clipperton-sziget cp zászló
+🇨🇶	zászló: sark cq zászló
 🇨🇷	zászló: costa rica cr zászló
 🇨🇺	zászló: kuba cu zászló
 🇨🇻	zászló: zöld-foki köztársaság cv zászló

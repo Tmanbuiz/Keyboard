@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build the keyboard's emoji list and search keywords from emojibase-data (MIT licence).
 
-Usage: npm install emojibase-data && python3 Scripts/build_emoji.py node_modules/emojibase-data
-Only emoji up to Unicode Emoji 15.0 are included so every emoji renders on iOS 17.
+Usage: npm install emojibase-data@17.0.0 && python3 Scripts/build_emoji.py node_modules/emojibase-data
+Includes Emoji 17.0 with version metadata so older iOS releases hide unsupported characters.
 """
 import json
 import pathlib
@@ -10,7 +10,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = ROOT / "Sources/Core/Resources"
-MAX_VERSION = 15.0
+MAX_VERSION = 17.0
 # emojibase locale -> keyboard language code
 LOCALES = {"en": "en", "es": "es", "fr": "fr", "pt": "pt", "de": "de", "it": "it", "nl": "nl", "sv": "sv", "nb": "nb",
            "da": "da", "fi": "fi", "pl": "pl", "hu": "hu", "ms": "ms", "ru": "ru", "uk": "uk"}
@@ -23,9 +23,12 @@ def main(source):
     for item in sorted(base, key=lambda x: x.get("order", 1e9)):
         if item.get("group") in (None, 2) or item.get("version", 99) > MAX_VERSION:
             continue
-        # One tone per emoji (multi-person combinations are left to Apple's own keyboard).
+        # Preserve all multi-person tone combinations as well as the five default tones.
         skins = [s["emoji"] for s in item.get("skins", []) if isinstance(s.get("tone"), int) and s.get("version", 99) <= MAX_VERSION]
-        entry = {"e": item["emoji"], "g": item["group"]}
+        entry = {"e": item["emoji"], "g": item["group"], "v": item.get("version", 0), "n": item.get("label", "")}
+        variants = [{"e": v["emoji"], "v": v.get("version", 0)} for v in item.get("skins", []) if v.get("version", 99) <= MAX_VERSION]
+        if variants:
+            entry["a"] = variants
         if len(skins) == 5:
             entry["s"] = skins
         included.append(entry)

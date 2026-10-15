@@ -48,11 +48,14 @@
 😮‍💨	rosto exalando alívio assobio assopro cansada cansaço choque exalar exausta fumaça suspiro triste
 🤥	rosto de mentiroso mentindo mentira mentiroso nariz crescendo pinocchio pinóquio
 🫨	rosto tremendo choque louco loucura meu deus pânico rosto surpresa susto terremoto tremendo vibrar vibração
+🙂‍↔️	cabeça virando de um lado para o outro balançar cabeça balançando na horizontal negar não
+🙂‍↕️	cabeça balançando na vertical confirmação sim
 😌	rosto aliviado alívio em paz rosto zen
 😔	rosto deprimido abatido chateado deprimido desanimado pensativo pra baixo rosto
 😪	rosto sonolento cara de sono rosto rosto com sono
 🤤	rosto babando babando babar rosto salivando
 😴	rosto dormindo boa noite cama cansada cansado cochilo dormindo dormir rosto soneca sono zzz
+🫩	rosto com olheiras cansada cansado cansaço dorminhoco exausta exausto olheiras rosto com bolsas embaixo dos olhos
 😷	rosto com máscara médica doente gripado máscara máscara médica resfriado rosto rosto com máscara
 🤒	rosto com termômetro de cama doente febre febril rosto termômetro
 🤕	rosto com atadura na cabeça acidentado doente ferimento machucado rosto rosto com curativos
@@ -80,6 +83,7 @@
 😯	rosto surpreso espantado rosto surpreso uau
 😲	rosto espantado chocado estupefato rosto totalmente chocado
 😳	rosto ruborizado atordoado deslumbrado horrorizado impressionado rosto ruborizado vergonha
+🫪	rosto distorcido ansiedade chocado inchado pânico surpreso vulnerável
 🥺	rosto implorando implorando olhar de cachorrinho olhos grandes perdão por favor por que não pq não rosto triste
 🥹	rosto segurando as lágrimas admiração alegria chorar com raiva emoção gratidão iti malia lágrimas orgulho por favor resistir tristeza
 😦	rosto franzido com boca aberta aberta assustado boca decepcionado inesperado rosto assustado uau
@@ -153,6 +157,7 @@
 💋	marca de beijo beijo lábios romance
 💯	cem pontos 100 cem certamente certeza conte comigo pontos sem dúvida top total
 💢	símbolo de raiva com raiva emoção engraçado raiva
+🫯	nuvem de briga briga debate desacordo discussão luta tumulto
 💥	colisão emoção engraçado explosão símbolo de colisão
 💫	zonzo brilhante emoção engraçado estrelas olhando para as estrelas
 💦	pingos de suor borrifo com suor emoção engraçado splash suor
@@ -397,6 +402,7 @@
 🧟‍♂️	homem zumbi cazumbi
 🧟‍♀️	mulher zumbi cazumbi
 🧌	troll conto fadas fantasia gigante monstro ogro
+🫈	criatura peluda críptido eua floresta gigante peludo pé grande pé‑grande sasquatch yeti
 💆	pessoa recebendo massagem facial dor de cabeça massagem massagem facial pele relaxar rosto spa tensão
 💆‍♂️	homem recebendo massagem facial acalmar dor de cabeça homem massagem menino relaxamento relaxar rosto salão tenso tensão
 💆‍♀️	mulher recebendo massagem facial massagem mulher relaxamento
@@ -406,24 +412,43 @@
 🚶	pessoa andando andar caminhada caminhar passo pedestre perambulando pessoa
 🚶‍♂️	homem andando andar caminhar homem caminhando
 🚶‍♀️	mulher andando andando andar caminhada caminhando caminhar mulher passeio pedestre perambulando
+🚶‍➡️	pessoa andando: de frente para a direita a andar caminhada caminhar de direita frente para passo pedestre perambulando pessoa
+🚶‍♀️‍➡️	mulher andando: de frente para a direita a andando andar caminhada caminhando caminhar de direita frente mulher para passeio pedestre perambulando
+🚶‍♂️‍➡️	homem andando: de frente para a direita a andar caminhar de direita frente homem andando homem caminhando para
 🧍	pessoa em pé de pé
 🧍‍♂️	homem em pé em pé homem
 🧍‍♀️	mulher em pé em pé mulher
 🧎	pessoa ajoelhando ajoelhado ajoelhar joelhos pedir pessoa por favor
 🧎‍♂️	homem ajoelhando ajoelhado homem
 🧎‍♀️	mulher ajoelhando ajoelhada mulher
+🧎‍➡️	pessoa ajoelhando: de frente para a direita a ajoelhado ajoelhar de direita frente joelhos para pedir pessoa por favor
+🧎‍♀️‍➡️	mulher ajoelhando: de frente para a direita a ajoelhada de direita frente mulher mulher ajoelhando para
+🧎‍♂️‍➡️	homem ajoelhando: de frente para a direita a ajoelhado de direita frente homem homem ajoelhando para
 🧑‍🦯	pessoa com bengala para cego acessibilidade cego
+🧑‍🦯‍➡️	pessoa com bengala para cego: de frente para a direita a acessibilidade cego de direita frente para pessoa com bengala para cego
 👨‍🦯	homem com bengala para cego accessibilidade cego homem
+👨‍🦯‍➡️	homem com bengala para cego: de frente para a direita a accessibilidade cego de direita frente homem homem com bengala para cego para
 👩‍🦯	mulher com bengala para cego accessibilidade cega deficiência visual mulher
+👩‍🦯‍➡️	mulher com bengala para cego: de frente para a direita a accessibilidade cega de deficiência visual direita frente mulher mulher com bengala para cego para
 🧑‍🦼	pessoa em cadeira de rodas motorizada acessibilidade cadeira de rodas
+🧑‍🦼‍➡️	pessoa em cadeira de rodas motorizada: de frente para a direita a acessibilidade cadeira de rodas de direita frente para pessoa em cadeira de rodas motorizada
 👨‍🦼	homem em cadeira de rodas motorizada acessibilidade cadeira de rodas homem
+👨‍🦼‍➡️	homem em cadeira de rodas motorizada: de frente para a direita a acessibilidade cadeira de rodas de direita frente homem homem em cadeira de rodas motorizada para
 👩‍🦼	mulher em cadeira de rodas motorizada acessibilidade cadeira de rodas mulher
+👩‍🦼‍➡️	mulher em cadeira de rodas motorizada: de frente para a direita a acessibilidade cadeira de rodas de direita frente mulher mulher em cadeira de rodas motorizada para
 🧑‍🦽	pessoa em cadeira de rodas manual acessibilidade cadeira de rodas
+🧑‍🦽‍➡️	pessoa em cadeira de rodas manual: de frente para a direita a acessibilidade cadeira de rodas de direita frente para pessoa em cadeira de rodas manual
 👨‍🦽	homem em cadeira de rodas manual acessibilidade cadeira de rodas homem
+👨‍🦽‍➡️	homem em cadeira de rodas manual: de frente para a direita a acessibilidade cadeira de rodas de direita frente homem homem em cadeira de rodas manual para
 👩‍🦽	mulher em cadeira de rodas manual acessibilidade cadeira de rodas mulher
+👩‍🦽‍➡️	mulher em cadeira de rodas manual: de frente para a direita a acessibilidade cadeira de rodas de direita frente mulher mulher em cadeira de rodas manual para
 🏃	pessoa correndo correndo correr corrida esporte maratona maratonista pessoa pressa
 🏃‍♂️	homem correndo corrida esporte homem maratona
 🏃‍♀️	mulher correndo corredora correndo corrida esporte garota guria maratona menina mulher pressa rápida rápido
+🏃‍➡️	pessoa correndo: de frente para a direita a correndo correr corrida de direita esporte frente maratona maratonista para pessoa pressa
+🏃‍♀️‍➡️	mulher correndo: de frente para a direita a corredora correndo corrida de direita esporte frente garota guria maratona menina mulher para pressa rápida rápido
+🏃‍♂️‍➡️	homem correndo: de frente para a direita a corrida de direita esporte frente homem homem correndo maratona para
+🧑‍🩰	bailarina bailarino ballet balé dançarina dançarino
 💃	mulher dançando bailarina dança dançando flamenco mulher pessoas salsa tango vamos dançar
 🕺	homem dançando dançando homem
 🕴️	homem de terno levitando homem homem de terno terno
@@ -526,7 +551,12 @@
 👥	silhueta de bustos amigos busto dupla pessoas silhueta
 🫂	pessoas se abraçando abraçando abraço adeus amizade amor carinho conforto obrigado olá
 👪️	família filho mãe pai pessoas um filho
+🧑‍🧑‍🧒	família: adulto, adulto, criança adulto criança família
+🧑‍🧑‍🧒‍🧒	família: adulto, adulto, criança, criança adulto adultos criança crianças família filha filho
+🧑‍🧒	família: adulto, criança adulto criança família
+🧑‍🧒‍🧒	família: adulto, criança, criança adulto crianças família
 👣	pegadas corpo gravura pé pés descalços rastro
+🫆	impressão digital identidade investigação forense segurança
 🐵	rosto de macaco animal macaco rosto
 🐒	macaco animal
 🦍	gorila animal macaco
@@ -614,6 +644,7 @@
 🪽	asa angelical anjo ascender aviação celestial mitologia pássaro voando voar voar alto
 🐦‍⬛	pássaro preto animal ave bico corvo gralha passarinho preto pássaro
 🪿	ganso animal ave bobo gansos grasno marreco pato pássaro
+🐦‍🔥	fênix fantasia imortal pássaro de fogo reemergir reencarnar reencarnação reincarnação renascer renascimento reviver transformação
 🐸	sapo animal rosto rosto de sapo
 🐊	crocodilo animal jacaré
 🐢	tartaruga animal
@@ -626,6 +657,7 @@
 🐳	baleia esguichando água animal baleia esguicho
 🐋	baleia animal mar oceano
 🐬	golfinho animal oceano
+🫍	orca baleia marinho oceano
 🦭	foca animal animal marinho leão marinho leão-marinho oceano
 🐟️	peixe animal peixes pesca pescar signo de peixes zodíaco
 🐠	peixe tropical animal peixe
@@ -684,11 +716,13 @@
 🪹	ninho vazio aninhando galhos lar ninho passarinho pássaro
 🪺	ninho com ovos aninhando galhos lar ninho ovo ovos passarinho pássaro
 🍄	cogumelo champignon fungo mario planta
+🪾	árvore seca inverno seca árvore sem folhas
 🍇	uvas fruta uva
 🍈	melão fruta
 🍉	melancia fruta
 🍊	tangerina cítrica fruta laranja
 🍋	limão azedo cítrico fruta lima limão siciliano
+🍋‍🟩	lima acidez caipirinha cítrica cítrico drink fruta limonada limão tequila tropical verde
 🍌	banana fruta
 🍍	abacaxi comida fome fruta
 🥭	manga comida fruta tropical
@@ -720,6 +754,8 @@
 🌰	castanha planta
 🫚	gengibre cerveja comida erva especiaria natural raiz saúde tempero
 🫛	vagem comida edamame ervilha feijão grão legume leguminosa pé de feijão vegetal
+🍄‍🟫	cogumelo marrom champignon cogumelo comida fungo fungos natureza trufa vegetal vegetariano
+🫜	tubérculo beterraba legume nabo raiz vegetal
 🍞	pão pão de forma pão para fatiar restaurante torrada tostex
 🥐	croissant café da manhã comida fome pão
 🥖	baguete bisnaga comida pão pão francês
@@ -821,6 +857,7 @@
 🧭	bússola bússola magnética direção magnético navegação norte orientação pontos cardeais ímã
 🏔️	montanha com neve alpes frio montanha neve
 ⛰️	montanha natureza
+🛘	deslizamento avalanche desastre montanha perigo rochas terremoto
 🌋	vulcão erupção vulcânica lava natureza
 🗻	monte fuji montanha monte fuji
 🏕️	acampamento barraca
@@ -1182,6 +1219,7 @@
 📻️	rádio radiola som vídeo
 🎷	saxofone instrumento instrumento musical música sax
 🎺	trompete instrumento instrumento musical música
+🪊	trombone instrumento jazz música sopro triste
 🪗	acordeão concertina instrumento música sanfona
 🎸	guitarra instrumento instrumento musical música
 🎹	teclado musical instrumento instrumento musical música piano teclado
@@ -1191,6 +1229,7 @@
 🪘	tambor comprido atabaque batida comprido conga instrumento percussão ritmo tambor
 🪇	maracás chacoalhar chocalho dança festa instrumento maraca maracas mexer música percussão
 🪈	flauta banda flautim instrumento marcial música orquestra pife pífano sopro tubo
+🪉	harpa amor cupido instrumento música orquestra
 📱	telefone celular celular telefone telefone móvel
 📲	telefone celular com seta celular chamada fazer ligar receber seta smartphone telefone
 ☎️	telefone no gancho gancho telefone
@@ -1246,6 +1285,7 @@
 🏷️	etiqueta identificar rótulo
 🪙	moeda dinheiro dólar euro metal ouro prata real rica rico tesouro
 💰️	saco de dinheiro dinheiro dólares saco
+🪎	baú de tesouro dinheiro joia joias ouro prata prêmio riqueza tesouro
 💴	nota de iene cédula dinheiro grana iene moeda nota
 💵	nota de dólar dinheiro dólar moeda nota nota bancária
 💶	nota de euro cédula dinheiro euro grana moeda nota
@@ -1323,11 +1363,13 @@
 ⚖️	balança ferramenta justiça libra peso zodíaco
 🦯	bengala para cegos acessibilidade bengala cega cego cegueira deficiente visual
 🔗	link anéis corrente dois símbolo vínculo
+⛓️‍💥	corrente quebrada algema corrente liberdade quebrada quebrando quebrar
 ⛓️	correntes corrente metal
 🪝	gancho atração para venda bandido curva pegar prender
 🧰	caixa de ferramentas caixa ferramenta mecânico vermelha
 🧲	ímã atração ferradura magnético positivo-negativo
 🪜	escada degrau mão subir
+🪏	pá buraco cavar pazinha
 ⚗️	alambique ferramenta química
 🧪	tubo de ensaio ciência ensaio experimento experiência laboratório química químico tubo
 🧫	placa de petri bactéria biologia biologista biólogo ciência cultura laboratório petri placa
@@ -1513,6 +1555,7 @@
 ©️	símbolo de copyright copyright direitos autorais
 ®️	símbolo de registrado marca registrada marca registrada “r”
 ™️	símbolo de marca registrada marca registrada marca registrada “tm” símbolo
+🫟	respingo mancha pingo tinta
 #️⃣	tecla: # tecla
 *️⃣	tecla: * tecla
 0️⃣	tecla: 0 0 tecla zero
@@ -1658,6 +1701,7 @@
 🇨🇳	bandeira: china cn bandeira
 🇨🇴	bandeira: colômbia co bandeira
 🇨🇵	bandeira: ilha de clipperton cp bandeira
+🇨🇶	bandeira: sark cq bandeira
 🇨🇷	bandeira: costa rica cr bandeira
 🇨🇺	bandeira: cuba cu bandeira
 🇨🇻	bandeira: cabo verde cv bandeira

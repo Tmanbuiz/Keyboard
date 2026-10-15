@@ -48,11 +48,14 @@
 😮‍💨	muka menghembuskan nafas aduh hembus lega letih menghela nafas merintih muka penat siul tarik nafas
 🤥	muka bohong bohong muka pinocchio
 🫨	muka bergoyang bergegar bergetar cemas gelisah gempa bumi getaran kejutan muka panik terkejut
+🙂‍↔️	menggeleng kepala menggeleng tidak
+🙂‍↕️	mengangguk kepala mengangguk ya
 😌	muka lega aman lega muka tenang zen
 😔	muka bertafakur bosan kecewa mati muka sedih tafakur
 😪	muka mengantuk letih menangis muka sedih tidur
 🤤	muka meliur meliur muka
 😴	muka tidur bosan katil lena letih muka selamat malam tidur zzz
+🫩	muka dengan lingkaran gelap bawah mata kantuk letih mula dengan lingkaran gelap bawah mata penat
 😷	muka memakai topeng perubatan doktor doktor gigi muka perubatan sakit sejuk topeng
 🤒	muka dengan termometer muka sakit termometer tidak sihat
 🤕	muka dengan kepala berbalut cedera kecederaan muka pembalut
@@ -80,6 +83,7 @@
 😯	muka terkejut aman muka terkejut terperanjat
 😲	muka terperanjat hairan muka sama sekali terkejut
 😳	muka malu bingung memerah muka tidak yakin
+🫪	muka herot kebimbangan kembung perut panik terdedah terkejut
 🥺	muka merayu belas kasihan kasihan mata besar memujuk merayu minta muka sayu sedih tolong
 🥹	muka menahan air mata bangga marah menahan menangis sebak sedih
 😦	muka berkerut dengan mulut ternganga berkerut muka mulut terbuka
@@ -153,6 +157,7 @@
 💋	tanda ciuman bibir cium ciuman hati percintaan tanda
 💯	seratus mata 100 penuh seratus skor
 💢	simbol marah berang komik marah
+🫯	awan pergelutan bergaduh gusti hujah kecoh lawan perbahasan perselisihan faham
 💥	pelanggaran bom komik ledakan meletup
 💫	pening bintang komik
 💦	titis peluh komik peluh percikan
@@ -397,6 +402,7 @@
 🧟‍♂️	zombi lelaki bangkai bernyawa mayat hidup
 🧟‍♀️	zombi wanita bangkai bernyawa mayat hidup
 🧌	raksasa fantasi kisah dongeng
+🫈	makhluk berbulu berbulu bigfoot cryptid gergasi hutan sasquatch woodwose yeti
 💆	urut muka berehat kepala muka orang sedang diurut pening rawatan sakit kepala salun spa terapi urut
 💆‍♂️	lelaki diurut muka lelaki muka urut
 💆‍♀️	perempuan diurut muka muka perempuan urut wanita
@@ -406,24 +412,43 @@
 🚶	pejalan kaki berjalan berjalan perlahan jalan kembara jalan kaki lelaki berjalan mendaki orang berjalan
 🚶‍♂️	lelaki berjalan berjalan kaki lelaki
 🚶‍♀️	perempuan berjalan berjalan kaki mendaki perempuan wanita
+🚶‍➡️	pejalan kaki: menghadap kanan berjalan berjalan perlahan jalan kanan kembara jalan kaki lelaki berjalan mendaki menghadap orang berjalan pejalan kaki
+🚶‍♀️‍➡️	perempuan berjalan: menghadap kanan berjalan kaki kanan mendaki menghadap perempuan perempuan berjalan wanita
+🚶‍♂️‍➡️	lelaki berjalan: menghadap kanan berjalan kaki kanan lelaki lelaki berjalan menghadap
 🧍	orang berdiri bangun berdiri
 🧍‍♂️	lelaki berdiri berdiri lelaki
 🧍‍♀️	perempuan berdiri berdiri perempuan
 🧎	orang bersimpuh bersimpuh melutut
 🧎‍♂️	lelaki bersimpuh bersimpuh lelaki
 🧎‍♀️	perempuan bersimpuh bersimpuh perempuan
+🧎‍➡️	orang bersimpuh: menghadap kanan bersimpuh kanan melutut menghadap orang bersimpuh
+🧎‍♀️‍➡️	perempuan bersimpuh: menghadap kanan bersimpuh kanan menghadap perempuan
+🧎‍♂️‍➡️	lelaki bersimpuh: menghadap kanan bersimpuh kanan lelaki menghadap
 🧑‍🦯	orang dengan tongkat putih buta kebolehsampaian
+🧑‍🦯‍➡️	orang dengan tongkat putih: menghadap kanan buta kanan kebolehsampaian menghadap orang dengan tongkat putih
 👨‍🦯	lelaki dengan tongkat putih buta cacat penglihatan kebolehcapaian kelainan upaya putih tongkat
+👨‍🦯‍➡️	lelaki dengan tongkat putih: menghadap kanan buta cacat penglihatan kanan kebolehcapaian kelainan upaya menghadap putih tongkat
 👩‍🦯	perempuan dengan tongkat putih buta kebolecapaian kurang upaya penglihatan perempuan putih tongkat wanita
+👩‍🦯‍➡️	perempuan dengan tongkat putih: menghadap kanan buta kanan kebolecapaian kurang upaya menghadap penglihatan perempuan putih tongkat wanita
 🧑‍🦼	orang dalam kerusi roda bermotor kebolehsampaian kerusi roda
+🧑‍🦼‍➡️	orang dalam kerusi roda bermotor: menghadap kanan kanan kebolehsampaian kerusi roda menghadap orang dalam kerusi roda bermotor
 👨‍🦼	lelaki dalam kerusi roda bermotor bermotor kebolehcapaian kerusi roda lelaki
+👨‍🦼‍➡️	lelaki dalam kerusi roda bermotor: menghadap kanan bermotor kanan kebolehcapaian kerusi roda lelaki menghadap
 👩‍🦼	perempuan dalam kerusi roda bermotor bermotor kebolehcapaian kerusi roda wanita
+👩‍🦼‍➡️	perempuan dalam kerusi roda bermotor: menghadap kanan bermotor kanan kebolehcapaian kerusi roda menghadap wanita
 🧑‍🦽	orang dalam kerusi roda manual kebolehsampaian kerusi roda
+🧑‍🦽‍➡️	orang dalam kerusi roda manual: menghadap kanan kanan kebolehsampaian kerusi roda menghadap orang dalam kerusi roda manual
 👨‍🦽	lelaki dalam kerusi roda manual kebolehcapaian kerusi roda lelaki manual
+👨‍🦽‍➡️	lelaki dalam kerusi roda manual: menghadap kanan kanan kebolehcapaian kerusi roda lelaki manual menghadap
 👩‍🦽	perempuan dalam kereta roda manual kebolehcapaian kerusi roda manual wanita
+👩‍🦽‍➡️	perempuan dalam kereta roda manual: menghadap kanan kanan kebolehcapaian kerusi roda manual menghadap wanita
 🏃	pelari berlari cepat kelajuan lari lumba maraton pantas perlumbaan
 🏃‍♂️	lelaki berlari berlari berlumba lelaki maraton
 🏃‍♀️	perempuan berlari berlari berlumba maraton perempuan wanita
+🏃‍➡️	pelari: menghadap kanan berlari cepat kanan kelajuan lari lumba maraton menghadap pantas pelari perlumbaan
+🏃‍♀️‍➡️	perempuan berlari: menghadap kanan berlari berlumba kanan maraton menghadap perempuan wanita
+🏃‍♂️‍➡️	lelaki berlari: menghadap kanan berlari berlumba kanan lelaki maraton menghadap
+🧑‍🩰	penari balet balet penari
 💃	perempuan menari menari penari perempuan pesta salsa wanita
 🕺	lelaki menari elegan flamenco lelaki menari penari pesta salsa tango tarian
 🕴️	lelaki memakai sut urusan terapung-apung manusia perniagaan sut
@@ -526,7 +551,12 @@
 👥	bayang beberapa dada bayang dada
 🫂	orang berpelukan belaian helo keselesaan peluk persahabatan sahabat sayang selamat tinggal silatulrahim terima kasih
 👪️	keluarga bapa ibu kanak-kanak
+🧑‍🧑‍🧒	keluarga: dewasa, dewasa, kanak-kanak dewasa kanak-kanak keluarga
+🧑‍🧑‍🧒‍🧒	keluarga: dewasa, dewasa, kanak-kanak, kanak-kanak dewasa kanak-kanak keluarga
+🧑‍🧒	keluarga: dewasa, kanak-kanak dewasa kanak-kanak keluarga
+🧑‍🧒‍🧒	keluarga: dewasa, kanak-kanak, kanak-kanak dewasa kanak-kanak keluarga
 👣	jejak kaki badan cetak jalan jejak pakaian
+🫆	cap jari cetak detektif forensik identiti jejak jenayah keselamatan misteri petunjuk
 🐵	muka monyet haiwan monyet muka pisang
 🐒	monyet haiwan pisang
 🦍	gorila haiwan
@@ -614,6 +644,7 @@
 🪽	sayap burung mitos murni penerbangan terbang
 🐦‍⬛	burung hitam burung burung gagak burung kecil burung raven haiwan hitam
 🪿	angsa ayam burung haiwan hon mamai
+🐦‍🔥	burung phoenix burung api burung berapi fantasi lahir semula penjelmaan semula
 🐸	katak haiwan muka
 🐊	buaya haiwan zoo
 🐢	penyu binatang haiwan kura-kura
@@ -626,6 +657,7 @@
 🐳	ikan paus memancutkan air air haiwan ikan paus laut memancut muka pantai
 🐋	ikan paus haiwan laut pantai
 🐬	ikan lumba-lumba binatang haiwan pantai sirip
+🫍	orca ikan paus lautan marin
 🦭	anjing laut binatang haiwan laut singa laut
 🐟️	ikan haiwan makan malam pisces zodiak
 🐠	ikan tropika haiwan ikan tropika
@@ -684,11 +716,13 @@
 🪹	sarang kosong petarangan
 🪺	sarang dengan telur petarangan
 🍄	cendawan fungus kulat
+🪾	pokok tidak berdaun batang dahan kayu kemarau mati musim sejuk pokok tanpa daun tidak berdaun tumbuhan
 🍇	anggur buah anggur buah-buahan
 🍈	tembikai susu buah-buahan
 🍉	tembikai buah-buahan
 🍊	limau tangerin buah-buahan oren vitamin c
 🍋	lemon buah-buahan limau masam sitrus
+🍋‍🟩	limau nipis buah masam sitrus tropikal
 🍌	pisang buah-buahan potasium
 🍍	nanas buah-buahan pina colada tropik
 🥭	mangga buah makanan tropika
@@ -720,6 +754,8 @@
 🌰	buah berangan buah badam tanaman
 🫚	akar halia akar bir halia herba makanan rempah
 🫛	lenggai edamame kacang pea kekacang legum makanan pea sayuran
+🍄‍🟫	cendawan perang alam semula jadi fungus makanan sayur
+🫜	sayur akar akar bit lobak makanan salad sayur taman vegetarian
 🍞	roti gandum karbohidrat makanan restoran sebuku
 🥐	kroisan bulan sabit makanan perancis roti perancis
 🥖	roti baguette makanan roti roti perancis
@@ -821,6 +857,7 @@
 🧭	kompas arah bermagnet magnet mengorientasi navigasi panduan
 🏔️	gunung dengan puncak bersalji gunung salji sejuk
 ⛰️	gunung
+🛘	tanah runtuh bahaya batu bencana gelongsor lumpur gempa bumi gunung runtuhan salji
 🌋	gunung berapi alam semula jadi gunung letusan volkano
 🗻	gunung fuji alam semula jadi fuji gunung jepun
 🏕️	berkhemah
@@ -1182,6 +1219,7 @@
 📻️	radio hiburan video
 🎷	saksofon alat muzik saks
 🎺	trompet alat muzik
+🪊	trombon alat bras jaz muzik sedih sorong tarik
 🪗	akordion alat konsertina kotak himpit muzik
 🎸	gitar alat muzik
 🎹	keyboard muzik alat instrumen keyboard muzik papan nada papan nada muzik piano
@@ -1191,6 +1229,7 @@
 🪘	karatung bongo dram gendang irama konga rentak
 🪇	marakas gahu goncang goyang instrumen muzik perkusi rattle
 🪈	seruling alat muzik alat tiup kayu faif muzik orkestra paip pikolo rekorder
+🪉	hap alat muzik cinta dewa asmara kupid muzik orkestra
 📱	telefon bimbit komunikasi mudah alih sel telefon
 📲	telefon bimbit dengan anak panah anak panah komunikasi mudah alih panggil sel telefon terima
 ☎️	telefon fon
@@ -1246,6 +1285,7 @@
 🏷️	label
 🪙	syiling dolar duit emas euro harta karun kaya logam perak
 💰️	karung duit bayar beg bilion dibayar dolar juta kaya membayar wang
+🪎	peti harta karun barang berharga emas hadiah kekayaan perak permata rampasan wang
 💴	wang kertas yen bank duit duit kertas mata wang wang wang kertas yen
 💵	wang kertas dolar bank dolar duit duit kertas mata wang wang wang kertas
 💶	wang kertas euro bank duit duit kertas euro mata wang wang wang kertas
@@ -1323,11 +1363,13 @@
 ⚖️	neraca timbang alat berat keadilan libra neraca penimbang zodiak
 🦯	tongkat penduga buta kebolehcapaian tongkat
 🔗	pautan rantai
+⛓️‍💥	rantai terputus gari kebebasan pisah putus rantai
 ⛓️	rantai rantaian
 🪝	cangkuk bengkok keluk memancing mengail menjerat tangkapan titik jualan
 🧰	kotak alat alat alatan kotak kotak merah mekanik peralatan perkakas peti
 🧲	magnet bentuk u bermagnet daya magnet daya tarikan ladam ladam kuda negatif penarik positif tarikan
 🪜	tangga anak tangga daki jejak panjat
+🪏	penyodok cedok gali kebun lubang salji taman tanam
 ⚗️	alembic alat kimia
 🧪	tabung uji ahli kimia bahan kimia eksperimen kimia makmal sains
 🧫	piring petri ahli biologi bakteria biologi kultur makmal sains
@@ -1513,6 +1555,7 @@
 ©️	hak cipta c
 ®️	berdaftar r
 ™️	tanda dagangan tanda tm
+🫟	percik cat cecair dakwat kotoran pewarna titis tumpah
 #️⃣	butang kekunci: # butang kekunci
 *️⃣	butang kekunci: * butang kekunci
 0️⃣	butang kekunci: 0 0 butang kekunci kosong
@@ -1658,6 +1701,7 @@
 🇨🇳	bendera: china cn bendera
 🇨🇴	bendera: colombia co bendera
 🇨🇵	bendera: pulau clipperton cp bendera
+🇨🇶	bendera: sark cq bendera
 🇨🇷	bendera: costa rica cr bendera
 🇨🇺	bendera: cuba cu bendera
 🇨🇻	bendera: cape verde cv bendera
