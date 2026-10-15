@@ -30,11 +30,14 @@ final class AppModel: ObservableObject {
     }
     /// With clipboard history on, opening the app saves the latest copy, like the keyboard does.
     func captureClipboardOnOpen() {
-        guard preferences.clipboardHistory else { return }
+        guard preferences.clipboardHistory, !preferences.privateMode else { return }
         let pasteboard = UIPasteboard.general
         guard pasteboard.changeCount != store.lastChangeCount, pasteboard.hasStrings else { return }
+        guard let text = pasteboard.string else { return }
         store.lastChangeCount = pasteboard.changeCount
-        guard let text = pasteboard.string, ClipboardHistory.shouldCapture(text, types: pasteboard.types) else { return }
+        guard ClipboardHistory.shouldCapture(text, types: pasteboard.types) else {
+            clipboardStatus = "Copy skipped: sensitive, empty or over 5,000 characters."; return
+        }
         store.capture(text)
     }
     /// From Apple's Paste button, which never shows the "Allow Paste" question.

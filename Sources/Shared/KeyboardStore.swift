@@ -47,7 +47,10 @@ final class KeyboardStore {
         if canWriteGroup { group?.set(data, forKey: key) }
     }
     var writingRevokedAt: Date? {
-        get { group?.object(forKey: "writing.revokedAt") as? Date ?? local.object(forKey: "writing.revokedAt") as? Date }
+        get {
+            let dates = [group?.object(forKey: "writing.revokedAt") as? Date, local.object(forKey: "writing.revokedAt") as? Date]
+            return dates.compactMap { $0 }.max()
+        }
         set {
             local.set(newValue, forKey: "writing.revokedAt")
             if canWriteGroup { group?.set(newValue, forKey: "writing.revokedAt") }
