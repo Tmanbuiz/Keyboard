@@ -1,4 +1,6 @@
-# Optional private writing and GIF service
+# Writing and GIF backend
+
+**Current TestFlight flow:** built-in Apple sign-in, shared Keychain credentials and Cloudflare/Groq. See [APPLE-SIGNIN.md](../docs/APPLE-SIGNIN.md). The private single-token template below is for developer experiments; the app no longer exposes manual connection import.
 
 For the invited-user Cloudflare/Groq rollout with individual tokens and daily quotas, use [CLOUDFLARE-SETUP.md](CLOUDFLARE-SETUP.md) and `wrangler.public.jsonc`. The configuration below remains a separate private-testing option.
 
@@ -36,7 +38,7 @@ With a Cloudflare account and billing/usage settings you choose:
 3. Choose an unused rate-limit namespace ID in `wrangler.jsonc`; the supplied ID is an example. Check the model is available and choose a suitable model for your languages. The template uses `@cf/meta/llama-3.1-8b-instruct-fp8`.
 4. For GIF search, create a free GIPHY API key at developers.giphy.com and store it with `npx wrangler@4 secret put GIPHY_API_KEY`. The key never reaches the app; the keyboard sends only the search words. GIPHY's terms require showing "Powered by GIPHY", which the keyboard does.
 5. Deploy with `npx wrangler@4 deploy` only after accepting the provider's usage settings and costs.
-6. In the iPhone app's Writing assistant, save `https://YOUR-WORKER.workers.dev/write` and the token. Copy/import the connection separately into the keyboard if desired.
+6. A private-template build requires a custom developer connection UI. The shipping app uses built-in Apple sign-in with the public Worker.
 
 The configured rate limit is 10 requests per minute **per Cloudflare location**, and is eventually consistent. It is not a hard global spend cap. Use account budgets/usage controls and add per-user authentication, authorization and durable accounting before public distribution. Token rotation requires updating the app and keyboard connections.
 

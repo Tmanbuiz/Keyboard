@@ -1,3 +1,5 @@
+> Current TestFlight users sign in with Apple directly in the app. See [built-in sign-in setup](../docs/APPLE-SIGNIN.md). Invitation commands below remain available for owner-managed legacy clients.
+
 # Cloudflare + Groq: invited-user rollout
 
 This is an **invite-only user API**, compatible with the keyboard's existing HTTPS connection format. It does not provide open registration, payments or automatic account sign-in. Each invited user gets a distinct revocable connection. No Groq key or owner admin token is included in the app or sent to users.

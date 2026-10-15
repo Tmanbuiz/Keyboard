@@ -15,11 +15,11 @@ A native iOS keyboard extension and companion app, inspired by useful Android ke
 - Eight themes including Auto (follows light/dark), seven accent colours and optional key outlines.
 
 **Panels** (toolbar above the keys)
-- ☺︎ Emoji, GIFs and stickers: the full Unicode 15.0 emoji set with categories, recents, skin tones and search in 16 languages; GIF search powered by GIPHY through your own service; 16 original stickers. An iMessage sticker pack ships with the app.
+- ☺︎ Emoji, GIFs and stickers: the full Unicode 15.0 emoji set with categories, recents, skin tones and search in 16 languages; GIF search powered by GIPHY through WianTribe AI; 16 original stickers. An iMessage sticker pack ships with the app.
 - 📋 Android-style clipboard: opt-in history of the last 40 texts copied while the keyboard is open, a "just copied" chip, pin/copy/delete, expiry after 1, 7 or 30 days. Password-manager copies are skipped.
 - ⌶ Text editing: arrows, word and line jumps, copy, cut, paste and delete word, with hold-to-repeat.
 - ✍︎ Handwriting: write with a finger; Apple's on-device Vision reads it, with alternatives to swap.
-- ✦ Translate and write: translation with Apple's on-device Translate models and grammar/tone rewriting with Apple Intelligence on iOS 26, falling back to your own service.
+- ✦ Translate and write: translation with Apple's on-device Translate models and grammar/tone rewriting with Apple Intelligence on iOS 26, falling back to WianTribe AI.
 - ⚙︎ Settings and the language picker (hold the language key).
 
 **Companion app** in English, Spanish, French, Portuguese, German and Arabic: setup, practice, settings, languages, clipboard, translation language downloads, a writing assistant and a voice editor for every language Apple's speech recognition supports.

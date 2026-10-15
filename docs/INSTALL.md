@@ -29,7 +29,7 @@ On iOS 26, translation and rewriting run on the iPhone. Download translation lan
 
 Open the app's **Tools → Voice editor**, tap **Start recording**, allow microphone/speech permissions, stop, review and copy the transcript. Return to your message yourself and paste. Speech language availability depends on Apple's support on your device.
 
-For older iPhones, languages Apple doesn't cover, and GIF search, you can connect your own HTTPS service. No service is configured by default. The project includes `Backend/worker.mjs` and setup instructions in `Backend/README.md`. Save the URL and private access token in **Tools → Writing assistant**. For use inside the keyboard, tap **Copy connection for keyboard**, then **✦ → Import service connection from clipboard**. For GIFs, add a GIPHY key to the service (see `Backend/README.md`). The local clipboard transfer expires after two minutes and requires Full Access in the keyboard. Never share that connection JSON; it contains your access token.
+For online rewriting, translation and GIF search, open **Tools → AI account** and sign in with Apple in the TestFlight build. The keyboard reads your connection automatically from shared Keychain storage. Enable **Allow Full Access** for online keyboard features. No connection import is needed. See [APPLE-SIGNIN.md](APPLE-SIGNIN.md) for owner setup and device checks.
 
 ## If iOS keeps showing Apple's keyboard
 

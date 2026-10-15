@@ -126,7 +126,7 @@ public struct SavedPhrase: Codable, Identifiable, Equatable {
 public enum AIEngine: String, Codable, CaseIterable, Identifiable {
     case auto, service
     public var id: String { rawValue }
-    public var title: String { self == .auto ? "Apple first, then my service" : "My own AI service only" }
+    public var title: String { self == .auto ? "Apple first, then WianTribe AI" : "WianTribe AI online" }
 }
 
 public enum WritingAction: String, Codable, CaseIterable, Identifiable {
@@ -219,5 +219,177 @@ public struct CorrectionRecord: Equatable {
         self.original = original; self.replacement = replacement
         contextSuffix = String((String(contextBefore.dropLast(original.count)) + replacement + " ").suffix(64))
     }
-    public func canUndo(context: String) -> Bool { context.hasSuffix(contextSuffix) }
+    public func canUndo(contex…23697 tokens truncated…     // iOS gives keyboards no clipboard notification, so check the change count while the keyboard is on screen.
+        let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in self?.checkClipboard() }
+        RunLoop.main.add(timer, forMode: .common)
+        clipboardTimer = timer
+    }
+
+    func checkClipboard() {
+        guard preferences.clipboardHistory, !preferences.privateMode, hasFullAccess else { return }
+        let pasteboard = UIPasteboard.general
+        let count = pasteboard.changeCount
+        guard count != store.lastChangeCount else { return }
+        guard pasteboard.hasStrings else { store.lastChangeCount = count; return }
+        guard let text = pasteboard.string else {
+            // A keyboard can't show iOS's "Allow Paste?" prompt, so with the default "Ask" setting iOS
+            // returns no text. Stop polling, explain the fix, and try again next time the keyboard opens.
+            clipboardTimer?.invalidate(); clipboardTimer = nil
+            if !clipboardBlocked {
+                clipboardBlocked = true
+                collapseToolbar()
+                if panel == "clips" { rebuildContent() } else if panel == nil { refreshSuggestions() }
+            }
+            return
+        }
+        clipboardBlocked = false
+        store.lastChangeCount = count
+        store.clipboardWorked = true
+        // Only text is kept. Password managers mark their copies, and those are skipped.
+        guard ClipboardHistory.shouldCapture(text, types: pasteboard.types) else { return }
+        if let data = text.data(using: .utf8), (try? JSONDecoder().decode(WritingConnection.self, from: data)) != nil { return }
+        store.capture(text)
+        freshClip = (text, Date())
+        collapseToolbar() // Show the "just copied" chip, like Android's clipboard suggestion.
+        if panel == "clips" { rebuildContent() } else if panel == nil { refreshSuggestions() }
+    }
+
+    /// A "just copied" chip for the suggestion bar, shown for two minutes or until typing starts.
+    func recentClipChoice() -> (String, () -> Void)? {
+        if clipboardBlocked && currentWord.isEmpty {
+            return ("📋 Allow clipboard access", { [weak self] in self?.showPanel("clips") })
+        }
+        guard let clip = freshClip, Date().timeIntervalSince(clip.date) < 120, currentWord.isEmpty else { return nil }
+        return ("📋 " + ClipboardHistory.preview(clip.text, length: 18), { [weak self] in
+            self?.freshClip = nil; self?.insert(clip.text)
+        })
+    }
+
+    func copyToClipboard(_ text: String) {
+        guard hasFullAccess else { setStatus("Copying needs Allow Full Access in Settings"); return }
+        UIPasteboard.general.string = text
+        store.lastChangeCount = UIPasteboard.general.changeCount
+        if preferences.clipboardHistory { store.capture(text) }
+        if panel == "clips" { rebuildContent() }
+        setStatus("Copied. Paste it anywhere")
+    }
+
+    func buildClipboard(_ stack: UIStackView) {
+        panelButton(clipQuery.isEmpty ? "Search clipboard" : "Search: \(clipQuery)", in: stack) { [weak self] in self?.enterSearch(.clips) }
+        if !clipQuery.isEmpty { panelButton("Clear search", in: stack) { [weak self] in self?.clipQuery = ""; self?.rebuildContent() } }
+        if !hasFullAccess {
+            note("To keep what you copy in other apps, turn on Allow Full Access: Settings → General → Keyboard → Keyboards → WianTribe Keyboard. You can still save selected text below.", in: stack)
+        } else if !preferences.clipboardHistory {
+            note("Clipboard history keeps the last \(ClipboardHistory.maxRecent) things you copy, so you can paste them anywhere. It stays on this iPhone, and copies from password managers are skipped.", in: stack)
+            panelButton("Turn on clipboard history", in: stack) { [weak self] in
+                guard let self else { return }
+                self.preferences.clipboardHistory = true
+                self.store.lastChangeCount = -1 // Include what is already on the clipboard.
+                self.savePreferences(); self.showPanel("clips")
+            }
+        } else if clipboardBlocked || !store.clipboardWorked {
+            note(clipboardBlocked
+                 ? "⚠️ iOS is blocking the clipboard. Open Settings → Apps → WianTribe Keyboard → Paste from Other Apps and choose Allow. (If you don't see it, open the WianTribe app → Tools → Clipboard → Test clipboard access first.)"
+                 : "Copy some text in any app, then come back. If nothing appears, open Settings → Apps → WianTribe Keyboard → Paste from Other Apps and choose Allow.", in: stack)
+            panelButton("Check the clipboard again", in: stack) { [weak self] in
+                guard let self else { return }
+                self.clipboardBlocked = false
+                self.store.lastChangeCount = -1
+                self.startClipboardWatch()
+                if !self.clipboardBlocked { self.rebuildContent() }
+                self.setStatus(self.clipboardBlocked ? "Still blocked. Check Paste from Other Apps" : (self.store.clipboardWorked ? "Clipboard access works" : "Nothing new on the clipboard yet"))
+            }
+        }
+        let actions = UIStackView(); actions.axis = .horizontal; actions.distribution = .fillEqually; actions.spacing = 5
+        let copy = button("Copy selected") { [weak self] in
+            guard let self else { return }
+            guard let selected = self.textDocumentProxy.selectedText, !selected.isEmpty else { self.setStatus("Select text in your message first"); return }
+            self.copyToClipboard(selected)
+        }
+        let save = button("Pin selected") { [weak self] in
+            guard let self else { return }
+            guard let selected = self.textDocumentProxy.selectedText, !selected.isEmpty else { self.setStatus("Select text in your message first"); return }
+            self.store.addPhrase(selected); self.rebuildContent(); self.setStatus("Pinned on this device")
+        }
+        let clearRecent = button("Clear recent") { [weak self] in
+            self?.store.clearRecentClips(); self?.freshClip = nil; self?.rebuildContent(); self?.setStatus("Recent clips cleared. Pinned items kept")
+        }
+        for key in [copy, save, clearRecent] { key.titleLabel?.font = .systemFont(ofSize: 13, weight: .medium); actions.addArrangedSubview(key) }
+        actions.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        stack.addArrangedSubview(actions)
+
+        if store.hasGroup {
+            note("Tip: save copies without opening the keyboard: double-tap the back of your iPhone (Back Tap), or Share → Save to WianTribe. Set it up in the WianTribe app → Tools → Clipboard.", in: stack)
+        }
+        let items = ClipboardHistory.ordered(store.phrases).filter { clipQuery.isEmpty || $0.text.localizedCaseInsensitiveContains(clipQuery) }
+        if items.isEmpty {
+            note(preferences.clipboardHistory && hasFullAccess ? "Copy something in any app, then come back to this keyboard. It will appear here." : "Pinned text will appear here. You can paste it while offline.", in: stack)
+            return
+        }
+        var row: UIStackView?
+        for (index, item) in items.enumerated() {
+            if index % 2 == 0 {
+                let next = UIStackView(); next.axis = .horizontal; next.distribution = .fillEqually; next.spacing = 6
+                stack.addArrangedSubview(next); row = next
+            }
+            row?.addArrangedSubview(clipCard(item))
+        }
+        if items.count % 2 == 1 { row?.addArrangedSubview(UIView()) } // Keep the last card half width.
+    }
+
+    func clipCard(_ item: SavedPhrase) -> UIView {
+        let card = UIStackView(); card.axis = .vertical
+        card.backgroundColor = palette.key; card.layer.cornerRadius = 8; card.layer.cornerCurve = .continuous; card.clipsToBounds = true
+        let body = button((item.pinned ? "📌 " : "") + String(item.text.prefix(160))) { [weak self] in
+            self?.insert(item.text); self?.showPanel(nil)
+        }
+        body.titleLabel?.font = .systemFont(ofSize: 13)
+        body.titleLabel?.adjustsFontSizeToFitWidth = false
+        body.titleLabel?.numberOfLines = 3; body.titleLabel?.lineBreakMode = .byTruncatingTail
+        body.titleLabel?.textAlignment = .natural
+        body.contentHorizontalAlignment = .leading; body.contentVerticalAlignment = .top
+        body.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 4, right: 6)
+        body.layer.cornerRadius = 0; body.layer.shadowOpacity = 0
+        body.accessibilityLabel = (item.pinned ? "Pinned: " : "") + String(item.text.prefix(120))
+        body.accessibilityHint = "Pastes this text"
+        body.heightAnchor.constraint(equalToConstant: 62).isActive = true
+
+        let controls = UIStackView(); controls.axis = .horizontal; controls.distribution = .fillEqually; controls.spacing = 1
+        let pin = button(item.pinned ? "Unpin" : "Pin", function: true) { [weak self] in
+            guard let self else { return }
+            var items = self.store.phrases
+            if let i = items.firstIndex(where: { $0.id == item.id }) { items[i].pinned.toggle(); self.store.phrases = items }
+            self.rebuildContent()
+        }
+        let copy = button("Copy", function: true) { [weak self] in self?.copyToClipboard(item.text) }
+        let delete = button("✕", function: true) { [weak self] in
+            self?.store.phrases.removeAll { $0.id == item.id }; self?.rebuildContent()
+        }
+        delete.accessibilityLabel = "Delete"
+        for key in [pin, copy, delete] {
+            key.titleLabel?.font = .systemFont(ofSize: 12, weight: .medium)
+            key.layer.cornerRadius = 0; key.layer.shadowOpacity = 0
+            controls.addArrangedSubview(key)
+        }
+        controls.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        card.addArrangedSubview(body); card.addArrangedSubview(controls)
+        return card
+    }
+
+    /// The text writing tools work on: the selection, or else the paragraph typed before the cursor.
+    func writingSource() -> (text: String, isSelection: Bool)? {
+        if let selected = textDocumentProxy.selectedText, !selected.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return (selected, true) }
+        let paragraph = before.split(separator: "\n", omittingEmptySubsequences: false).last.map(String.init) ?? ""
+        let text = String(paragraph.suffix(1500))
+        return text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : (text, false)
+    }
+
+    func buildServiceRows(_ stack: UIStackView) {
+        if ConnectionVault.load() == nil {
+            note("Open WianTribe → Tools → AI account and sign in with Apple. Your keyboard connects automatically. Allow Full Access is required for online AI.", in: stack)
+        } else {
+            note("WianTribe AI is connected. Manage your account or sign out in WianTribe → Tools → AI account.", in: stack)
+        }
+        note("Voice typing: use Apple's dictation button below the keyboard, or the companion app's Voice editor.", in: stack)
+    }
 }

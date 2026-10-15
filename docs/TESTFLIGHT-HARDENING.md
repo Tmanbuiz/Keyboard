@@ -20,7 +20,7 @@ This change protects AI edits and clipboard deletion, introduces private typing,
 1. In Notes, select text, run AI, then Insert: the selection must remain unchanged. Replace must update only the original selection.
 2. Change the original text during a request: Replace must refuse a mismatch.
 3. Edit a result, cancel once, then edit and accept. Confirm only the accepted result is used. Test Undo with an unchanged cursor and again after moving it.
-4. Save/import a service connection. Check it works, disconnect in the app, and confirm the keyboard refuses its previous connection. Reconnect and verify again.
+4. Sign in with Apple in Tools → AI account. Check writing works in the keyboard without importing anything. Sign out in the app, confirm the keyboard refuses its previous session, then sign in again.
 5. Copy a pinned and unpinned item, delete each in the app, disable Full Access, reopen the keyboard, and confirm neither returns. Copy the same text again and confirm it can be saved as a new item.
 6. Test 5,000 and 5,001 character clipboard entries. Check that rejected content is never truncated or added.
 7. Enable private typing in both Full Access states. Confirm capture/learning pauses and resumes when disabled. Verify Share and Shortcut feedback.
