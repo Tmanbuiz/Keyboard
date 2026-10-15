@@ -500,7 +500,7 @@ private struct PrivacyView: View {
                 Text("Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.")
             }
             Section("When data can leave your device") {
-                Text("Translation and rewriting run on this iPhone when Apple's on-device models support the language. Otherwise, writing tools and GIF search send only the text or search words you choose to WianTribe's Cloudflare service. Online writing is processed by Groq; GIF previews load from GIPHY. Sign in with Apple connects the app and keyboard securely.")
+                Text("Translation and rewriting run on this iPhone when Apple's on-device models support the language. Otherwise, writing tools and GIF search send only the text or search words you choose to WianTribe's online service. GIF previews load from GIPHY. Sign in with Apple connects the app and keyboard securely.")
                 Text("Voice recording is available in this app, with microphone and speech permission. Apple's speech recognition may process audio on Apple's servers when on-device recognition is unavailable.")
             }
             Section("Full Access is optional") {

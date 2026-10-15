@@ -167,7 +167,7 @@ struct AIAccountView: View {
                 Button("Open Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }
             }
             Section("Privacy") {
-                Text("Text is sent to WianTribe's Cloudflare service and Groq only when you request an online writing action. The service keeps account/session identifiers and usage counts; it does not save your submitted text or AI results.")
+                Text("Text is sent to WianTribe's AI service only when you request an online writing action. The service keeps account/session identifiers and usage counts; it does not save your submitted text or AI results.")
                 Text("Deleting your account removes its access and sign-in records. App-specific pseudonymous usage buckets remain for up to 30 days to enforce usage limits. Clipboard entries and locally learned words can be cleared separately in Settings.").font(.caption)
                 Link("Manage Sign in with Apple", destination: URL(string: "https://support.apple.com/102571")!)
             }

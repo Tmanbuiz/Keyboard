@@ -6,7 +6,7 @@ WianTribe Keyboard is designed so that what you type stays on your iPhone. This 
 
 ## What we collect
 
-The app contains no analytics, advertising or tracking SDK. Basic typing stays on your device. Optional online AI uses WianTribe’s Cloudflare service and Groq. We do not sell your data.
+The app contains no analytics, advertising or tracking SDK. Basic typing stays on your device. Optional online AI uses a WianTribe account (Sign in with Apple). We do not sell your data.
 
 ## What stays on your iPhone
 
@@ -23,20 +23,10 @@ Clearing the app's data, removing the keyboard or deleting the app removes this 
 
 Only when you choose these optional features:
 
-- **WianTribe AI.** Sign in with Apple connects the app and keyboard. We request no name or email. Cloudflare verifies Apple identity tokens and stores an app-specific hash of your Apple identifier, hashed session credentials, account status and usage counts. Raw Apple identity tokens are not persisted. Sessions expire after 30 days; expired sessions and sign-in challenges are cleaned up daily. Only text you submit to online writing tools is forwarded to Groq. Our service does not save submitted text or AI output. Infrastructure providers process requests under their terms.
+- **WianTribe AI.** Sign in with Apple connects the app and keyboard. We request no name or email. Our service verifies Apple identity tokens and stores an app-specific hash of your Apple identifier, hashed session credentials, account status and usage counts. Raw Apple identity tokens are not persisted. Sessions expire after 30 days; expired sessions and sign-in challenges are cleaned up daily. Only text you submit to an online writing tool is sent, over HTTPS, to our AI service to produce the result. We do not save submitted text or AI output.
 - **Account deletion.** Delete AI account in Tools → AI account to remove account and session records and revoke all WianTribe sessions. App-specific pseudonymous usage records remain up to 30 days to enforce limits. You can separately remove WianTribe from Sign in with Apple in your Apple Account settings. Clipboard and learned words can be deleted in app settings.
 - **GIFs.** GIF previews and files load from GIPHY's servers (giphy.com), which can see your device's IP address. See GIPHY's privacy policy.
 - **Voice editor.** When you record in the companion app, Apple's speech recognition converts your voice to text. It runs on your device when supported; otherwise Apple may process the audio under Apple's privacy policy. The keyboard itself never uses the microphone.
-
-## Optional AI account (Sign in with Apple)
-
-Online rewriting, summarising and translation need an account so each person gets a fair daily allowance. It is optional; everything else works without it.
-
-If you sign in with Apple, our service stores a one-way hash of your Apple account identifier, a hashed session token and a count of your AI requests per day (deleted after 30 days). We do not receive or store your name, email, Apple password or identity token.
-
-When you use an online writing tool, the text you selected or typed there is sent over HTTPS to our Cloudflare service, which passes it to our AI provider, Groq. WianTribe does not store the text or result and keeps no history. Groq's own terms apply to its processing.
-
-You can sign out, or choose Delete AI account in the app to remove your account and sessions. You can also remove WianTribe from Sign in with Apple in your Apple Account settings.
 
 ## Allow Full Access
 
