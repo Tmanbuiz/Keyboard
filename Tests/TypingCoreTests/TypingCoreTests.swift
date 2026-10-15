@@ -187,4 +187,23 @@ final class TypingCoreTests: XCTestCase {
         let recent = catalog.predictions(for: "love", languages: ["en"], recent: ["🥰"])
         XCTAssertEqual(recent.first?.emoji, "🥰")
     }
+
+    func testClipboardRejectsOversizeWithoutChangingHistory() {
+        let existing = [SavedPhrase(text: "Keep me")]
+        let large = String(repeating: "a", count: ClipboardHistory.maxLength + 1)
+        XCTAssertFalse(ClipboardHistory.shouldCapture(large))
+        XCTAssertEqual(ClipboardHistory.adding(large, to: existing), existing)
+        XCTAssertTrue(ClipboardHistory.shouldCapture(String(large.prefix(ClipboardHistory.maxLength))))
+    }
+    func testClipboardDuplicatePreservesFolder() {
+        var item = SavedPhrase(text: "Hello")
+        item.folder = "Work"
+        XCTAssertEqual(ClipboardHistory.adding("Hello", to: [item]).first?.folder, "Work")
+    }
+    func testPrivateModeSurvivesPreferencesRoundTrip() throws {
+        var preferences = KeyboardPreferences()
+        preferences.privateMode = true
+        let data = try JSONEncoder().encode(preferences)
+        XCTAssertTrue(try JSONDecoder().decode(KeyboardPreferences.self, from: data).privateMode)
+    }
 }

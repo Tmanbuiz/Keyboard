@@ -60,6 +60,7 @@ public struct KeyboardPreferences: Codable, Equatable {
     public var height: Double = 300
     public static let heights: [Double] = [240, 270, 300, 330, 360]
     // Clipboard history is opt-in and stays on this device.
+    public var privateMode = false
     public var clipboardHistory = false
     public var clipboardDays = 7
     public init() {}
@@ -102,6 +103,7 @@ public struct KeyboardPreferences: Codable, Equatable {
         learnWords = (try? c.decodeIfPresent(Bool.self, forKey: .learnWords)) ?? d.learnWords
         height = (try? c.decodeIfPresent(Double.self, forKey: .height)) ?? d.height
         clipboardHistory = (try? c.decodeIfPresent(Bool.self, forKey: .clipboardHistory)) ?? d.clipboardHistory
+        privateMode = (try? c.decodeIfPresent(Bool.self, forKey: .privateMode)) ?? d.privateMode
         clipboardDays = (try? c.decodeIfPresent(Int.self, forKey: .clipboardDays)) ?? d.clipboardDays
     }
 }
@@ -112,6 +114,7 @@ public struct SavedPhrase: Codable, Identifiable, Equatable {
     public var text: String
     public var pinned: Bool
     public var createdAt: Date
+    public var folder: String? = nil
     public init(text: String, pinned: Bool = false, createdAt: Date = Date()) {
         id = UUID(); self.text = String(text.prefix(ClipboardHistory.maxLength)); self.pinned = pinned; self.createdAt = createdAt
     }

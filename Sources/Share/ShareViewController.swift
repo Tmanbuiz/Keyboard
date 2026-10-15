@@ -33,6 +33,10 @@ final class ShareViewController: UIViewController {
     private func save() async {
         let texts = await sharedTexts()
         let store = KeyboardStore()
+        guard !store.preferences.privateMode else {
+            label.text = "Private typing is on. Turn it off to save clipboard entries."
+            extensionContext?.completeRequest(returningItems: nil); return
+        }
         for text in texts where ClipboardHistory.shouldCapture(text) { store.capture(text) }
         let saved = texts.contains { ClipboardHistory.shouldCapture($0) }
         label.text = saved ? NSLocalizedString("Saved to your WianTribe clipboard", comment: "")

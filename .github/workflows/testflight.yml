@@ -18,6 +18,10 @@ jobs:
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
     steps:
       - uses: actions/checkout@v4
+      - name: Test typing engine
+        run: swift test --jobs 2
+      - name: Test writing service boundaries
+        run: node --test Backend/*.test.mjs
       - name: Check secrets are set
         run: |
           missing=""

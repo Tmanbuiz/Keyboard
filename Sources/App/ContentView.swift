@@ -228,6 +228,9 @@ private struct SettingsView: View {
                 Text("Needs Allow Full Access. While the keyboard is open, it keeps text you copy so you can paste it anywhere. Pinned items never expire. Copies from password managers are skipped, and nothing leaves this iPhone.")
             }
             Section {
+                Toggle("Private typing", isOn: $model.preferences.privateMode)
+                Text("Pauses automatic clipboard capture and word learning. Saved items remain available. Explicit AI requests still use the engine you selected.").font(.caption).foregroundStyle(.secondary)
+                NavigationLink("TestFlight feedback") { TesterFeedbackView() }
                 Toggle("Learn my words on this device", isOn: $model.preferences.learnWords)
                 Button("Clear learned words", role: .destructive) { model.clearLearnedWords() }
                 NavigationLink("Privacy & iOS limits") { PrivacyView() }
@@ -356,22 +359,38 @@ private struct PhrasesView: View {
     @EnvironmentObject private var model: AppModel
     @State private var draft = ""
     @State private var clipboardTest = ""
+    @State private var query = ""
+    @State private var pinnedOnly = false
+    @State private var folder = ""
     var body: some View {
         List {
             Section("Pin a phrase") {
                 TextField("Write or paste text to keep", text: $draft, axis: .vertical).lineLimit(2...5)
-                Button("Pin", systemImage: "pin") { model.savePhrase(draft); draft = "" }.disabled(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                Button("Pin", systemImage: "pin") { model.savePhrase(draft); draft = "" }.disabled(!ClipboardHistory.shouldCapture(draft))
+                Text("Each saved entry can contain up to \(ClipboardHistory.maxLength) characters. Longer entries are rejected without truncation.").font(.caption).foregroundStyle(.secondary)
                 Text("Pinned text never expires. Recent copies are kept for \(model.preferences.clipboardDays) day\(model.preferences.clipboardDays == 1 ? "" : "s"), up to \(ClipboardHistory.maxRecent) items.").font(.caption).foregroundStyle(.secondary)
             }
             Section("Clipboard") {
+                Toggle("Pinned only", isOn: $pinnedOnly)
+                Picker("Folder", selection: $folder) {
+                    Text("All folders").tag("")
+                    ForEach(Array(Set(model.phrases.compactMap(\.folder).filter { !$0.isEmpty })).sorted(), id: \.self) { Text($0).tag($0) }
+                }
                 PasteButton(payloadType: String.self) { strings in
                     let text = strings.joined(separator: "\n")
                     DispatchQueue.main.async { model.saveClip(text) }
                 }.labelStyle(.titleAndIcon)
                 if model.phrases.isEmpty { Text("Copied and pinned text will appear here.").foregroundStyle(.secondary) }
-                ForEach(ClipboardHistory.ordered(model.phrases)) { phrase in
+                ForEach(ClipboardHistory.ordered(model.phrases).filter { (!pinnedOnly || $0.pinned) && (folder.isEmpty || $0.folder == folder) && (query.isEmpty || $0.text.localizedCaseInsensitiveContains(query)) }) { phrase in
                     VStack(alignment: .leading, spacing: 10) {
                         Text(phrase.text).lineLimit(6)
+                        TextField("Folder (optional)", text: Binding(
+                            get: { model.phrases.first { $0.id == phrase.id }?.folder ?? "" },
+                            set: { value in
+                                if let i = model.phrases.firstIndex(where: { $0.id == phrase.id }) {
+                                    model.phrases[i].folder = String(value.prefix(40))
+                                }
+                            })).font(.caption)
                         HStack {
                             Button("Copy", systemImage: "doc.on.doc") { UIPasteboard.general.string = phrase.text }
                             Spacer()
@@ -413,7 +432,8 @@ private struct PhrasesView: View {
             } header: { Text("Set up clipboard access") } footer: {
                 Text("In Settings: Paste from Other Apps → Allow. Also turn on clipboard history inside the keyboard: 📋 → Turn on clipboard history.")
             }
-        }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Clipboard")
+        }.searchable(text: $query, prompt: "Search saved text")
+        .scrollContentBackground(.hidden).background(ocean).navigationTitle("Clipboard")
     }
 }
 
@@ -443,7 +463,7 @@ private struct WriterView: View {
             if !status.isEmpty { Section { Text(status).font(.caption) } }
             if !result.isEmpty {
                 Section("Review result") {
-                    Text(result).textSelection(.enabled)
+                    TextEditor(text: $result).frame(minHeight: 150).accessibilityLabel("Edit AI result")
                     Button("Copy result", systemImage: "doc.on.doc") { UIPasteboard.general.string = result; status = "Result copied" }
                     Button("Use as input") { text = result; result = "" }
                 }
@@ -456,13 +476,24 @@ private struct WriterView: View {
                     configured = ConnectionVault.save(connection)
                     status = configured ? "Connection saved in this app's Keychain" : "Enter a valid HTTPS URL and access token"
                 }
+                Button("Test saved connection") {
+                    busy = true; status = "Checking your service…"
+                    request = Task { @MainActor in
+                        defer { busy = false }
+                        do {
+                            _ = try await WritingService.perform(text: "This is a connection test.", action: .grammar, language: .english)
+                            status = "Connection works. Your service answered a test request."
+                        } catch { status = error.localizedDescription }
+                    }
+                }.disabled(busy || !configured)
+                Text("The connection check sends a fixed test sentence to your service and may use provider quota.").font(.caption).foregroundStyle(.secondary)
                 Button("Copy connection for keyboard") {
                     guard let connection = ConnectionVault.load(), let data = try? JSONEncoder().encode(connection), let json = String(data: data, encoding: .utf8) else { return }
                     // The concealed marker keeps this token out of clipboard history.
                     UIPasteboard.general.setItems([["public.utf8-plain-text": json, "org.nspasteboard.ConcealedType": Data()]], options: [.localOnly: true, .expirationDate: Date().addingTimeInterval(120)])
                     status = "Copied for two minutes. In the keyboard tap ✦ → Import writing connection. It contains your private access token."
                 }.disabled(!configured)
-                Button("Disconnect", role: .destructive) { ConnectionVault.save(nil); configured = false; token = ""; status = "Disconnected" }
+                Button("Disconnect", role: .destructive) { ConnectionVault.save(nil); configured = false; token = ""; status = "Disconnected. Imported keyboard connections are also invalidated in builds with shared storage." }
                 Text("A backend template is included in the project. No service is deployed or subscription activated by this app. Provider usage charges may apply to your service.")
                     .font(.caption).foregroundStyle(.secondary)
             }
@@ -506,5 +537,29 @@ private struct PrivacyView: View {
                 Text("The keyboard can't open a microphone or launch the voice editor. Open the app yourself to record, then copy the transcript. Apple's own dictation button may appear below the keyboard on supported devices.")
             }
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Privacy & limits")
+    }
+}
+
+
+private struct TesterFeedbackView: View {
+    @State private var details = ""
+    private var diagnostics: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
+        return "WianTribe Keyboard \(version) (\(build))\n\(UIDevice.current.model), \(UIDevice.current.systemName) \(UIDevice.current.systemVersion)\nShared storage: \(KeyboardStore().hasGroup ? "available" : "unavailable")"
+    }
+    var body: some View {
+        Form {
+            Section("Describe the problem") {
+                TextEditor(text: $details).frame(minHeight: 160)
+                    .accessibilityLabel("Steps to reproduce, expected behaviour and what happened")
+                Text("Include the app you were typing in and the steps to reproduce. Avoid passwords or private messages.").font(.caption)
+            }
+            Section("Build information") { Text(diagnostics).font(.caption).textSelection(.enabled) }
+            Section {
+                ShareLink(item: diagnostics + "\n\n" + details) { Label("Share feedback", systemImage: "square.and.arrow.up") }
+                Text("Review the report and choose where to send it. Typed text, clipboard entries and access tokens are not added automatically.").font(.caption)
+            }
+        }.navigationTitle("TestFlight feedback")
     }
 }

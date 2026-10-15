@@ -26,9 +26,10 @@ struct SaveClipboardIntent: AppIntent {
             }
         }
         guard let value, ClipboardHistory.shouldCapture(value, types: types) else {
-            return .result(dialog: "That can't be saved. Copies from password managers are skipped.")
+            return .result(dialog: "That can't be saved. Copies from password managers and entries over 5,000 characters are skipped.")
         }
         let store = KeyboardStore()
+        guard !store.preferences.privateMode else { return .result(dialog: "Private typing is on. Turn it off to save clipboard entries.") }
         store.capture(value)
         if types.isEmpty == false { store.lastChangeCount = pasteboard.changeCount }
         return .result(dialog: "Saved to WianTribe")

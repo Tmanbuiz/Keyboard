@@ -49,6 +49,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     // Writing assist panel state
     var writingAction: WritingAction?
     var writingTarget: KeyboardLanguage?
+    var writingUndo: (original: String, replacement: String)?
     var writingResult: String?
     var writingError: String?
     var writingVia = "on this iPhone"
@@ -67,6 +68,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     /// While searching emoji or GIFs, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
     var searchQuery = ""
+    var clipQuery = ""
     var emojiGroup = -1 // -1 is recently used
     var mediaTab = "emoji"
     var gifResults: [GifResult] = []
@@ -909,6 +911,15 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func buildSettings(_ stack: UIStackView) {
+        if let undo = writingUndo {
+            panelButton("Undo last AI replacement", in: stack) { [weak self] in
+                guard let self else { return }
+                guard self.textDocumentProxy.selectedText?.isEmpty != false,
+                      self.before.hasSuffix(undo.replacement) else { self.setStatus("Text or cursor changed. Undo is no longer safe"); return }
+                for _ in undo.replacement { self.textDocumentProxy.deleteBackward() }
+                self.textDocumentProxy.insertText(undo.original); self.writingUndo = nil; self.showPanel(nil)
+            }
+        }
         let closes = store.unexpectedCloses
         note("Health: " + (closes == 0 ? "no unexpected closes" : "iOS closed the keyboard unexpectedly \(closes) time\(closes == 1 ? "" : "s"). Please report this with your iPhone model.") + (safeMode ? " Light mode is on for this session." : ""), in: stack)
         if closes > 0 { panelButton("Reset health counter", in: stack) { [weak self] in self?.store.unexpectedCloses = 0; self?.rebuildContent() } }
@@ -928,7 +939,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             self.preferences.accent = all[((all.firstIndex(of: self.preferences.accent) ?? 0) + 1) % all.count]
             self.savePreferences()
         }
-        for (title, keyPath) in [("Key sounds", \KeyboardPreferences.keySounds), ("Key pop-up preview", \KeyboardPreferences.keyPreview), ("Key outlines", \KeyboardPreferences.keyBorders), ("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Emoji suggestions", \KeyboardPreferences.emojiPredictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Clipboard history", \KeyboardPreferences.clipboardHistory), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
+        for (title, keyPath) in [("Key sounds", \KeyboardPreferences.keySounds), ("Key pop-up preview", \KeyboardPreferences.keyPreview), ("Key outlines", \KeyboardPreferences.keyBorders), ("Number row", \KeyboardPreferences.numberRow), ("Autocorrect", \KeyboardPreferences.autocorrect), ("Suggestions", \KeyboardPreferences.predictions), ("Emoji suggestions", \KeyboardPreferences.emojiPredictions), ("Swipe typing", \KeyboardPreferences.swipeTyping), ("Auto capitals", \KeyboardPreferences.autoCapitalization), ("Double-space period", \KeyboardPreferences.doubleSpacePeriod), ("Haptic feedback", \KeyboardPreferences.haptics), ("Private typing (pause capture and learning)", \KeyboardPreferences.privateMode), ("Clipboard history", \KeyboardPreferences.clipboardHistory), ("Learn my words locally", \KeyboardPreferences.learnWords)] {
             panelButton("\(preferences[keyPath: keyPath] ? "✓ " : "○ ")\(title)", in: stack) { [weak self] in
                 guard let self else { return }; self.preferences[keyPath: keyPath].toggle(); self.savePreferences()
             }
@@ -953,7 +964,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     func startClipboardWatch() {
         clipboardTimer?.invalidate(); clipboardTimer = nil
-        guard preferences.clipboardHistory, hasFullAccess else { return }
+        guard preferences.clipboardHistory, !preferences.privateMode, hasFullAccess else { return }
         checkClipboard()
         // iOS gives keyboards no clipboard notification, so check the change count while the keyboard is on screen.
         let timer = Timer(timeInterval: 1, repeats: true) { [weak self] _ in self?.checkClipboard() }
@@ -962,7 +973,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func checkClipboard() {
-        guard preferences.clipboardHistory, hasFullAccess else { return }
+        guard preferences.clipboardHistory, !preferences.privateMode, hasFullAccess else { return }
         let pasteboard = UIPasteboard.general
         let count = pasteboard.changeCount
         guard count != store.lastChangeCount else { return }
@@ -1011,6 +1022,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func buildClipboard(_ stack: UIStackView) {
+        panelButton(clipQuery.isEmpty ? "Search clipboard" : "Search: \(clipQuery)", in: stack) { [weak self] in self?.enterSearch(.clips) }
+        if !clipQuery.isEmpty { panelButton("Clear search", in: stack) { [weak self] in self?.clipQuery = ""; self?.rebuildContent() } }
         if !hasFullAccess {
             note("To keep what you copy in other apps, turn on Allow Full Access: Settings → General → Keyboard → Keyboards → WianTribe Keyboard. You can still save selected text below.", in: stack)
         } else if !preferences.clipboardHistory {
@@ -1055,7 +1068,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if store.hasGroup {
             note("Tip: save copies without opening the keyboard: double-tap the back of your iPhone (Back Tap), or Share → Save to WianTribe. Set it up in the WianTribe app → Tools → Clipboard.", in: stack)
         }
-        let items = ClipboardHistory.ordered(store.phrases)
+        let items = ClipboardHistory.ordered(store.phrases).filter { clipQuery.isEmpty || $0.text.localizedCaseInsensitiveContains(clipQuery) }
         if items.isEmpty {
             note(preferences.clipboardHistory && hasFullAccess ? "Copy something in any app, then come back to this keyboard. It will appear here." : "Pinned text will appear here. You can paste it while offline.", in: stack)
             return

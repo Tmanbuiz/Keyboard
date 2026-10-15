@@ -1,7 +1,7 @@
 import UIKit
 import UniformTypeIdentifiers
 
-enum SearchMode { case emoji, gif }
+enum SearchMode { case emoji, gif, writing, clips }
 
 extension KeyboardViewController {
     /// Panels with their own layout instead of the scrolling list of buttons. Returns false for list panels.
@@ -192,6 +192,11 @@ extension KeyboardViewController {
     }
 
     func exitSearch(returnTo tab: String? = nil) {
+        if searchMode == .writing {
+            searchMode = nil; panel = writingAction == .translate ? "translate" : "writing"
+            rebuildToolbar(); rebuildContent(); return
+        }
+        if searchMode == .clips { searchMode = nil; showPanel("clips"); return }
         searchMode = nil
         if let tab { mediaTab = tab; showPanel("emoji") } else { showPanel(nil) }
     }
@@ -201,7 +206,8 @@ extension KeyboardViewController {
         close.accessibilityLabel = "Cancel search"
         close.widthAnchor.constraint(equalToConstant: 44).isActive = true
         let field = UILabel()
-        let prompt = searchMode == .gif ? "Search GIFs" : "Search emoji"
+        let prompt = searchMode == .writing ? "Edit result" : (searchMode == .clips ? "Search clipboard" : (searchMode == .gif ? "Search GIFs" : "Search emoji"))
+        field.lineBreakMode = .byTruncatingHead
         field.text = searchQuery.isEmpty ? "🔍 \(prompt)" : "🔍 \(searchQuery)▏"
         field.textColor = searchQuery.isEmpty ? palette.text.withAlphaComponent(0.55) : palette.text
         field.font = .systemFont(ofSize: 15); field.backgroundColor = palette.key
@@ -214,8 +220,9 @@ extension KeyboardViewController {
 
     func searchInput(_ text: String) {
         guard text != "\n" else { submitSearch(); return }
-        guard searchQuery.count < 40 else { return }
-        searchQuery += pack.lowercased(text)
+        let editing = searchMode == .writing
+        guard searchQuery.count + text.count <= (editing ? 6000 : 40) else { return }
+        searchQuery += editing ? (shift || capsLock ? pack.uppercased(text) : text) : pack.lowercased(text)
         if shift && !capsLock { shift = false; rebuildContent() }
         rebuildToolbar(); refreshSuggestions()
     }
@@ -227,6 +234,11 @@ extension KeyboardViewController {
     }
 
     func submitSearch() {
+        if searchMode == .writing {
+            guard !searchQuery.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { setStatus("The result cannot be empty"); return }
+            writingResult = searchQuery; exitSearch(); return
+        }
+        if searchMode == .clips { clipQuery = searchQuery; exitSearch(); return }
         let query = searchQuery.trimmingCharacters(in: .whitespaces)
         if searchMode == .gif {
             gifResults = []
@@ -238,6 +250,8 @@ extension KeyboardViewController {
     /// Live emoji results in the suggestion bar as the person types.
     func showSearchResults() {
         clear(suggestionBar)
+        if searchMode == .writing { setStatus("Edit the end of the result · Done saves · ✕ cancels"); return }
+        if searchMode == .clips { setStatus("Type a phrase, then tap Done"); return }
         guard searchMode == .emoji else {
             setStatus(searchQuery.isEmpty ? "Type what you're looking for, then tap Search" : "Tap Search to find “\(searchQuery)” GIFs"); return
         }

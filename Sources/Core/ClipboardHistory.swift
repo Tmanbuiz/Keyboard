@@ -17,19 +17,20 @@ public enum ClipboardHistory {
     public static func shouldCapture(_ text: String, types: [String] = []) -> Bool {
         guard !types.contains(where: sensitiveTypes.contains) else { return false }
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        return !trimmed.isEmpty && text.count <= 20_000
+        return !trimmed.isEmpty && text.count <= maxLength
     }
 
     /// Adds `text` as the newest item. A duplicate moves to the top and keeps its pin.
     public static func adding(_ text: String, to items: [SavedPhrase], pinned: Bool = false,
                               now: Date = Date(), keepDays: Int? = nil) -> [SavedPhrase] {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return items }
+        guard !trimmed.isEmpty, text.count <= maxLength else { return items }
         let stored = String(text.prefix(maxLength))
         var list = items
         var item = SavedPhrase(text: stored, pinned: pinned, createdAt: now)
         if let index = list.firstIndex(where: { $0.text == stored }) {
             item.id = list[index].id
+            item.folder = list[index].folder
             item.pinned = list[index].pinned || pinned
             list.remove(at: index)
         }

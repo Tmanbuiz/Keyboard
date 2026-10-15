@@ -181,7 +181,11 @@ extension KeyboardViewController {
                 UIPasteboard.general.string = result; self.setStatus("Copied")
             })
             actions.addArrangedSubview(writingTile("Insert", symbol: nil, horizontal: true) { [weak self] in
-                self?.textDocumentProxy.insertText(" " + result); self?.showPanel(nil)
+                guard let self else { return }
+                guard self.textDocumentProxy.selectedText?.isEmpty != false else {
+                    self.setStatus("Move the cursor outside the selection to insert without replacing it"); return
+                }
+                self.textDocumentProxy.insertText(result); self.showPanel(nil)
             })
             actions.addArrangedSubview(writingTile("Replace", symbol: nil, horizontal: true) { [weak self] in
                 guard let self else { return }
@@ -191,8 +195,16 @@ extension KeyboardViewController {
                     guard self.before.hasSuffix(source.text) else { self.setStatus("The text changed. Try again"); return }
                     for _ in source.text { self.textDocumentProxy.deleteBackward() }
                 }
-                self.textDocumentProxy.insertText(result); self.showPanel(nil)
+                self.textDocumentProxy.insertText(result)
+                self.writingUndo = (source.text, result)
+                self.showPanel(nil)
             })
+            stack.addArrangedSubview(writingCard([
+                writingTile("Edit", symbol: "pencil", horizontal: true) { [weak self] in
+                    guard let self else { return }
+                    self.enterSearch(.writing); self.searchQuery = result
+                    self.rebuildToolbar(); self.refreshSuggestions()
+                }], height: 44))
         } else {
             actions.addArrangedSubview(writingTile("Try again", symbol: nil, horizontal: true) { [weak self] in
                 guard let self, let target = self.writingTarget else { return }
