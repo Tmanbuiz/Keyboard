@@ -40,5 +40,6 @@
   "observability": {
     "enabled": false
   },
-  "account_id": "e0322348ccaceec8c3f253628259e3f3"
+  "account_id": "e0322348ccaceec8c3f253628259e3f3",
+  "workers_dev": true
 }
