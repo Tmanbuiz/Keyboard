@@ -141,21 +141,24 @@ extension KeyboardViewController {
     }
 
     func buildTranslateMenu(_ stack: UIStackView) {
-        var targets = preferences.activeLanguages
-        if !targets.contains(where: { $0.code == "en" }) { targets.append(.english) }
+        // Every language can be a target: the person's own languages first, then the rest A to Z.
+        let mine = preferences.activeLanguages.map(\.pack)
+        let others = LanguageCatalog.all.filter { pack in !mine.contains { $0.code == pack.code } }.sorted { $0.englishName < $1.englishName }
+        var packs = mine + others
         // Don't offer the language the text is already in.
         if let text = writingSource()?.text, let detected = OnDeviceWriting.detectLanguage(text) {
             let base = Locale.Language(identifier: detected).languageCode
-            let others = targets.filter { Locale.Language(identifier: $0.pack.primaryLanguage).languageCode != base }
-            if !others.isEmpty { targets = others }
+            packs = packs.filter { Locale.Language(identifier: $0.primaryLanguage).languageCode != base }
         }
-        targets = Array(targets.prefix(6))
         note("Translate to:", in: stack)
-        for start in stride(from: 0, to: targets.count, by: 3) {
-            let tiles = targets[start..<min(start + 3, targets.count)].map { target in
-                writingTile(target.pack.englishName, symbol: nil, horizontal: true) { [weak self] in self?.runWritingAssist(.translate, target: target) }
+        for start in stride(from: 0, to: packs.count, by: 3) {
+            let tiles = packs[start..<min(start + 3, packs.count)].map { pack in
+                writingTile(pack.englishName, symbol: nil, horizontal: true) { [weak self] in self?.runWritingAssist(.translate, target: KeyboardLanguage(pack.code)) }
             }
-            stack.addArrangedSubview(writingCard(tiles, height: 44))
+            // Keep a short last row the same width as the others.
+            var row = tiles
+            while row.count < 3 { row.append(UIView()) }
+            stack.addArrangedSubview(writingCard(row, height: 48))
         }
         note("Works on selected text, or on what you've typed in this paragraph. Translation runs on this iPhone once the languages are downloaded in the WianTribe app.", in: stack)
         buildServiceRows(stack)
