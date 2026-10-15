@@ -73,7 +73,7 @@ final class KeyboardStore {
     var phrases: [SavedPhrase] {
         get {
             if let clips: [SavedPhrase] = load("clips.v2", fallback: nil) {
-                var list = clips
+                var list = clips.filter { !deletedClipIDs.contains($0.id) }
                 // Without Full Access the keyboard keeps its own list, but it can still read items saved
                 // by the app, the Share menu or the Shortcut into the App Group, so merge them in.
                 if !canWriteGroup, let data = group?.data(forKey: "clips.v2"),

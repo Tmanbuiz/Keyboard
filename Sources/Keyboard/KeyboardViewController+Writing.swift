@@ -189,14 +189,17 @@ extension KeyboardViewController {
             })
             actions.addArrangedSubview(writingTile("Replace", symbol: nil, horizontal: true) { [weak self] in
                 guard let self else { return }
+                guard self.textDocumentProxy.documentIdentifier == self.writingDocumentID else {
+                    self.setStatus("The text field changed. Run the writing tool again"); return
+                }
                 if source.isSelection {
                     guard self.textDocumentProxy.selectedText == source.text else { self.setStatus("Selection changed. Select the original text again"); return }
                 } else {
-                    guard self.before.hasSuffix(source.text) else { self.setStatus("The text changed. Try again"); return }
+                    guard self.textDocumentProxy.selectedText?.isEmpty != false, self.before.hasSuffix(source.text) else { self.setStatus("The text changed. Try again"); return }
                     for _ in source.text { self.textDocumentProxy.deleteBackward() }
                 }
                 self.textDocumentProxy.insertText(result)
-                self.writingUndo = (source.text, result)
+                self.writingUndo = (source.text, result, self.textDocumentProxy.documentIdentifier)
                 self.showPanel(nil)
             })
             stack.addArrangedSubview(writingCard([
@@ -220,6 +223,7 @@ extension KeyboardViewController {
         guard let source = writingSource() else { setStatus("Type or select some text first"); return }
         onlineTask?.cancel()
         writingAction = action; writingTarget = target; writingResult = nil; writingError = nil
+        writingDocumentID = textDocumentProxy.documentIdentifier
         writingSourceText = source; writingVia = "on this iPhone"
         rebuildContent()
         onlineTask = Task { @MainActor [weak self] in

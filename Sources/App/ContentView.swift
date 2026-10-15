@@ -380,6 +380,7 @@ private struct PhrasesView: View {
                     let text = strings.joined(separator: "\n")
                     DispatchQueue.main.async { model.saveClip(text) }
                 }.labelStyle(.titleAndIcon)
+                if !model.clipboardStatus.isEmpty { Text(model.clipboardStatus).font(.caption) }
                 if model.phrases.isEmpty { Text("Copied and pinned text will appear here.").foregroundStyle(.secondary) }
                 ForEach(ClipboardHistory.ordered(model.phrases).filter { (!pinnedOnly || $0.pinned) && (folder.isEmpty || $0.folder == folder) && (query.isEmpty || $0.text.localizedCaseInsensitiveContains(query)) }) { phrase in
                     VStack(alignment: .leading, spacing: 10) {

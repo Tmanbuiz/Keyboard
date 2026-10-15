@@ -49,7 +49,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     // Writing assist panel state
     var writingAction: WritingAction?
     var writingTarget: KeyboardLanguage?
-    var writingUndo: (original: String, replacement: String)?
+    var writingUndo: (original: String, replacement: String, documentID: UUID)?
+    var writingDocumentID: UUID?
     var writingResult: String?
     var writingError: String?
     var writingVia = "on this iPhone"
@@ -499,7 +500,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         stack.addArrangedSubview(space)
         let period = punctuationKey(".", alternates: [".", "?", "!", "'", "\"", "…", "@", "#"])
         stack.addArrangedSubview(period)
-        let returnKey = button(searchMode == .gif ? "Search" : (searchMode == .emoji ? "Done" : returnTitle), function: true) { [weak self] in self?.returnPressed() }
+        let returnKey = button(searchMode == .gif ? "Search" : (searchMode != nil ? "Done" : returnTitle), function: true) { [weak self] in self?.returnPressed() }
         returnKey.accessibilityLabel = "Return"; stack.addArrangedSubview(returnKey)
         for key in narrowKeys + [comma, period] { key.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.105).isActive = true }
         returnKey.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.16).isActive = true
@@ -914,7 +915,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if let undo = writingUndo {
             panelButton("Undo last AI replacement", in: stack) { [weak self] in
                 guard let self else { return }
-                guard self.textDocumentProxy.selectedText?.isEmpty != false,
+                guard self.textDocumentProxy.documentIdentifier == undo.documentID,
+                      self.textDocumentProxy.selectedText?.isEmpty != false,
                       self.before.hasSuffix(undo.replacement) else { self.setStatus("Text or cursor changed. Undo is no longer safe"); return }
                 for _ in undo.replacement { self.textDocumentProxy.deleteBackward() }
                 self.textDocumentProxy.insertText(undo.original); self.writingUndo = nil; self.showPanel(nil)

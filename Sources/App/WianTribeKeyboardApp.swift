@@ -18,6 +18,7 @@ struct WianTribeKeyboardApp: App {
 @MainActor
 final class AppModel: ObservableObject {
     private let store = KeyboardStore()
+    @Published var clipboardStatus = ""
     @Published var preferences: KeyboardPreferences { didSet { store.preferences = preferences } }
     @Published var phrases: [SavedPhrase] { didSet { store.phrases = phrases } }
     var shared: Bool { store.isShared }
@@ -38,8 +39,9 @@ final class AppModel: ObservableObject {
     }
     /// From Apple's Paste button, which never shows the "Allow Paste" question.
     func saveClip(_ text: String) {
-        guard ClipboardHistory.shouldCapture(text) else { return }
-        store.capture(text); phrases = store.phrases
+        guard !preferences.privateMode else { clipboardStatus = "Private typing is on. Turn it off to save clipboard entries."; return }
+        guard ClipboardHistory.shouldCapture(text) else { clipboardStatus = "Nothing saved: use 1–5,000 characters."; return }
+        store.capture(text); phrases = store.phrases; clipboardStatus = "Saved"
     }
     func savePhrase(_ text: String) { store.addPhrase(text); phrases = store.phrases }
     func clearPersonalData() { store.clearPersonalData(); phrases = [] }
