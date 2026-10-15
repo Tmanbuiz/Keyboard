@@ -10,7 +10,7 @@
     {
       "binding": "DB",
       "database_name": "wiantribe-keyboard-users",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "database_id": "14819c91-27fb-42cd-854e-ea9c7c91d733",
       "migrations_dir": "migrations"
     }
   ],
@@ -39,5 +39,6 @@
   },
   "observability": {
     "enabled": false
-  }
+  },
+  "account_id": "e0322348ccaceec8c3f253628259e3f3"
 }
