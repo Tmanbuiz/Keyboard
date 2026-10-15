@@ -156,7 +156,7 @@ extension KeyboardViewController {
                 writingTile(pack.englishName, symbol: nil, horizontal: true) { [weak self] in self?.runWritingAssist(.translate, target: KeyboardLanguage(pack.code)) }
             }
             // Keep a short last row the same width as the others.
-            var row = tiles
+            var row: [UIView] = tiles
             while row.count < 3 { row.append(UIView()) }
             stack.addArrangedSubview(writingCard(row, height: 48))
         }
