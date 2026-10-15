@@ -143,6 +143,12 @@ extension KeyboardViewController {
     func buildTranslateMenu(_ stack: UIStackView) {
         var targets = preferences.activeLanguages
         if !targets.contains(where: { $0.code == "en" }) { targets.append(.english) }
+        // Don't offer the language the text is already in.
+        if let text = writingSource()?.text, let detected = OnDeviceWriting.detectLanguage(text) {
+            let base = Locale.Language(identifier: detected).languageCode
+            let others = targets.filter { Locale.Language(identifier: $0.pack.primaryLanguage).languageCode != base }
+            if !others.isEmpty { targets = others }
+        }
         targets = Array(targets.prefix(6))
         note("Translate to:", in: stack)
         for start in stride(from: 0, to: targets.count, by: 3) {
@@ -234,7 +240,16 @@ extension KeyboardViewController {
                 self.finishWriting(action, nil, via, "Sign in: WianTribe app → Tools → AI account"); return
             }
             if useApple { do {
-                if action == .translate { result = try await OnDeviceWriting.translate(source.text, to: target) }
+                if action == .translate {
+                    do { result = try await OnDeviceWriting.translate(source.text, to: target) }
+                    catch let error as OnDeviceError {
+                        // Apple's translation can be missing in a keyboard or a language pack not downloaded:
+                        // let the on-device language model translate instead when it knows the language.
+                        if case .sameLanguage = error { throw error }
+                        guard OnDeviceWriting.supportsRewrite(language: target.code) else { throw error }
+                        result = try await OnDeviceWriting.rewrite(source.text, action: .translate, language: target)
+                    }
+                }
                 else if OnDeviceWriting.supportsRewrite(language: self.preferences.language.code) {
                     result = try await OnDeviceWriting.rewrite(source.text, action: action, language: target)
                 }

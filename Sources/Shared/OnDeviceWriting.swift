@@ -8,11 +8,12 @@ import Translation
 #endif
 
 enum OnDeviceError: LocalizedError {
-    case unavailable, languageNotInstalled(String), unknownLanguage
+    case unavailable, languageNotInstalled(String), unknownLanguage, sameLanguage(String)
     var errorDescription: String? {
         switch self {
         case .unavailable: return "On-device writing isn't available on this iPhone."
         case .languageNotInstalled(let name): return "Download \(name) for translation: open the WianTribe app → Tools → Translation languages."
+        case .sameLanguage(let name): return "This text is already in \(name). Pick a different language to translate to."
         case .unknownLanguage: return "Couldn't tell which language this text is in."
         }
     }
@@ -74,6 +75,7 @@ enum OnDeviceWriting {
             guard let source = detectLanguage(text) else { throw OnDeviceError.unknownLanguage }
             let sourceLanguage = Locale.Language(identifier: source)
             let targetLanguage = Locale.Language(identifier: target.pack.primaryLanguage)
+            if sourceLanguage.languageCode == targetLanguage.languageCode { throw OnDeviceError.sameLanguage(target.pack.englishName) }
             let status = await LanguageAvailability().status(from: sourceLanguage, to: targetLanguage)
             switch status {
             case .installed:
