@@ -9,16 +9,20 @@ What's ready in this repository, and what only you can do.
 1. **Join the Apple Developer Program** ($99 USD/year) as an individual or as WianTribe Inc. (organisation enrolment needs a D-U-N-S number).
 2. **Register bundle IDs** `com.wiantribe.keyboard`, `com.wiantribe.keyboard.extension`, `com.wiantribe.keyboard.share` and `com.wiantribe.keyboard.stickers`. Add the App Group `group.com.wiantribe.keyboard` to the app, keyboard and share IDs, then run `python3 Scripts/generate_project.py --shared-container` before archiving. The App Group is required for the App Store build: it is how items saved by the Share menu, the Shortcut and the app reach the keyboard.
 3. **Test on real iPhones** using [DEVICE-TESTING.md](DEVICE-TESTING.md), ideally one older model and one with Apple Intelligence, plus an iPad.
-4. **Publish the privacy policy** ([PRIVACY.md](PRIVACY.md)) at a public URL, for example wiantribe.com/keyboard/privacy, after filling in the date and support email.
+4. ~~Publish the privacy policy~~ Done: https://wiantribe.com/keyboard/privacy ([PRIVACY.md](PRIVACY.md)).
 5. **Have native speakers review** the app translations (Spanish, French, Portuguese, German, Arabic) in `Scripts/data/app-translations.json`, then run `python3 Scripts/build_strings.py`.
 6. **Create the app in App Store Connect**, upload a build from Xcode (Product → Archive), add screenshots and submit.
 7. **Decide pricing.** Free with optional paid themes or languages needs StoreKit work that isn't built yet.
 
 ## App Store privacy answers ("App Privacy")
 
-- **Data collection:** "No, we do not collect data from this app." WianTribe receives nothing. Text sent to a service the user connects goes to their own server, not to WianTribe.
+- **Data collection:** Yes, only for the optional AI account (Sign in with Apple):
+  - **Identifiers → User ID** (hashed Apple account identifier): linked to the user, used for App Functionality, not used for tracking.
+  - **Usage Data → Product Interaction** (daily AI request count): linked to the user, App Functionality, not tracking.
+  - Typing, text sent to writing tools (processed in real time, not stored), name and email are **not** collected.
 - **Tracking:** No.
-- The included `PrivacyInfo.xcprivacy` declares no collected data and the UserDefaults reason codes.
+- `Configuration/PrivacyInfo.xcprivacy` declares the same two data types and the UserDefaults reason codes. Privacy policy: https://wiantribe.com/keyboard/privacy. Support URL: https://wiantribe.com/keyboard.
+- **Before public release:** apps with Sign in with Apple must revoke the Apple grant when an account is deleted (Guideline 5.1.1(v)); see APPLE-SIGNIN.md.
 
 ## Review notes (paste into App Review Information)
 
@@ -28,7 +32,7 @@ What's ready in this repository, and what only you can do.
 >
 > Clipboard: there is no background monitoring. The keyboard reads the clipboard only while it is on screen and the user has turned on clipboard history (off by default); items can also be saved explicitly through the "Save to WianTribe" share extension, the "Save Clipboard to WianTribe" App Intent (Shortcuts, Siri, Back Tap, Action button) or the system Paste button in the app. Everything stays on device in the App Group.
 >
-> GIF search and server-based writing tools require the user's own service and are not configured in this build; the GIF tab explains this. No account or login is needed.
+> Optional online AI (rewrite, summarise, translate) uses Sign in with Apple: open the app → Tools → AI account and sign in with any Apple ID; no other account or password exists. Typing and every other feature work without signing in. Account deletion is in the same screen. GIF search is not configured in this build.
 
 Relevant guidelines: 4.4.1 (keyboard extensions), 5.1.1 (privacy). The keyboard provides a globe key when iOS requires one, works without network access and without Full Access, and offers number and decimal input through iOS's own pads.
 

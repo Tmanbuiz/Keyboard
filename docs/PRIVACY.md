@@ -1,6 +1,6 @@
 # WianTribe Keyboard privacy policy
 
-*Effective: [date of App Store release]. Publisher: WianTribe Inc. Contact: [support email].*
+*Last updated: October 15, 2026. Publisher: WianTribe Inc. Contact: atoyejet@gmail.com. Published at https://wiantribe.com/keyboard/privacy*
 
 WianTribe Keyboard is designed so that what you type stays on your iPhone. This policy explains what the keyboard and its companion app do with your information.
 
@@ -28,6 +28,16 @@ Only when you choose these optional features:
 - **GIFs.** GIF previews and files load from GIPHY's servers (giphy.com), which can see your device's IP address. See GIPHY's privacy policy.
 - **Voice editor.** When you record in the companion app, Apple's speech recognition converts your voice to text. It runs on your device when supported; otherwise Apple may process the audio under Apple's privacy policy. The keyboard itself never uses the microphone.
 
+## Optional AI account (Sign in with Apple)
+
+Online rewriting, summarising and translation need an account so each person gets a fair daily allowance. It is optional; everything else works without it.
+
+If you sign in with Apple, our service stores a one-way hash of your Apple account identifier, a hashed session token and a count of your AI requests per day (deleted after 30 days). We do not receive or store your name, email, Apple password or identity token.
+
+When you use an online writing tool, the text you selected or typed there is sent over HTTPS to our Cloudflare service, which passes it to our AI provider, Groq. WianTribe does not store the text or result and keeps no history. Groq's own terms apply to its processing.
+
+You can sign out, or choose Delete AI account in the app to remove your account and sessions. You can also remove WianTribe from Sign in with Apple in your Apple Account settings.
+
 ## Allow Full Access
 
 iOS asks whether to "Allow Full Access" for third-party keyboards. You can type normally without it. It is needed only for clipboard history, GIFs, copying stickers, haptics and online AI. Turning it on does not start any background uploads.
@@ -42,4 +52,4 @@ We will update this page if the app's handling of information changes, and note 
 
 ## Contact
 
-Questions: [support email].
+Questions: atoyejet@gmail.com.
