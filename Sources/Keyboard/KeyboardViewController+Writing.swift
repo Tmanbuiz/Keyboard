@@ -231,7 +231,7 @@ extension KeyboardViewController {
             var result: String?, via = "on this iPhone", failure: Error?
             let useApple = self.preferences.aiEngine == .auto
             if !useApple && ConnectionVault.load() == nil {
-                self.finishWriting(action, nil, via, "Connect your AI service: WianTribe app → Tools → Writing assistant"); return
+                self.finishWriting(action, nil, via, "Sign in: WianTribe app → Tools → AI account"); return
             }
             if useApple { do {
                 if action == .translate { result = try await OnDeviceWriting.translate(source.text, to: target) }
@@ -244,7 +244,7 @@ extension KeyboardViewController {
                 do { result = try await WritingService.perform(text: source.text, action: action, language: target); via = "by your service" }
                 catch { failure = error }
             }
-            self.finishWriting(action, result, via, failure?.localizedDescription ?? "Connect your WianTribe service in the app to use this here")
+            self.finishWriting(action, result, via, failure?.localizedDescription ?? "Sign in in WianTribe → Tools → AI account")
         }
     }
 

@@ -188,7 +188,7 @@ extension KeyboardViewController {
         grid.columns = 3
         guard hasFullAccess else { setStatus("GIFs need Allow Full Access in Settings"); return }
         guard GifService.isConfigured else {
-            setStatus("Connect your WianTribe service in the app to search GIFs"); return
+            setStatus("Sign in in WianTribe → Tools → AI account to search GIFs"); return
         }
         let results = gifResults
         grid.items = results.map { .remoteImage($0.preview, label: $0.title ?? "GIF") }
