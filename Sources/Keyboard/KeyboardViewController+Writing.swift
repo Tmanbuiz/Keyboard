@@ -238,30 +238,36 @@ extension KeyboardViewController {
         onlineTask = Task { @MainActor [weak self] in
             guard let self else { return }
             var result: String?, via = "on this iPhone", failure: Error?
-            let useApple = self.preferences.aiEngine == .auto
-            if !useApple && ConnectionVault.load() == nil {
+            let preferService = self.preferences.aiEngine == .service
+            if preferService && ConnectionVault.load() == nil {
                 self.finishWriting(action, nil, via, "Sign in: WianTribe app → Tools → AI account"); return
             }
-            if useApple { do {
-                if action == .translate {
-                    do { result = try await OnDeviceWriting.translate(source.text, to: target) }
-                    catch let error as OnDeviceError {
-                        // Apple's translation can be missing in a keyboard or a language pack not downloaded:
-                        // let the on-device language model translate instead when it knows the language.
-                        if case .sameLanguage = error { throw error }
-                        guard OnDeviceWriting.supportsRewrite(language: target.code) else { throw error }
-                        result = try await OnDeviceWriting.rewrite(source.text, action: .translate, language: target)
+            // Runs the iPhone's own AI. Used first on Auto, and as the fallback when the online service fails.
+            func onDevice() async {
+                do {
+                    if action == .translate {
+                        do { result = try await OnDeviceWriting.translate(source.text, to: target) }
+                        catch let error as OnDeviceError {
+                            // Apple's translation can be missing in a keyboard or a language pack not downloaded:
+                            // let the on-device language model translate instead when it knows the language.
+                            if case .sameLanguage = error { throw error }
+                            guard OnDeviceWriting.supportsRewrite(language: target.code) else { throw error }
+                            result = try await OnDeviceWriting.rewrite(source.text, action: .translate, language: target)
+                        }
                     }
-                }
-                else if OnDeviceWriting.supportsRewrite(language: self.preferences.language.code) {
-                    result = try await OnDeviceWriting.rewrite(source.text, action: action, language: target)
-                }
-            } catch { failure = error } }
-            if result == nil, ConnectionVault.load() != nil {
-                guard self.hasFullAccess else { self.finishWriting(action, nil, via, "Your service needs Allow Full Access"); return }
+                    else if OnDeviceWriting.supportsRewrite(language: self.preferences.language.code) {
+                        result = try await OnDeviceWriting.rewrite(source.text, action: action, language: target)
+                    }
+                } catch { if failure == nil { failure = error } }
+            }
+            func online() async {
+                guard ConnectionVault.load() != nil else { return }
+                guard self.hasFullAccess else { failure = failure ?? NSError(domain: "Writing", code: 1, userInfo: [NSLocalizedDescriptionKey: "Your service needs Allow Full Access"]); return }
                 do { result = try await WritingService.perform(text: source.text, action: action, language: target); via = "by your service" }
                 catch { failure = error }
             }
+            if preferService { await online(); if result == nil { failure = nil; via = "on this iPhone"; await onDevice() } }
+            else { await onDevice(); if result == nil { await online() } }
             self.finishWriting(action, result, via, failure?.localizedDescription ?? "Sign in in WianTribe → Tools → AI account")
         }
     }
