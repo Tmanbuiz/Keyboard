@@ -58,10 +58,10 @@ final class AIAccountModel: ObservableObject {
     }
     func prepare() async {
         await reload()
-        if signedIn { await refreshUsage(); return }
+        if signedIn { await refreshUsage(); if signedIn { return } }
         guard !busy else { return }
         busy = true; defer { busy = false }
-        do { challenge = try await AccountAPI.call("auth/challenge"); status = "" }
+        do { challenge = try await AccountAPI.call("auth/challenge"); if !signedIn && status.isEmpty == false && !status.hasPrefix("Your AI session") { status = "" } }
         catch { challenge = nil; status = error.localizedDescription }
     }
     func finish(_ result: Result<ASAuthorization, Error>) {
