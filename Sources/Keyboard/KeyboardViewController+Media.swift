@@ -201,7 +201,7 @@ extension KeyboardViewController {
                     let data = try await GifService.download(results[index])
                     guard !Task.isCancelled else { return }
                     self?.copyImageData(data, gif: true)
-                } catch { self?.setStatus(error.localizedDescription) }
+                } catch { if !Task.isCancelled { self?.setStatus(error.localizedDescription) } }
             }
         }
         if results.isEmpty { loadGifs("") } else { setStatus("Powered by GIPHY · tap a GIF to copy it") }

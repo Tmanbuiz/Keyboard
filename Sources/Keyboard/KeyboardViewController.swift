@@ -960,7 +960,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             panelButton("\(preferences.height == height ? "✓ " : "")Height: \(Int(height))", in: stack) { [weak self] in self?.preferences.height = height; self?.savePreferences() }
         }
         panelButton("Clear learned words", in: stack) { [weak self] in self?.store.clearLearnedWords(); self?.setStatus("Learned words cleared") }
-        note(store.isShared ? "Settings and phrases are shared with the app." : "Sideloaded builds may keep app and keyboard settings separate. Use these controls for your keyboard.", in: stack)
+        note(store.isShared ? "Settings and phrases are shared with the app." : (store.hasGroup ? "Full Access is off. Clearing history hides it here; use the companion app to clear shared history on every extension." : "This build keeps app and keyboard data separate. Clear each store separately."), in: stack)
     }
 
     // MARK: Clipboard history

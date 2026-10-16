@@ -25,6 +25,7 @@ final class NetworkBoundaryTests: XCTestCase {
                 _ = try await BoundedHTTP.load(URLRequest(url: URL(string: "https://fixture.test/\(size)")!), maximum: 8_000_000, configuration: configuration())
                 XCTFail("Oversized chunked response was accepted")
             } catch BoundedHTTP.Failure.tooLarge { }
+            XCTAssertLessThan(StreamingFixture.bytesSent(for: String(size)), 9_000_000, "Transfer must stop before the complete body arrives")
         }
     }
     func testAdvertisedOversizeAndInterruptedTransfer() async {
@@ -34,6 +35,12 @@ final class NetworkBoundaryTests: XCTestCase {
                 XCTFail("Invalid transfer accepted")
             } catch { }
         }
+    }
+    func testRedirectCannotForwardTheRequest() async throws {
+        do {
+            _ = try await BoundedHTTP.load(URLRequest(url: URL(string: "https://fixture.test/redirect")!), maximum: 50_000, configuration: configuration())
+            XCTFail("Redirect was followed")
+        } catch BoundedHTTP.Failure.redirect { }
     }
     func testCancellationDoesNotLeaveARequestSlotOccupied() async throws {
         let task = Task { try await BoundedHTTP.load(URLRequest(url: URL(string: "https://fixture.test/slow")!), maximum: 1000, configuration: configuration()) }
@@ -48,6 +55,14 @@ final class NetworkBoundaryTests: XCTestCase {
 
 /// Delivers one chunk at a time and waits for its delegate to cancel on overage.
 private final class StreamingFixture: URLProtocol, @unchecked Sendable {
+    private final class Counts: @unchecked Sendable {
+        let lock = NSLock()
+        var values: [String: Int] = [:]
+        func add(_ count: Int, path: String) { lock.lock(); values[path, default: 0] += count; lock.unlock() }
+        func get(_ path: String) -> Int { lock.lock(); defer { lock.unlock() }; return values[path] ?? 0 }
+    }
+    private static let counts = Counts()
+    static func bytesSent(for path: String) -> Int { counts.get(path) }
     private let lock = NSLock()
     private var stopped = false
     override class func canInit(with request: URLRequest) -> Bool { true }
@@ -57,6 +72,11 @@ private final class StreamingFixture: URLProtocol, @unchecked Sendable {
     override func startLoading() {
         DispatchQueue.global().async { [self] in
             let path = request.url!.lastPathComponent
+            if path == "redirect" {
+                let response = HTTPURLResponse(url: request.url!, statusCode: 302, httpVersion: nil, headerFields: ["Location": "https://other.test/target"])!
+                client?.urlProtocol(self, wasRedirectedTo: URLRequest(url: URL(string: "https://other.test/target")!), redirectResponse: response)
+                return
+            }
             let headers = path == "advertised" ? ["Content-Length": "100000000"] : [:]
             client?.urlProtocol(self, didReceive: HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: headers)!, cacheStoragePolicy: .notAllowed)
             if path == "slow" { return }
@@ -65,6 +85,7 @@ private final class StreamingFixture: URLProtocol, @unchecked Sendable {
             var sent = 0
             while sent < count && !isStopped {
                 let length = min(32_768, count - sent)
+                Self.counts.add(length, path: path)
                 client?.urlProtocol(self, didLoad: Data(repeating: 1, count: length)); sent += length
                 Thread.sleep(forTimeInterval: 0.001)
             }
