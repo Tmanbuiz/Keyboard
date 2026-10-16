@@ -135,6 +135,10 @@ private final class MediaCell: UICollectionViewCell {
                     let (data, response) = try await BoundedHTTP.load(URLRequest(url: url), maximum: 3_000_000)
                     guard (200...299).contains(response.statusCode), !Task.isCancelled,
                           let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
+                          let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+                          let width = properties[kCGImagePropertyPixelWidth] as? Int,
+                          let height = properties[kCGImagePropertyPixelHeight] as? Int,
+                          width > 0, height > 0, width <= 2048, height <= 2048, width * height <= 262_144,
                           let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
                             kCGImageSourceCreateThumbnailFromImageAlways: true,
                             kCGImageSourceThumbnailMaxPixelSize: 256,

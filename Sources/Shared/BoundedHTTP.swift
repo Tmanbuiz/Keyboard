@@ -2,7 +2,15 @@ import Foundation
 
 /// Each request owns a serial delegate queue. The lock also coordinates task cancellation.
 final class BoundedHTTP: NSObject, URLSessionDataDelegate, @unchecked Sendable {
-    enum Failure: Error { case tooLarge, invalidResponse, redirect }
+    enum Failure: LocalizedError {
+        case tooLarge, invalidResponse, redirect
+        var errorDescription: String? {
+            switch self {
+            case .tooLarge: return "This response is too large. Try a smaller GIF or a shorter request."
+            case .invalidResponse, .redirect: return "The service could not safely complete this request. Please try again."
+            }
+        }
+    }
     private static let gate = RequestGate()
     private let maximum: Int
     private let lock = NSLock()
