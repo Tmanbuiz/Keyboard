@@ -25,8 +25,8 @@ fileprivate enum AccountAPI {
         switch response.statusCode {
         case 200...299: return try JSONDecoder().decode(T.self, from: data)
         case 401:
-            if path.hasPrefix("auth/"), let message = (try? JSONDecoder().decode([String: String].self, from: data))?["error"] {
-                throw NSError(domain: "AIAccount", code: 401, userInfo: [NSLocalizedDescriptionKey: message])
+            if path.hasPrefix("auth/"), let body = try? JSONDecoder().decode([String: String].self, from: data), let message = body["error"] {
+                throw NSError(domain: "AIAccount", code: 401, userInfo: [NSLocalizedDescriptionKey: message + (body["reason"].map { " (\($0))" } ?? "")])
             }
             throw WritingError.unauthorized
         case 429: throw WritingError.rateLimited

@@ -46,9 +46,13 @@ export async function verifyAppleToken(token, audience, fetcher = fetch) {
   const key = await publicKey(header.kid, fetcher);
   if (!await crypto.subtle.verify('RSASSA-PKCS1-v1_5', key, unbase64(parts[2]), new TextEncoder().encode(parts[0] + '.' + parts[1]))) throw Error('Invalid signature');
   const claims = JSON.parse(new TextDecoder().decode(unbase64(parts[1]))), now = Math.floor(Date.now() / 1000);
-  if (claims.iss !== 'https://appleid.apple.com' || claims.aud !== audience ||
-      !Number.isSafeInteger(claims.exp) || claims.exp <= now || !Number.isSafeInteger(claims.iat) || claims.iat > now + 60 || claims.exp <= claims.iat ||
-      typeof claims.sub !== 'string' || !claims.sub || claims.sub.length > 256 || typeof claims.nonce !== 'string' || claims.nonce.length > 128) throw Error('Invalid claims');
+  const fail = reason => { throw Object.assign(Error(reason), { reason }); };
+  if (claims.iss !== 'https://appleid.apple.com') fail('issuer');
+  if (claims.aud !== audience) fail('audience');
+  if (!Number.isSafeInteger(claims.exp) || claims.exp <= now) fail('expired');
+  if (!Number.isSafeInteger(claims.iat) || claims.iat > now + 60 || claims.exp <= claims.iat) fail('issued-at');
+  if (typeof claims.sub !== 'string' || !claims.sub || claims.sub.length > 256) fail('subject');
+  if (typeof claims.nonce !== 'string' || claims.nonce.length > 128) fail('nonce-missing');
   return claims;
 }
 async function readJSON(request) {
@@ -79,7 +83,7 @@ export async function appleAuth(request, env, database, fetcher = fetch) {
   if (typeof input?.challengeID !== 'string' || !/^[a-f0-9-]{36}$/.test(input.challengeID)) return json({ error: 'Invalid sign-in request' }, 400);
   let claims;
   try { claims = await verifyAppleToken(input.identityToken, env.APPLE_CLIENT_ID, fetcher); }
-  catch { return json({ error: 'Apple sign-in could not be verified. Please try again.' }, 401); }
+  catch (error) { return json({ error: 'Apple sign-in could not be verified. Please try again.', reason: String(error?.reason || error?.message || 'unknown').slice(0, 60) }, 401); }
   // DELETE ... RETURNING consumes a valid challenge exactly once, even with concurrent replays.
   // Apple returns the nonce as sent; some SDKs return its SHA-256 instead. Accept either form of the same single-use challenge.
   const challenge = await database.prepare('DELETE FROM auth_challenges WHERE id = ? AND (nonce_hash = ? OR nonce_hash = ?) AND expires_at > ? RETURNING id')
