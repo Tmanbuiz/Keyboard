@@ -57,7 +57,7 @@ Generate the admin secret locally with `node -e "process.stdout.write(require('c
 
 Optional: add `GIPHY_API_KEY` as a Secret to enable GIF search. Otherwise writing works but GIF requests return a clear unavailable response.
 
-`MODEL` defaults to `llama-3.3-70b-versatile`. Check that your Groq account can use it; change the Cloudflare variable to another supported chat-completions model if needed. `GLOBAL_DAILY_LIMIT` defaults to `500`. Review provider usage/billing settings before inviting users.
+`MODEL` defaults to `openai/gpt-oss-120b`. Check that your Groq account can use it; change the Cloudflare variable to another supported chat-completions model if needed. `GLOBAL_DAILY_LIMIT` defaults to `500`. Review provider usage/billing settings before inviting users.
 
 ## 4. Check readiness
 

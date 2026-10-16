@@ -17,7 +17,7 @@ By default the service uses Cloudflare Workers AI. To use another AI instead, se
 | OpenAI | `https://api.openai.com/v1/chat/completions` | `gpt-4o-mini` |
 | Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai/chat/completions` | `gemini-2.0-flash` |
 | Anthropic Claude | `https://api.anthropic.com/v1/chat/completions` | `claude-haiku-4-5` |
-| Groq | `https://api.groq.com/openai/v1/chat/completions` | `llama-3.3-70b-versatile` |
+| Groq | `https://api.groq.com/openai/v1/chat/completions` | `openai/gpt-oss-120b` |
 | OpenRouter | `https://openrouter.ai/api/v1/chat/completions` | any model it lists |
 
 ```sh
