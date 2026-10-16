@@ -79,11 +79,11 @@ jobs:
           mkdir -p build/logs
           xcodebuild -project WianTribeKeyboard.xcodeproj -scheme WianTribeKeyboard -configuration Release \
             -destination 'generic/platform=iOS' -archivePath build/WianTribeKeyboard.xcarchive \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath "$RUNNER_TEMP/keys/AuthKey.p8" \
-            -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             DEVELOPMENT_TEAM="$TEAM_ID" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            CODE_SIGN_IDENTITY=- AD_HOC_CODE_SIGNING_ALLOWED=YES CODE_SIGNING_REQUIRED=NO \
             archive 2>&1 | tee build/logs/archive.log
+      - name: Check archived capabilities before cloud signing
+        run: python3 Scripts/verify_archive_entitlements.py build/WianTribeKeyboard.xcarchive
       - name: Upload to App Store Connect
         run: |
           set -o pipefail
