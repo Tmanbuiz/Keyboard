@@ -42,16 +42,23 @@ final class AIAccountModel: ObservableObject {
     @Published private(set) var used: Int?
     @Published private(set) var dailyLimit: Int?
     @Published private(set) var deleted = false
+    @Published private(set) var trace: [String] = []
+    private func note(_ text: String) {
+        let f = DateFormatter(); f.dateFormat = "HH:mm:ss"
+        trace.append("\(f.string(from: Date())) \(text)"); if trace.count > 14 { trace.removeFirst() }
+    }
 
     func reload() async {
         guard !busy else { return }
         signedIn = ConnectionVault.load()?.appleUserID != nil
+        note("reload: stored session \(signedIn ? "found" : "none")")
         guard let user = ConnectionVault.load()?.appleUserID else { return }
         let state: ASAuthorizationAppleIDProvider.CredentialState? = await withCheckedContinuation { continuation in
             ASAuthorizationAppleIDProvider().getCredentialState(forUserID: user) { state, error in
                 continuation.resume(returning: error == nil ? state : nil)
             }
         }
+        note("apple state: \(state.map { String($0.rawValue) } ?? "unknown") (0 revoked,1 authorized,2 notFound)")
         if let state, state == .revoked {
             await signOut(); status = "Apple access was revoked. Sign in again to use AI."
         }
@@ -74,7 +81,7 @@ final class AIAccountModel: ObservableObject {
             guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
                   let data = credential.identityToken, let token = String(data: data, encoding: .utf8),
                   let challenge else { status = "Apple did not return a sign-in token. Please try again."; Task { await prepare() }; return }
-            busy = true
+            busy = true; note("apple returned token; contacting server")
             Task {
                 defer { busy = false }
                 do {
@@ -82,17 +89,19 @@ final class AIAccountModel: ObservableObject {
                         throw NSError(domain: "AIAccount", code: 1, userInfo: [NSLocalizedDescriptionKey: "Automatic keyboard sharing requires the TestFlight build. Install that build and try again."])
                     }
                     let session: AccountAPI.Session = try await AccountAPI.call("auth/apple", body: ["identityToken": token, "challengeID": challenge.id])
+                    note("server accepted sign-in")
                     let connection = WritingConnection(endpoint: AccountAPI.base.appendingPathComponent("write").absoluteString,
                         token: session.token, expiresAt: Date(timeIntervalSince1970: session.expiresAtSeconds), appleUserID: credential.user)
                     guard ConnectionVault.save(connection), ConnectionVault.load()?.appleUserID == credential.user else {
                         let _: AccountAPI.Acknowledgement? = try? await AccountAPI.call("auth/logout", token: session.token)
                         throw NSError(domain: "AIAccount", code: 2, userInfo: [NSLocalizedDescriptionKey: "The shared Keychain could not be updated. Reinstall the current TestFlight build and try again."])
                     }
+                    note("saved and read back OK")
                     let store = KeyboardStore(); var preferences = store.preferences
                     preferences.aiEngine = .service; store.preferences = preferences
                     signedIn = true; deleted = false; self.challenge = nil; dailyLimit = session.dailyLimit; used = nil
                     status = "Signed in. Your keyboard is connected automatically. Enable Allow Full Access to use online AI."
-                } catch { self.challenge = nil; status = error.localizedDescription }
+                } catch { self.challenge = nil; status = error.localizedDescription; note("sign-in failed: \(error.localizedDescription)") }
             }
         }
     }
@@ -101,13 +110,14 @@ final class AIAccountModel: ObservableObject {
         busy = true; defer { busy = false }
         do {
             let usage: AccountAPI.Usage = try await AccountAPI.call("me", token: connection.token, method: "GET")
-            used = usage.used; dailyLimit = usage.dailyLimit
-        } catch WritingError.unauthorized { ConnectionVault.save(nil); signedIn = false; status = WritingError.unauthorized.localizedDescription }
+            used = usage.used; dailyLimit = usage.dailyLimit; note("usage check OK")
+        } catch WritingError.unauthorized { note("usage check: server said 401 (session unknown)"); ConnectionVault.save(nil); signedIn = false; status = WritingError.unauthorized.localizedDescription }
         catch { status = "Signed in. Usage information is unavailable right now." }
     }
     func signOut() async {
         guard !busy else { return }
         busy = true; defer { busy = false }
+        note("signing out")
         let token = ConnectionVault.load()?.token
         ConnectionVault.save(nil); signedIn = false; challenge = nil; used = nil; dailyLimit = nil
         if let token { let _: AccountAPI.Acknowledgement? = try? await AccountAPI.call("auth/logout", token: token) }
@@ -162,6 +172,7 @@ struct AIAccountView: View {
                 }
             }
             if model.busy { Section { ProgressView("Please wait…") } }
+            if !model.trace.isEmpty { Section("Diagnostics") { ForEach(Array(model.trace.enumerated()), id: \.offset) { Text($0.element).font(.caption2.monospaced()) } } }
             Section("Keyboard access") {
                 Text("On your iPhone: Settings → General → Keyboard → Keyboards → WianTribe → Allow Full Access. Basic typing remains available without it.")
                 Button("Open Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }
