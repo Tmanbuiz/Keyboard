@@ -26,7 +26,7 @@ let cachedKeys = [], fetchedAt = 0;
 async function publicKey(kid, fetcher) {
   const now = Date.now();
   if (!cachedKeys.length || now - fetchedAt > 3600000 || (!cachedKeys.some(k => k.kid === kid) && now - fetchedAt > 60000)) {
-    const response = await fetcher(APPLE_KEYS, { redirect: 'error', signal: AbortSignal.timeout(10000) });
+    const response = await fetcher(APPLE_KEYS, { redirect: 'manual', signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw Error('Apple verification unavailable');
     const text = await response.text();
     if (text.length > 50000) throw Error('Invalid Apple keys');

@@ -46,7 +46,7 @@ async function invite(env, label = 'Tester', dailyLimit = 20) {
 const payload = { text: 'Hello', action: 'grammar', language: 'en' };
 const inference = async (url, options) => {
   assert.equal(String(url), 'https://api.groq.com/openai/v1/chat/completions');
-  assert.equal(options.redirect, 'error');
+  assert.equal(options.redirect, 'manual');
   return Response.json({ choices: [{ message: { content: 'Hello.' } }] });
 };
 test('public backend fails closed without database, limiter, key or valid quota', async t => {

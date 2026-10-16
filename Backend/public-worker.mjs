@@ -127,7 +127,7 @@ async function serve(request, env, context, fetcher) {
   const serviceEnvironment = { ...env, API_TOKEN: token, PROVIDER_URL: GROQ_URL,
     WRITING_LIMITER: { limit: async () => ({ success: true }) } };
   const guardedFetch = (input, options = {}) => fetcher(input, {
-    ...options, redirect: 'error', signal: AbortSignal.timeout(25000)
+    ...options, redirect: 'manual', signal: AbortSignal.timeout(25000)
   });
   return privateService.fetch(request, serviceEnvironment, context, guardedFetch);
 }
