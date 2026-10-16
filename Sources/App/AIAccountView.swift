@@ -168,7 +168,6 @@ struct AIAccountView: View {
                 }
             }
             if model.busy { Section { ProgressView("Please wait…") } }
-            if !model.trace.isEmpty { Section("Diagnostics") { ForEach(Array(model.trace.enumerated()), id: \.offset) { Text($0.element).font(.caption2.monospaced()) } } }
             Section("Keyboard access") {
                 Text("On your iPhone: Settings → General → Keyboard → Keyboards → WianTribe → Allow Full Access. Basic typing remains available without it.")
                 Button("Open Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }
