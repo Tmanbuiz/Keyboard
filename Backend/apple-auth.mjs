@@ -81,8 +81,9 @@ export async function appleAuth(request, env, database, fetcher = fetch) {
   try { claims = await verifyAppleToken(input.identityToken, env.APPLE_CLIENT_ID, fetcher); }
   catch { return json({ error: 'Apple sign-in could not be verified. Please try again.' }, 401); }
   // DELETE ... RETURNING consumes a valid challenge exactly once, even with concurrent replays.
-  const challenge = await database.prepare('DELETE FROM auth_challenges WHERE id = ? AND nonce_hash = ? AND expires_at > ? RETURNING id')
-    .bind(input.challengeID, await digest(claims.nonce), Date.now()).first();
+  // Apple returns the nonce as sent; some SDKs return its SHA-256 instead. Accept either form of the same single-use challenge.
+  const challenge = await database.prepare('DELETE FROM auth_challenges WHERE id = ? AND (nonce_hash = ? OR nonce_hash = ?) AND expires_at > ? RETURNING id')
+    .bind(input.challengeID, await digest(claims.nonce), claims.nonce, Date.now()).first();
   if (!challenge) return json({ error: 'Sign-in request expired or was already used. Please try again.' }, 401);
   const subject = await digest(env.APPLE_CLIENT_ID + ':' + claims.sub), id = 'apple_' + subject;
   const legacyPlaceholder = await digest(randomToken());

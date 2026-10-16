@@ -24,7 +24,11 @@ fileprivate enum AccountAPI {
         guard data.count < 100_000, let response = response as? HTTPURLResponse else { throw WritingError.invalidResponse }
         switch response.statusCode {
         case 200...299: return try JSONDecoder().decode(T.self, from: data)
-        case 401: throw WritingError.unauthorized
+        case 401:
+            if path.hasPrefix("auth/"), let message = (try? JSONDecoder().decode([String: String].self, from: data))?["error"] {
+                throw NSError(domain: "AIAccount", code: 401, userInfo: [NSLocalizedDescriptionKey: message])
+            }
+            throw WritingError.unauthorized
         case 429: throw WritingError.rateLimited
         case 403: throw NSError(domain: "AIAccount", code: 403, userInfo: [NSLocalizedDescriptionKey: "This AI account is disabled. Contact WianTribe support."])
         default: throw NSError(domain: "AIAccount", code: response.statusCode, userInfo: [NSLocalizedDescriptionKey: "AI account setup is temporarily unavailable. Check your connection and try again."])
