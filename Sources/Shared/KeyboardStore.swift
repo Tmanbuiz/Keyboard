@@ -27,24 +27,46 @@ final class KeyboardStore {
         self.local = local; self.group = group; self.canWriteGroup = canWriteGroup
     }
 
-    private func synchronizeReset() {
-        guard let reset = group?.object(forKey: "personal.resetAt") as? Date,
-              reset > (local.object(forKey: "personal.resetSeen") as? Date ?? .distantPast) else { return }
-        for key in ["clips.v2", "phrases.v1", "learned.v1", "pairs.v1", "recentEmoji.v1"] { local.removeObject(forKey: key) }
-        local.set(reset, forKey: "personal.resetSeen")
+    private static let historyKeys = ["clips.v2", "phrases.v1", "learned.v1", "pairs.v1", "recentEmoji.v1"]
+    private func resetDate(for key: String) -> Date {
+        let markers = ["personal.resetAt"] + (["learned.v1", "pairs.v1"].contains(key) ? ["learning.resetAt"] : [])
+        return markers.flatMap { [local.object(forKey: $0) as? Date, group?.object(forKey: $0) as? Date] }.compactMap { $0 }.max() ?? .distantPast
+    }
+    /// A read-only keyboard can hide shared history immediately, then publish its pending reset
+    /// when Full Access returns. Timestamps prevent old local/group fallbacks from reviving it.
+    @discardableResult private func reconcile(_ key: String) -> Bool {
+        if canWriteGroup, let group {
+            for marker in ["personal.resetAt", "learning.resetAt"] {
+                if let pending = local.object(forKey: marker) as? Date,
+                   pending > (group.object(forKey: marker) as? Date ?? .distantPast) { group.set(pending, forKey: marker) }
+            }
+        }
+        let reset = resetDate(for: key)
+        guard reset > .distantPast else { return false }
+        let newlyObserved = reset > (local.object(forKey: key + ".resetSeen") as? Date ?? .distantPast)
+        if (local.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) <= reset { local.removeObject(forKey: key) }
+        if canWriteGroup, (group?.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) <= reset { group?.removeObject(forKey: key) }
+        local.set(reset, forKey: key + ".resetSeen")
+        return newlyObserved
+    }
+    private func data(_ key: String, in defaults: UserDefaults?) -> Data? {
+        let reset = resetDate(for: key)
+        guard reset == .distantPast || (defaults?.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) > reset else { return nil }
+        return defaults?.data(forKey: key)
     }
     private func load<T: Decodable>(_ key: String, fallback: T) -> T {
-        synchronizeReset()
-        // Without Full Access, preferences changed inside the keyboard remain local.
-        let data = (canWriteGroup ? group?.data(forKey: key) : local.data(forKey: key))
-            ?? local.data(forKey: key) ?? group?.data(forKey: key)
+        reconcile(key)
+        let data = (canWriteGroup ? data(key, in: group) : data(key, in: local)) ?? data(key, in: local) ?? data(key, in: group)
         guard let data, let value = try? JSONDecoder().decode(T.self, from: data) else { return fallback }
         return value
     }
     private func save<T: Encodable>(_ value: T, key: String) {
+        // A setter holding a pre-reset learning snapshot must not restore it.
+        if reconcile(key), ["learned.v1", "pairs.v1"].contains(key) { return }
         guard let data = try? JSONEncoder().encode(value) else { return }
-        local.set(data, forKey: key)
-        if canWriteGroup { group?.set(data, forKey: key) }
+        let now = Date()
+        local.set(data, forKey: key); local.set(now, forKey: key + ".updatedAt")
+        if canWriteGroup { group?.set(data, forKey: key); group?.set(now, forKey: key + ".updatedAt") }
     }
     var writingRevokedAt: Date? {
         get {
@@ -79,21 +101,21 @@ final class KeyboardStore {
                 var list = clips.filter { !deletedClipIDs.contains($0.id) }
                 // Without Full Access the keyboard keeps its own list, but it can still read items saved
                 // by the app, the Share menu or the Shortcut into the App Group, so merge them in.
-                if !canWriteGroup, let data = group?.data(forKey: "clips.v2"),
+                if !canWriteGroup, let data = data("clips.v2", in: group),
                    let shared = try? JSONDecoder().decode([SavedPhrase].self, from: data) {
                     let known = Set(list.map(\.text))
                     list = (list + shared.filter { !known.contains($0.text) }).sorted { $0.createdAt > $1.createdAt }
                 }
-                return ClipboardHistory.pruned(list.filter { !deletedClipIDs.contains($0.id) }, keepDays: preferences.clipboardDays)
+                return ClipboardHistory.pruned(list.filter { !deletedClipIDs.contains($0.id) && $0.createdAt > resetDate(for: "clips.v2") }, keepDays: preferences.clipboardDays)
             }
             // Phrases from v0.1 were saved on purpose, so they become pinned and never expire.
             let legacy: [SavedPhrase] = load("phrases.v1", fallback: [])
-            return legacy.map { var item = $0; item.pinned = true; return item }
+            return legacy.filter { $0.createdAt > resetDate(for: "phrases.v1") }.map { var item = $0; item.pinned = true; return item }
         }
         set {
             let remaining = Set(newValue.map(\.id))
             deletedClipIDs.formUnion(phrases.filter { !remaining.contains($0.id) }.map(\.id))
-            save(ClipboardHistory.pruned(newValue, keepDays: preferences.clipboardDays), key: "clips.v2")
+            save(ClipboardHistory.pruned(newValue.filter { $0.createdAt > resetDate(for: "clips.v2") }, keepDays: preferences.clipboardDays), key: "clips.v2")
         }
     }
     /// The pasteboard change count already looked at, so each copy is read at most once.
@@ -161,14 +183,20 @@ final class KeyboardStore {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         phrases = ClipboardHistory.adding(trimmed, to: phrases, pinned: true, keepDays: preferences.clipboardDays)
     }
-    func clearPersonalData() {
-        phrases = []; learned = [:]; learnedPairs = [:]; recentEmoji = []
-        local.removeObject(forKey: "phrases.v1")
-        if canWriteGroup {
-            group?.removeObject(forKey: "phrases.v1")
-            let reset = Date()
-            group?.set(reset, forKey: "personal.resetAt")
-            local.set(reset, forKey: "personal.resetSeen")
+    private func reset(_ marker: String, keys: [String]) {
+        let now = Date()
+        local.set(now, forKey: marker)
+        if canWriteGroup { group?.set(now, forKey: marker) }
+        for key in keys {
+            local.removeObject(forKey: key)
+            local.set(now, forKey: key + ".resetSeen")
+            if canWriteGroup { group?.removeObject(forKey: key) }
         }
+    }
+    func clearLearnedWords() { reset("learning.resetAt", keys: ["learned.v1", "pairs.v1"]) }
+    func clearPersonalData() {
+        reset("personal.resetAt", keys: Self.historyKeys)
+        local.removeObject(forKey: "clips.deleted")
+        if canWriteGroup { group?.removeObject(forKey: "clips.deleted") }
     }
 }

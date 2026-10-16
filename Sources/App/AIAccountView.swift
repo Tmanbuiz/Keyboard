@@ -3,25 +3,17 @@ import AuthenticationServices
 import UIKit
 
 fileprivate enum AccountAPI {
-    static let base = URL(string: "https://keyboard.atoyejet.workers.dev")!
+    static let base = ServiceOrigin.base
     struct Challenge: Decodable { let id: String; let nonce: String }
     struct Session: Decodable { let token: String; let expiresAtSeconds: Double; let dailyLimit: Int }
     struct Usage: Decodable { let dailyLimit: Int; let used: Int; let resetsAt: String }
     struct Acknowledgement: Decodable { let signedOut: Bool?; let deleted: Bool? }
-    private final class NoRedirects: NSObject, URLSessionTaskDelegate {
-        func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
-                        newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) { completionHandler(nil) }
-    }
     static func call<T: Decodable>(_ path: String, body: [String: String]? = nil, token: String? = nil, method: String = "POST") async throws -> T {
         var request = URLRequest(url: base.appendingPathComponent(path))
         request.httpMethod = method; request.timeoutInterval = 30
         if let body { request.setValue("application/json", forHTTPHeaderField: "Content-Type"); request.httpBody = try JSONEncoder().encode(body) }
         if let token { request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
-        let configuration = URLSessionConfiguration.ephemeral; configuration.urlCache = nil
-        let session = URLSession(configuration: configuration, delegate: NoRedirects(), delegateQueue: nil)
-        defer { session.invalidateAndCancel() }
-        let (data, response) = try await session.data(for: request)
-        guard data.count < 100_000, let response = response as? HTTPURLResponse else { throw WritingError.invalidResponse }
+        let (data, response) = try await BoundedHTTP.load(request, maximum: 100_000)
         switch response.statusCode {
         case 200...299: return try JSONDecoder().decode(T.self, from: data)
         case 401:

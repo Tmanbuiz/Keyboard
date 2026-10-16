@@ -28,7 +28,7 @@ What's ready in this repository, and what only you can do.
 
 > WianTribe Keyboard is a custom keyboard. To try it: open the app, follow Home → "Add WianTribe Keyboard", then switch to it with the globe key in the Practice tab.
 >
-> Full Access is optional. Without it, typing, suggestions, swipe, emoji, handwriting and on-device translation all work. Full Access is used only for clipboard history (off by default), copying stickers/GIFs, haptics and an optional user-supplied HTTPS service. The keyboard does not use the microphone; voice transcription happens only in the containing app.
+> Full Access is optional. Without it, typing, suggestions, swipe, emoji, handwriting and on-device translation all work. Full Access is used only for clipboard history (off by default), copying stickers/GIFs, haptics and optional online AI. The keyboard does not use the microphone; voice transcription happens only in the containing app.
 >
 > Clipboard: there is no background monitoring. The keyboard reads the clipboard only while it is on screen and the user has turned on clipboard history (off by default); items can also be saved explicitly through the "Save to WianTribe" share extension, the "Save Clipboard to WianTribe" App Intent (Shortcuts, Siri, Back Tap, Action button) or the system Paste button in the app. Everything stays on device in the App Group.
 >
@@ -42,7 +42,7 @@ Relevant guidelines: 4.4.1 (keyboard extensions), 5.1.1 (privacy). The keyboard 
 **Subtitle (30 max):** Type in 28 languages, privately
 
 **Promotional text (170 max):**
-Mix languages in one message, search every emoji, keep a clipboard of what you copy, and translate on your iPhone. Your typing never leaves your device.
+Mix languages in one message, search every emoji, keep a clipboard of what you copy, and translate on your iPhone. Basic typing stays on your iPhone; online AI sends only the text you submit.
 
 **Description:**
 WianTribe Keyboard brings the best of Android keyboards to iPhone, built around privacy.
@@ -67,9 +67,9 @@ MAKE IT YOURS
 • Five heights, one-handed mode, key sounds, key pop-ups and haptics
 
 PRIVATE BY DESIGN
-• No analytics, no ads, no tracking, no account
+• No analytics, no ads or tracking; an optional Apple sign-in account enables online AI
 • Typing, suggestions and swipe happen on your iPhone
-• Full Access is optional: only clipboard, GIFs, stickers and haptics need it
+• Full Access is optional: clipboard, GIFs, stickers, haptics and online AI need it
 
 **Keywords (100 max):** keyboard,multilingual,swipe,emoji,clipboard,translate,themes,stickers,handwriting,yoruba,pidgin
 

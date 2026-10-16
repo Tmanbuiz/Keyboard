@@ -4,7 +4,7 @@ on:
     branches: [main, 'feature/**']
   workflow_dispatch:
 permissions:
-  contents: write # to publish the sideload IPA as a GitHub Release on main
+  contents: read
 concurrency:
   group: keyboard-build-${{ github.ref }}
   cancel-in-progress: true
@@ -13,7 +13,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Check toolchain
         run: |
           mkdir -p build/logs
@@ -40,26 +40,42 @@ jobs:
         if: always()
         run: python3 Scripts/report_build.py build/logs
       - name: Upload sideloading package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: WianTribeKeyboard-sideload
           path: build/output/
           if-no-files-found: error
           retention-days: 7
-      - name: Publish sideload IPA as a GitHub Release
-        if: github.ref == 'refs/heads/main'
+  release:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Download tested package
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: WianTribeKeyboard-sideload
+          path: release
+      - name: Verify checksums and publish
+        working-directory: release
         env:
           GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          COMMIT: ${{ github.sha }}
+          BUILD_NUMBER: ${{ github.run_number }}
         run: |
-          version=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" build/device/Build/Products/Release-iphoneos/WianTribeKeyboard.app/Info.plist)
-          tag="v${version}-build${{ github.run_number }}"
-          cd build/output
-          full="WianTribeKeyboard-${version}-build${{ github.run_number }}.ipa"
-          lite="WianTribeKeyboard-${version}-build${{ github.run_number }}-keyboard-only.ipa"
-          cp WianTribeKeyboard.ipa "$full"; cp WianTribeKeyboard-keyboard-only.ipa "$lite"
-          sed -i '' -e "s/  WianTribeKeyboard.ipa/  $full/" -e "s/  WianTribeKeyboard-keyboard-only.ipa/  $lite/" SHA256SUMS.txt
-          gh release create "$tag" --target "${{ github.sha }}" --prerelease \
-            --title "WianTribe Keyboard ${version} (build ${{ github.run_number }})" \
-            --notes "Ad-hoc signed IPAs for sideloading; your tool re-signs them. $full has the app, keyboard, iMessage stickers and the Save to WianTribe share extension. $lite has only the app and keyboard, for free Apple IDs that are short of App IDs. Keep the extensions when re-signing. See INSTALL.md. Commit ${{ github.sha }}." \
+          set -euo pipefail
+          sha256sum -c SHA256SUMS.txt
+          version=$(python3 -c 'import zipfile,plistlib; z=zipfile.ZipFile("WianTribeKeyboard.ipa"); print(plistlib.loads(z.read("Payload/WianTribeKeyboard.app/Info.plist"))["CFBundleShortVersionString"])')
+          full="WianTribeKeyboard-${version}-build${BUILD_NUMBER}.ipa"
+          lite="WianTribeKeyboard-${version}-build${BUILD_NUMBER}-keyboard-only.ipa"
+          mv WianTribeKeyboard.ipa "$full"
+          mv WianTribeKeyboard-keyboard-only.ipa "$lite"
+          sha256sum "$full" "$lite" > SHA256SUMS.txt
+          gh release create "v${version}-build${BUILD_NUMBER}" --repo "$REPOSITORY" --target "$COMMIT" --prerelease \
+            --title "WianTribe Keyboard ${version} (build ${BUILD_NUMBER})" \
+            --notes "Tested ad-hoc signed packages for sideloading. Keep the extensions when re-signing. See INSTALL.md. Commit ${COMMIT}." \
             "$full" "$lite" SHA256SUMS.txt INSTALL.md
-          echo "::notice title=Sideload release::https://github.com/${{ github.repository }}/releases/tag/$tag"

@@ -8,7 +8,7 @@ let package = Package(
     targets: [
         .target(name: "TypingCore", path: "Sources/Core", resources: [.process("Resources")]),
         .target(name: "KeyboardStorage", dependencies: ["TypingCore"], path: "Sources/Shared",
-                exclude: ["WritingService.swift", "GifService.swift", "OnDeviceWriting.swift"], sources: ["KeyboardStore.swift"]),
+                exclude: ["WritingService.swift", "GifService.swift", "OnDeviceWriting.swift"], sources: ["KeyboardStore.swift", "BoundedHTTP.swift", "ServiceOrigin.swift"]),
         .testTarget(name: "KeyboardStorageTests", dependencies: ["KeyboardStorage", "TypingCore"], path: "Tests/KeyboardStorageTests"),
         .testTarget(name: "TypingCoreTests", dependencies: ["TypingCore"], path: "Tests/TypingCoreTests")
     ]

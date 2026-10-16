@@ -48,7 +48,7 @@ final class AppModel: ObservableObject {
     }
     func savePhrase(_ text: String) { store.addPhrase(text); phrases = store.phrases }
     func clearPersonalData() { store.clearPersonalData(); phrases = [] }
-    func clearLearnedWords() { store.learned = [:]; store.learnedPairs = [:] }
+    func clearLearnedWords() { store.clearLearnedWords() }
     /// Reading the clipboard here makes iOS show its paste prompt and adds "Paste from Other Apps"
     /// to this app's page in Settings, which also covers the keyboard.
     func testClipboard() -> String {

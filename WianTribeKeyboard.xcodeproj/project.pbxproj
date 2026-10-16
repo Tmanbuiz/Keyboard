@@ -126,6 +126,12 @@
 			"path" = "Sources/Share/ShareViewController.swift";
 			"sourceTree" = "<group>";
 		};
+		24F17267BCBA52399AFC593B = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Shared/BoundedHTTP.swift";
+			"sourceTree" = "<group>";
+		};
 		B63EFDE034AD1ECC8260A451 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -142,6 +148,12 @@
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
 			"path" = "Sources/Shared/OnDeviceWriting.swift";
+			"sourceTree" = "<group>";
+		};
+		BF2F4DA8138DF5BCE30C9D80 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Shared/ServiceOrigin.swift";
 			"sourceTree" = "<group>";
 		};
 		C656D266B95EE7EFF4313FE8 = {
@@ -656,9 +668,11 @@
 				4BB3554BB30FADCFB923D0C5,
 				C57AEA25FACDC276759ED7B8,
 				A661E0890601E63AAEAFF913,
+				24F17267BCBA52399AFC593B,
 				B63EFDE034AD1ECC8260A451,
 				339D57E43FB42F7A2592F03C,
 				6C1A298FC390DC53481CB333,
+				BF2F4DA8138DF5BCE30C9D80,
 				C656D266B95EE7EFF4313FE8,
 				2F8BFAFA241578BA57F10027,
 				1DDD10CB5796A04D01F7D50E,
@@ -786,6 +800,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = 0AE84801629539539873D0C2;
 		};
+		E1E19FD129F2247FE7E39CB4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 24F17267BCBA52399AFC593B;
+		};
 		B60AD32820418343BFB850BD = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = B63EFDE034AD1ECC8260A451;
@@ -797,6 +815,10 @@
 		97F325668AA6C75D1ADB262D = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 6C1A298FC390DC53481CB333;
+		};
+		A0F42E88D02CA38703020D18 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = BF2F4DA8138DF5BCE30C9D80;
 		};
 		E104B1905BB5AA636105B854 = {
 			"isa" = "PBXBuildFile";
@@ -818,9 +840,11 @@
 				0497DDD36B95DDCA2BCEDAD4,
 				C10A7EBE8D978A207EAD12A3,
 				13A0240D5AC9E3157A97A389,
+				E1E19FD129F2247FE7E39CB4,
 				B60AD32820418343BFB850BD,
 				1D8501F4A2FD39A7FBD45452,
 				97F325668AA6C75D1ADB262D,
+				A0F42E88D02CA38703020D18,
 				E104B1905BB5AA636105B854,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -881,6 +905,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = C57AEA25FACDC276759ED7B8;
 		};
+		9DBA73733D2C5317711C6C8E = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 24F17267BCBA52399AFC593B;
+		};
 		B6E271107EF1ECDD9EE6EA59 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = B63EFDE034AD1ECC8260A451;
@@ -892,6 +920,10 @@
 		17A176D87DCD8D8086A50B75 = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 6C1A298FC390DC53481CB333;
+		};
+		B315DFF9CFDA6D66AE4795A4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = BF2F4DA8138DF5BCE30C9D80;
 		};
 		3C20F72A1FA9E176C323B449 = {
 			"isa" = "PBXBuildFile";
@@ -915,9 +947,11 @@
 				71828C3D43980C7E4BFDA884,
 				19917022ADD92703C49017A9,
 				2F39957C15CC5646CA348845,
+				9DBA73733D2C5317711C6C8E,
 				B6E271107EF1ECDD9EE6EA59,
 				FC950075668C774EF863DECF,
 				17A176D87DCD8D8086A50B75,
+				B315DFF9CFDA6D66AE4795A4,
 				3C20F72A1FA9E176C323B449,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
@@ -1468,7 +1502,7 @@
 				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
 				"SDKROOT" = "iphoneos";
 				"SWIFT_VERSION" = "5.0";
-				"SWIFT_STRICT_CONCURRENCY" = "minimal";
+				"SWIFT_STRICT_CONCURRENCY" = "targeted";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
 				"GCC_C_LANGUAGE_STANDARD" = "gnu17";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
@@ -1487,7 +1521,7 @@
 				"IPHONEOS_DEPLOYMENT_TARGET" = "17.0";
 				"SDKROOT" = "iphoneos";
 				"SWIFT_VERSION" = "5.0";
-				"SWIFT_STRICT_CONCURRENCY" = "minimal";
+				"SWIFT_STRICT_CONCURRENCY" = "targeted";
 				"ENABLE_USER_SCRIPT_SANDBOXING" = "YES";
 				"GCC_C_LANGUAGE_STANDARD" = "gnu17";
 				"SWIFT_OPTIMIZATION_LEVEL" = "-O";

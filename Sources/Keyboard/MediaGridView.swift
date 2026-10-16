@@ -1,4 +1,5 @@
 import UIKit
+import ImageIO
 
 /// A scrolling grid for emoji, GIF previews and stickers. A collection view keeps thousands of
 /// emoji fast and light on memory, which matters inside a keyboard extension.
@@ -87,7 +88,8 @@ private final class MediaCell: UICollectionViewCell {
     private let label = UILabel()
     private let imageView = UIImageView()
     private let badge = UILabel()
-    private var loading: URLSessionDataTask?
+    private var loading: Task<Void, Never>?
+    private var representedURL: URL?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -109,10 +111,11 @@ private final class MediaCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        loading?.cancel(); loading = nil; imageView.image = nil; label.text = nil
+        loading?.cancel(); loading = nil; representedURL = nil; imageView.image = nil; label.text = nil
     }
 
     func configure(_ item: MediaGridView.Item, palette: KeyboardPalette, cache: NSCache<NSURL, UIImage>) {
+        loading?.cancel(); loading = nil; representedURL = nil; imageView.image = nil
         switch item {
         case .emoji(let emoji, let toned, let name):
             label.isHidden = false; imageView.isHidden = true; badge.isHidden = true
@@ -125,13 +128,24 @@ private final class MediaCell: UICollectionViewCell {
             label.isHidden = true; imageView.isHidden = false; badge.isHidden = false
             imageView.backgroundColor = palette.key; accessibilityLabel = text
             if let cached = cache.object(forKey: url as NSURL) { imageView.image = cached; return }
-            let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                // A GIF decodes to its first frame, which keeps dozens of previews light on memory.
-                guard let data, data.count < 3_000_000, let image = UIImage(data: data) else { return }
-                cache.setObject(image, forKey: url as NSURL)
-                DispatchQueue.main.async { self?.imageView.image = image }
+            guard GifService.isTrusted(url) else { return }
+            representedURL = url
+            loading = Task { [weak self] in
+                do {
+                    let (data, response) = try await BoundedHTTP.load(URLRequest(url: url), maximum: 3_000_000)
+                    guard (200...299).contains(response.statusCode), !Task.isCancelled,
+                          let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
+                          let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
+                            kCGImageSourceCreateThumbnailFromImageAlways: true,
+                            kCGImageSourceThumbnailMaxPixelSize: 256,
+                            kCGImageSourceCreateThumbnailWithTransform: true
+                          ] as CFDictionary) else { return }
+                    let image = UIImage(cgImage: thumbnail)
+                    guard !Task.isCancelled, let self, self.representedURL == url else { return }
+                    cache.setObject(image, forKey: url as NSURL, cost: thumbnail.bytesPerRow * thumbnail.height)
+                    self.imageView.image = image
+                } catch { /* Failed/cancelled previews leave the placeholder intact. */ }
             }
-            loading = task; task.resume()
         }
     }
 }

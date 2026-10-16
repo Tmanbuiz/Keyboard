@@ -959,7 +959,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         for height in KeyboardPreferences.heights {
             panelButton("\(preferences.height == height ? "✓ " : "")Height: \(Int(height))", in: stack) { [weak self] in self?.preferences.height = height; self?.savePreferences() }
         }
-        panelButton("Clear learned words", in: stack) { [weak self] in self?.store.learned = [:]; self?.store.learnedPairs = [:]; self?.setStatus("Learned words cleared") }
+        panelButton("Clear learned words", in: stack) { [weak self] in self?.store.clearLearnedWords(); self?.setStatus("Learned words cleared") }
         note(store.isShared ? "Settings and phrases are shared with the app." : "Sideloaded builds may keep app and keyboard settings separate. Use these controls for your keyboard.", in: stack)
     }
 

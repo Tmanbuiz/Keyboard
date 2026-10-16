@@ -139,7 +139,7 @@ share_proxy = add("dependency-share-proxy", "PBXContainerItemProxy", containerPo
 share_dependency = add("dependency-share", "PBXTargetDependency", target=share_id, targetProxy=share_proxy)
 
 project_settings = {"CLANG_ENABLE_MODULES": "YES", "CLANG_ENABLE_OBJC_ARC": "YES", "IPHONEOS_DEPLOYMENT_TARGET": "17.0",
-                    "SDKROOT": "iphoneos", "SWIFT_VERSION": "5.0", "SWIFT_STRICT_CONCURRENCY": "minimal",
+                    "SDKROOT": "iphoneos", "SWIFT_VERSION": "5.0", "SWIFT_STRICT_CONCURRENCY": "targeted",
                     "ENABLE_USER_SCRIPT_SANDBOXING": "YES", "GCC_C_LANGUAGE_STANDARD": "gnu17"}
 
 def configurations(label, settings):

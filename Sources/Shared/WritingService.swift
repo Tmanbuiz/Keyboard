@@ -8,8 +8,7 @@ struct WritingConnection: Codable {
     var expiresAt: Date? = nil
     var appleUserID: String? = nil
     var valid: Bool {
-        guard let url = URL(string: endpoint) else { return false }
-        return url.scheme == "https" && url.host != nil && url.user == nil && url.password == nil && !token.isEmpty && (expiresAt.map { $0 > Date() } ?? true)
+        ServiceOrigin.accepts(endpoint) && !token.isEmpty && (expiresAt.map { $0 > Date() } ?? true)
     }
 }
 
@@ -82,12 +81,6 @@ enum WritingError: LocalizedError {
 }
 
 enum WritingService {
-    private final class NoRedirects: NSObject, URLSessionTaskDelegate {
-        func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse,
-                        newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-            completionHandler(nil) // Never forward selected text or a bearer token through a redirect.
-        }
-    }
     static func perform(text: String, action: WritingAction, language: KeyboardLanguage) async throws -> String {
         guard let connection = ConnectionVault.load(), connection.valid,
               let url = URL(string: connection.endpoint) else { throw WritingError.notConfigured }
@@ -100,12 +93,7 @@ enum WritingService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(connection.token)", forHTTPHeaderField: "Authorization")
         request.httpBody = try JSONEncoder().encode(Payload(text: text, action: action.rawValue, language: language.rawValue))
-        let configuration = URLSessionConfiguration.ephemeral
-        configuration.urlCache = nil
-        let session = URLSession(configuration: configuration, delegate: NoRedirects(), delegateQueue: nil)
-        defer { session.invalidateAndCancel() }
-        let (data, response) = try await session.data(for: request)
-        guard let response = response as? HTTPURLResponse else { throw WritingError.invalidResponse }
+        let (data, response) = try await BoundedHTTP.load(request, maximum: 100_000)
         switch response.statusCode {
         case 200...299: break
         case 401, 403: throw WritingError.unauthorized
