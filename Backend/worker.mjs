@@ -124,7 +124,12 @@ export default {
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${env.PROVIDER_API_KEY}` },
           body: JSON.stringify({ model: env.MODEL, messages, max_tokens: 2048, temperature: 0.2 })
         });
-        if (!response.ok) return json({ error: "Writing provider unavailable" }, 502);
+        if (!response.ok) {
+          // Only the provider's HTTP status and a short machine code (never message text or keys) so setup problems are diagnosable.
+          const failure = await response.json().catch(() => null);
+          const code = [failure?.error?.code, failure?.error?.type].find(v => typeof v === "string" && /^[a-z0-9_]{1,40}$/.test(v)) || "";
+          return json({ error: "Writing provider unavailable", detail: `${response.status} ${code}`.trim() }, 502);
+        }
         const body = await response.json();
         text = body?.choices?.[0]?.message?.content?.trim();
       } else {
@@ -133,6 +138,6 @@ export default {
       }
       if (!text || [...text].length > 6000) return json({ error: "Invalid provider response" }, 502);
       return json({ text });
-    } catch { return json({ error: "Writing provider unavailable" }, 502); }
+    } catch (error) { return json({ error: "Writing provider unavailable", detail: String(error?.name || "error").slice(0, 40) }, 502); }
   }
 };

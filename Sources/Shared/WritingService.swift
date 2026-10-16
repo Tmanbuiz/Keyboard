@@ -113,7 +113,12 @@ enum WritingService {
             struct LimitResponse: Decodable { let code: String? }
             if (try? JSONDecoder().decode(LimitResponse.self, from: data).code) == "daily_limit" { throw WritingError.dailyLimit }
             throw WritingError.rateLimited
-        case 500...599: throw WritingError.unavailable
+        case 500...599:
+            struct Failure: Decodable { let detail: String? }
+            if let detail = (try? JSONDecoder().decode(Failure.self, from: data))?.detail, !detail.isEmpty {
+                throw NSError(domain: "WritingService", code: response.statusCode, userInfo: [NSLocalizedDescriptionKey: "AI service error: \(detail)"])
+            }
+            throw WritingError.unavailable
         default: throw WritingError.rejected
         }
         guard data.count < 100_000, let decoded = try? JSONDecoder().decode(Response.self, from: data),
