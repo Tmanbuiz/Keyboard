@@ -29,6 +29,7 @@ final class KeyboardStore {
 
     private static let historyKeys = ["clips.v2", "phrases.v1", "learned.v1", "pairs.v1", "recentEmoji.v1"]
     private func resetDate(for key: String) -> Date {
+        guard Self.historyKeys.contains(key) else { return .distantPast }
         let markers = ["personal.resetAt"] + (["learned.v1", "pairs.v1"].contains(key) ? ["learning.resetAt"] : [])
         return markers.flatMap { [local.object(forKey: $0) as? Date, group?.object(forKey: $0) as? Date] }.compactMap { $0 }.max() ?? .distantPast
     }

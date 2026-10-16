@@ -107,3 +107,17 @@ extension KeyboardStoreTests {
         XCTAssertTrue(app.phrases.isEmpty)
     }
 }
+
+extension KeyboardStoreTests {
+    func testPersonalResetPreservesPrivacyPreferences() {
+        let shared = defaults()
+        let store = KeyboardStore(local: defaults(), group: shared, canWriteGroup: true)
+        var preferences = store.preferences
+        preferences.privateMode = true
+        store.preferences = preferences
+        store.clearPersonalData()
+        XCTAssertTrue(store.preferences.privateMode)
+        let other = KeyboardStore(local: defaults(), group: shared, canWriteGroup: false)
+        XCTAssertTrue(other.preferences.privateMode)
+    }
+}
