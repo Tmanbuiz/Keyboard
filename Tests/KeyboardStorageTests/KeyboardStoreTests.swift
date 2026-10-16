@@ -88,3 +88,22 @@ extension KeyboardStoreTests {
         XCTAssertEqual(keyboard.phrases.map(\.text), ["Keep clip"])
     }
 }
+
+extension KeyboardStoreTests {
+    func testResetGenerationOverridesFutureDatedCache() {
+        let shared = defaults(), keyboardLocal = defaults()
+        let app = KeyboardStore(local: defaults(), group: shared, canWriteGroup: true)
+        let keyboard = KeyboardStore(local: keyboardLocal, group: shared, canWriteGroup: false)
+        keyboard.learned = ["cached": 1]
+        keyboardLocal.set(Date.distantFuture, forKey: "learned.v1.updatedAt")
+        app.clearLearnedWords()
+        XCTAssertTrue(keyboard.learned.isEmpty)
+        app.capture("Future clip")
+        var stale = app.phrases
+        stale[0].createdAt = .distantFuture
+        app.phrases = stale
+        app.clearPersonalData()
+        app.phrases = stale
+        XCTAssertTrue(app.phrases.isEmpty)
+    }
+}

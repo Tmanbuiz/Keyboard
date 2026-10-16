@@ -32,26 +32,39 @@ final class KeyboardStore {
         let markers = ["personal.resetAt"] + (["learned.v1", "pairs.v1"].contains(key) ? ["learning.resetAt"] : [])
         return markers.flatMap { [local.object(forKey: $0) as? Date, group?.object(forKey: $0) as? Date] }.compactMap { $0 }.max() ?? .distantPast
     }
+    private func generation(for key: String) -> String {
+        let scopes = ["personal.resetAt"] + (["learned.v1", "pairs.v1"].contains(key) ? ["learning.resetAt"] : [])
+        return scopes.map { scope in
+            if local.bool(forKey: scope + ".pending") { return local.string(forKey: scope + ".generation") ?? "" }
+            return group?.string(forKey: scope + ".generation") ?? local.string(forKey: scope + ".generation") ?? ""
+        }.joined(separator: ":")
+    }
     /// A read-only keyboard can hide shared history immediately, then publish its pending reset
     /// when Full Access returns. Timestamps prevent old local/group fallbacks from reviving it.
     @discardableResult private func reconcile(_ key: String) -> Bool {
         if canWriteGroup, let group {
             for marker in ["personal.resetAt", "learning.resetAt"] {
-                if let pending = local.object(forKey: marker) as? Date,
-                   pending > (group.object(forKey: marker) as? Date ?? .distantPast) { group.set(pending, forKey: marker) }
+                if local.bool(forKey: marker + ".pending"), let pending = local.object(forKey: marker) as? Date {
+                    group.set(pending, forKey: marker)
+                    group.set(local.string(forKey: marker + ".generation"), forKey: marker + ".generation")
+                    local.set(false, forKey: marker + ".pending")
+                }
             }
         }
         let reset = resetDate(for: key)
         guard reset > .distantPast else { return false }
-        let newlyObserved = reset > (local.object(forKey: key + ".resetSeen") as? Date ?? .distantPast)
-        if (local.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) <= reset { local.removeObject(forKey: key) }
-        if canWriteGroup, (group?.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) <= reset { group?.removeObject(forKey: key) }
+        let current = generation(for: key)
+        let newlyObserved = reset > (local.object(forKey: key + ".resetSeen") as? Date ?? .distantPast) || current != (local.string(forKey: key + ".resetGenerationSeen") ?? "")
+        if (local.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) <= reset || (local.string(forKey: key + ".generation") ?? "") != current { local.removeObject(forKey: key) }
+        if canWriteGroup, (group?.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) <= reset || (group?.string(forKey: key + ".generation") ?? "") != current { group?.removeObject(forKey: key) }
         local.set(reset, forKey: key + ".resetSeen")
+        local.set(current, forKey: key + ".resetGenerationSeen")
         return newlyObserved
     }
     private func data(_ key: String, in defaults: UserDefaults?) -> Data? {
         let reset = resetDate(for: key)
-        guard reset == .distantPast || (defaults?.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) > reset else { return nil }
+        guard reset == .distantPast || ((defaults?.object(forKey: key + ".updatedAt") as? Date ?? .distantPast) > reset &&
+            (defaults?.string(forKey: key + ".generation") ?? "") == generation(for: key)) else { return nil }
         return defaults?.data(forKey: key)
     }
     private func load<T: Decodable>(_ key: String, fallback: T) -> T {
@@ -65,8 +78,9 @@ final class KeyboardStore {
         if reconcile(key), ["learned.v1", "pairs.v1"].contains(key) { return }
         guard let data = try? JSONEncoder().encode(value) else { return }
         let now = Date()
-        local.set(data, forKey: key); local.set(now, forKey: key + ".updatedAt")
-        if canWriteGroup { group?.set(data, forKey: key); group?.set(now, forKey: key + ".updatedAt") }
+        let current = generation(for: key)
+        local.set(data, forKey: key); local.set(now, forKey: key + ".updatedAt"); local.set(current, forKey: key + ".generation")
+        if canWriteGroup { group?.set(data, forKey: key); group?.set(now, forKey: key + ".updatedAt"); group?.set(current, forKey: key + ".generation") }
     }
     var writingRevokedAt: Date? {
         get {
@@ -115,7 +129,7 @@ final class KeyboardStore {
         set {
             let remaining = Set(newValue.map(\.id))
             deletedClipIDs.formUnion(phrases.filter { !remaining.contains($0.id) }.map(\.id))
-            save(ClipboardHistory.pruned(newValue.filter { $0.createdAt > resetDate(for: "clips.v2") }, keepDays: preferences.clipboardDays), key: "clips.v2")
+            save(ClipboardHistory.pruned(newValue.filter { $0.createdAt > resetDate(for: "clips.v2") && !deletedClipIDs.contains($0.id) }, keepDays: preferences.clipboardDays), key: "clips.v2")
         }
     }
     /// The pasteboard change count already looked at, so each copy is read at most once.
@@ -185,18 +199,21 @@ final class KeyboardStore {
     }
     private func reset(_ marker: String, keys: [String]) {
         let now = Date()
-        local.set(now, forKey: marker)
-        if canWriteGroup { group?.set(now, forKey: marker) }
+        let id = UUID().uuidString
+        local.set(now, forKey: marker); local.set(id, forKey: marker + ".generation")
+        local.set(group != nil && !canWriteGroup, forKey: marker + ".pending")
+        if canWriteGroup { group?.set(now, forKey: marker); group?.set(id, forKey: marker + ".generation") }
         for key in keys {
             local.removeObject(forKey: key)
             local.set(now, forKey: key + ".resetSeen")
+            local.set(generation(for: key), forKey: key + ".resetGenerationSeen")
             if canWriteGroup { group?.removeObject(forKey: key) }
         }
     }
     func clearLearnedWords() { reset("learning.resetAt", keys: ["learned.v1", "pairs.v1"]) }
     func clearPersonalData() {
+        // Keep IDs too, so an old UI snapshot cannot restore a clip with a future-dated timestamp.
+        deletedClipIDs.formUnion(phrases.map(\.id))
         reset("personal.resetAt", keys: Self.historyKeys)
-        local.removeObject(forKey: "clips.deleted")
-        if canWriteGroup { group?.removeObject(forKey: "clips.deleted") }
     }
 }
