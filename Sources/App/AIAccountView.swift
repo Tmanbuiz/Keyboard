@@ -52,7 +52,7 @@ final class AIAccountModel: ObservableObject {
                 continuation.resume(returning: error == nil ? state : nil)
             }
         }
-        if let state, state == .revoked || state == .notFound {
+        if let state, state == .revoked {
             await signOut(); status = "Apple access was revoked. Sign in again to use AI."
         }
     }
@@ -84,7 +84,7 @@ final class AIAccountModel: ObservableObject {
                     let session: AccountAPI.Session = try await AccountAPI.call("auth/apple", body: ["identityToken": token, "challengeID": challenge.id])
                     let connection = WritingConnection(endpoint: AccountAPI.base.appendingPathComponent("write").absoluteString,
                         token: session.token, expiresAt: Date(timeIntervalSince1970: session.expiresAtSeconds), appleUserID: credential.user)
-                    guard ConnectionVault.save(connection) else {
+                    guard ConnectionVault.save(connection), ConnectionVault.load()?.appleUserID == credential.user else {
                         let _: AccountAPI.Acknowledgement? = try? await AccountAPI.call("auth/logout", token: session.token)
                         throw NSError(domain: "AIAccount", code: 2, userInfo: [NSLocalizedDescriptionKey: "The shared Keychain could not be updated. Reinstall the current TestFlight build and try again."])
                     }
@@ -135,6 +135,7 @@ struct AIAccountView: View {
                 Label(model.signedIn ? "AI account connected" : "Connect your AI account", systemImage: "sparkles")
                     .font(.headline)
                 Text("Sign in once to use rewriting and translation in the app and keyboard. Your connection is shared securely on this device.")
+                if !model.status.isEmpty { Text(model.status).font(.callout).foregroundStyle(model.signedIn ? Color.secondary : Color.orange) }
             }
             if model.signedIn {
                 Section("Daily allowance") {
@@ -161,7 +162,6 @@ struct AIAccountView: View {
                 }
             }
             if model.busy { Section { ProgressView("Please wait…") } }
-            if !model.status.isEmpty { Section { Text(model.status).font(.callout) } }
             Section("Keyboard access") {
                 Text("On your iPhone: Settings → General → Keyboard → Keyboards → WianTribe → Allow Full Access. Basic typing remains available without it.")
                 Button("Open Settings") { if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) } }
