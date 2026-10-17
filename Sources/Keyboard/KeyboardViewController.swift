@@ -189,6 +189,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func reloadPreferences() {
+        KeyboardStore.invalidateLearningCache()
         store = KeyboardStore(canWriteGroup: hasFullAccess)
         preferences = store.preferences
         usingDarkPalette = wantsDarkPalette

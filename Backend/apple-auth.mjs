@@ -117,7 +117,28 @@ export async function accountClient(database, token) {
       WHERE account_sessions.token_hash = ? AND account_sessions.expires_at > ? AND clients.active = 1`)
     .bind(hash, Date.now()).first();
 }
-export async function accountAction(request, env, database, client, token) {
+function b64url(bytes) { return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+// Apple requires apps with Sign in with Apple to revoke the user's tokens when the account is deleted.
+// Needs APPLE_TEAM_ID, APPLE_KEY_ID and APPLE_PRIVATE_KEY (the .p8 contents) as Worker secrets; without them deletion still works but returns appleRevoked:false.
+export async function revokeAppleGrant(env, authorizationCode, fetcher = fetch) {
+  if (!env.APPLE_TEAM_ID || !env.APPLE_KEY_ID || !env.APPLE_PRIVATE_KEY || !env.APPLE_CLIENT_ID || typeof authorizationCode !== 'string' || !authorizationCode || authorizationCode.length > 2000) return false;
+  try {
+    const pem = env.APPLE_PRIVATE_KEY.replace(/\\n/g, '\n').replace(/-----[A-Z ]+-----|\s/g, '');
+    const key = await crypto.subtle.importKey('pkcs8', Uint8Array.from(atob(pem), c => c.charCodeAt(0)), { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
+    const now = Math.floor(Date.now() / 1000), encode = value => b64url(new TextEncoder().encode(JSON.stringify(value)));
+    const unsigned = encode({ alg: 'ES256', kid: env.APPLE_KEY_ID, typ: 'JWT' }) + '.' + encode({ iss: env.APPLE_TEAM_ID, iat: now, exp: now + 300, aud: 'https://appleid.apple.com', sub: env.APPLE_CLIENT_ID });
+    const clientSecret = unsigned + '.' + b64url(new Uint8Array(await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, key, new TextEncoder().encode(unsigned))));
+    const post = (path, fields) => fetcher('https://appleid.apple.com/auth/' + path, { method: 'POST', redirect: 'manual', signal: AbortSignal.timeout(10000),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ client_id: env.APPLE_CLIENT_ID, client_secret: clientSecret, ...fields }) });
+    const exchange = await post('token', { grant_type: 'authorization_code', code: authorizationCode });
+    if (!exchange.ok) return false;
+    const tokens = await exchange.json();
+    const [token, hint] = tokens.refresh_token ? [tokens.refresh_token, 'refresh_token'] : [tokens.access_token, 'access_token'];
+    if (!token) return false;
+    return (await post('revoke', { token, token_type_hint: hint })).ok;
+  } catch { return false; }
+}
+export async function accountAction(request, env, database, client, token, fetcher = fetch) {
   const path = new URL(request.url).pathname;
   if (request.method !== 'POST') return json({ error: 'POST required' }, 405);
   if (path === '/auth/logout') {
@@ -127,6 +148,8 @@ export async function accountAction(request, env, database, client, token) {
   if (path === '/account/delete') {
     const ownAccount = await database.prepare('SELECT subject_hash FROM apple_accounts WHERE client_id = ?').bind(client.id).first();
     if (!ownAccount) return json({ error: 'This connection is managed by invitation. Contact WianTribe to remove it.' }, 400);
+    let authorizationCode; try { authorizationCode = (await readJSON(request))?.authorizationCode; } catch { authorizationCode = undefined; }
+    const appleRevoked = await revokeAppleGrant(env, authorizationCode, fetcher);
     await database.batch([
       database.prepare('DELETE FROM account_sessions WHERE client_id = ?').bind(client.id),
       database.prepare('DELETE FROM apple_accounts WHERE client_id = ?').bind(client.id),
@@ -134,7 +157,7 @@ export async function accountAction(request, env, database, client, token) {
     ]);
     // Daily usage stays under an app-specific pseudonymous bucket for up to 30 days, preventing quota-reset abuse.
     // No Apple refresh/access token is collected. The app links Apple's own access-revocation instructions.
-    return json({ deleted: true, appleRevoked: false });
+    return json({ deleted: true, appleRevoked });
   }
   return json({ error: 'Not found' }, 404);
 }

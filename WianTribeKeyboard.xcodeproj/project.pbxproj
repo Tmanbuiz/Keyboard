@@ -588,6 +588,12 @@
 			"path" = "Sources/App/Localizable.xcstrings";
 			"sourceTree" = "<group>";
 		};
+		83B33EA5D68919615DFD6202 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.json.xcstrings";
+			"path" = "Sources/App/InfoPlist.xcstrings";
+			"sourceTree" = "<group>";
+		};
 		04C7981C5E70EE187BBB08AF = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "text.plist.entitlements";
@@ -745,6 +751,7 @@
 				D36322D872D619CFEFC63F4A,
 				D17FFA0B9555AF75D7BB0AB1,
 				F845250E9A63D882499EE398,
+				83B33EA5D68919615DFD6202,
 				04C7981C5E70EE187BBB08AF,
 				A896A87432FDB683A804D1DF,
 				EEE09CA24FD0C9B1276CA8C6,
@@ -1049,6 +1056,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = F845250E9A63D882499EE398;
 		};
+		C026E7C7CFD17A44FB4E9021 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 83B33EA5D68919615DFD6202;
+		};
 		8ECC8B5D05B79F879ACDF1A2 = {
 			"isa" = "PBXResourcesBuildPhase";
 			"buildActionMask" = 2147483647;
@@ -1057,6 +1068,7 @@
 				2965A0A951CF9FDEE704FB58,
 				A6276B52E7506F09A50EFDEF,
 				E4099AD225696637325AEB37,
+				C026E7C7CFD17A44FB4E9021,
 			);
 			"runOnlyForDeploymentPostprocessing" = 0;
 		};

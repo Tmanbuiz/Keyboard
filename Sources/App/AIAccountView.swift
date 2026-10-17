@@ -18,7 +18,7 @@ fileprivate enum AccountAPI {
         case 200...299: return try JSONDecoder().decode(T.self, from: data)
         case 401:
             if path.hasPrefix("auth/"), let body = try? JSONDecoder().decode([String: String].self, from: data), let message = body["error"] {
-                throw NSError(domain: "AIAccount", code: 401, userInfo: [NSLocalizedDescriptionKey: message + (body["reason"].map { " (\($0))" } ?? "")])
+                throw NSError(domain: "AIAccount", code: 401, userInfo: [NSLocalizedDescriptionKey: message])
             }
             throw WritingError.unauthorized
         case 429: throw WritingError.rateLimited
@@ -119,11 +119,11 @@ final class AIAccountModel: ObservableObject {
         if let token { let _: AccountAPI.Acknowledgement? = try? await AccountAPI.call("auth/logout", token: token) }
         status = "Signed out on this device."
     }
-    func deleteAccount() async {
+    func deleteAccount(authorizationCode: String?) async {
         guard let token = ConnectionVault.load()?.token, !busy else { return }
         busy = true; defer { busy = false }
         do {
-            let reply: AccountAPI.Acknowledgement = try await AccountAPI.call("account/delete", token: token)
+            let reply: AccountAPI.Acknowledgement = try await AccountAPI.call("account/delete", body: authorizationCode.map { ["authorizationCode": $0] } ?? [:], token: token)
             guard reply.deleted == true else { throw WritingError.invalidResponse }
             ConnectionVault.save(nil); signedIn = false; challenge = nil; used = nil; dailyLimit = nil; deleted = true
             status = "Your WianTribe AI account was deleted. You can also remove WianTribe from Sign in with Apple in your Apple Account settings."
@@ -134,6 +134,7 @@ final class AIAccountModel: ObservableObject {
 struct AIAccountView: View {
     @StateObject private var model = AIAccountModel.shared
     @State private var confirmDeletion = false
+    @State private var confirmWithApple = false
     @Environment(\.scenePhase) private var scenePhase
     var body: some View {
         Form {
@@ -154,6 +155,21 @@ struct AIAccountView: View {
                 Section {
                     Button("Sign out", role: .destructive) { Task { await model.signOut() } }.disabled(model.busy)
                     Button("Delete AI account", role: .destructive) { confirmDeletion = true }.disabled(model.busy)
+                }
+                if confirmWithApple {
+                    Section {
+                        Text("Confirm with Apple to finish deleting your account. This also removes WianTribe from your Sign in with Apple list.").font(.callout)
+                        SignInWithAppleButton(.continue) { $0.requestedScopes = [] } onCompletion: { result in
+                            confirmWithApple = false
+                            switch result {
+                            case .success(let authorization):
+                                let code = (authorization.credential as? ASAuthorizationAppleIDCredential)?.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
+                                Task { await model.deleteAccount(authorizationCode: code) }
+                            case .failure: break
+                            }
+                        }.signInWithAppleButtonStyle(.white).frame(height: 48)
+                        Button("Cancel") { confirmWithApple = false }
+                    }
                 }
             } else {
                 Section {
@@ -182,7 +198,7 @@ struct AIAccountView: View {
             .onChange(of: scenePhase) { _, phase in if phase == .active { Task { await model.reload() } } }
             .onReceive(NotificationCenter.default.publisher(for: ASAuthorizationAppleIDProvider.credentialRevokedNotification)) { _ in Task { await model.signOut() } }
             .confirmationDialog("Delete your WianTribe AI account? All its connections will stop working.", isPresented: $confirmDeletion) {
-                Button("Delete AI account", role: .destructive) { Task { await model.deleteAccount() } }
+                Button("Delete AI account", role: .destructive) { confirmWithApple = true }
             }
     }
 }

@@ -106,7 +106,7 @@ async function serve(request, env, context, fetcher) {
   if (!client) return json({ error: 'Unauthorized' }, 401);
   const { success } = await env.WRITING_LIMITER.limit({ key: `client:${client.id}` });
   if (!success) return json({ error: 'Too many requests. Try again later.' }, 429);
-  if (path === '/auth/logout' || path === '/account/delete') return accountAction(request, env, database, client, token);
+  if (path === '/auth/logout' || path === '/account/delete') return accountAction(request, env, database, client, token, fetcher);
   const day = new Date().toISOString().slice(0, 10);
   if (path === '/me') {
     const usage = await database.prepare('SELECT COUNT(*) AS used FROM usage_events WHERE client_id = ? AND day = ?').bind(client.id, day).first();

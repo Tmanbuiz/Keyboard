@@ -214,3 +214,21 @@ test('Apple session limit, expiration and admin revocation are enforced', async 
   const c = await challenge(env);
   assert.equal((await worker.fetch(request('/auth/apple', '', { challengeID: c.id, identityToken: await identity(c.nonce) }), env, {}, appleFetch)).status, 403);
 });
+test('account deletion revokes the Apple grant when Apple credentials are configured', async t => {
+  const pair = await crypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
+  const der = Buffer.from(await crypto.subtle.exportKey('pkcs8', pair.privateKey)).toString('base64');
+  const env = appleSetup(t, { APPLE_TEAM_ID: 'TEAM123456', APPLE_KEY_ID: 'KEY1234567', APPLE_PRIVATE_KEY: `-----BEGIN PRIVATE KEY-----\n${der}\n-----END PRIVATE KEY-----` });
+  const seen = [];
+  const fetcher = async (url, options) => {
+    if (String(url).startsWith('https://appleid.apple.com/auth/token') || String(url).startsWith('https://appleid.apple.com/auth/revoke')) {
+      const body = new URLSearchParams(String(options.body)); seen.push([String(url), body.get('token') || body.get('code'), body.get('client_secret').split('.').length]);
+      return Response.json({ refresh_token: 'refresh-1' });
+    }
+    return appleFetch(url, options);
+  };
+  const account = await signIn(env);
+  const reply = await worker.fetch(request('/account/delete', account.token, { authorizationCode: 'code-1' }), env, {}, fetcher);
+  assert.equal(reply.status, 200);
+  assert.deepEqual(await reply.json(), { deleted: true, appleRevoked: true });
+  assert.deepEqual(seen, [['https://appleid.apple.com/auth/token', 'code-1', 3], ['https://appleid.apple.com/auth/revoke', 'refresh-1', 3]]);
+});

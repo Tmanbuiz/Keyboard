@@ -1,0 +1,86 @@
+{
+  "sourceLanguage": "en",
+  "version": "1.0",
+  "strings": {
+    "NSMicrophoneUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record your voice only when you start recording in the Voice editor."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Graba tu voz solo cuando inicies la grabación en el editor de voz."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistre votre voix uniquement lorsque vous lancez l’enregistrement dans l’éditeur vocal."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nimmt deine Stimme nur auf, wenn du im Sprach-Editor die Aufnahme startest."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grava a sua voz apenas quando você inicia a gravação no editor de voz."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يسجّل صوتك فقط عندما تبدأ التسجيل في محرر الصوت."
+          }
+        }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn the voice you choose to record into text you can review and copy."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Convierte la voz que elijas grabar en texto que puedes revisar y copiar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transforme la voix que vous choisissez d’enregistrer en texte que vous pouvez relire et copier."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wandelt die Sprache, die du aufnimmst, in Text um, den du prüfen und kopieren kannst."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transforma a voz que você escolher gravar em texto que você pode revisar e copiar."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يحوّل الصوت الذي تختار تسجيله إلى نص يمكنك مراجعته ونسخه."
+          }
+        }
+      }
+    }
+  }
+}

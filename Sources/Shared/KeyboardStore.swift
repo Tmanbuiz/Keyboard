@@ -158,14 +158,27 @@ final class KeyboardStore {
         phrases = ClipboardHistory.adding(text, to: phrases, keepDays: preferences.clipboardDays)
     }
     func clearRecentClips() { phrases = phrases.filter(\.pinned) }
+    // Decoding these from UserDefaults on every key press made typing lag, so each process keeps an in-memory copy.
+    // The keyboard calls invalidateLearningCache() whenever it appears, so changes made in the app (e.g. clearing) are picked up.
+    private static var learnedCache: [String: Int]?
+    private static var pairsCache: [String: [String: Int]]?
+    static func invalidateLearningCache() { learnedCache = nil; pairsCache = nil }
     var learned: [String: Int] {
-        get { load("learned.v1", fallback: [String: Int]()) }
-        set { save(newValue, key: "learned.v1") }
+        get {
+            if let cached = Self.learnedCache { return cached }
+            let value: [String: Int] = load("learned.v1", fallback: [String: Int]())
+            Self.learnedCache = value; return value
+        }
+        set { Self.learnedCache = newValue; save(newValue, key: "learned.v1") }
     }
     /// Which word followed which, counted only when word learning is on. Used for next-word suggestions.
     var learnedPairs: [String: [String: Int]] {
-        get { load("pairs.v1", fallback: [String: [String: Int]]()) }
-        set { save(newValue, key: "pairs.v1") }
+        get {
+            if let cached = Self.pairsCache { return cached }
+            let value: [String: [String: Int]] = load("pairs.v1", fallback: [String: [String: Int]]())
+            Self.pairsCache = value; return value
+        }
+        set { Self.pairsCache = newValue; save(newValue, key: "pairs.v1") }
     }
     func learnPair(previous: String, word: String) {
         guard preferences.learnWords, !preferences.privateMode, TextContext.canLearn(previous), TextContext.canLearn(word) else { return }
@@ -211,10 +224,10 @@ final class KeyboardStore {
             if canWriteGroup { group?.removeObject(forKey: key) }
         }
     }
-    func clearLearnedWords() { reset("learning.resetAt", keys: ["learned.v1", "pairs.v1"]) }
+    func clearLearnedWords() { reset("learning.resetAt", keys: ["learned.v1", "pairs.v1"]); Self.invalidateLearningCache() }
     func clearPersonalData() {
         // Keep IDs too, so an old UI snapshot cannot restore a clip with a future-dated timestamp.
         deletedClipIDs.formUnion(phrases.map(\.id))
-        reset("personal.resetAt", keys: Self.historyKeys)
+        reset("personal.resetAt", keys: Self.historyKeys); Self.invalidateLearningCache()
     }
 }
