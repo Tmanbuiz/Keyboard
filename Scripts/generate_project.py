@@ -82,8 +82,7 @@ write_plist("PrivacyInfo.xcprivacy", {
         {"NSPrivacyCollectedDataType": kind, "NSPrivacyCollectedDataTypeLinked": True,
          "NSPrivacyCollectedDataTypeTracking": False,
          "NSPrivacyCollectedDataTypePurposes": ["NSPrivacyCollectedDataTypePurposeAppFunctionality"]}
-        for kind in ["NSPrivacyCollectedDataTypeUserID", "NSPrivacyCollectedDataTypeProductInteraction",
-                     "NSPrivacyCollectedDataTypeOtherUserContent", "NSPrivacyCollectedDataTypeSearchHistory"]
+        for kind in ["NSPrivacyCollectedDataTypeUserID", "NSPrivacyCollectedDataTypeProductInteraction"]
     ],
     "NSPrivacyAccessedAPITypes": [{"NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
                                    "NSPrivacyAccessedAPITypeReasons": ["CA92.1", "1C8F.1"]}]

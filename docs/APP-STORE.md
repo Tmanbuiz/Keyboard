@@ -19,8 +19,6 @@ What's ready in this repository, and what only you can do.
 - **Data collection:** Yes, only for the optional AI account (Sign in with Apple):
   - **Identifiers → User ID** (hashed Apple account identifier): linked to the user, used for App Functionality, not used for tracking.
   - **Usage Data → Product Interaction** (daily AI request count): linked to the user, App Functionality, not tracking.
-  - **User Content → Other User Content** (text you send to an online writing tool, processed in real time and not stored by WianTribe): linked to the user's session, App Functionality, not tracking.
-  - **Search History** (GIF search words relayed to GIPHY, not stored): App Functionality, not tracking.
   - Typing, text sent to writing tools (processed in real time, not stored), name and email are **not** collected.
 - **Tracking:** No.
 - `Configuration/PrivacyInfo.xcprivacy` declares the same two data types and the UserDefaults reason codes. Privacy policy: https://wiantribe.com/keyboard/privacy. Support URL: https://wiantribe.com/keyboard.
