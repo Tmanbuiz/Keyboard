@@ -33,8 +33,8 @@ final class AppModel: ObservableObject {
         guard preferences.clipboardHistory, !preferences.privateMode else { return }
         let pasteboard = UIPasteboard.general
         guard pasteboard.changeCount != store.lastChangeCount, pasteboard.hasStrings else { return }
+        store.lastChangeCount = pasteboard.changeCount // record first so a denied paste prompt isn't repeated on every open
         guard let text = pasteboard.string else { return }
-        store.lastChangeCount = pasteboard.changeCount
         guard ClipboardHistory.shouldCapture(text, types: pasteboard.types) else {
             clipboardStatus = "Copy skipped: sensitive, empty or over 5,000 characters."; return
         }

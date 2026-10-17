@@ -82,7 +82,7 @@ final class AIAccountModel: ObservableObject {
                 defer { busy = false }
                 do {
                     guard ConnectionVault.hasSharedStorage else {
-                        throw NSError(domain: "AIAccount", code: 1, userInfo: [NSLocalizedDescriptionKey: "Automatic keyboard sharing requires the TestFlight build. Install that build and try again."])
+                        throw NSError(domain: "AIAccount", code: 1, userInfo: [NSLocalizedDescriptionKey: "Sharing with the keyboard isn't available in this build. Please install the latest version of WianTribe and try again."])
                     }
                     let session: AccountAPI.Session = try await AccountAPI.call("auth/apple", body: ["identityToken": token, "challengeID": challenge.id])
                     note("server accepted sign-in")
@@ -90,7 +90,7 @@ final class AIAccountModel: ObservableObject {
                         token: session.token, expiresAt: Date(timeIntervalSince1970: session.expiresAtSeconds), appleUserID: credential.user)
                     guard ConnectionVault.save(connection), ConnectionVault.load()?.appleUserID == credential.user else {
                         let _: AccountAPI.Acknowledgement? = try? await AccountAPI.call("auth/logout", token: session.token)
-                        throw NSError(domain: "AIAccount", code: 2, userInfo: [NSLocalizedDescriptionKey: "The shared Keychain could not be updated. Reinstall the current TestFlight build and try again."])
+                        throw NSError(domain: "AIAccount", code: 2, userInfo: [NSLocalizedDescriptionKey: "Your sign-in could not be saved on this iPhone. Please update WianTribe and try again."])
                     }
                     note("saved and read back OK")
                     let store = KeyboardStore(); var preferences = store.preferences

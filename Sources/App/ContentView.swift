@@ -51,7 +51,7 @@ private struct HomeView: View {
                     feature("globe", "\(LanguageCatalog.all.count) languages")
                     feature("hand.draw", "Swipe to type")
                 }.frame(maxWidth: .infinity)
-                Text("Independent software by WianTribe. Samsung's branding and assets are not used.")
+                Text("Independent software by WianTribe.")
                     .font(.caption2).foregroundStyle(.secondary)
             }.padding(22)
         }
@@ -287,7 +287,7 @@ private struct TranslationDownloadRow: View {
         HStack {
             VStack(alignment: .leading) { Text(language.title); Text(status).font(.caption).foregroundStyle(.secondary) }
             Spacer()
-            Button("Download") { configuration = .init(source: source, target: target) }.buttonStyle(.bordered)
+            Button("Download") { if configuration != nil { configuration?.invalidate() } else { configuration = .init(source: source, target: target) } }.buttonStyle(.bordered)
                 .disabled(status == "Ready" || status == "Not available")
         }
         .task { await refresh() }
