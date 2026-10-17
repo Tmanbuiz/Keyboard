@@ -15,7 +15,7 @@ extension KeyboardViewController {
             stack.widthAnchor.constraint(equalTo: body.frameLayoutGuide.widthAnchor, constant: -12)])
         var header: UIView?
         if let action = writingAction {
-            header = writingHeader(action == .translate ? "Translate to \(writingTarget?.pack.englishName ?? "")" : action.title) { [weak self] in
+            header = writingHeader(action == .translate ? String(format: tr("Translate to %@"), writingTarget?.pack.englishName ?? "") : tr(action.title)) { [weak self] in
                 guard let self else { return }
                 self.onlineTask?.cancel(); self.writingAction = nil; self.writingResult = nil; self.writingError = nil
                 self.rebuildContent()
@@ -24,7 +24,7 @@ extension KeyboardViewController {
         } else if panel == "translate" {
             buildTranslateMenu(stack)
         } else if writingStyleMenu {
-            header = writingHeader("Writing style") { [weak self] in self?.writingStyleMenu = false; self?.rebuildContent() }
+            header = writingHeader(tr("Writing style")) { [weak self] in self?.writingStyleMenu = false; self?.rebuildContent() }
             buildStyleMenu(stack)
         } else {
             buildAssistMenu(stack)
@@ -36,7 +36,7 @@ extension KeyboardViewController {
 
     func writingTile(_ title: String, symbol: String?, horizontal: Bool = false, action: @escaping () -> Void) -> UIButton {
         var config = UIButton.Configuration.plain()
-        config.title = title
+        config.title = tr(title)
         if let symbol { config.image = UIImage(systemName: symbol) }
         config.imagePlacement = horizontal ? .leading : .top
         config.imagePadding = horizontal ? 8 : 4
@@ -87,7 +87,7 @@ extension KeyboardViewController {
         let row = UIStackView(); row.axis = .horizontal; row.spacing = 6; row.alignment = .center
         let backButton = UIButton(type: .system)
         backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = palette.text; backButton.accessibilityLabel = "Back"
+        backButton.tintColor = palette.text; backButton.accessibilityLabel = tr("Back")
         backButton.addAction(UIAction { [weak self] _ in self?.feedback(); back() }, for: .touchUpInside)
         backButton.widthAnchor.constraint(equalToConstant: 36).isActive = true
         let icon = UIImageView(image: UIImage(systemName: "sparkles")); icon.tintColor = palette.accent
@@ -99,7 +99,7 @@ extension KeyboardViewController {
     }
 
     func caption(_ text: String, in stack: UIStackView) {
-        let label = UILabel(); label.text = text; label.textColor = palette.text.withAlphaComponent(0.7)
+        let label = UILabel(); label.text = tr(text); label.textColor = palette.text.withAlphaComponent(0.7)
         label.font = .systemFont(ofSize: 12); label.numberOfLines = 0; label.textAlignment = .center
         stack.addArrangedSubview(label)
     }
@@ -121,9 +121,9 @@ extension KeyboardViewController {
             writingTile("Table", symbol: "tablecells", horizontal: true) { go(.table) },
             writingTile("Email", symbol: "envelope", horizontal: true) { go(.email) }], height: 44))
         let onDevice = OnDeviceWriting.canRewrite && preferences.aiEngine == .auto
-        note("Works on selected text, or on what you've typed in this paragraph. " + (onDevice
-             ? "Runs on this iPhone with Apple Intelligence when your language is supported."
-             : "Uses your WianTribe service, because Apple Intelligence isn't available here."), in: stack)
+        note(onDevice
+             ? "Works on selected text, or on what you've typed in this paragraph. Runs on this iPhone with Apple Intelligence when your language is supported."
+             : "Works on selected text, or on what you've typed in this paragraph. Uses your WianTribe service, because Apple Intelligence isn't available here.", in: stack)
         buildServiceRows(stack)
     }
 
@@ -172,8 +172,8 @@ extension KeyboardViewController {
         let label = UILabel(); label.numberOfLines = 0; label.textColor = palette.text
         label.font = .systemFont(ofSize: KeyButton.fontSize(16))
         if let result = writingResult { label.text = result }
-        else if let error = writingError { label.text = error; label.textColor = palette.text.withAlphaComponent(0.75) }
-        else { label.text = "Working…"; label.textColor = palette.text.withAlphaComponent(0.6) }
+        else if let error = writingError { label.text = tr(error); label.textColor = palette.text.withAlphaComponent(0.75) }
+        else { label.text = tr("Working…"); label.textColor = palette.text.withAlphaComponent(0.6) }
         label.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(label)
         let actions = UIStackView(); actions.axis = .horizontal; actions.spacing = 4; actions.distribution = .fillEqually
         actions.translatesAutoresizingMaskIntoConstraints = false; card.addSubview(actions)
@@ -224,7 +224,7 @@ extension KeyboardViewController {
             })
         }
         stack.addArrangedSubview(card)
-        caption(writingResult != nil ? "Result \(writingVia)." : (writingError != nil ? "Request stopped. Your text has not been changed." : (action == .translate ? "Translating…" : "Working…")), in: stack)
+        caption(writingResult != nil ? String(format: tr("Result %@."), tr(writingVia)) : (writingError != nil ? "Request stopped. Your text has not been changed." : (action == .translate ? "Translating…" : "Working…")), in: stack)
     }
 
     /// Tries Apple's on-device models first, then the person's own service.

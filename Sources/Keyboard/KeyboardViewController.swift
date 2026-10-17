@@ -756,7 +756,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     func setStatus(_ text: String) {
         clear(suggestionBar)
         if panel == nil && searchMode == nil { suggestionBar.addArrangedSubview(toolbarToggle()) }
-        let label = UILabel(); label.text = text; label.textColor = palette.accent
+        let label = UILabel(); label.text = tr(text); label.textColor = palette.accent
         label.font = .systemFont(ofSize: 12, weight: .medium); label.textAlignment = .center
         label.numberOfLines = 2; label.adjustsFontSizeToFitWidth = true
         suggestionBar.addArrangedSubview(label)
@@ -861,7 +861,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     func removeAccentPopup() { accentPopup?.removeFromSuperview(); accentPopup = nil }
 
     func note(_ text: String, in stack: UIStackView) {
-        let label = UILabel(); label.text = text; label.textColor = palette.text.withAlphaComponent(0.8)
+        let label = UILabel(); label.text = tr(text); label.textColor = palette.text.withAlphaComponent(0.8)
         label.font = .systemFont(ofSize: 12); label.numberOfLines = 0; stack.addArrangedSubview(label)
     }
     func panelButton(_ title: String, in stack: UIStackView, action: @escaping () -> Void) {

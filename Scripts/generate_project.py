@@ -99,7 +99,7 @@ resources = ["Sources/Core/Resources/Languages.json", "Configuration/PrivacyInfo
 # Dictionaries and emoji data are only needed by the keyboard, so the app stays small.
 keyboard_data = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Core/Resources").glob("*") if p.is_file() and p.name != "Languages.json")
 media = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "Sources/Keyboard/Media").glob("*") if p.is_file())
-all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Stickers-Info.plist", "Configuration/Share-Info.plist", sticker_catalog, "Sources/App/Localizable.xcstrings", "Sources/App/InfoPlist.xcstrings", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements", "Configuration/AppShared.entitlements"]
+all_paths = all_files + resources + keyboard_data + media + ["Sources/App/Assets.xcassets", "Configuration/App-Info.plist", "Configuration/Keyboard-Info.plist", "Configuration/Stickers-Info.plist", "Configuration/Share-Info.plist", sticker_catalog, "Sources/App/Localizable.xcstrings", "Sources/App/InfoPlist.xcstrings", "Sources/Keyboard/Localizable.xcstrings", "Sources/Share/Localizable.xcstrings", "Configuration/Sideload.entitlements", "Configuration/Shared.entitlements", "Configuration/AppShared.entitlements"]
 refs = {}
 for path in all_paths:
     suffix = pathlib.Path(path).suffix
@@ -120,10 +120,10 @@ app_sources = phase("app-sources", "PBXSourcesBuildPhase", [p for p in all_files
 keyboard_sources = phase("keyboard-sources", "PBXSourcesBuildPhase", [p for p in all_files if not p.startswith(("Sources/App/", "Sources/Share/"))])
 # The Share extension only needs the shared model and storage.
 share_sources = phase("share-sources", "PBXSourcesBuildPhase", [p for p in all_files if p.startswith(("Sources/Core/", "Sources/Share/")) or p == "Sources/Shared/KeyboardStore.swift"])
-share_resources = phase("share-resources", "PBXResourcesBuildPhase", resources)
+share_resources = phase("share-resources", "PBXResourcesBuildPhase", resources + ["Sources/Share/Localizable.xcstrings"])
 share_frameworks = phase("share-frameworks", "PBXFrameworksBuildPhase", [])
 app_resources = phase("app-resources", "PBXResourcesBuildPhase", resources + ["Sources/App/Assets.xcassets", "Sources/App/Localizable.xcstrings", "Sources/App/InfoPlist.xcstrings"])
-keyboard_resources = phase("keyboard-resources", "PBXResourcesBuildPhase", resources + keyboard_data + media)
+keyboard_resources = phase("keyboard-resources", "PBXResourcesBuildPhase", resources + keyboard_data + media + ["Sources/Keyboard/Localizable.xcstrings"])
 app_frameworks = phase("app-frameworks", "PBXFrameworksBuildPhase", [])
 keyboard_frameworks = phase("keyboard-frameworks", "PBXFrameworksBuildPhase", [])
 stickers_resources = phase("stickers-resources", "PBXResourcesBuildPhase", [sticker_catalog])
