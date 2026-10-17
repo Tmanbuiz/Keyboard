@@ -75,6 +75,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var mediaTab = "emoji"
     var gifResults: [GifResult] = []
     var gifLoaded = false
+    var gifError: String?
     var gifTask: Task<Void, Never>?
     var handwriting: HandwritingSupport?
     var usingDarkPalette = true

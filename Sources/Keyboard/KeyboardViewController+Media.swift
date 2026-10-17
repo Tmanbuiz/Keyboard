@@ -174,8 +174,8 @@ extension KeyboardViewController {
     }
 
     func copyMedia(name: String, type: String) {
-        guard hasFullAccess else { setStatus("Turn on Allow Full Access to copy media"); return }
-        guard let url = Bundle.main.url(forResource: name, withExtension: type), let data = try? Data(contentsOf: url) else { setStatus("Media unavailable"); return }
+        guard hasFullAccess else { setStatus("Turn on Allow Full Access to copy media"); toast("Turn on Allow Full Access (Settings → General → Keyboard → WianTribe) to copy stickers"); return }
+        guard let url = Bundle.main.url(forResource: name, withExtension: type), let data = try? Data(contentsOf: url) else { setStatus("Media unavailable"); toast("Media unavailable"); return }
         copyImageData(data, gif: type == "gif")
     }
 
@@ -183,6 +183,25 @@ extension KeyboardViewController {
         UIPasteboard.general.setItems([[gif ? UTType.gif.identifier : UTType.png.identifier: data]], options: [.localOnly: true, .expirationDate: Date().addingTimeInterval(300)])
         store.lastChangeCount = UIPasteboard.general.changeCount
         setStatus("Copied. Touch and hold your message, then Paste")
+        toast("Copied ✓ Touch and hold your message, then tap Paste")
+    }
+
+    /// A short message over the keyboard. The status line is hidden while the emoji panel is open,
+    /// so copy results and errors would otherwise be invisible.
+    func toast(_ text: String) {
+        view.viewWithTag(9_411)?.removeFromSuperview()
+        let label = PaddedLabel()
+        label.tag = 9_411; label.text = tr(text); label.numberOfLines = 2; label.textAlignment = .center
+        label.font = .systemFont(ofSize: 13, weight: .semibold); label.textColor = .white
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.82)
+        label.layer.cornerRadius = 10; label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
+        NSLayoutConstraint.activate([label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                                     label.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -56),
+                                     label.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, constant: -24)])
+        UIAccessibility.post(notification: .announcement, argument: label.text)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak label] in label?.removeFromSuperview() }
     }
 
     private func fillGifs(_ grid: MediaGridView) {
@@ -192,7 +211,7 @@ extension KeyboardViewController {
             grid.emptyMessage = "Sign in in WianTribe → Tools → AI account to search GIFs"
             setStatus("Sign in in WianTribe → Tools → AI account to search GIFs"); return
         }
-        grid.emptyMessage = gifLoaded ? "No GIFs found. Try other words" : "Loading GIFs…"
+        grid.emptyMessage = gifError ?? (gifLoaded ? "No GIFs found. Try other words" : "Loading GIFs…")
         let results = gifResults
         grid.items = results.map { .remoteImage($0.preview, label: $0.title ?? "GIF") }
         grid.onSelect = { [weak self] index in
@@ -204,14 +223,14 @@ extension KeyboardViewController {
                     let data = try await GifService.download(results[index])
                     guard !Task.isCancelled else { return }
                     self?.copyImageData(data, gif: true)
-                } catch { if !Task.isCancelled { self?.setStatus(error.localizedDescription) } }
+                } catch { if !Task.isCancelled { self?.setStatus(error.localizedDescription); self?.toast(error.localizedDescription) } }
             }
         }
         if results.isEmpty { if !gifLoaded { loadGifs("") } } else { setStatus("Powered by GIPHY · tap a GIF to copy it") }
     }
 
     func loadGifs(_ query: String) {
-        gifTask?.cancel()
+        gifTask?.cancel(); gifError = nil
         setStatus(query.isEmpty ? "Loading trending GIFs…" : "Searching “\(query)”…")
         gifTask = Task { @MainActor [weak self] in
             guard let self else { return }
@@ -221,7 +240,13 @@ extension KeyboardViewController {
                 self.gifResults = results; self.gifLoaded = true
                 if self.panel == "emoji" && self.mediaTab == "gif" { self.rebuildContent() } // empty result: gifLoaded stops fillGifs from requesting again
                 if results.isEmpty { self.setStatus("No GIFs found. Try other words") }
-            } catch { if !Task.isCancelled { self.setStatus(error.localizedDescription) } }
+            } catch {
+                guard !Task.isCancelled else { return }
+                // Show the failure in the grid itself, otherwise it would say "Loading GIFs…" forever.
+                self.gifError = error.localizedDescription; self.gifLoaded = true
+                self.setStatus(error.localizedDescription)
+                if self.panel == "emoji" && self.mediaTab == "gif" { self.rebuildContent() }
+            }
         }
     }
 
@@ -317,5 +342,14 @@ extension KeyboardViewController {
             row.addArrangedSubview(key)
         }
         suggestionBar.addArrangedSubview(scroll)
+    }
+}
+
+/// A label with inner spacing, used for the short on-screen messages.
+final class PaddedLabel: UILabel {
+    override func drawText(in rect: CGRect) { super.drawText(in: rect.inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12))) }
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + 24, height: size.height + 16)
     }
 }

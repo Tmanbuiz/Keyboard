@@ -13,7 +13,7 @@ enum GifError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .notConfigured: return "Sign in in WianTribe → Tools → AI account to search GIFs."
-        case .unavailable: return "GIF search isn't available right now. Check the service has a GIPHY key."
+        case .unavailable: return "GIFs aren't available right now. Please try again later."
         case .tooLarge: return "That GIF is too large to copy."
         }
     }
