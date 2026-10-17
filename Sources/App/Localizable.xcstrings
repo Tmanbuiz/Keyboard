@@ -4284,6 +4284,951 @@
           }
         }
       }
+    },
+    "Sign in once to use rewriting and translation in the app and keyboard. Your connection is shared securely on this device.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión una vez para usar la reescritura y la traducción en la app y el teclado. Tu conexión se comparte de forma segura en este dispositivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connectez-vous une fois pour utiliser la réécriture et la traduction dans l’app et le clavier. Votre connexion est partagée de façon sécurisée sur cet appareil."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melde dich einmal an, um Umschreiben und Übersetzen in der App und auf der Tastatur zu nutzen. Deine Verbindung wird sicher auf diesem Gerät geteilt."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicie sessão uma vez para usar a reescrita e a tradução no app e no teclado. A sua conexão é compartilhada com segurança neste dispositivo."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سجّل الدخول مرة واحدة لاستخدام إعادة الصياغة والترجمة في التطبيق ولوحة المفاتيح. يتم مشاركة اتصالك بأمان على هذا الجهاز."
+          }
+        }
+      }
+    },
+    "Daily allowance": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuota diaria"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quota quotidien"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tageskontingent"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cota diária"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الحصة اليومية"
+          }
+        }
+      }
+    },
+    "Requests": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solicitudes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requêtes"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anfragen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solicitações"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الطلبات"
+          }
+        }
+      }
+    },
+    "Resets at midnight UTC. Connection tests and unsuccessful requests may count toward your allowance.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se restablece a medianoche UTC. Las pruebas de conexión y las solicitudes fallidas pueden contar en tu cuota."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialisé à minuit UTC. Les tests de connexion et les requêtes échouées peuvent compter dans votre quota."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird um Mitternacht UTC zurückgesetzt. Verbindungstests und fehlgeschlagene Anfragen können auf dein Kontingent angerechnet werden."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reinicia à meia-noite UTC. Testes de conexão e solicitações malsucedidas podem contar na sua cota."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يُعاد التعيين عند منتصف الليل بالتوقيت العالمي. قد تُحتسب اختبارات الاتصال والطلبات غير الناجحة ضمن حصتك."
+          }
+        }
+      }
+    },
+    "Refresh usage": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualizar uso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actualiser l’utilisation"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzung aktualisieren"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atualizar uso"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحديث الاستخدام"
+          }
+        }
+      }
+    },
+    "Sign out": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se déconnecter"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sair"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تسجيل الخروج"
+          }
+        }
+      }
+    },
+    "Delete AI account": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar cuenta de IA"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer le compte IA"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI-Konto löschen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir conta de IA"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حذف حساب الذكاء الاصطناعي"
+          }
+        }
+      }
+    },
+    "Confirm with Apple to finish deleting your account. This also removes WianTribe from your Sign in with Apple list.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirma con Apple para terminar de eliminar tu cuenta. Esto también quita WianTribe de tu lista de Iniciar sesión con Apple."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirmez avec Apple pour terminer la suppression de votre compte. Cela retire aussi WianTribe de votre liste Se connecter avec Apple."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätige mit Apple, um das Löschen deines Kontos abzuschließen. Dadurch wird WianTribe auch aus deiner Liste „Mit Apple anmelden“ entfernt."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirme com a Apple para concluir a exclusão da sua conta. Isso também remove o WianTribe da sua lista de Entrar com a Apple."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أكّد عبر Apple لإتمام حذف حسابك. سيؤدي ذلك أيضًا إلى إزالة WianTribe من قائمة «تسجيل الدخول باستخدام Apple»."
+          }
+        }
+      }
+    },
+    "Cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abbrechen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إلغاء"
+          }
+        }
+      }
+    },
+    "Apple verifies your identity. WianTribe does not request your name or email address. No API key or connection import is needed.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple verifica tu identidad. WianTribe no solicita tu nombre ni tu correo electrónico. No se necesita clave de API ni importar conexiones."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple vérifie votre identité. WianTribe ne demande ni votre nom ni votre adresse e-mail. Aucune clé d’API ni importation de connexion n’est nécessaire."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple bestätigt deine Identität. WianTribe fragt weder deinen Namen noch deine E-Mail-Adresse ab. Ein API-Schlüssel oder Verbindungsimport ist nicht nötig."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Apple verifica a sua identidade. O WianTribe não solicita o seu nome nem o seu e-mail. Não é necessária chave de API nem importação de conexão."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تتحقق Apple من هويتك. لا يطلب WianTribe اسمك أو بريدك الإلكتروني. لا حاجة إلى مفتاح API أو استيراد اتصال."
+          }
+        }
+      }
+    },
+    "Please wait…": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espera un momento…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veuillez patienter…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bitte warten…"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aguarde…"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يرجى الانتظار…"
+          }
+        }
+      }
+    },
+    "Keyboard access": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso del teclado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accès du clavier"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tastaturzugriff"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acesso do teclado"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وصول لوحة المفاتيح"
+          }
+        }
+      }
+    },
+    "On your iPhone: Settings → General → Keyboard → Keyboards → WianTribe → Allow Full Access. Basic typing remains available without it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En tu iPhone: Ajustes → General → Teclado → Teclados → WianTribe → Permitir acceso completo. Escribir de forma básica sigue disponible sin él."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur votre iPhone : Réglages → Général → Clavier → Claviers → WianTribe → Autoriser l’accès complet. La saisie de base reste disponible sans cela."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf deinem iPhone: Einstellungen → Allgemein → Tastatur → Tastaturen → WianTribe → Vollen Zugriff erlauben. Das normale Tippen funktioniert auch ohne."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No seu iPhone: Ajustes → Geral → Teclado → Teclados → WianTribe → Permitir acesso total. A digitação básica continua disponível sem ele."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "على جهاز iPhone: الإعدادات ← عام ← لوحة المفاتيح ← لوحات المفاتيح ← WianTribe ← السماح بالوصول الكامل. تبقى الكتابة الأساسية متاحة بدونه."
+          }
+        }
+      }
+    },
+    "Text is sent to WianTribe's AI service only when you request an online writing action. The service keeps account/session identifiers and usage counts; it does not save your submitted text or AI results.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El texto se envía al servicio de IA de WianTribe solo cuando solicitas una acción de escritura en línea. El servicio conserva identificadores de cuenta/sesión y recuentos de uso; no guarda tu texto enviado ni los resultados de la IA."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le texte n’est envoyé au service d’IA de WianTribe que lorsque vous demandez une action d’écriture en ligne. Le service conserve des identifiants de compte/session et des compteurs d’utilisation ; il n’enregistre ni votre texte envoyé ni les résultats de l’IA."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text wird nur dann an den KI-Dienst von WianTribe gesendet, wenn du eine Online-Schreibfunktion verwendest. Der Dienst speichert Konto-/Sitzungskennungen und Nutzungszähler, nicht aber deinen gesendeten Text oder die KI-Ergebnisse."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O texto é enviado ao serviço de IA do WianTribe somente quando você solicita uma ação de escrita online. O serviço guarda identificadores de conta/sessão e contagens de uso; não salva o texto enviado nem os resultados da IA."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يُرسل النص إلى خدمة الذكاء الاصطناعي من WianTribe فقط عند طلب إجراء كتابة عبر الإنترنت. تحتفظ الخدمة بمعرّفات الحساب/الجلسة وأعداد الاستخدام، ولا تحفظ النص الذي أرسلته ولا نتائج الذكاء الاصطناعي."
+          }
+        }
+      }
+    },
+    "Deleting your account removes its access and sign-in records. App-specific pseudonymous usage buckets remain for up to 30 days to enforce usage limits. Clipboard entries and locally learned words can be cleared separately in Settings.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar tu cuenta borra su acceso y sus registros de inicio de sesión. Los contadores de uso seudónimos específicos de la app se conservan hasta 30 días para aplicar los límites de uso. El portapapeles y las palabras aprendidas localmente se pueden borrar por separado en Ajustes."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La suppression de votre compte retire son accès et ses enregistrements de connexion. Des compteurs d’utilisation pseudonymes propres à l’app subsistent jusqu’à 30 jours pour appliquer les limites. Le presse-papiers et les mots appris localement peuvent être effacés séparément dans Réglages."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim Löschen deines Kontos werden Zugriff und Anmeldedaten entfernt. App-spezifische pseudonyme Nutzungszähler bleiben bis zu 30 Tage bestehen, um Nutzungslimits durchzusetzen. Zwischenablage und lokal gelernte Wörter lassen sich separat in den Einstellungen löschen."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excluir a conta remove o acesso e os registros de login. Contadores de uso pseudônimos específicos do app permanecem por até 30 dias para aplicar os limites. A área de transferência e as palavras aprendidas localmente podem ser apagadas separadamente em Ajustes."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يؤدي حذف حسابك إلى إزالة الوصول وسجلات تسجيل الدخول. تبقى عدّادات الاستخدام المستعارة الخاصة بالتطبيق حتى 30 يومًا لفرض حدود الاستخدام. يمكن مسح الحافظة والكلمات المتعلَّمة محليًا بشكل منفصل من الإعدادات."
+          }
+        }
+      }
+    },
+    "Manage Sign in with Apple": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestionar Iniciar sesión con Apple"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gérer Se connecter avec Apple"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Mit Apple anmelden“ verwalten"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerenciar Entrar com a Apple"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إدارة تسجيل الدخول باستخدام Apple"
+          }
+        }
+      }
+    },
+    "AI account": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta de IA"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compte IA"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI-Konto"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conta de IA"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حساب الذكاء الاصطناعي"
+          }
+        }
+      }
+    },
+    "Typing, emoji, stickers and your clipboard work offline. Translation and rewriting run on your iPhone where Apple supports them; WianTribe AI covers other languages and GIF search.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribir, emoji, stickers y el portapapeles funcionan sin conexión. La traducción y la reescritura se ejecutan en tu iPhone donde Apple las admite; WianTribe AI cubre otros idiomas y la búsqueda de GIF."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La saisie, les emoji, les stickers et le presse-papiers fonctionnent hors ligne. La traduction et la réécriture s’exécutent sur votre iPhone lorsqu’Apple les prend en charge ; WianTribe AI couvre les autres langues et la recherche de GIF."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tippen, Emoji, Sticker und die Zwischenablage funktionieren offline. Übersetzen und Umschreiben laufen auf deinem iPhone, wo Apple es unterstützt; WianTribe AI deckt andere Sprachen und die GIF-Suche ab."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitação, emoji, stickers e área de transferência funcionam offline. Tradução e reescrita rodam no seu iPhone onde a Apple oferece suporte; o WianTribe AI cobre outros idiomas e a busca de GIF."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعمل الكتابة والإيموجي والملصقات والحافظة دون اتصال. تُنفَّذ الترجمة وإعادة الصياغة على iPhone حيث تدعمها Apple؛ ويغطي WianTribe AI اللغات الأخرى والبحث عن GIF."
+          }
+        }
+      }
+    },
+    "Choose “WianTribe AI online” to use online rewriting and translation. Sign in in Tools → AI account. The keyboard has the same switch under ⚙︎.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige «WianTribe AI en línea» para usar la reescritura y traducción en línea. Inicia sesión en Herramientas → Cuenta de IA. El teclado tiene el mismo interruptor en ⚙︎."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisissez « WianTribe AI en ligne » pour utiliser la réécriture et la traduction en ligne. Connectez-vous dans Outils → Compte IA. Le clavier a le même réglage sous ⚙︎."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle „WianTribe AI online“, um Online-Umschreiben und -Übersetzen zu nutzen. Melde dich unter Werkzeuge → KI-Konto an. Die Tastatur hat denselben Schalter unter ⚙︎."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escolha “WianTribe AI online” para usar reescrita e tradução online. Inicie sessão em Ferramentas → Conta de IA. O teclado tem o mesmo controle em ⚙︎."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اختر «WianTribe AI عبر الإنترنت» لاستخدام إعادة الصياغة والترجمة عبر الإنترنت. سجّل الدخول من الأدوات ← حساب الذكاء الاصطناعي. تحتوي لوحة المفاتيح على المفتاح نفسه ضمن ⚙︎."
+          }
+        }
+      }
+    },
+    "Private typing": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escritura privada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisie privée"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privates Tippen"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digitação privada"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الكتابة الخاصة"
+          }
+        }
+      }
+    },
+    "Pauses automatic clipboard capture and word learning. Saved items remain available. Explicit AI requests still use the engine you selected.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa la captura automática del portapapeles y el aprendizaje de palabras. Los elementos guardados siguen disponibles. Las solicitudes de IA explícitas siguen usando el motor que elegiste."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suspend la capture automatique du presse-papiers et l’apprentissage des mots. Les éléments enregistrés restent disponibles. Les demandes d’IA explicites utilisent toujours le moteur choisi."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausiert das automatische Erfassen der Zwischenablage und das Wörterlernen. Gespeicherte Einträge bleiben verfügbar. Ausdrückliche KI-Anfragen nutzen weiterhin die gewählte Engine."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pausa a captura automática da área de transferência e o aprendizado de palavras. Os itens salvos continuam disponíveis. Pedidos de IA explícitos continuam usando o mecanismo escolhido."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يوقف الالتقاط التلقائي للحافظة وتعلّم الكلمات مؤقتًا. تبقى العناصر المحفوظة متاحة. ما زالت طلبات الذكاء الاصطناعي الصريحة تستخدم المحرك الذي اخترته."
+          }
+        }
+      }
+    },
+    "Pinned only": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo fijados"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épinglés uniquement"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nur angeheftet"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Somente fixados"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المثبّتة فقط"
+          }
+        }
+      }
+    },
+    "Folder": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carpeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dossier"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasta"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مجلد"
+          }
+        }
+      }
+    },
+    "All folders": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas las carpetas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous les dossiers"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Ordner"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas as pastas"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل المجلدات"
+          }
+        }
+      }
+    },
+    "WianTribe AI": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WianTribe AI"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WianTribe AI"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WianTribe AI"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WianTribe AI"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WianTribe AI"
+          }
+        }
+      }
+    },
+    "Sign in with Apple once. The keyboard connects automatically on this iPhone.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inicia sesión con Apple una vez. El teclado se conecta automáticamente en este iPhone."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connectez-vous une fois avec Apple. Le clavier se connecte automatiquement sur cet iPhone."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Melde dich einmal mit Apple an. Die Tastatur verbindet sich auf diesem iPhone automatisch."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entre uma vez com a Apple. O teclado se conecta automaticamente neste iPhone."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سجّل الدخول باستخدام Apple مرة واحدة. تتصل لوحة المفاتيح تلقائيًا على هذا الـ iPhone."
+          }
+        }
+      }
+    },
+    "Translation and rewriting run on this iPhone when Apple's on-device models support the language. Otherwise, writing tools and GIF search send only the text or search words you choose to WianTribe's online service. GIF previews load from GIPHY. Sign in with Apple connects the app and keyboard securely.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traducción y la reescritura se ejecutan en este iPhone cuando los modelos en el dispositivo de Apple admiten el idioma. En caso contrario, las herramientas de escritura y la búsqueda de GIF envían al servicio en línea de WianTribe solo el texto o las palabras de búsqueda que elijas. Las vistas previas de GIF se cargan desde GIPHY. Iniciar sesión con Apple conecta la app y el teclado de forma segura."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La traduction et la réécriture s’exécutent sur cet iPhone lorsque les modèles sur l’appareil d’Apple prennent en charge la langue. Sinon, les outils d’écriture et la recherche de GIF n’envoient au service en ligne de WianTribe que le texte ou les mots de recherche que vous choisissez. Les aperçus de GIF sont chargés depuis GIPHY. Se connecter avec Apple relie l’app et le clavier de façon sécurisée."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übersetzen und Umschreiben laufen auf diesem iPhone, wenn die On-Device-Modelle von Apple die Sprache unterstützen. Andernfalls senden Schreibwerkzeuge und GIF-Suche nur den Text oder die Suchbegriffe, die du auswählst, an den Online-Dienst von WianTribe. GIF-Vorschauen werden von GIPHY geladen. „Mit Apple anmelden“ verbindet App und Tastatur sicher."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tradução e reescrita rodam neste iPhone quando os modelos no dispositivo da Apple oferecem suporte ao idioma. Caso contrário, as ferramentas de escrita e a busca de GIF enviam ao serviço online do WianTribe apenas o texto ou as palavras de busca que você escolher. As prévias de GIF são carregadas do GIPHY. Entrar com a Apple conecta o app e o teclado com segurança."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعمل الترجمة وإعادة الصياغة على هذا الـ iPhone عندما تدعم نماذج Apple على الجهاز اللغة. وإلا فإن أدوات الكتابة والبحث عن GIF ترسل إلى خدمة WianTribe عبر الإنترنت النص أو كلمات البحث التي تختارها فقط. تُحمَّل معاينات GIF من GIPHY. يربط تسجيل الدخول باستخدام Apple التطبيق ولوحة المفاتيح بأمان."
+          }
+        }
+      }
     }
   },
   "version": "1.0"
