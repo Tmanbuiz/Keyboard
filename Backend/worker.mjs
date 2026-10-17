@@ -120,9 +120,12 @@ export default {
       if (env.PROVIDER_URL && env.PROVIDER_API_KEY) {
         // Your own AI: any OpenAI-compatible chat completions API (OpenAI, Gemini, Claude, Groq, OpenRouter, ...).
         const response = await fetcher(env.PROVIDER_URL, {
-          method: "POST",
+          method: "POST", redirect: "manual",
           headers: { "Content-Type": "application/json", "Authorization": `Bearer ${env.PROVIDER_API_KEY}` },
-          body: JSON.stringify({ model: env.MODEL, messages, max_tokens: 2048, temperature: 0.2 })
+          // gpt-oss reasoning models spend hidden tokens first: keep reasoning short and the budget generous so content is never empty.
+          body: JSON.stringify(/gpt-oss/.test(env.MODEL || "")
+            ? { model: env.MODEL, messages, max_completion_tokens: 4096, temperature: 0.2, reasoning_effort: "low", include_reasoning: false }
+            : { model: env.MODEL, messages, max_tokens: 2048, temperature: 0.2 })
         });
         if (!response.ok) {
           // Only the provider's HTTP status and a short machine code (never message text or keys) so setup problems are diagnosable.
@@ -132,6 +135,7 @@ export default {
         }
         const body = await response.json();
         text = body?.choices?.[0]?.message?.content?.trim();
+        if (!text && body?.choices?.[0]?.finish_reason === "length") return json({ error: "Invalid provider response", detail: "length" }, 502);
       } else {
         const result = await env.AI.run(env.MODEL || "@cf/meta/llama-3.1-8b-instruct-fp8", { messages, max_tokens: 2048, temperature: 0.2, stream: false });
         text = result?.response?.trim();

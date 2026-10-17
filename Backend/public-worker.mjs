@@ -116,13 +116,15 @@ async function serve(request, env, context, fetcher) {
   if (path === '/gifs' && !env.GIPHY_API_KEY) return json({ error: 'GIF search not configured' }, 503);
   // A single SQLite write serializes both per-user and global quota checks. No read/check/write race.
   // Attempts count even if validation or the provider subsequently fails; failures cannot be used to bypass limits.
-  const reservation = await database.prepare(`INSERT INTO usage_events (id, client_id, day, created_at)
-    SELECT ?, id, ?, ? FROM clients
-    WHERE id = ? AND active = 1
-      AND (SELECT COUNT(*) FROM usage_events WHERE client_id = clients.id AND day = ?) < daily_limit
-      AND (SELECT COUNT(*) FROM usage_events WHERE day = ?) < ?`)
-    .bind(crypto.randomUUID(), day, Date.now(), client.id, day, day, dailyCap(env)).run();
-  if (reservation.meta.changes !== 1) return json({ error: 'Daily allowance reached. Try again after midnight UTC.', code: 'daily_limit' }, 429);
+  if (path !== '/gifs') {
+    const reservation = await database.prepare(`INSERT INTO usage_events (id, client_id, day, created_at)
+      SELECT ?, id, ?, ? FROM clients
+      WHERE id = ? AND active = 1
+        AND (SELECT COUNT(*) FROM usage_events WHERE client_id = clients.id AND day = ?) < daily_limit
+        AND (SELECT COUNT(*) FROM usage_events WHERE day = ?) < ?`)
+      .bind(crypto.randomUUID(), day, Date.now(), client.id, day, day, dailyCap(env)).run();
+    if (reservation.meta.changes !== 1) return json({ error: 'Daily allowance reached. Try again after midnight UTC.', code: 'daily_limit' }, 429);
+  }
   // Reuse the existing validated text/language contract, with no public shared token and a fixed upstream host.
   const serviceEnvironment = { ...env, API_TOKEN: token, PROVIDER_URL: GROQ_URL,
     WRITING_LIMITER: { limit: async () => ({ success: true }) } };
