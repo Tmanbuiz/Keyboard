@@ -149,12 +149,13 @@ extension KeyboardViewController {
     }
 
     private func fillStickers(_ grid: MediaGridView) {
-        let media = Self.stickerFiles()
-        grid.columns = 4
-        grid.items = media.compactMap { file in
+        let loaded: [(file: (name: String, type: String, title: String), image: UIImage)] = Self.stickerFiles().compactMap { file in
             guard let url = Bundle.main.url(forResource: file.name, withExtension: file.type), let image = UIImage(contentsOfFile: url.path) else { return nil }
-            return .image(image, label: file.title)
+            return (file, image)
         }
+        let media = loaded.map { $0.file }
+        grid.columns = 4
+        grid.items = loaded.map { .image($0.image, label: $0.file.title) }
         grid.onSelect = { [weak self] index in
             guard let self, media.indices.contains(index) else { return }
             self.copyMedia(name: media[index].name, type: media[index].type)
@@ -186,10 +187,12 @@ extension KeyboardViewController {
 
     private func fillGifs(_ grid: MediaGridView) {
         grid.columns = 3
-        guard hasFullAccess else { setStatus("GIFs need Allow Full Access in Settings"); return }
+        guard hasFullAccess else { grid.emptyMessage = "GIFs need Allow Full Access in Settings"; setStatus("GIFs need Allow Full Access in Settings"); return }
         guard GifService.isConfigured else {
+            grid.emptyMessage = "Sign in in WianTribe → Tools → AI account to search GIFs"
             setStatus("Sign in in WianTribe → Tools → AI account to search GIFs"); return
         }
+        grid.emptyMessage = gifLoaded ? "No GIFs found. Try other words" : "Loading GIFs…"
         let results = gifResults
         grid.items = results.map { .remoteImage($0.preview, label: $0.title ?? "GIF") }
         grid.onSelect = { [weak self] index in
@@ -204,7 +207,7 @@ extension KeyboardViewController {
                 } catch { if !Task.isCancelled { self?.setStatus(error.localizedDescription) } }
             }
         }
-        if results.isEmpty { loadGifs("") } else { setStatus("Powered by GIPHY · tap a GIF to copy it") }
+        if results.isEmpty { if !gifLoaded { loadGifs("") } } else { setStatus("Powered by GIPHY · tap a GIF to copy it") }
     }
 
     func loadGifs(_ query: String) {
@@ -215,8 +218,8 @@ extension KeyboardViewController {
             do {
                 let results = try await GifService.search(query, language: self.preferences.language.code)
                 guard !Task.isCancelled else { return }
-                self.gifResults = results
-                if self.panel == "emoji" && self.mediaTab == "gif" { self.rebuildContent() }
+                self.gifResults = results; self.gifLoaded = true
+                if self.panel == "emoji" && self.mediaTab == "gif" { self.rebuildContent() } // empty result: gifLoaded stops fillGifs from requesting again
                 if results.isEmpty { self.setStatus("No GIFs found. Try other words") }
             } catch { if !Task.isCancelled { self.setStatus(error.localizedDescription) } }
         }
@@ -280,7 +283,7 @@ extension KeyboardViewController {
         if searchMode == .clips { clipQuery = searchQuery; exitSearch(); return }
         let query = searchQuery.trimmingCharacters(in: .whitespaces)
         if searchMode == .gif {
-            gifResults = []
+            gifResults = []; gifLoaded = false
             exitSearch(returnTo: "gif")
             loadGifs(query)
         } else { emojiQuery = query; exitSearch(returnTo: "emoji") }

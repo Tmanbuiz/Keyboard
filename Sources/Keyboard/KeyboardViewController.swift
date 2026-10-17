@@ -74,6 +74,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var emojiGroup = 0 // -1 is recently used
     var mediaTab = "emoji"
     var gifResults: [GifResult] = []
+    var gifLoaded = false
     var gifTask: Task<Void, Never>?
     var handwriting: HandwritingSupport?
     var usingDarkPalette = true
@@ -148,6 +149,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         searchMode = nil; searchQuery = ""; gifTask?.cancel(); handwriting?.stop()
         repeatDelete?.invalidate(); repeatDelete = nil
         suggestionWork?.cancel(); onlineTask?.cancel()
+        if writingResult == nil { writingAction = nil } // a cancelled request must not reopen as a permanent "Working…"
         removeAccentPopup()
     }
 
@@ -227,7 +229,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         LexiconCache.shared.trim(keeping: [preferences.language.code])
         EmojiCatalog.shared.releaseKeywords()
         MediaGridView.imageCache.removeAllObjects()
-        gifResults = []
+        gifResults = []; gifLoaded = false
     }
 
     func savePreferences() {
@@ -689,7 +691,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let emoji = emojiLanguages.isEmpty || emojiWord.isEmpty ? [] :
                 EmojiCatalog.shared.predictions(for: emojiWord, languages: emojiLanguages, recent: recentEmoji, limit: word.isEmpty ? 3 : 1).map { $0.toned(tone) }
             DispatchQueue.main.async {
-                guard self.generation == thisGeneration, self.before == context, self.panel == nil else { return }
+                guard self.generation == thisGeneration, self.before == context, self.panel == nil, self.searchMode == nil else { return }
                 self.currentSuggestions = results
                 var choices: [(String, () -> Void)] = results.map { result in (result.text, { [weak self] in self?.chooseSuggestion(result.text, expectedContext: context) }) }
                 if !word.isEmpty { choices.insert((word, { [weak self] in self?.chooseSuggestion(word, expectedContext: context) }), at: 0) }
