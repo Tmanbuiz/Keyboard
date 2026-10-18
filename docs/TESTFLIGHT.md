@@ -11,7 +11,6 @@ The **Upload to TestFlight** workflow builds the App Store version (with the sha
    - `com.wiantribe.keyboard` (WianTribe Keyboard): tick **App Groups**
    - `com.wiantribe.keyboard.extension` (WianTribe Keyboard Extension): tick **App Groups**
    - `com.wiantribe.keyboard.share` (WianTribe Share): tick **App Groups**
-   - `com.wiantribe.keyboard.stickers` (WianTribe Stickers)
 3. Open each of the first three again → App Groups → **Configure** → select `group.com.wiantribe.keyboard` → Save.
 
 ### 2. Create the app (appstoreconnect.apple.com → Apps → + → New App)

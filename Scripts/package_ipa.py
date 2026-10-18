@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Package two sideloading IPAs from the Release build (macOS only).
 
-- WianTribeKeyboard.ipa: app + keyboard + iMessage sticker pack + Share extension.
+- WianTribeKeyboard.ipa: app + keyboard + Share extension.
 - WianTribeKeyboard-keyboard-only.ipa: app + keyboard, for free Apple IDs that are short of App IDs.
 
 Every bundle is ad-hoc signed from the inside out and verified, so sideloading tools start from a
@@ -24,7 +24,7 @@ def run(*args):
     subprocess.run(args, check=True)
 
 
-def check(app, with_stickers):
+def check(app, with_share):
     extension = app / "PlugIns/WianTribeKeyboardExtension.appex"
     if not extension.is_dir(): raise SystemExit("Keyboard extension was not embedded")
     app_info = plistlib.loads((app / "Info.plist").read_bytes())
@@ -32,11 +32,9 @@ def check(app, with_stickers):
     assert extension_info["CFBundleIdentifier"].startswith(app_info["CFBundleIdentifier"] + ".")
     assert extension_info["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.keyboard-service"
     assert extension_info["NSExtension"]["NSExtensionAttributes"]["RequestsOpenAccess"] is True
-    stickers = app / "PlugIns/WianTribeStickers.appex"
     share = app / "PlugIns/WianTribeShare.appex"
-    assert stickers.is_dir() == with_stickers and share.is_dir() == with_stickers, "unexpected extension set"
-    if with_stickers:
-        assert plistlib.loads((stickers / "Info.plist").read_bytes())["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.message-payload-provider"
+    assert share.is_dir() == with_share, "unexpected extension set"
+    if with_share:
         assert plistlib.loads((share / "Info.plist").read_bytes())["NSExtension"]["NSExtensionPointIdentifier"] == "com.apple.share-services"
     for container in [app, extension]:
         assert (container / "PrivacyInfo.xcprivacy").exists()
@@ -51,17 +49,16 @@ def sign(app):
     run("codesign", "--verify", "--deep", "--strict", "--verbose=2", str(app))
 
 
-def package(name, with_stickers):
+def package(name, with_share):
     folder = staging / name
     if folder.exists(): shutil.rmtree(folder)
     payload = folder / "Payload"
     payload.mkdir(parents=True)
     app = payload / built.name
     shutil.copytree(built, app, symlinks=True)
-    if not with_stickers:
-        shutil.rmtree(app / "PlugIns/WianTribeStickers.appex")
+    if not with_share:
         shutil.rmtree(app / "PlugIns/WianTribeShare.appex")
-    check(app, with_stickers)
+    check(app, with_share)
     sign(app)
     ipa = output / f"{name}.ipa"
     if ipa.exists(): ipa.unlink()

@@ -4,8 +4,7 @@ The PDF audit referenced the private Worker template. Production uses `Backend/p
 
 ## Changes
 
-- Network responses are bounded as chunks arrive. Full GIFs stop at 8 MB, previews at 3 MB, search JSON at 500 KB and AI/account JSON at 100 KB. A shared gate allows four requests at once; cancelled waiting requests release their place. Redirects are rejected before credentials or selected text can be forwarded.
-- GIF downloads validate the trusted media URL, actual image type, dimensions, frame count and aggregate frame pixels without decoding full animation frames. Previews downsample the first frame to 256 pixels and charge the cache for decoded image memory. Cell reuse cancels old requests and checks the represented URL before displaying a result.
+- Network responses are bounded as chunks arrive. AI/account JSON stops at 100 KB. A shared gate allows four requests at once; cancelled waiting requests release their place. Redirects are rejected before credentials or selected text can be forwarded.
 - All saved AI connections must use the exact production `/write` origin. Arbitrary providers are no longer accepted by the shipping app. Old custom-host connections must be replaced by Apple sign-in.
 - Per-store UUID reset generations, deletion tombstones and write timestamps reconcile personal/learning deletion before historical reads. Read-only keyboards hide pre-reset group data locally and publish pending resets when shared writes become available. Older clipboard snapshots and legacy fallback records cannot restore clips predating a reset. Clear learned words has its own marker and does not remove clipboard entries.
 - CI uses read-only repository permissions. Only a separate main-branch release job has write permission, after the build/launch job succeeds. That job consumes the tested artifact, verifies checksums, and does not check out or execute repository scripts. Third-party actions are pinned to immutable commits.

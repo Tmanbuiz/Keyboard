@@ -5,7 +5,7 @@
 1. Open this repository's **Actions** tab and the latest successful **Build iPhone keyboard** run.
 2. Download **WianTribeKeyboard-sideload** under Artifacts and extract the ZIP.
 3. Import the IPA into your sideloading tool, which re-signs it with your Apple ID. Use **WianTribeKeyboard-…ipa** for everything, or **…-keyboard-only.ipa** if you use a free Apple ID (it needs two App IDs instead of three).
-4. Keep the bundled **WianTribeKeyboardExtension.appex** and **WianTribeStickers.appex**. The tool must re-sign the app and both extensions with compatible profiles. If it offers to remove extensions, keep them.
+4. Keep the bundled **WianTribeKeyboardExtension.appex** and **WianTribeShare.appex**. The tool must re-sign the app and both extensions with compatible profiles. If it offers to remove extensions, keep them.
 5. Install, then open **WianTribe Keyboard** once.
 6. Go to **iPhone Settings → General → Keyboard → Keyboards → Add New Keyboard → WianTribe Keyboard**.
 7. Open a message or the app's Practice page. Hold **🌐** and choose **WianTribe Keyboard**.
@@ -17,7 +17,7 @@ The default sideload build stores settings separately in the app and extension. 
 ## Using Xcode on a Mac
 
 1. Open `WianTribeKeyboard.xcodeproj` with Xcode 16 or later.
-2. Select your Apple signing team for **WianTribeKeyboard**, **WianTribeKeyboardExtension** and **WianTribeStickers** under Signing & Capabilities. If an App ID is unavailable, change the bundle IDs, keeping each extension ID prefixed with the app ID followed by a dot.
+2. Select your Apple signing team for **WianTribeKeyboard**, **WianTribeKeyboardExtension** and **WianTribeShare** under Signing & Capabilities. If an App ID is unavailable, change the bundle IDs, keeping each extension ID prefixed with the app ID followed by a dot.
 3. Connect your iPhone, enable Developer Mode if requested and select the iPhone as the run destination.
 4. Run the **WianTribeKeyboard** scheme, then follow the keyboard enable steps above.
 

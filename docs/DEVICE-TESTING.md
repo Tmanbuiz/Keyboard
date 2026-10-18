@@ -19,7 +19,7 @@ The automated tests validate the typing engine and writing request boundaries; a
 
 - Languages: hold the language key, add French, German, Russian and Arabic. Check each layout, long-press accents, suggestions, autocorrect undo and swipe. Turn multilingual typing on, type an English sentence with a Spanish word, and confirm the Spanish word isn't changed. Check Turkish capitals (i → İ) and that Arabic has no shift key.
 - Feel: key pop-up preview on letters, numbers and symbols; key clicks with the phone's Keyboard Clicks setting on and off; hold comma and period for more punctuation. Try every theme including Auto in light and dark mode, accent colours and key outlines. On a Home-button iPhone confirm the 🌐 key shows; on Face ID iPhones it shouldn't.
-- Emoji: browse every category, use search in English and another language, set a skin tone by holding 👋, and confirm Recents. In Messages, open the app drawer and confirm the WianTribe sticker pack appears.
+- Emoji: browse every category, use search in English and another language, set a skin tone by holding 👋, and confirm Recents.
 - Editing panel: arrows (hold to repeat), word and line jumps, copy/cut/paste and delete word in Notes.
 - Handwriting: write several words in your language; check alternatives replace the word. Watch for the keyboard closing unexpectedly (a memory limit), and report the device model if it does.
 - Translate & write on iOS 26: download a language in the app, then translate selected text and typed text in the keyboard, and try grammar and tone on a device with Apple Intelligence. Repeat with airplane mode on.

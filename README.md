@@ -15,7 +15,7 @@ A native iOS keyboard extension and companion app, inspired by useful Android ke
 - Eight themes including Auto (follows light/dark), seven accent colours and optional key outlines.
 
 **Panels** (toolbar above the keys)
-- ☺︎ Emoji: the full Unicode 15.0 emoji set with categories, recents, skin tones and search in 16 languages. An iMessage sticker pack ships with the app.
+- ☺︎ Emoji: the full Unicode 15.0 emoji set with categories, recents, skin tones and search in 16 languages.
 - 📋 Android-style clipboard: opt-in history of the last 40 texts copied while the keyboard is open, a "just copied" chip, pin/copy/delete, expiry after 1, 7 or 30 days. Password-manager copies are skipped.
 - ⌶ Text editing: arrows, word and line jumps, copy, cut, paste and delete word, with hold-to-repeat.
 - ✍︎ Handwriting: write with a finger; Apple's on-device Vision reads it, with alternatives to swap.
@@ -32,7 +32,7 @@ Acknowledgements: word frequencies from [wordfreq](https://github.com/rspeer/wor
 
 Requires iOS/iPadOS 17 or later. Open `WianTribeKeyboard.xcodeproj` in Xcode on a Mac, select your signing team for both targets and run on your iPhone. No third-party iOS packages are required.
 
-GitHub Actions builds the app, keyboard and sticker pack, runs the typing/backend tests, launches the companion app in a simulator and uploads **WianTribeKeyboard-sideload**. Builds on `main` also publish a GitHub Release with **WianTribeKeyboard-…ipa** (app, keyboard and stickers) and **…-keyboard-only.ipa**, both ad-hoc signed and verified, plus checksums and installation instructions. A sideloading tool must re-sign them; keep and sign the extensions.
+GitHub Actions builds the app and keyboard, runs the typing/backend tests, launches the companion app in a simulator and uploads **WianTribeKeyboard-sideload**. Builds on `main` also publish a GitHub Release with **WianTribeKeyboard-…ipa** (app, keyboard and Share extension) and **…-keyboard-only.ipa**, both ad-hoc signed and verified, plus checksums and installation instructions. A sideloading tool must re-sign them; keep and sign the extensions.
 
 See [installation instructions](docs/INSTALL.md) and the [device test checklist](docs/DEVICE-TESTING.md).
 
@@ -42,7 +42,7 @@ node --test Backend/worker.test.mjs
 bash Scripts/build_ipa.sh  # Mac/Xcode only
 ```
 
-`Scripts/generate_project.py` reproduces the checked-in Xcode project using Python's standard library. `Scripts/build_languages.py` (needs `pip install wordfreq`), `Scripts/build_emoji.py` (needs `npm install emojibase-data`), `Scripts/generate_stickers.py` (needs Pillow) and `Scripts/build_strings.py` regenerate the committed language, emoji, sticker and translation data. `Scripts/generate_assets.py` recreates the original geometric icon/media and needs Pillow; the generated assets are already committed, so normal builds do not need Pillow.
+`Scripts/generate_project.py` reproduces the checked-in Xcode project using Python's standard library. `Scripts/build_languages.py` (needs `pip install wordfreq`), `Scripts/build_emoji.py` (needs `npm install emojibase-data`), and `Scripts/build_strings.py` regenerate the committed language, emoji and translation data. `Scripts/generate_assets.py` recreates the original geometric icon and needs Pillow; the generated assets are already committed, so normal builds do not need Pillow.
 
 ## Sideloading and shared settings
 

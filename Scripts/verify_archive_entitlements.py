@@ -10,7 +10,6 @@ checks = [
     (app, "com.wiantribe.keyboard", True, True),
     (app / "PlugIns/WianTribeKeyboardExtension.appex", "com.wiantribe.keyboard.extension", True, False),
     (app / "PlugIns/WianTribeShare.appex", "com.wiantribe.keyboard.share", True, False),
-    (app / "PlugIns/WianTribeStickers.appex", "com.wiantribe.keyboard.stickers", False, False),
 ]
 for bundle, identifier, shared, apple in checks:
     info = plistlib.loads((bundle / "Info.plist").read_bytes())
