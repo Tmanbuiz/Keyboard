@@ -15,7 +15,7 @@ A native iOS keyboard extension and companion app, inspired by useful Android ke
 - Eight themes including Auto (follows light/dark), seven accent colours and optional key outlines.
 
 **Panels** (toolbar above the keys)
-- ☺︎ Emoji, GIFs and stickers: the full Unicode 15.0 emoji set with categories, recents, skin tones and search in 16 languages; GIF search powered by GIPHY through WianTribe AI; 16 original stickers. An iMessage sticker pack ships with the app.
+- ☺︎ Emoji: the full Unicode 15.0 emoji set with categories, recents, skin tones and search in 16 languages. An iMessage sticker pack ships with the app.
 - 📋 Android-style clipboard: opt-in history of the last 40 texts copied while the keyboard is open, a "just copied" chip, pin/copy/delete, expiry after 1, 7 or 30 days. Password-manager copies are skipped.
 - ⌶ Text editing: arrows, word and line jumps, copy, cut, paste and delete word, with hold-to-repeat.
 - ✍︎ Handwriting: write with a finger; Apple's on-device Vision reads it, with alternatives to swap.
@@ -26,7 +26,7 @@ A native iOS keyboard extension and companion app, inspired by useful Android ke
 
 Known limits: iOS doesn't let keyboards use the microphone, watch the clipboard in the background, insert images directly or work in password fields. Chinese, Japanese, Korean and Indic scripts need dedicated input methods that aren't built yet. Dictionaries for Swahili, Igbo and Hausa aren't available yet, so those are layout-only. App translations should be reviewed by native speakers before release. See [App Store preparation](docs/APP-STORE.md) and the [privacy policy](docs/PRIVACY.md).
 
-Acknowledgements: word frequencies from [wordfreq](https://github.com/rspeer/wordfreq) by Robyn Speer (data CC BY-SA 4.0); emoji data from [emojibase](https://emojibase.dev) (MIT); GIFs powered by GIPHY.
+Acknowledgements: word frequencies from [wordfreq](https://github.com/rspeer/wordfreq) by Robyn Speer (data CC BY-SA 4.0); emoji data from [emojibase](https://emojibase.dev) (MIT).
 
 ## Build and sideload
 
@@ -52,7 +52,7 @@ For a paid-team build with shared storage, register `group.com.wiantribe.keyboar
 
 ## Privacy and platform restrictions
 
-Typing, swipe decoding, suggestions, emoji search, handwriting and (on iOS 26) translation and rewriting run locally. Full Access is optional for basic typing and is checked before clipboard, media, GIF and online actions. Local learning and clipboard history are off by default. iOS gives keyboards no background clipboard access, so history only records the latest copy each time the keyboard is shown, plus anything copied while it stays open. Writing requests send only explicitly selected/entered text over HTTPS, use an ephemeral URL session, reject redirects and keep the access token in Keychain. The backend template contains no request logging or stored text history.
+Typing, swipe decoding, suggestions, emoji search, handwriting and (on iOS 26) translation and rewriting run locally. Full Access is optional for basic typing and is checked before clipboard and online actions. Local learning and clipboard history are off by default. iOS gives keyboards no background clipboard access, so history only records the latest copy each time the keyboard is shown, plus anything copied while it stays open. Writing requests send only explicitly selected/entered text over HTTPS, use an ephemeral URL session, reject redirects and keep the access token in Keychain. The backend template contains no request logging or stored text history.
 
 Voice recording is confined to the companion app; it uses Apple's Speech framework and requests microphone/speech permissions only when starting a recording. On-device recognition is preferred when supported; otherwise Apple's service may process the audio. No microphone access is attempted in the extension.
 

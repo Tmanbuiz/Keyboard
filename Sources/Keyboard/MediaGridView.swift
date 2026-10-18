@@ -1,12 +1,11 @@
 import UIKit
 import ImageIO
 
-/// A scrolling grid for emoji, GIF previews and stickers. A collection view keeps thousands of
+/// A scrolling grid for emoji. A collection view keeps thousands of
 /// emoji fast and light on memory, which matters inside a keyboard extension.
 final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     enum Item {
         case emoji(String, toned: Bool, name: String? = nil)
-        case remoteImage(URL, label: String)
         case image(UIImage, label: String)
     }
 
@@ -87,18 +86,12 @@ final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewD
 private final class MediaCell: UICollectionViewCell {
     private let label = UILabel()
     private let imageView = UIImageView()
-    private let badge = UILabel()
-    private var loading: Task<Void, Never>?
-    private var representedURL: URL?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         label.font = .systemFont(ofSize: 32); label.textAlignment = .center
         imageView.contentMode = .scaleAspectFill; imageView.clipsToBounds = true; imageView.layer.cornerRadius = 6
-        badge.font = .systemFont(ofSize: 8, weight: .bold); badge.text = "GIF"; badge.textColor = .white
-        badge.backgroundColor = UIColor.black.withAlphaComponent(0.55); badge.textAlignment = .center
-        badge.layer.cornerRadius = 3; badge.clipsToBounds = true
-        for view in [imageView, label, badge] { contentView.addSubview(view) }
+        for view in [imageView, label] { contentView.addSubview(view) }
         isAccessibilityElement = true
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) is unavailable") }
@@ -106,50 +99,23 @@ private final class MediaCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         label.frame = contentView.bounds; imageView.frame = contentView.bounds.insetBy(dx: 1, dy: 1)
-        badge.frame = CGRect(x: 4, y: contentView.bounds.height - 15, width: 22, height: 11)
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        loading?.cancel(); loading = nil; representedURL = nil; imageView.image = nil; label.text = nil
+        imageView.image = nil; label.text = nil
     }
 
     func configure(_ item: MediaGridView.Item, palette: KeyboardPalette, cache: NSCache<NSURL, UIImage>) {
-        loading?.cancel(); loading = nil; representedURL = nil; imageView.image = nil
+        imageView.image = nil
         switch item {
         case .emoji(let emoji, let toned, let name):
-            label.isHidden = false; imageView.isHidden = true; badge.isHidden = true
+            label.isHidden = false; imageView.isHidden = true
             label.text = emoji; accessibilityLabel = name ?? emoji
             accessibilityHint = toned ? "Hold for skin tones" : nil
         case .image(let image, let text):
-            label.isHidden = true; imageView.isHidden = false; badge.isHidden = true
+            label.isHidden = true; imageView.isHidden = false
             imageView.image = image; imageView.backgroundColor = palette.key.withAlphaComponent(0.4); accessibilityLabel = text
-        case .remoteImage(let url, let text):
-            label.isHidden = true; imageView.isHidden = false; badge.isHidden = false
-            imageView.backgroundColor = palette.key; accessibilityLabel = text
-            if let cached = cache.object(forKey: url as NSURL) { imageView.image = cached; return }
-            guard GifService.isTrusted(url) else { return }
-            representedURL = url
-            loading = Task { [weak self] in
-                do {
-                    let (data, response) = try await BoundedHTTP.load(URLRequest(url: url), maximum: 3_000_000)
-                    guard (200...299).contains(response.statusCode), !Task.isCancelled,
-                          let source = CGImageSourceCreateWithData(data as CFData, [kCGImageSourceShouldCache: false] as CFDictionary),
-                          let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
-                          let width = properties[kCGImagePropertyPixelWidth] as? Int,
-                          let height = properties[kCGImagePropertyPixelHeight] as? Int,
-                          width > 0, height > 0, width <= 2048, height <= 2048, width * height <= 262_144,
-                          let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
-                            kCGImageSourceCreateThumbnailFromImageAlways: true,
-                            kCGImageSourceThumbnailMaxPixelSize: 256,
-                            kCGImageSourceCreateThumbnailWithTransform: true
-                          ] as CFDictionary) else { return }
-                    let image = UIImage(cgImage: thumbnail)
-                    guard !Task.isCancelled, let self, self.representedURL == url else { return }
-                    cache.setObject(image, forKey: url as NSURL, cost: thumbnail.bytesPerRow * thumbnail.height)
-                    self.imageView.image = image
-                } catch { /* Failed/cancelled previews leave the placeholder intact. */ }
-            }
         }
     }
 }

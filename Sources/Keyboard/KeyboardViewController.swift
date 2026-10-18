@@ -66,17 +66,13 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var safeMode = false
     var crashNotice = false
     var keyPreview: KeyPreview?
-    /// While searching emoji or GIFs, typed letters go into this query instead of the document.
+    /// While searching emoji, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
     var searchQuery = ""
     var clipQuery = ""
     var emojiQuery = ""
     var emojiGroup = 0 // -1 is recently used
     var mediaTab = "emoji"
-    var gifResults: [GifResult] = []
-    var gifLoaded = false
-    var gifError: String?
-    var gifTask: Task<Void, Never>?
     var handwriting: HandwritingSupport?
     var usingDarkPalette = true
 
@@ -147,7 +143,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         super.viewWillDisappear(animated)
         store.sessionOpen = false
         clipboardTimer?.invalidate(); clipboardTimer = nil
-        searchMode = nil; searchQuery = ""; gifTask?.cancel(); handwriting?.stop()
+        searchMode = nil; searchQuery = ""; handwriting?.stop()
         repeatDelete?.invalidate(); repeatDelete = nil
         suggestionWork?.cancel(); onlineTask?.cancel()
         if writingResult == nil { writingAction = nil } // a cancelled request must not reopen as a permanent "Working…"
@@ -231,7 +227,6 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         LexiconCache.shared.trim(keeping: [preferences.language.code])
         EmojiCatalog.shared.releaseKeywords()
         MediaGridView.imageCache.removeAllObjects()
-        gifResults = []; gifLoaded = false
     }
 
     func savePreferences() {
@@ -288,7 +283,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             toolbar.addArrangedSubview(languageKey)
         }
         let tools: [(String, String, String)] = [
-            ("face.smiling", "emoji", "Emoji, GIFs and stickers"), ("doc.on.clipboard", "clips", "Clipboard"),
+            ("face.smiling", "emoji", "Emoji"), ("doc.on.clipboard", "clips", "Clipboard"),
             ("sparkles", "writing", "AI writing assist"), ("translate", "translate", "Translate"),
             ("pencil.and.scribble", "handwriting", "Handwriting"), ("character.cursor.ibeam", "edit", "Text editing"),
             ("gearshape", "settings", "Keyboard settings")]
@@ -369,7 +364,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     var panelTitle: String {
-        switch panel { case "emoji": return "Emoji, GIFs & stickers"; case "clips": return "Clipboard"; case "writing": return "AI writing assist"; case "translate": return "Translate"; case "edit": return "Text editing"; case "handwriting": return "Write with your finger"; case "languages": return "Languages"; default: return "Make it yours" }
+        switch panel { case "emoji": return "Emoji"; case "clips": return "Clipboard"; case "writing": return "AI writing assist"; case "translate": return "Translate"; case "edit": return "Text editing"; case "handwriting": return "Write with your finger"; case "languages": return "Languages"; default: return "Make it yours" }
     }
 
     func rebuildContent() {
@@ -505,7 +500,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         stack.addArrangedSubview(space)
         let period = punctuationKey(".", alternates: [".", "?", "!", "'", "\"", "…", "@", "#"])
         stack.addArrangedSubview(period)
-        let returnKey = button(searchMode == .gif ? "Search" : (searchMode != nil ? "Done" : returnTitle), function: true) { [weak self] in self?.returnPressed() }
+        let returnKey = button(searchMode != nil ? "Done" : returnTitle, function: true) { [weak self] in self?.returnPressed() }
         returnKey.accessibilityLabel = "Return"; stack.addArrangedSubview(returnKey)
         for key in narrowKeys + [comma, period] { key.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.105).isActive = true }
         returnKey.widthAnchor.constraint(equalTo: stack.widthAnchor, multiplier: 0.16).isActive = true

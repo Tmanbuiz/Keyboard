@@ -25,12 +25,11 @@ Only when you choose these optional features:
 
 - **WianTribe AI.** Sign in with Apple connects the app and keyboard. We request no name or email. Our service verifies Apple identity tokens and stores an app-specific hash of your Apple identifier, hashed session credentials, account status and usage counts. Raw Apple identity tokens are not persisted. Sessions expire after 30 days; expired sessions and sign-in challenges are cleaned up daily. Only text you submit to an online writing tool is sent, over HTTPS, to our AI service to produce the result. We do not save submitted text or AI output.
 - **Account deletion.** Delete AI account in Tools → AI account to remove account and session records and revoke all WianTribe sessions. App-specific pseudonymous usage records remain up to 30 days to enforce limits. You can separately remove WianTribe from Sign in with Apple in your Apple Account settings. Clipboard and learned words can be deleted in app settings.
-- **GIFs.** GIF previews and files load from GIPHY's servers (giphy.com), which can see your device's IP address. See GIPHY's privacy policy.
 - **Voice editor.** When you record in the companion app, Apple's speech recognition converts your voice to text. It runs on your device when supported; otherwise Apple may process the audio under Apple's privacy policy. The keyboard itself never uses the microphone.
 
 ## Allow Full Access
 
-iOS asks whether to "Allow Full Access" for third-party keyboards. You can type normally without it. It is needed only for clipboard history, GIFs, copying stickers, haptics and online AI. Turning it on does not start any background uploads.
+iOS asks whether to "Allow Full Access" for third-party keyboards. You can type normally without it. It is needed only for clipboard history, haptics and online AI. Turning it on does not start any background uploads.
 
 ## Children
 

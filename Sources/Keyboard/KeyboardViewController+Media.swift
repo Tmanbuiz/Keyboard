@@ -1,7 +1,7 @@
 import UIKit
 import UniformTypeIdentifiers
 
-enum SearchMode { case emoji, gif, writing, clips }
+enum SearchMode { case emoji, writing, clips }
 
 extension KeyboardViewController {
     /// Panels with their own layout instead of the scrolling list of buttons. Returns false for list panels.
@@ -26,18 +26,16 @@ extension KeyboardViewController {
         header?.heightAnchor.constraint(equalToConstant: 34).isActive = true
     }
 
-    // MARK: Emoji, GIFs and stickers
+    // MARK: Emoji
 
     func buildMediaPanel() {
         let body = UIStackView(); body.axis = .vertical; body.spacing = 4
         let keyboard = button("ABC", function: true) { [weak self] in self?.showPanel(nil) }
         keyboard.accessibilityLabel = "Back to keyboard"
         let emoji = button("Emoji", function: mediaTab != "emoji") { [weak self] in self?.mediaTab = "emoji"; self?.rebuildContent() }
-        let gif = button("GIF", function: mediaTab != "gif") { [weak self] in self?.mediaTab = "gif"; self?.rebuildContent() }
-        let stickers = button("Stickers", function: mediaTab != "stickers") { [weak self] in self?.mediaTab = "stickers"; self?.rebuildContent() }
         let backspace = button("⌫", function: true) { [weak self] in self?.textDocumentProxy.deleteBackward() }
         backspace.accessibilityLabel = "Delete"
-        let modeRow = UIStackView(arrangedSubviews: [keyboard, emoji, gif, stickers, backspace])
+        let modeRow = UIStackView(arrangedSubviews: [keyboard, emoji, backspace])
         modeRow.distribution = .fillEqually; modeRow.spacing = 4
         modeRow.heightAnchor.constraint(equalToConstant: 34).isActive = true
         body.addArrangedSubview(modeRow)
@@ -76,11 +74,7 @@ extension KeyboardViewController {
             body.addArrangedSubview(heading)
         }
         let grid = MediaGridView(palette: palette)
-        switch mediaTab {
-        case "gif": fillGifs(grid)
-        case "stickers": fillStickers(grid)
-        default: fillEmoji(grid)
-        }
+        fillEmoji(grid)
         body.addArrangedSubview(grid)
         layoutPanel(header: nil, body: body)
     }
@@ -148,108 +142,6 @@ extension KeyboardViewController {
         view.addSubview(popup); accentPopup = popup
     }
 
-    private func fillStickers(_ grid: MediaGridView) {
-        let loaded: [(file: (name: String, type: String, title: String), image: UIImage)] = Self.stickerFiles().compactMap { file in
-            guard let url = Bundle.main.url(forResource: file.name, withExtension: file.type), let image = UIImage(contentsOfFile: url.path) else { return nil }
-            return (file, image)
-        }
-        let media = loaded.map { $0.file }
-        grid.columns = 4
-        grid.items = loaded.map { .image($0.image, label: $0.file.title) }
-        grid.onSelect = { [weak self] index in
-            guard let self, media.indices.contains(index) else { return }
-            self.copyMedia(name: media[index].name, type: media[index].type)
-        }
-        setStatus(hasFullAccess ? "Tap a sticker to copy it, then paste it in your chat" : "Turn on Allow Full Access to copy stickers")
-    }
-
-    static func stickerFiles() -> [(name: String, type: String, title: String)] {
-        let urls = (Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: nil) ?? []) + (Bundle.main.urls(forResourcesWithExtension: "gif", subdirectory: nil) ?? [])
-        return urls.map { url -> (String, String, String) in
-            let name = url.deletingPathExtension().lastPathComponent
-            return (name, url.pathExtension, name.replacingOccurrences(of: "sticker-", with: "").replacingOccurrences(of: "-", with: " ").capitalized)
-        }
-        .filter { $0.0.hasPrefix("sticker-") || ["hello", "thanks", "celebrate", "love"].contains($0.0) }
-        .sorted { $0.0 < $1.0 }
-    }
-
-    func copyMedia(name: String, type: String) {
-        guard hasFullAccess else { setStatus("Turn on Allow Full Access to copy media"); toast("Turn on Allow Full Access (Settings → General → Keyboard → WianTribe) to copy stickers"); return }
-        guard let url = Bundle.main.url(forResource: name, withExtension: type), let data = try? Data(contentsOf: url) else { setStatus("Media unavailable"); toast("Media unavailable"); return }
-        copyImageData(data, gif: type == "gif")
-    }
-
-    func copyImageData(_ data: Data, gif: Bool) {
-        UIPasteboard.general.setItems([[gif ? UTType.gif.identifier : UTType.png.identifier: data]], options: [.localOnly: true, .expirationDate: Date().addingTimeInterval(300)])
-        store.lastChangeCount = UIPasteboard.general.changeCount
-        setStatus("Copied. Touch and hold your message, then Paste")
-        toast("Copied ✓ Touch and hold your message, then tap Paste")
-    }
-
-    /// A short message over the keyboard. The status line is hidden while the emoji panel is open,
-    /// so copy results and errors would otherwise be invisible.
-    func toast(_ text: String) {
-        view.viewWithTag(9_411)?.removeFromSuperview()
-        let label = PaddedLabel()
-        label.tag = 9_411; label.text = tr(text); label.numberOfLines = 2; label.textAlignment = .center
-        label.font = .systemFont(ofSize: 13, weight: .semibold); label.textColor = .white
-        label.backgroundColor = UIColor.black.withAlphaComponent(0.82)
-        label.layer.cornerRadius = 10; label.clipsToBounds = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
-        NSLayoutConstraint.activate([label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                                     label.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -56),
-                                     label.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, constant: -24)])
-        UIAccessibility.post(notification: .announcement, argument: label.text)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak label] in label?.removeFromSuperview() }
-    }
-
-    private func fillGifs(_ grid: MediaGridView) {
-        grid.columns = 3
-        guard hasFullAccess else { grid.emptyMessage = "GIFs need Allow Full Access in Settings"; setStatus("GIFs need Allow Full Access in Settings"); return }
-        guard GifService.isConfigured else {
-            grid.emptyMessage = "Sign in in WianTribe → Tools → AI account to search GIFs"
-            setStatus("Sign in in WianTribe → Tools → AI account to search GIFs"); return
-        }
-        grid.emptyMessage = gifError ?? (gifLoaded ? "No GIFs found. Try other words" : "Loading GIFs…")
-        let results = gifResults
-        grid.items = results.map { .remoteImage($0.preview, label: $0.title ?? "GIF") }
-        grid.onSelect = { [weak self] index in
-            guard let self, results.indices.contains(index) else { return }
-            self.setStatus("Copying GIF…")
-            self.gifTask?.cancel()
-            self.gifTask = Task { @MainActor [weak self] in
-                do {
-                    let data = try await GifService.download(results[index])
-                    guard !Task.isCancelled else { return }
-                    self?.copyImageData(data, gif: true)
-                } catch { if !Task.isCancelled { self?.setStatus(error.localizedDescription); self?.toast(error.localizedDescription) } }
-            }
-        }
-        if results.isEmpty { if !gifLoaded { loadGifs("") } } else { setStatus("Powered by GIPHY · tap a GIF to copy it") }
-    }
-
-    func loadGifs(_ query: String) {
-        gifTask?.cancel(); gifError = nil
-        setStatus(query.isEmpty ? "Loading trending GIFs…" : "Searching “\(query)”…")
-        gifTask = Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let results = try await GifService.search(query, language: self.preferences.language.code)
-                guard !Task.isCancelled else { return }
-                self.gifResults = results; self.gifLoaded = true
-                if self.panel == "emoji" && self.mediaTab == "gif" { self.rebuildContent() } // empty result: gifLoaded stops fillGifs from requesting again
-                if results.isEmpty { self.setStatus("No GIFs found. Try other words") }
-            } catch {
-                guard !Task.isCancelled else { return }
-                // Show the failure in the grid itself, otherwise it would say "Loading GIFs…" forever.
-                self.gifError = error.localizedDescription; self.gifLoaded = true
-                self.setStatus(error.localizedDescription)
-                if self.panel == "emoji" && self.mediaTab == "gif" { self.rebuildContent() }
-            }
-        }
-    }
-
     // MARK: In-keyboard search
 
     func enterSearch(_ mode: SearchMode) {
@@ -269,11 +161,11 @@ extension KeyboardViewController {
     }
 
     func buildSearchToolbar() {
-        let close = button("✕", function: true) { [weak self] in self?.exitSearch(returnTo: self?.searchMode == .gif ? "gif" : "emoji") }
+        let close = button("✕", function: true) { [weak self] in self?.exitSearch(returnTo: "emoji") }
         close.accessibilityLabel = "Cancel search"
         close.widthAnchor.constraint(equalToConstant: 44).isActive = true
         let field = UILabel()
-        let prompt = searchMode == .writing ? "Edit result" : (searchMode == .clips ? "Search clipboard" : (searchMode == .gif ? "Search GIFs" : "Search emoji"))
+        let prompt = searchMode == .writing ? "Edit result" : (searchMode == .clips ? "Search clipboard" : "Search emoji")
         field.lineBreakMode = .byTruncatingHead
         field.text = searchQuery.isEmpty ? "🔍 \(prompt)" : "🔍 \(searchQuery)▏"
         field.textColor = searchQuery.isEmpty ? palette.text.withAlphaComponent(0.55) : palette.text
@@ -307,11 +199,7 @@ extension KeyboardViewController {
         }
         if searchMode == .clips { clipQuery = searchQuery; exitSearch(); return }
         let query = searchQuery.trimmingCharacters(in: .whitespaces)
-        if searchMode == .gif {
-            gifResults = []; gifLoaded = false
-            exitSearch(returnTo: "gif")
-            loadGifs(query)
-        } else { emojiQuery = query; exitSearch(returnTo: "emoji") }
+        emojiQuery = query; exitSearch(returnTo: "emoji")
     }
 
     /// Live emoji results in the suggestion bar as the person types.
@@ -319,9 +207,6 @@ extension KeyboardViewController {
         clear(suggestionBar)
         if searchMode == .writing { setStatus("Edit the end of the result · Done saves · ✕ cancels"); return }
         if searchMode == .clips { setStatus("Type a phrase, then tap Done"); return }
-        guard searchMode == .emoji else {
-            setStatus(searchQuery.isEmpty ? "Type what you're looking for, then tap Search" : "Tap Search to find “\(searchQuery)” GIFs"); return
-        }
         guard !searchQuery.trimmingCharacters(in: .whitespaces).isEmpty else { setStatus("Type to search, e.g. “happy” or “cat”"); return }
         let languages = preferences.activeLanguages.map(\.code)
         let results = EmojiCatalog.shared.search(searchQuery, languages: languages, limit: 40)
@@ -342,14 +227,5 @@ extension KeyboardViewController {
             row.addArrangedSubview(key)
         }
         suggestionBar.addArrangedSubview(scroll)
-    }
-}
-
-/// A label with inner spacing, used for the short on-screen messages.
-final class PaddedLabel: UILabel {
-    override func drawText(in rect: CGRect) { super.drawText(in: rect.inset(by: UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12))) }
-    override var intrinsicContentSize: CGSize {
-        let size = super.intrinsicContentSize
-        return CGSize(width: size.width + 24, height: size.height + 16)
     }
 }

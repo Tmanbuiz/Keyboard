@@ -6,9 +6,9 @@ This is an **invite-only user API**, compatible with the keyboard's existing HTT
 
 ## What is already prepared
 
-- `public-worker.mjs` wraps the existing writing/GIF service with per-user authentication, D1 quota reservation and an owner-only user-management API.
+- `public-worker.mjs` wraps the existing writing service with per-user authentication, D1 quota reservation and an owner-only user-management API.
 - Tokens are generated from 32 random bytes. Only their SHA-256 hashes are stored.
-- Default allowance: 20 attempts per user/day, adjustable from 1 to 1,000 at invitation time. Global default: 500 attempts/day across every user. Both writing and GIF requests count.
+- Default allowance: 20 attempts per user/day, adjustable from 1 to 1,000 at invitation time. Global default: 500 attempts/day across every user. Every writing request counts.
 - One atomic SQLite statement enforces user and global limits together. Database errors fail closed. Quotas reset at midnight UTC.
 - Authenticated attempts count even if text validation or the provider subsequently fails. The app's connection check also counts.
 - Edge rate limits provide additional per-user and per-IP protection. They are eventually consistent; the D1 daily quota is the durable control for model calls.
@@ -55,7 +55,6 @@ Open **Workers & Pages → wiantribe-keyboard-api → Settings → Variables and
 
 Generate the admin secret locally with `node -e "process.stdout.write(require('crypto').randomBytes(32).toString('hex'))"`. Keep it in your password manager. Never give it to app users. Save/deploy the Worker after adding secrets.
 
-Optional: add `GIPHY_API_KEY` as a Secret to enable GIF search. Otherwise writing works but GIF requests return a clear unavailable response.
 
 `MODEL` defaults to `openai/gpt-oss-120b`. Check that your Groq account can use it; change the Cloudflare variable to another supported chat-completions model if needed. `GLOBAL_DAILY_LIMIT` defaults to `500`. Review provider usage/billing settings before inviting users.
 

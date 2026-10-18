@@ -1,4 +1,4 @@
-# Writing and GIF backend
+# Writing backend
 
 **Current TestFlight flow:** built-in Apple sign-in, shared Keychain credentials and Cloudflare/Groq. See [APPLE-SIGNIN.md](../docs/APPLE-SIGNIN.md). The private single-token template below is for developer experiments; the app no longer exposes manual connection import.
 
@@ -6,7 +6,7 @@ For the invited-user Cloudflare/Groq rollout with individual tokens and daily qu
 
 The app works without this service. Nothing is deployed automatically. This template is for the owner's private testing, with one long random access token; it is not a public multi-user subscription backend.
 
-It uses Cloudflare Workers AI, an AI binding and the Workers Rate Limiting API. Only `POST /write` (writing tools) and `GET /gifs` (GIF search) are served, both behind the access token. It returns `{ "text": "edited text" }`, never writes text history, disables observability in the supplied configuration and never logs request bodies/tokens. Cloudflare and model-provider terms/data policies still apply. Review them before sending private text.
+It uses Cloudflare Workers AI, an AI binding and the Workers Rate Limiting API. Only `POST /write` (writing tools) is served, behind the access token. It returns `{ "text": "edited text" }`, never writes text history, disables observability in the supplied configuration and never logs request bodies/tokens. Cloudflare and model-provider terms/data policies still apply. Review them before sending private text.
 
 ## Use your own AI
 
@@ -36,9 +36,8 @@ With a Cloudflare account and billing/usage settings you choose:
 1. Use Wrangler 4.36.0 or later. From this directory, authenticate with `npx wrangler@4 login`.
 2. Generate a cryptographically random access token, at least 32 characters, and store it with `npx wrangler@4 secret put API_TOKEN`. Do not commit it, share it or place it in app source.
 3. Choose an unused rate-limit namespace ID in `wrangler.jsonc`; the supplied ID is an example. Check the model is available and choose a suitable model for your languages. The template uses `@cf/meta/llama-3.1-8b-instruct-fp8`.
-4. For GIF search, create a free GIPHY API key at developers.giphy.com and store it with `npx wrangler@4 secret put GIPHY_API_KEY`. The key never reaches the app; the keyboard sends only the search words. GIPHY's terms require showing "Powered by GIPHY", which the keyboard does.
-5. Deploy with `npx wrangler@4 deploy` only after accepting the provider's usage settings and costs.
-6. A private-template build requires a custom developer connection UI. The shipping app uses built-in Apple sign-in with the public Worker.
+4. Deploy with `npx wrangler@4 deploy` only after accepting the provider's usage settings and costs.
+5. A private-template build requires a custom developer connection UI. The shipping app uses built-in Apple sign-in with the public Worker.
 
 The configured rate limit is 10 requests per minute **per Cloudflare location**, and is eventually consistent. It is not a hard global spend cap. Use account budgets/usage controls and add per-user authentication, authorization and durable accounting before public distribution. Token rotation requires updating the app and keyboard connections.
 

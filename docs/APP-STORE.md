@@ -28,11 +28,11 @@ What's ready in this repository, and what only you can do.
 
 > WianTribe Keyboard is a custom keyboard. To try it: open the app, follow Home → "Add WianTribe Keyboard", then switch to it with the globe key in the Practice tab.
 >
-> Full Access is optional. Without it, typing, suggestions, swipe, emoji, handwriting and on-device translation all work. Full Access is used only for clipboard history (off by default), copying stickers/GIFs, haptics and optional online AI. The keyboard does not use the microphone; voice transcription happens only in the containing app.
+> Full Access is optional. Without it, typing, suggestions, swipe, emoji, handwriting and on-device translation all work. Full Access is used only for clipboard history (off by default), haptics and optional online AI. The keyboard does not use the microphone; voice transcription happens only in the containing app.
 >
 > Clipboard: there is no background monitoring. The keyboard reads the clipboard only while it is on screen and the user has turned on clipboard history (off by default); items can also be saved explicitly through the "Save to WianTribe" share extension, the "Save Clipboard to WianTribe" App Intent (Shortcuts, Siri, Back Tap, Action button) or the system Paste button in the app. Everything stays on device in the App Group.
 >
-> Optional online AI (rewrite, summarise, translate) uses Sign in with Apple: open the app → Tools → AI account and sign in with any Apple ID; no other account or password exists. Typing and every other feature work without signing in. Account deletion is in the same screen. GIF search is not configured in this build.
+> Optional online AI (rewrite, summarise, translate) uses Sign in with Apple: open the app → Tools → AI account and sign in with any Apple ID; no other account or password exists. Typing and every other feature work without signing in. Account deletion is in the same screen.
 
 Relevant guidelines: 4.4.1 (keyboard extensions), 5.1.1 (privacy). The keyboard provides a globe key when iOS requires one, works without network access and without Full Access, and offers number and decimal input through iOS's own pads.
 
@@ -69,13 +69,13 @@ MAKE IT YOURS
 PRIVATE BY DESIGN
 • No analytics, no ads or tracking; an optional Apple sign-in account enables online AI
 • Typing, suggestions and swipe happen on your iPhone
-• Full Access is optional: clipboard, GIFs, stickers, haptics and online AI need it
+• Full Access is optional: clipboard, haptics and online AI need it
 
 **Keywords (100 max):** keyboard,multilingual,swipe,emoji,clipboard,translate,themes,stickers,handwriting,yoruba,pidgin
 
 **What's New (0.2.0):** First public release.
 
-**Category:** Utilities (secondary: Productivity). **Age rating:** 4+ answers throughout, except "Unrestricted web access: No". GIF search is rated PG-13 at the source and is off unless the user connects a service.
+**Category:** Utilities (secondary: Productivity). **Age rating:** 4+ answers throughout, except "Unrestricted web access: No".
 
 ## Screenshots to capture (6.9" and 6.5" iPhone, 13" iPad)
 

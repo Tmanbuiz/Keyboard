@@ -10,7 +10,7 @@
 6. Go to **iPhone Settings → General → Keyboard → Keyboards → Add New Keyboard → WianTribe Keyboard**.
 7. Open a message or the app's Practice page. Hold **🌐** and choose **WianTribe Keyboard**.
 
-Basic typing, suggestions, swipe, emoji, handwriting and on-device translation work without **Allow Full Access**. To use clipboard history, GIFs, copying stickers or your own online service, open the keyboard entry in Settings and enable **Allow Full Access**.
+Basic typing, suggestions, swipe, emoji, handwriting and on-device translation work without **Allow Full Access**. To use clipboard history or your own online service, open the keyboard entry in Settings and enable **Allow Full Access**.
 
 The default sideload build stores settings separately in the app and extension. **Tap ⚙︎ on the keyboard itself** to change its theme, height or typing behaviour, and **hold the language key** (top left) to choose your languages. For clipboard history, tap **📋 → Turn on clipboard history** in the keyboard. Text you copy anywhere then appears in 📋 the next time the keyboard opens.
 
@@ -23,13 +23,13 @@ The default sideload build stores settings separately in the app and extension. 
 
 A free Personal Team's development provisioning expires after seven days and requires another build/install. Your existing sideloader's signing and refresh rules apply when using that tool. Paid membership does not automatically sign the CI-generated IPA.
 
-## Translation, writing tools, GIFs and voice
+## Translation, writing tools and voice
 
 On iOS 26, translation and rewriting run on the iPhone. Download translation languages once in the app under **Tools → Translation languages**; rewriting uses Apple Intelligence where it's available and supports your language.
 
 Open the app's **Tools → Voice editor**, tap **Start recording**, allow microphone/speech permissions, stop, review and copy the transcript. Return to your message yourself and paste. Speech language availability depends on Apple's support on your device.
 
-For online rewriting, translation and GIF search, open **Tools → AI account** and sign in with Apple in the TestFlight build. The keyboard reads your connection automatically from shared Keychain storage. Enable **Allow Full Access** for online keyboard features. No connection import is needed. See [APPLE-SIGNIN.md](APPLE-SIGNIN.md) for owner setup and device checks.
+For online rewriting and translation, open **Tools → AI account** and sign in with Apple in the TestFlight build. The keyboard reads your connection automatically from shared Keychain storage. Enable **Allow Full Access** for online keyboard features. No connection import is needed. See [APPLE-SIGNIN.md](APPLE-SIGNIN.md) for owner setup and device checks.
 
 ## If iOS keeps showing Apple's keyboard
 
