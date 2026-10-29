@@ -139,10 +139,15 @@ final class KeyboardStore {
         set { local.set(newValue, forKey: "clipboard.changeCount") }
     }
     /// True while the keyboard is on screen. If it is still true when the keyboard next starts,
-    /// iOS ended the last session abnormally (a crash or the memory limit) and showed Apple's keyboard.
+    /// Normal OS teardown can also omit a dismissal callback. This is not a crash detector.
     var sessionOpen: Bool {
         get { local.bool(forKey: "session.open") }
         set { local.set(newValue, forKey: "session.open") }
+    }
+    /// Count only explicit memory-pressure callbacks from iOS.
+    var memoryWarnings: Int {
+        get { local.integer(forKey: "session.memoryWarnings") }
+        set { local.set(newValue, forKey: "session.memoryWarnings") }
     }
     var unexpectedCloses: Int {
         get { local.integer(forKey: "session.unexpectedCloses") }

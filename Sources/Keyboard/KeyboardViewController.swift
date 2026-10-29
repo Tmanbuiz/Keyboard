@@ -5,7 +5,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var store = KeyboardStore(canWriteGroup: false)
     var preferences = KeyboardPreferences()
     var palette = KeyboardPalette.make(.ocean)
-    var engine = SuggestionEngine.make(primary: .english)
+    var engine = SuggestionEngine(language: KeyboardLanguage.english.pack, lexicons: [])
     var engineKey = ""
     var pack: LanguagePack { preferences.language.pack }
     let checker = UITextChecker()
@@ -62,7 +62,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var clipboardBlocked = false
     /// Like Samsung's keyboard, the top row shows tool icons when you aren't typing and word suggestions while you are.
     var toolbarExpanded = true
-    /// After an unexpected close the keyboard starts light: one dictionary and no multilingual mixing.
+    /// An unconfirmed restart never disables dictionary, multilingual or emoji features.
     var safeMode = false
     var crashNotice = false
     var keyPreview: KeyPreview?
@@ -88,7 +88,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let launchStore = KeyboardStore(canWriteGroup: false)
         if launchStore.sessionOpen {
             launchStore.unexpectedCloses += 1
-            safeMode = true; crashNotice = true
+            // A missing viewWillDisappear callback is not proof of a crash.
+            // Keep dictionary, multilingual and emoji features enabled.
         }
         hasDictationKey = false // Keep Apple's system dictation button where iOS provides one.
         view.isMultipleTouchEnabled = true // overlapping taps from fast typing
@@ -212,7 +213,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         engineKey = key
         engine = SuggestionEngine(language: primary.pack, lexicons: [])
         suggestionQueue.async { [weak self] in
-            let loaded = SuggestionEngine.make(primary: primary, others: others)
+            let loaded = autoreleasepool { SuggestionEngine.make(primary: primary, others: others) }
             DispatchQueue.main.async {
                 guard let self, self.engineKey == key else { return }
                 self.engine = loaded
@@ -224,7 +225,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Free everything that can be reloaded, so iOS doesn't close the keyboard.
-        LexiconCache.shared.trim(keeping: [preferences.language.code])
+        store.memoryWarnings += 1
+        // Preserve active dictionaries and language features; trim only inactive cache entries.
+        LexiconCache.shared.trim(keeping: Set(engine.lexicons.map(\.code)))
         EmojiCatalog.shared.releaseKeywords()
         MediaGridView.imageCache.removeAllObjects()
     }
@@ -923,8 +926,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             }
         }
         let closes = store.unexpectedCloses
-        note("Health: " + (closes == 0 ? "no unexpected closes" : "iOS closed the keyboard unexpectedly \(closes) time\(closes == 1 ? "" : "s"). Please report this with your iPhone model.") + (safeMode ? " Light mode is on for this session." : ""), in: stack)
-        if closes > 0 { panelButton("Reset health counter", in: stack) { [weak self] in self?.store.unexpectedCloses = 0; self?.rebuildContent() } }
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
+        let diagnostic = "WianTribe \(version) (build \(build)) · iOS \(UIDevice.current.systemVersion)\nMemory warnings reported by iOS: \(store.memoryWarnings)\nUnconfirmed session restarts: \(closes) (not a verified crash count)\nLanguages: \(preferences.activeLanguages.map(\.code).joined(separator: ", "))\nActive dictionaries: \(engine.lexicons.count)"
+        note(diagnostic, in: stack)
+        panelButton("Copy diagnostic details", in: stack) { [weak self] in self?.copyToClipboard(diagnostic) }
+        if closes > 0 || store.memoryWarnings > 0 {
+            panelButton("Reset health counter", in: stack) { [weak self] in
+                self?.store.unexpectedCloses = 0; self?.store.memoryWarnings = 0; self?.rebuildContent()
+            }
+        }
         note("Changes here apply immediately. Basic typing works without Full Access.", in: stack)
         panelButton("Languages: \(preferences.activeLanguages.map(\.shortTitle).joined(separator: " · "))", in: stack) { [weak self] in self?.showPanel("languages") }
         for theme in KeyboardTheme.allCases {

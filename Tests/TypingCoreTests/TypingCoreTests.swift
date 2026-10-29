@@ -9,7 +9,13 @@ final class TypingCoreTests: XCTestCase {
         XCTAssertEqual(Set(LanguageCatalog.all.map(\.code)).count, LanguageCatalog.all.count)
         for pack in LanguageCatalog.all {
             XCTAssertEqual(pack.rows.count, 3, pack.code)
-            XCTAssertEqual(pack.hasDictionary, Lexicon.load(code: pack.code) != nil, pack.code)
+            let dictionary = Lexicon.load(code: pack.code)
+            XCTAssertEqual(pack.hasDictionary, dictionary != nil, pack.code)
+            if let dictionary {
+                for index in stride(from: 0, to: dictionary.words.count, by: 97) {
+                    XCTAssertEqual(dictionary.frequency(of: dictionary.words[index]), dictionary.frequencies[index], pack.code)
+                }
+            }
         }
         XCTAssertGreaterThan(Lexicon.load(code: "fr")?.count ?? 0, 20_000)
         XCTAssertTrue(Lexicon.load(code: "yo")?.contains("káàárọ̀") ?? false)
@@ -225,5 +231,36 @@ final class TypingCoreTests: XCTestCase {
         XCTAssertTrue(catalog.item(for: "🤝")?.availableVariants.contains(mixed) == true)
         XCTAssertEqual(catalog.item(for: mixed)?.emoji, "🤝")
         XCTAssertFalse(catalog.search("face", languages: ["en"], limit: 500).isEmpty)
+    }
+}
+
+extension TypingCoreTests {
+    func testCompactDictionaryPreservesAllWordsAndUnicodeLookups() {
+        let entries = [("zebra", 50), ("ẹsẹ", 80), ("apple", 100), ("école", 70),
+                       ("e\u{301}cole", 999), ("العربية", 20), ("яблоко", 30), ("", 1)]
+        let lexicon = Lexicon(code: "mixed", entries: entries)
+        XCTAssertEqual(lexicon.words, ["zebra", "ẹsẹ", "apple", "école", "العربية", "яблоко"])
+        XCTAssertEqual(lexicon.frequencies, [50, 80, 100, 70, 20, 30])
+        XCTAssertEqual(lexicon.frequency(of: "e\u{301}cole"), 70)
+        for (index, word) in lexicon.words.enumerated() {
+            XCTAssertEqual(lexicon.frequency(of: word), lexicon.frequencies[index])
+            XCTAssertTrue(lexicon.contains(word))
+        }
+        for word in ["", "aardvark", "zzzzzz", "missing", "écol"] { XCTAssertNil(lexicon.frequency(of: word)) }
+        XCTAssertEqual(lexicon.indexes(startingWith: ["é"]), [3])
+    }
+
+    func testTrimmingCacheKeepsActiveMultilingualDictionariesUsable() {
+        let cache = LexiconCache()
+        let engine = SuggestionEngine.make(primary: .english,
+            others: [KeyboardLanguage("fr"), KeyboardLanguage("de")], cache: cache)
+        XCTAssertEqual(Set(engine.lexicons.map(\.code)), Set(["en", "fr", "de"]))
+        XCTAssertTrue(engine.contains("hello"))
+        XCTAssertTrue(engine.contains("bonjour"))
+        XCTAssertTrue(engine.contains("hallo"))
+        cache.trim(keeping: [])
+        XCTAssertTrue(engine.contains("hello"))
+        XCTAssertTrue(engine.contains("bonjour"))
+        XCTAssertTrue(engine.contains("hallo"))
     }
 }

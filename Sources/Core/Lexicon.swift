@@ -5,25 +5,37 @@ public final class Lexicon {
     public let code: String
     public let words: [String]
     public let frequencies: [Int]
-    private let index: [String: Int]
+    private let sortedIndexes: [UInt32]
     private let byFirst: [Character: [Int]]
 
     public init(code: String, entries: [(String, Int)]) {
         self.code = code
-        var words: [String] = [], frequencies: [Int] = [], index: [String: Int] = [:], byFirst: [Character: [Int]] = [:]
+        var words: [String] = [], frequencies: [Int] = [], seen = Set<String>(), byFirst: [Character: [Int]] = [:]
         words.reserveCapacity(entries.count); frequencies.reserveCapacity(entries.count)
         for (raw, frequency) in entries {
             let word = raw.precomposedStringWithCanonicalMapping
-            guard !word.isEmpty, index[word] == nil else { continue }
-            index[word] = words.count
+            guard !word.isEmpty, seen.insert(word).inserted else { continue }
             if let first = word.first { byFirst[first, default: []].append(words.count) }
             words.append(word); frequencies.append(frequency)
         }
-        self.words = words; self.frequencies = frequencies; self.index = index; self.byFirst = byFirst
+        self.words = words; self.frequencies = frequencies; self.byFirst = byFirst
+        // Four bytes per word replace a resident String-to-Int hash table. Vocabulary is unchanged.
+        self.sortedIndexes = words.indices.map(UInt32.init).sorted { words[Int($0)] < words[Int($1)] }
     }
 
     public var count: Int { words.count }
-    public func frequency(of word: String) -> Int? { index[word.precomposedStringWithCanonicalMapping].map { frequencies[$0] } }
+    public func frequency(of word: String) -> Int? {
+        let target = word.precomposedStringWithCanonicalMapping
+        var lower = 0, upper = sortedIndexes.count
+        while lower < upper {
+            let middle = lower + (upper - lower) / 2
+            if words[Int(sortedIndexes[middle])] < target { lower = middle + 1 }
+            else { upper = middle }
+        }
+        guard lower < sortedIndexes.count else { return nil }
+        let index = Int(sortedIndexes[lower])
+        return words[index] == target ? frequencies[index] : nil
+    }
     public func contains(_ word: String) -> Bool { frequency(of: word) != nil }
 
     /// Word indexes beginning with any of these letters, most frequent first.
@@ -56,25 +68,57 @@ public final class Lexicon {
 public final class LexiconCache {
     public static let shared = LexiconCache()
     private let lock = NSLock()
+    private let loadingLock = NSLock()
     private var loaded: [String: Lexicon] = [:]
     private var order: [String] = []
     private var missing = Set<String>()
-    public var limit = 3
-
-    /// Releases every dictionary except the ones named, for example after a memory warning.
+    private var cacheLimit = 3
+    private var revision = 0
+    public init() {}
+    public var limit: Int {
+        get { lock.lock(); defer { lock.unlock() }; return cacheLimit }
+        set {
+            lock.lock(); defer { lock.unlock() }
+            cacheLimit = max(1, newValue)
+            evict()
+        }
+    }
+    private func evict() {
+        while order.count > cacheLimit { loaded.removeValue(forKey: order.removeFirst()) }
+    }
+    /// Keep dictionaries used by the active engine; release only inactive cache entries.
     public func trim(keeping codes: Set<String>) {
         lock.lock(); defer { lock.unlock() }
-        for code in loaded.keys where !codes.contains(code) { loaded.removeValue(forKey: code) }
+        revision += 1
+        for code in Array(loaded.keys) where !codes.contains(code) { loaded.removeValue(forKey: code) }
         order.removeAll { !codes.contains($0) }
     }
-
     public func lexicon(for code: String, bundle: Bundle? = nil) -> Lexicon? {
+        lock.lock()
+        if let lexicon = loaded[code] {
+            order.removeAll { $0 == code }; order.append(code)
+            lock.unlock(); return lexicon
+        }
+        let absent = missing.contains(code)
+        lock.unlock()
+        guard !absent else { return nil }
+        // Serialize parsing to avoid duplicate allocations. Trimming never waits for file I/O.
+        loadingLock.lock(); defer { loadingLock.unlock() }
+        lock.lock()
+        if let lexicon = loaded[code] {
+            order.removeAll { $0 == code }; order.append(code)
+            lock.unlock(); return lexicon
+        }
+        if missing.contains(code) { lock.unlock(); return nil }
+        let requestedRevision = revision
+        lock.unlock()
+        let lexicon = Lexicon.load(code: code, bundle: bundle)
         lock.lock(); defer { lock.unlock() }
-        if let lexicon = loaded[code] { order.removeAll { $0 == code }; order.append(code); return lexicon }
-        guard !missing.contains(code) else { return nil }
-        guard let lexicon = Lexicon.load(code: code, bundle: bundle) else { missing.insert(code); return nil }
-        loaded[code] = lexicon; order.append(code)
-        while order.count > limit { loaded.removeValue(forKey: order.removeFirst()) }
+        guard let lexicon else { missing.insert(code); return nil }
+        // Preserve the complete dictionary for the requester even if a memory warning trimmed the cache.
+        if revision == requestedRevision {
+            loaded[code] = lexicon; order.append(code); evict()
+        }
         return lexicon
     }
 }
