@@ -9,6 +9,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var engineKey = ""
     var pack: LanguagePack { preferences.language.pack }
     let checker = UITextChecker()
+    var requestedSupplementaryLexicon = false
     let decoder = GlideDecoder()
     let root = UIStackView()
     let toolbar = UIStackView()
@@ -108,10 +109,15 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         toolbar.heightAnchor.constraint(equalToConstant: 38).isActive = true
         suggestionBar.heightAnchor.constraint(equalToConstant: 38).isActive = true
         suggestionBar.distribution = .fill
-        reloadPreferences()
+        // viewWillAppear builds the keys once, with the host field's current appearance.
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (controller: KeyboardViewController, _: UITraitCollection) in
             if controller.preferences.theme == .auto && controller.wantsDarkPalette != controller.usingDarkPalette { controller.reloadPreferences() }
         }
+    }
+
+    func loadSupplementaryLexiconIfNeeded() {
+        guard !requestedSupplementaryLexicon else { return }
+        requestedSupplementaryLexicon = true
         requestSupplementaryLexicon { [weak self] lexicon in
             DispatchQueue.main.async {
                 guard let self else { return }
@@ -130,7 +136,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         toolbarExpanded = !crashNotice
         store.sessionOpen = true
         reloadPreferences()
-        startClipboardWatch()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Clipboard IPC and supplementary dictionary setup must not delay the first keyboard frame.
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.view.window != nil else { return }
+            self.startClipboardWatch()
+            self.loadSupplementaryLexiconIfNeeded()
+        }
         // Build the emoji tables just after the keyboard appears, off the first-frame path.
         if preferences.emojiPredictions && !safeMode && !EmojiCatalog.shared.isWarm {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
