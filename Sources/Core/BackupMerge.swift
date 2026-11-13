@@ -78,7 +78,8 @@ public enum BackupMerge {
         if let remotePreferences = remote.preferences {
             if let localPreferences = local.preferences {
                 // Settings changed here since the last sync win; otherwise take the backup's.
-                let changedHere = base?.preferences.map { keepingDeviceChoices(localPreferences, from: $0) != $0 } ?? false
+                var changedHere = false
+                if let synced = base?.preferences { changedHere = keepingDeviceChoices(localPreferences, from: synced) != synced }
                 result.preferences = changedHere ? localPreferences : keepingDeviceChoices(remotePreferences, from: localPreferences)
             } else {
                 result.preferences = remotePreferences
@@ -87,7 +88,8 @@ public enum BackupMerge {
 
         // Pinned text: keep everything pinned on either side, except what either side removed since the last sync.
         let baseIDs = Set((base?.pinned ?? []).map(\.id))
-        let removed = baseIDs.subtracting(local.pinned.map(\.id)).union(baseIDs.subtracting(remote.pinned.map(\.id)))
+        let localIDs = Set(local.pinned.map(\.id)), remoteIDs = Set(remote.pinned.map(\.id))
+        let removed: Set<UUID> = baseIDs.subtracting(localIDs).union(baseIDs.subtracting(remoteIDs))
         var seenIDs = Set<UUID>(), seenText = Set<String>(), pinned: [SavedPhrase] = []
         for item in local.pinned + remote.pinned where !removed.contains(item.id) {
             guard seenIDs.insert(item.id).inserted, seenText.insert(item.text).inserted else { continue }
@@ -104,20 +106,30 @@ public enum BackupMerge {
         result.learned = top(result.learned, maxLearned)
         result.pairs = result.pairs.mapValues { top($0, maxFollowers) }
         if result.pairs.count > maxPairs {
-            let keep = result.pairs.map { (key: $0.key, total: $0.value.values.reduce(0, +)) }
-                .sorted { $0.total == $1.total ? $0.key < $1.key : $0.total > $1.total }.prefix(maxPairs).map(\.key)
-            let kept = Set(keep)
-            result.pairs = result.pairs.filter { kept.contains($0.key) }
+            var totals: [String: Int] = [:]
+            for (word, followers) in result.pairs {
+                var total = 0
+                for count in followers.values { total += count }
+                totals[word] = total
+            }
+            let kept = top(totals, maxPairs)
+            result.pairs = result.pairs.filter { kept[$0.key] != nil }
         }
         result.emoji = Array(result.emoji.prefix(maxEmoji))
-        result.pinned = Array(result.pinned.sorted { $0.createdAt > $1.createdAt }.prefix(ClipboardHistory.maxPinned))
+        let newestFirst: [SavedPhrase] = result.pinned.sorted { (lhs: SavedPhrase, rhs: SavedPhrase) -> Bool in lhs.createdAt > rhs.createdAt }
+        result.pinned = Array(newestFirst.prefix(ClipboardHistory.maxPinned))
         return result
     }
 
     static func top(_ counts: [String: Int], _ limit: Int) -> [String: Int] {
         guard counts.count > limit else { return counts }
-        let kept = counts.sorted { $0.value == $1.value ? $0.key < $1.key : $0.value > $1.value }.prefix(limit)
-        return Dictionary(uniqueKeysWithValues: kept.map { ($0.key, $0.value) })
+        let ordered: [(key: String, value: Int)] = counts.sorted { (lhs: (key: String, value: Int), rhs: (key: String, value: Int)) -> Bool in
+            if lhs.value != rhs.value { return lhs.value > rhs.value }
+            return lhs.key < rhs.key
+        }
+        var result: [String: Int] = [:]
+        for entry in ordered.prefix(limit) { result[entry.key] = entry.value }
+        return result
     }
 
     static func mergedCounts(_ lhs: [String: Int], _ rhs: [String: Int]) -> [String: Int] {
