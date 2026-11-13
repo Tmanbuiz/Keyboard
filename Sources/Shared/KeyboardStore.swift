@@ -139,12 +139,37 @@ final class KeyboardStore {
         set { local.set(newValue, forKey: "clipboard.changeCount") }
     }
     /// True while the keyboard is on screen. If it is still true when the keyboard next starts,
-    /// iOS ended the last session abnormally (a crash or the memory limit) and showed Apple's keyboard.
+    /// Normal OS teardown can also omit a dismissal callback. This is not a crash detector.
     var sessionOpen: Bool {
         get { local.bool(forKey: "session.open") }
         set { local.set(newValue, forKey: "session.open") }
     }
-    /// When the keyboard was last seen in use. Tells a crash while typing apart from iOS's routine
+    /// Count only explicit memory-pressure callbacks from iOS.
+    var memoryWarnings: Int {
+        get { local.integer(forKey: "session.memoryWarnings") }
+        set { local.set(newValue, forKey: "session.memoryWarnings") }
+    }
+    /// Which screen was open at each memory warning, and the least memory ever left before iOS's limit.
+    /// Screen names and numbers only, kept on this device; never anything typed.
+    var memoryWarningScreens: [String: Int] {
+        get { (local.dictionary(forKey: "session.memoryWarningScreens") as? [String: Int]) ?? [:] }
+        set { local.set(newValue, forKey: "session.memoryWarningScreens") }
+    }
+    var lowestMemoryHeadroomMB: Int? {
+        get { local.object(forKey: "session.lowestHeadroomMB") as? Int }
+        set { local.set(newValue, forKey: "session.lowestHeadroomMB") }
+    }
+    func recordMemoryWarning(screen: String, headroomMB: Int) {
+        var screens = memoryWarningScreens
+        screens[screen, default: 0] += 1
+        memoryWarningScreens = screens
+        if headroomMB < (lowestMemoryHeadroomMB ?? Int.max) { lowestMemoryHeadroomMB = headroomMB }
+    }
+    func resetHealthCounters() {
+        unexpectedCloses = 0; memoryWarnings = 0
+        memoryWarningScreens = [:]; lowestMemoryHeadroomMB = nil
+    }
+    /// When the keyboard was last seen in use. Tells a restart while typing apart from iOS's routine
     /// clean-up of a keyboard left open in an app that went to the background.
     var sessionActiveAt: Date? {
         get { local.object(forKey: "session.activeAt") as? Date }

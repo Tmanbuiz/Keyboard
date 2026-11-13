@@ -1,15 +1,16 @@
 import UIKit
 import UniformTypeIdentifiers
+import os
 
 final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDelegate {
     var store = KeyboardStore(canWriteGroup: false)
     var preferences = KeyboardPreferences()
     var palette = KeyboardPalette.make(.ocean)
-    // Starts empty: dictionaries are parsed in the background by loadEngine(), never before the first frame.
     var engine = SuggestionEngine(language: KeyboardLanguage.english.pack, lexicons: [])
     var engineKey = ""
     var pack: LanguagePack { preferences.language.pack }
     let checker = UITextChecker()
+    var requestedSupplementaryLexicon = false
     let decoder = GlideDecoder()
     let root = UIStackView()
     let toolbar = UIStackView()
@@ -63,7 +64,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var clipboardBlocked = false
     /// Like Samsung's keyboard, the top row shows tool icons when you aren't typing and word suggestions while you are.
     var toolbarExpanded = true
-    /// After an unexpected close the keyboard starts light: one dictionary and no multilingual mixing.
+    /// An unconfirmed restart never disables dictionary, multilingual or emoji features.
     var safeMode = false
     var crashNotice = false
     var lastActiveMark: TimeInterval = 0
@@ -87,11 +88,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Only a keyboard that was in use moments ago and never closed counts as a crash. iOS also
+        // A restart is counted only when the keyboard was in use moments ago and never closed. iOS also
         // removes keyboards left open in a backgrounded app; that is normal and is not counted.
+        // Either way dictionary, multilingual and emoji features stay enabled.
         if store.sessionOpen, let active = store.sessionActiveAt, abs(Date().timeIntervalSince(active)) < 90 {
             store.unexpectedCloses += 1
-            safeMode = true; crashNotice = true
         }
         store.sessionOpen = false
         let center = NotificationCenter.default
@@ -116,10 +117,15 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         toolbar.heightAnchor.constraint(equalToConstant: 38).isActive = true
         suggestionBar.heightAnchor.constraint(equalToConstant: 38).isActive = true
         suggestionBar.distribution = .fill
-        reloadPreferences()
+        // viewWillAppear builds the keys once, with the host field's current appearance.
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (controller: KeyboardViewController, _: UITraitCollection) in
             if controller.preferences.theme == .auto && controller.wantsDarkPalette != controller.usingDarkPalette { controller.reloadPreferences() }
         }
+    }
+
+    func loadSupplementaryLexiconIfNeeded() {
+        guard !requestedSupplementaryLexicon else { return }
+        requestedSupplementaryLexicon = true
         requestSupplementaryLexicon { [weak self] lexicon in
             DispatchQueue.main.async {
                 guard let self else { return }
@@ -138,7 +144,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         toolbarExpanded = !crashNotice
         reloadPreferences()
         store.sessionOpen = true; markActive(force: true)
-        startClipboardWatch()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Clipboard IPC and supplementary dictionary setup must not delay the first keyboard frame.
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.view.window != nil else { return }
+            self.startClipboardWatch()
+            self.loadSupplementaryLexiconIfNeeded()
+        }
         // Build the emoji tables just after the keyboard appears, off the first-frame path.
         if preferences.emojiPredictions && !safeMode && !EmojiCatalog.shared.isWarm {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
@@ -174,6 +189,12 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         lastActiveMark = now
         store.sessionActiveAt = Date()
     }
+
+    /// Megabytes this keyboard can still use before iOS closes it for using too much memory.
+    static var memoryHeadroomMB: Int { Int(os_proc_available_memory() / 1_048_576) }
+
+    /// The screen in use, for the memory report. Never includes anything typed.
+    var diagnosticScreen: String { searchMode != nil ? "search" : (panel ?? "typing") }
 
     override func textDidChange(_ textInput: UITextInput?) {
         super.textDidChange(textInput)
@@ -237,7 +258,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         engineKey = key
         engine = SuggestionEngine(language: primary.pack, lexicons: [])
         suggestionQueue.async { [weak self] in
-            let loaded = SuggestionEngine.make(primary: primary, others: others)
+            let loaded = autoreleasepool { SuggestionEngine.make(primary: primary, others: others) }
             DispatchQueue.main.async {
                 guard let self, self.engineKey == key else { return }
                 self.engine = loaded
@@ -249,15 +270,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Free everything that can be reloaded, so iOS doesn't close the keyboard.
-        // The engine holds its own references, so the extra dictionaries must be dropped there too.
-        // Light mode keeps this session to one dictionary so they are not loaded straight back.
-        let primaryCode = preferences.language.code
-        suggestionWork?.cancel()
-        if engine.lexicons.count > 1 {
-            engine = SuggestionEngine(language: engine.language, lexicons: engine.lexicons.filter { $0.code == primaryCode })
-        }
-        safeMode = true
-        LexiconCache.shared.trim(keeping: [primaryCode])
+        store.memoryWarnings += 1
+        store.recordMemoryWarning(screen: diagnosticScreen, headroomMB: Self.memoryHeadroomMB)
+        suggestionWork?.cancel(); keyPreview?.removeFromSuperview(); keyPreview = nil
+        // Preserve active dictionaries and language features; trim only inactive cache entries.
+        LexiconCache.shared.trim(keeping: Set(engine.lexicons.map(\.code)))
         EmojiCatalog.shared.releaseKeywords()
         MediaGridView.imageCache.removeAllObjects()
     }
@@ -709,7 +726,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let emojiLanguages = preferences.emojiPredictions ? preferences.activeLanguages.map(\.code) : []
         let recentEmoji = preferences.emojiPredictions ? store.recentEmoji : []
         let tone = preferences.skinTone
-        let work = DispatchWorkItem { [weak self] in
+        let work = DispatchWorkItem { [weak self] in autoreleasepool {
             guard let self else { return }
             var native: [String] = []
             // Apple's spelling dictionary adds words for any language installed on the phone.
@@ -734,7 +751,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 }
                 self.showSuggestions(Array(choices.prefix(3)))
             }
-        }
+        } }
         suggestionWork = work
         suggestionQueue.asyncAfter(deadline: .now() + 0.04, execute: work)
     }
@@ -957,8 +974,21 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             }
         }
         let closes = store.unexpectedCloses
-        note("Health: " + (closes == 0 ? "no unexpected closes" : "iOS closed the keyboard unexpectedly \(closes) time\(closes == 1 ? "" : "s"). Please report this with your iPhone model.") + (safeMode ? " Light mode is on for this session." : ""), in: stack)
-        if closes > 0 { panelButton("Reset health counter", in: stack) { [weak self] in self?.store.unexpectedCloses = 0; self?.rebuildContent() } }
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
+        let screens = store.memoryWarningScreens.sorted { $0.value > $1.value }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
+        let lowest = store.lowestMemoryHeadroomMB.map { "\($0) MB" } ?? "none yet"
+        let memoryLine = "\nMemory left before iOS limit: \(Self.memoryHeadroomMB) MB (lowest at a warning: \(lowest))"
+        let screenLine = "\nWarnings by screen: \(screens.isEmpty ? "none yet" : screens)"
+        let summary = "WianTribe \(version) (build \(build)) · iOS \(UIDevice.current.systemVersion)\nMemory warnings reported by iOS: \(store.memoryWarnings)\nUnconfirmed session restarts: \(closes) (not a verified crash count)\nLanguages: \(preferences.activeLanguages.map(\.code).joined(separator: ", "))\nActive dictionaries: \(engine.lexicons.count)"
+        let diagnostic = summary + memoryLine + screenLine
+        note(diagnostic, in: stack)
+        panelButton("Copy diagnostic details", in: stack) { [weak self] in self?.copyToClipboard(diagnostic) }
+        if closes > 0 || store.memoryWarnings > 0 {
+            panelButton("Reset health counter", in: stack) { [weak self] in
+                self?.store.resetHealthCounters(); self?.rebuildContent()
+            }
+        }
         note("Changes here apply immediately. Basic typing works without Full Access.", in: stack)
         panelButton("Languages: \(preferences.activeLanguages.map(\.shortTitle).joined(separator: " · "))", in: stack) { [weak self] in self?.showPanel("languages") }
         for theme in KeyboardTheme.allCases {
