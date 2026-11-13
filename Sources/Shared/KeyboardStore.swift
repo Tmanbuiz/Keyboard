@@ -144,6 +144,12 @@ final class KeyboardStore {
         get { local.bool(forKey: "session.open") }
         set { local.set(newValue, forKey: "session.open") }
     }
+    /// When the keyboard was last seen in use. Tells a crash while typing apart from iOS's routine
+    /// clean-up of a keyboard left open in an app that went to the background.
+    var sessionActiveAt: Date? {
+        get { local.object(forKey: "session.activeAt") as? Date }
+        set { local.set(newValue, forKey: "session.activeAt") }
+    }
     var unexpectedCloses: Int {
         get { local.integer(forKey: "session.unexpectedCloses") }
         set { local.set(newValue, forKey: "session.unexpectedCloses") }

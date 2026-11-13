@@ -5,7 +5,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var store = KeyboardStore(canWriteGroup: false)
     var preferences = KeyboardPreferences()
     var palette = KeyboardPalette.make(.ocean)
-    var engine = SuggestionEngine.make(primary: .english)
+    // Starts empty: dictionaries are parsed in the background by loadEngine(), never before the first frame.
+    var engine = SuggestionEngine(language: KeyboardLanguage.english.pack, lexicons: [])
     var engineKey = ""
     var pack: LanguagePack { preferences.language.pack }
     let checker = UITextChecker()
@@ -65,6 +66,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     /// After an unexpected close the keyboard starts light: one dictionary and no multilingual mixing.
     var safeMode = false
     var crashNotice = false
+    var lastActiveMark: TimeInterval = 0
     var keyPreview: KeyPreview?
     /// While searching emoji, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
@@ -85,11 +87,18 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let launchStore = KeyboardStore(canWriteGroup: false)
-        if launchStore.sessionOpen {
-            launchStore.unexpectedCloses += 1
+        // Only a keyboard that was in use moments ago and never closed counts as a crash. iOS also
+        // removes keyboards left open in a backgrounded app; that is normal and is not counted.
+        if store.sessionOpen, let active = store.sessionActiveAt, abs(Date().timeIntervalSince(active)) < 90 {
+            store.unexpectedCloses += 1
             safeMode = true; crashNotice = true
         }
+        store.sessionOpen = false
+        let center = NotificationCenter.default
+        for name in [NSNotification.Name.NSExtensionHostWillResignActive, .NSExtensionHostDidEnterBackground] {
+            center.addObserver(self, selector: #selector(hostBecameInactive), name: name, object: nil)
+        }
+        center.addObserver(self, selector: #selector(hostBecameActive), name: .NSExtensionHostDidBecomeActive, object: nil)
         hasDictationKey = false // Keep Apple's system dictation button where iOS provides one.
         view.isMultipleTouchEnabled = true // overlapping taps from fast typing
         root.axis = .vertical; root.spacing = 5
@@ -127,8 +136,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         toolbarExpanded = !crashNotice
-        store.sessionOpen = true
         reloadPreferences()
+        store.sessionOpen = true; markActive(force: true)
         startClipboardWatch()
         // Build the emoji tables just after the keyboard appears, off the first-frame path.
         if preferences.emojiPredictions && !safeMode && !EmojiCatalog.shared.isWarm {
@@ -148,6 +157,22 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         suggestionWork?.cancel(); onlineTask?.cancel()
         if writingResult == nil { writingAction = nil } // a cancelled request must not reopen as a permanent "Working…"
         removeAccentPopup()
+    }
+
+    /// The app using the keyboard left the screen. iOS may now remove the keyboard without telling it.
+    @objc func hostBecameInactive() { store.sessionOpen = false }
+
+    @objc func hostBecameActive() {
+        guard isViewLoaded, view.window != nil else { return }
+        store.sessionOpen = true; markActive(force: true)
+    }
+
+    /// Notes that the keyboard is in use, at most once every few seconds so typing stays fast.
+    func markActive(force: Bool = false) {
+        let now = Date.timeIntervalSinceReferenceDate
+        guard force || now - lastActiveMark > 5 else { return }
+        lastActiveMark = now
+        store.sessionActiveAt = Date()
     }
 
     override func textDidChange(_ textInput: UITextInput?) {
@@ -224,7 +249,15 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Free everything that can be reloaded, so iOS doesn't close the keyboard.
-        LexiconCache.shared.trim(keeping: [preferences.language.code])
+        // The engine holds its own references, so the extra dictionaries must be dropped there too.
+        // Light mode keeps this session to one dictionary so they are not loaded straight back.
+        let primaryCode = preferences.language.code
+        suggestionWork?.cancel()
+        if engine.lexicons.count > 1 {
+            engine = SuggestionEngine(language: engine.language, lexicons: engine.lexicons.filter { $0.code == primaryCode })
+        }
+        safeMode = true
+        LexiconCache.shared.trim(keeping: [primaryCode])
         EmojiCatalog.shared.releaseKeywords()
         MediaGridView.imageCache.removeAllObjects()
     }
@@ -649,6 +682,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func refreshSuggestions() {
+        if store.sessionOpen { markActive() }
         if searchMode != nil { showSearchResults(); return }
         guard panel == nil else { return }
         if crashNotice && currentWord.isEmpty {
