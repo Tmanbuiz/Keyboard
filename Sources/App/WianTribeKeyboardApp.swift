@@ -10,7 +10,12 @@ struct WianTribeKeyboardApp: App {
             ContentView().environmentObject(model)
                 .tint(Color.mint)
                 .preferredColorScheme(.dark)
-                .onChange(of: scenePhase) { _, phase in if phase == .active { model.reload(); Task { await AIAccountModel.shared.reload() } } }
+                .onChange(of: scenePhase) { _, phase in
+                    if phase == .active { CloudBackup.shared.sync(); model.reload(); Task { await AIAccountModel.shared.reload() } }
+                    // Save the latest to iCloud when leaving the app. Does nothing unless backup is switched on.
+                    if phase == .background { CloudBackup.shared.sync() }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: CloudBackup.didApply)) { _ in model.reload() }
         }
     }
 }
@@ -47,8 +52,9 @@ final class AppModel: ObservableObject {
         store.capture(text); phrases = store.phrases; clipboardStatus = "Saved"
     }
     func savePhrase(_ text: String) { store.addPhrase(text); phrases = store.phrases }
-    func clearPersonalData() { store.clearPersonalData(); phrases = [] }
-    func clearLearnedWords() { store.clearLearnedWords() }
+    // With iCloud backup on, a clear is carried to the person's other devices straight away.
+    func clearPersonalData() { store.clearPersonalData(); phrases = []; CloudBackup.shared.sync() }
+    func clearLearnedWords() { store.clearLearnedWords(); CloudBackup.shared.sync() }
     /// Reading the clipboard here makes iOS show its paste prompt and adds "Paste from Other Apps"
     /// to this app's page in Settings, which also covers the keyboard.
     func testClipboard() -> String {

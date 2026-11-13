@@ -190,6 +190,8 @@ private struct ToolsView: View {
 private struct SettingsView: View {
     @EnvironmentObject private var model: AppModel
     @State private var clearData = false
+    @State private var deleteBackup = false
+    @ObservedObject private var backup = CloudBackup.shared
     var body: some View {
         Form {
             Section("Appearance") {
@@ -239,6 +241,15 @@ private struct SettingsView: View {
             } header: { Text("Privacy") } footer: {
                 Text("Word learning is off by default. It saves word counts, not sentences. Remove personal data inside the keyboard too if your build uses separate storage.")
             }
+            if model.shared {
+                Section {
+                    Toggle("Back up to iCloud", isOn: $backup.enabled)
+                    if !backup.status.isEmpty { Text(backup.status).font(.caption).foregroundStyle(.secondary) }
+                    Button("Delete iCloud backup", role: .destructive) { deleteBackup = true }
+                } header: { Text("iCloud backup") } footer: {
+                    Text("Off by default. Keeps your learned words, pinned text, recent emoji and keyboard settings in your own iCloud, so they follow you to a new iPhone. Recent clipboard items are never backed up, and WianTribe cannot see any of it. It updates when you open this app. Words the keyboard learns are included only when Allow Full Access is on.")
+                }
+            }
             Section {
                 Text(model.shared ? "App and keyboard share settings when Full Access is enabled." : "This sideloaded build keeps app and keyboard settings separate. Tap ⚙︎ inside the keyboard to change the keyboard itself.")
                     .font(.caption).foregroundStyle(.secondary)
@@ -247,6 +258,9 @@ private struct SettingsView: View {
         }.scrollContentBackground(.hidden).background(ocean).navigationTitle("Make it yours")
             .confirmationDialog("Clear clipboard history, pinned text and learned words on this device?", isPresented: $clearData) {
                 Button("Clear personal data", role: .destructive) { model.clearPersonalData() }
+            }
+            .confirmationDialog("Delete the backup from iCloud? Everything on this iPhone is kept. Turn backup off on your other devices too, or they will create it again.", isPresented: $deleteBackup, titleVisibility: .visible) {
+                Button("Delete iCloud backup", role: .destructive) { backup.deleteBackup() }
             }
     }
 }
@@ -497,6 +511,7 @@ private struct PrivacyView: View {
         List {
             Section("Your typing stays local") {
                 Text("Basic typing, spelling suggestions, swipe decoding and emoji run on your iPhone. The app has no analytics, advertising SDK or keystroke logger.")
+                Text("iCloud backup is off unless you turn it on in Settings. It keeps learned words, pinned text, recent emoji and settings in your own iCloud. Recent clipboard items are never included, and WianTribe cannot see the backup.")
                 Text("Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.")
             }
             Section("When data can leave your device") {

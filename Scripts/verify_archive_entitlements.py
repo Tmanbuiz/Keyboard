@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail before distribution if archiving loses Apple sign-in or shared-container access."""
+"""Fail before distribution if archiving loses Apple sign-in, shared-container access or iCloud backup."""
 import pathlib
 import plistlib
 import subprocess
@@ -21,5 +21,10 @@ for bundle, identifier, shared, apple in checks:
         raise SystemExit(f"App Group missing from archived {bundle.name}")
     if apple and "Default" not in entitlements.get("com.apple.developer.applesignin", []):
         raise SystemExit("Sign in with Apple missing from archived companion app")
+    if apple:
+        kvstore = entitlements.get("com.apple.developer.ubiquity-kvstore-identifier", "")
+        team, _, suffix = kvstore.partition(".")
+        if not team or suffix != "com.wiantribe.keyboard":
+            raise SystemExit(f"iCloud key-value storage missing or without a team ID in archived companion app: {kvstore!r}")
     subprocess.run(["codesign", "--verify", "--strict", str(bundle)], check=True)
-print("Archived app identifiers, signatures, App Groups and Apple sign-in verified")
+print("Archived app identifiers, signatures, App Groups, Apple sign-in and iCloud backup verified")

@@ -69,7 +69,9 @@ write_plist("Share-Info.plist", {
 })
 write_plist("Sideload.entitlements", {})
 write_plist("Shared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"]})
-write_plist("AppShared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"], "com.apple.developer.applesignin": ["Default"]})
+# The key-value store entitlement lets the companion app keep the optional backup in the person's own iCloud.
+write_plist("AppShared.entitlements", {"com.apple.security.application-groups": ["group.com.wiantribe.keyboard"], "com.apple.developer.applesignin": ["Default"],
+                                       "com.apple.developer.ubiquity-kvstore-identifier": "$(DEVELOPMENT_TEAM).com.wiantribe.keyboard"})
 write_plist("PrivacyInfo.xcprivacy", {
     "NSPrivacyTracking": False, "NSPrivacyTrackingDomains": [],
     "NSPrivacyCollectedDataTypes": [

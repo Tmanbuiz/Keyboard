@@ -10,5 +10,7 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
+	<string>$(DEVELOPMENT_TEAM).com.wiantribe.keyboard</string>
 </dict>
 </plist>

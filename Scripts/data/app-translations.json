@@ -880,5 +880,82 @@
   "de": "Für normales Tippen brauchst du keinen vollen Zugriff. Zwischenablageverlauf, Haptik, gemeinsamer Speicher und dein Online-Dienst benötigen vollen Zugriff. Das Erlauben startet keine Textübertragungen im Hintergrund.",
   "pt": "Use o teclado sem Acesso Total para digitar normalmente. Histórico da área de transferência, resposta tátil, armazenamento compartilhado e seu serviço online precisam do Acesso Total. Permitir não inicia envios de texto em segundo plano.",
   "ar": "استخدم لوحة المفاتيح دون وصول كامل للكتابة العادية. يحتاج سجل الحافظة والاستجابة اللمسية والتخزين المشترك وخدمتك عبر الإنترنت إلى الوصول الكامل. السماح به لا يبدأ رفع أي نص في الخلفية."
+ },
+ "Back up to iCloud": {
+  "es": "Copia de seguridad en iCloud",
+  "fr": "Sauvegarder sur iCloud",
+  "pt": "Fazer backup no iCloud",
+  "de": "In iCloud sichern",
+  "ar": "النسخ الاحتياطي إلى iCloud"
+ },
+ "Delete iCloud backup": {
+  "es": "Eliminar la copia de iCloud",
+  "fr": "Supprimer la sauvegarde iCloud",
+  "pt": "Apagar o backup do iCloud",
+  "de": "iCloud-Backup löschen",
+  "ar": "حذف نسخة iCloud الاحتياطية"
+ },
+ "iCloud backup": {
+  "es": "Copia de seguridad de iCloud",
+  "fr": "Sauvegarde iCloud",
+  "pt": "Backup do iCloud",
+  "de": "iCloud-Backup",
+  "ar": "نسخة iCloud الاحتياطية"
+ },
+ "Off by default. Keeps your learned words, pinned text, recent emoji and keyboard settings in your own iCloud, so they follow you to a new iPhone. Recent clipboard items are never backed up, and WianTribe cannot see any of it. It updates when you open this app. Words the keyboard learns are included only when Allow Full Access is on.": {
+  "es": "Desactivado de forma predeterminada. Guarda tus palabras aprendidas, textos fijados, emojis recientes y ajustes del teclado en tu propio iCloud, para que te acompañen a un iPhone nuevo. Los elementos recientes del portapapeles nunca se copian, y WianTribe no puede ver nada de esto. Se actualiza cuando abres esta app. Las palabras que aprende el teclado solo se incluyen si Permitir acceso total está activado.",
+  "fr": "Désactivé par défaut. Conserve vos mots appris, textes épinglés, emojis récents et réglages du clavier dans votre propre iCloud, pour les retrouver sur un nouvel iPhone. Les éléments récents du presse-papiers ne sont jamais sauvegardés, et WianTribe ne peut rien en voir. La mise à jour se fait à l’ouverture de cette app. Les mots appris par le clavier ne sont inclus que si Autoriser l’accès complet est activé.",
+  "pt": "Desativado por padrão. Guarda suas palavras aprendidas, textos fixados, emojis recentes e ajustes do teclado no seu próprio iCloud, para acompanharem você em um novo iPhone. Itens recentes da área de transferência nunca são salvos, e a WianTribe não pode ver nada disso. É atualizado quando você abre este app. As palavras aprendidas pelo teclado só são incluídas quando Permitir Acesso Total está ativado.",
+  "de": "Standardmäßig aus. Speichert deine gelernten Wörter, angehefteten Texte, zuletzt verwendeten Emojis und Tastatureinstellungen in deiner eigenen iCloud, damit sie dir auf ein neues iPhone folgen. Aktuelle Einträge der Zwischenablage werden nie gesichert, und WianTribe kann nichts davon sehen. Die Sicherung wird aktualisiert, wenn du diese App öffnest. Von der Tastatur gelernte Wörter sind nur enthalten, wenn „Vollen Zugriff erlauben“ aktiviert ist.",
+  "ar": "متوقف افتراضيًا. يحفظ كلماتك المتعلَّمة والنصوص المثبّتة والإيموجي الأخيرة وإعدادات لوحة المفاتيح في حسابك على iCloud، لتنتقل معك إلى iPhone جديد. عناصر الحافظة الأخيرة لا تُنسخ احتياطيًا أبدًا، ولا تستطيع WianTribe رؤية أي من ذلك. يتم التحديث عند فتح هذا التطبيق. الكلمات التي تتعلمها لوحة المفاتيح تُضمَّن فقط عند تفعيل «السماح بالوصول الكامل»."
+ },
+ "Delete the backup from iCloud? Everything on this iPhone is kept. Turn backup off on your other devices too, or they will create it again.": {
+  "es": "¿Eliminar la copia de iCloud? Todo lo que hay en este iPhone se conserva. Desactiva también la copia en tus otros dispositivos, o volverán a crearla.",
+  "fr": "Supprimer la sauvegarde d’iCloud ? Tout ce qui se trouve sur cet iPhone est conservé. Désactivez aussi la sauvegarde sur vos autres appareils, sinon ils la recréeront.",
+  "pt": "Apagar o backup do iCloud? Tudo neste iPhone é mantido. Desative o backup também nos seus outros dispositivos, ou eles o criarão novamente.",
+  "de": "Backup aus iCloud löschen? Alles auf diesem iPhone bleibt erhalten. Schalte das Backup auch auf deinen anderen Geräten aus, sonst erstellen sie es erneut.",
+  "ar": "هل تريد حذف النسخة الاحتياطية من iCloud؟ يبقى كل ما على هذا الـ iPhone كما هو. أوقف النسخ الاحتياطي على أجهزتك الأخرى أيضًا، وإلا فستنشئه من جديد."
+ },
+ "iCloud backup is off unless you turn it on in Settings. It keeps learned words, pinned text, recent emoji and settings in your own iCloud. Recent clipboard items are never included, and WianTribe cannot see the backup.": {
+  "es": "La copia de iCloud está desactivada a menos que la actives en Ajustes. Guarda palabras aprendidas, textos fijados, emojis recientes y ajustes en tu propio iCloud. Los elementos recientes del portapapeles nunca se incluyen, y WianTribe no puede ver la copia.",
+  "fr": "La sauvegarde iCloud est désactivée tant que vous ne l’activez pas dans Réglages. Elle conserve les mots appris, textes épinglés, emojis récents et réglages dans votre propre iCloud. Les éléments récents du presse-papiers ne sont jamais inclus, et WianTribe ne peut pas voir la sauvegarde.",
+  "pt": "O backup do iCloud fica desativado até você ativá-lo em Ajustes. Ele guarda palavras aprendidas, textos fixados, emojis recentes e ajustes no seu próprio iCloud. Itens recentes da área de transferência nunca são incluídos, e a WianTribe não pode ver o backup.",
+  "de": "Das iCloud-Backup ist aus, bis du es in den Einstellungen einschaltest. Es speichert gelernte Wörter, angeheftete Texte, zuletzt verwendete Emojis und Einstellungen in deiner eigenen iCloud. Aktuelle Einträge der Zwischenablage sind nie enthalten, und WianTribe kann das Backup nicht sehen.",
+  "ar": "النسخ الاحتياطي إلى iCloud متوقف ما لم تفعّله من الإعدادات. يحفظ الكلمات المتعلَّمة والنصوص المثبّتة والإيموجي الأخيرة والإعدادات في حسابك على iCloud. عناصر الحافظة الأخيرة لا تُضمَّن أبدًا، ولا تستطيع WianTribe رؤية النسخة الاحتياطية."
+ },
+ "Sign in to iCloud in the Settings app to use backup.": {
+  "es": "Inicia sesión en iCloud en la app Ajustes para usar la copia de seguridad.",
+  "fr": "Connectez-vous à iCloud dans l’app Réglages pour utiliser la sauvegarde.",
+  "pt": "Inicie sessão no iCloud no app Ajustes para usar o backup.",
+  "de": "Melde dich in der App „Einstellungen“ bei iCloud an, um das Backup zu nutzen.",
+  "ar": "سجّل الدخول إلى iCloud من تطبيق الإعدادات لاستخدام النسخ الاحتياطي."
+ },
+ "The iCloud backup can't be read by this version. Update WianTribe, or delete the backup to start again.": {
+  "es": "Esta versión no puede leer la copia de iCloud. Actualiza WianTribe o elimina la copia para empezar de nuevo.",
+  "fr": "Cette version ne peut pas lire la sauvegarde iCloud. Mettez WianTribe à jour, ou supprimez la sauvegarde pour recommencer.",
+  "pt": "Esta versão não consegue ler o backup do iCloud. Atualize o WianTribe ou apague o backup para recomeçar.",
+  "de": "Diese Version kann das iCloud-Backup nicht lesen. Aktualisiere WianTribe oder lösche das Backup, um neu zu beginnen.",
+  "ar": "لا يمكن لهذا الإصدار قراءة نسخة iCloud الاحتياطية. حدّث WianTribe أو احذف النسخة للبدء من جديد."
+ },
+ "Backup is too large for iCloud. Remove some pinned text and try again.": {
+  "es": "La copia es demasiado grande para iCloud. Elimina algunos textos fijados e inténtalo de nuevo.",
+  "fr": "La sauvegarde est trop volumineuse pour iCloud. Supprimez des textes épinglés et réessayez.",
+  "pt": "O backup é grande demais para o iCloud. Remova alguns textos fixados e tente novamente.",
+  "de": "Das Backup ist zu groß für iCloud. Entferne einige angeheftete Texte und versuche es erneut.",
+  "ar": "النسخة الاحتياطية أكبر من أن يستوعبها iCloud. أزل بعض النصوص المثبّتة وحاول مرة أخرى."
+ },
+ "Backed up to iCloud": {
+  "es": "Copia guardada en iCloud",
+  "fr": "Sauvegardé sur iCloud",
+  "pt": "Backup feito no iCloud",
+  "de": "In iCloud gesichert",
+  "ar": "تم النسخ الاحتياطي إلى iCloud"
+ },
+ "iCloud backup deleted. Everything on this iPhone was kept.": {
+  "es": "Copia de iCloud eliminada. Se conservó todo lo que hay en este iPhone.",
+  "fr": "Sauvegarde iCloud supprimée. Tout ce qui se trouve sur cet iPhone a été conservé.",
+  "pt": "Backup do iCloud apagado. Tudo neste iPhone foi mantido.",
+  "de": "iCloud-Backup gelöscht. Alles auf diesem iPhone wurde behalten.",
+  "ar": "تم حذف نسخة iCloud الاحتياطية. بقي كل ما على هذا الـ iPhone كما هو."
  }
 }

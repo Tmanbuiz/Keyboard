@@ -255,6 +255,9 @@ final class KeyboardStore {
             if canWriteGroup { group?.removeObject(forKey: key) }
         }
     }
+    /// When learned words were last cleared on this device (by either clear button). iCloud backup
+    /// uses it to carry the clear to the person's other devices.
+    var learningResetAt: Date { resetDate(for: "learned.v1") }
     func clearLearnedWords() { reset("learning.resetAt", keys: ["learned.v1", "pairs.v1"]); Self.invalidateLearningCache() }
     func clearPersonalData() {
         // Keep IDs too, so an old UI snapshot cannot restore a clip with a future-dated timestamp.

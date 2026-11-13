@@ -20,6 +20,8 @@ What's ready in this repository, and what only you can do.
   - **Identifiers → User ID** (hashed Apple account identifier): linked to the user, used for App Functionality, not used for tracking.
   - **Usage Data → Product Interaction** (daily AI request count): linked to the user, App Functionality, not tracking.
   - Typing, text sent to writing tools (processed in real time, not stored), name and email are **not** collected.
+- **iCloud backup (optional):** learned words, pinned text, recent emoji and settings go to the user's own iCloud (Apple's key-value storage) only if they switch it on. WianTribe cannot read it, so it is **not** "collected" data and the answers above do not change.
+  - **By hand, once:** in the Apple Developer portal → Identifiers → `com.wiantribe.keyboard`, enable **iCloud**, save, then run the TestFlight workflow. Without this the upload fails at signing.
 - **Tracking:** No.
 - `Configuration/PrivacyInfo.xcprivacy` declares the same two data types and the UserDefaults reason codes. Privacy policy: https://wiantribe.com/keyboard/privacy. Support URL: https://wiantribe.com/keyboard.
 - **Before public release:** apps with Sign in with Apple must revoke the Apple grant when an account is deleted (Guideline 5.1.1(v)); see APPLE-SIGNIN.md.
