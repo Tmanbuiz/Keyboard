@@ -63,6 +63,7 @@ public struct SuggestionEngine {
             guard prefix || distance <= (word.count > 6 ? 2 : 1) else { return }
             let score = (prefix ? 6.0 : 3.0 - Double(distance)) + log(Double(max(frequency, 1)) + 1) / 3
                 + (personal ? 1 : 0) + (likely.contains(normalized) ? 2 : 0) + (code == active ? 0.6 : 0)
+                + habitBonus(followers[normalized])
             let text = TextContext.matchingCase(candidate, to: original, language: language)
             let result = WordSuggestion(text: text, score: score, isCorrection: !prefix, language: code)
             if results[normalized] == nil || results[normalized]!.score < score { results[normalized] = result }
@@ -100,6 +101,13 @@ public struct SuggestionEngine {
               bestFrequency >= 30, bestFrequency >= (own ?? 0) * 40,
               shortlist.count == 1 || best.score - shortlist[1].score > 0.35 else { return nil }
         return best.text
+    }
+
+    /// Extra weight for a word the person has typed after these exact words before, so their own
+    /// habit ("see you t" → "tomorrow") beats a merely common word ("the").
+    func habitBonus(_ count: Int?) -> Double {
+        guard let count, count > 0 else { return 0 }
+        return 3 + log(Double(count) + 1) / 2
     }
 
     func contextKey(_ word: String) -> String { word == TextContext.sentenceStart ? word : normalize(word) }
