@@ -1,6 +1,6 @@
 # WianTribe Keyboard privacy policy
 
-*Last updated: November 13, 2026. Publisher: WianTribe Inc. Contact: atoyejet@gmail.com. Published at https://wiantribe.com/keyboard/privacy*
+*Last updated: November 16, 2026. Publisher: WianTribe Inc. Contact: atoyejet@gmail.com. Published at https://wiantribe.com/keyboard/privacy*
 
 WianTribe Keyboard is designed so that what you type stays on your iPhone. This policy explains what the keyboard and its companion app do with your information.
 
@@ -11,7 +11,7 @@ The app contains no analytics, advertising or tracking SDK. Basic typing stays o
 ## What stays on your iPhone
 
 - **Typing.** Keystrokes, suggestions, autocorrect, swipe typing and emoji search are processed on your device. The keyboard does not keep a log of what you type.
-- **Learned words (optional, off by default).** If you turn on "Learn my words", the keyboard stores individual words you type and which word tends to follow which, so it can suggest them. It never stores sentences. You can clear this at any time.
+- **Learned words (optional, off by default).** If you turn on "Learn my words", the keyboard stores counts of individual words you type, which word tends to follow the one or two words before it, and which words you start sentences with, so it can predict your next word. These are short word sequences of at most three words; it never stores sentences or messages. Older habits fade as you type. You can clear this at any time.
 - **Clipboard history (optional, off by default).** If you turn it on, the keyboard keeps up to 40 recent texts you copy while it is open, for 1, 7 or 30 days, plus anything you pin. Copies marked as passwords by password managers are skipped. You can clear it at any time.
 - **Settings, recent emoji and pinned text** are stored on your device.
 - **Handwriting** is read by Apple's on-device text recognition.

@@ -606,6 +606,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             textDocumentProxy.deleteBackward(); textDocumentProxy.insertText(". ")
             correction = nil; lastSpace = 0; updateShift(); refreshSuggestions(); return
         }
+        var written = word // what ended up in the text, so a corrected typo is not learned as a habit
         if !word.isEmpty, plainTextField, let expansion = shortcuts[word] {
             replaceCurrentWord(with: expansion)
             textDocumentProxy.insertText(" "); correction = nil
@@ -614,12 +615,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let record = CorrectionRecord(original: word, replacement: replacement, contextBefore: context)
             replaceCurrentWord(with: replacement)
             textDocumentProxy.insertText(" "); correction = record
+            written = replacement
         } else {
             correction = nil
             textDocumentProxy.insertText(" ")
             if plainTextField { store.learn(pack.lowercased(word)) }
         }
-        if plainTextField && !word.isEmpty { store.learnPair(previous: TextContext.previousWord(in: context), word: pack.lowercased(word)) }
+        if plainTextField && !word.isEmpty {
+            let pattern = TextContext.patternContext(in: context)
+            store.learnPair(previous: pattern.previous, before: pattern.before, word: pack.lowercased(written))
+        }
         glideChoices = []; lastSpace = now; updateShift(); refreshSuggestions()
     }
 
@@ -718,6 +723,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             return
         }
         let word = currentWord, context = before, previous = TextContext.previousWord(in: before)
+        let pattern = TextContext.patternContext(in: context)
+        // A predicted first word of a sentence is shown with its capital letter.
+        let capitalize = word.isEmpty && shift && !capsLock && pack.isCased
         let engine = self.engine, learned = store.learned, pairs = store.learnedPairs, supplemental = self.supplemental
         let checkerLanguage = Self.checkerLanguage(for: pack)
         let thisGeneration = generation
@@ -735,7 +743,10 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
                 native = self.checker.completions(forPartialWordRange: range, in: word, language: checkerLanguage) ?? []
                 if native.isEmpty { native = self.checker.guesses(forWordRange: range, in: word, language: checkerLanguage) ?? [] }
             }
-            let results = engine.suggestions(for: word, previous: previous, learned: learned, learnedPairs: pairs, supplemental: supplemental + Array(native.prefix(12)))
+            var results = engine.suggestions(for: word, previous: pattern.previous, before: pattern.before, learned: learned, learnedPairs: pairs, supplemental: supplemental + Array(native.prefix(12)))
+            if capitalize {
+                results = results.map { WordSuggestion(text: TextContext.matchingCase($0.text, to: "A", language: engine.language), score: $0.score, isCorrection: $0.isCorrection, language: $0.language) }
+            }
             let emoji = emojiLanguages.isEmpty || emojiWord.isEmpty ? [] :
                 EmojiCatalog.shared.predictions(for: emojiWord, languages: emojiLanguages, recent: recentEmoji, limit: word.isEmpty ? 3 : 1).map { $0.toned(tone) }
             DispatchQueue.main.async {
@@ -785,7 +796,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         correction = nil; glideChoices = []
         if plainTextField {
             store.learn(pack.lowercased(word))
-            store.learnPair(previous: TextContext.previousWord(in: expectedContext), word: pack.lowercased(word))
+            // A suggestion the person chose is a stronger sign of their wording than a word typed out.
+            let pattern = TextContext.patternContext(in: expectedContext)
+            store.learnPair(previous: pattern.previous, before: pattern.before, word: pack.lowercased(word), weight: 2)
         }
         updateShift(); refreshSuggestions()
     }

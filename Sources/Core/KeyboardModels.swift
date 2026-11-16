@@ -203,6 +203,55 @@ public enum TextContext {
         return candidate
     }
 
+    /// Stands in for "the start of a sentence" when learning which words a person begins with.
+    public static let sentenceStart = "."
+    /// Followers of one context are halved once a count passes this, so recent habits outweigh old ones.
+    public static let recencyCeiling = 32
+    public static let maxFollowers = 12
+
+    /// The one or two words before the word being typed, for learning and predicting word patterns.
+    /// `previous` is `sentenceStart` at the beginning of a sentence, and empty after other punctuation.
+    public static func patternContext(in text: String) -> (previous: String, before: String) {
+        let current = currentWord(in: text)
+        let head = String(text.dropLast(current.count))
+        let line = head.trimmingCharacters(in: .whitespaces)
+        if line.isEmpty || line.hasSuffix("\n") { return (sentenceStart, "") }
+        if let last = line.last, [".", "!", "?"].contains(String(last)) { return (sentenceStart, "") }
+        let previous = currentWord(in: line)
+        guard !previous.isEmpty else { return ("", "") }
+        let earlier = String(line.dropLast(previous.count)).trimmingCharacters(in: .whitespaces)
+        return (previous.lowercased(), currentWord(in: earlier).lowercased())
+    }
+
+    /// Words that may serve as context for a prediction; unlike learned words this includes "a" and "i".
+    public static func canBeContext(_ word: String) -> Bool {
+        (1...24).contains(word.count) && word.allSatisfy { $0.isLetter } && word == word.lowercased()
+    }
+
+    /// Counts one more use of `word` after a context. A suggestion the person tapped counts double.
+    public static func reinforced(_ followers: [String: Int], word: String, weight: Int = 1) -> [String: Int] {
+        var next: [String: Int] = [:]
+        for (key, value) in followers { next[key] = min(value, recencyCeiling) }
+        let count = (next[word] ?? 0) + max(weight, 1)
+        next[word] = count
+        if count > recencyCeiling {
+            var halved: [String: Int] = [:]
+            for (key, value) in next where value / 2 > 0 { halved[key] = value / 2 }
+            next = halved
+        }
+        while next.count > maxFollowers {
+            var least: String?
+            for (key, value) in next where key != word {
+                if let current = least, let currentValue = next[current] {
+                    if value < currentValue || (value == currentValue && key > current) { least = key }
+                } else { least = key }
+            }
+            guard let least else { break }
+            next.removeValue(forKey: least)
+        }
+        return next
+    }
+
     public static func canLearn(_ word: String) -> Bool {
         let letters = word.filter { $0.isLetter }
         return (2...24).contains(word.count) && letters.count == word.count

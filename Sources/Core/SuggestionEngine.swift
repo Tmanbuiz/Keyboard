@@ -37,15 +37,17 @@ public struct SuggestionEngine {
 
     func normalize(_ word: String) -> String { language.lowercased(word).precomposedStringWithCanonicalMapping }
 
-    public func suggestions(for original: String, previous: String = "", learned: [String: Int] = [:],
+    public func suggestions(for original: String, previous: String = "", before: String = "", learned: [String: Int] = [:],
                             learnedPairs: [String: [String: Int]] = [:], supplemental: [String] = [], limit: Int = 3) -> [WordSuggestion] {
         let word = normalize(original)
         if word.isEmpty {
-            return Array(nextWords(after: previous, learnedPairs: learnedPairs).prefix(limit))
+            return Array(nextWords(after: previous, before: before, learnedPairs: learnedPairs).prefix(limit))
                 .map { WordSuggestion(text: $0, score: 1, isCorrection: false, language: language.code) }
         }
         guard word.count <= 32 else { return [] }
-        let likely = Set(nextWords(after: previous, learnedPairs: learnedPairs))
+        // Everything the person has typed after these words before, so "see you t" offers "tomorrow" first.
+        let followers = personalFollowers(after: previous, before: before, learnedPairs: learnedPairs)
+        let likely = Set(nextWords(after: previous, before: before, learnedPairs: learnedPairs)).union(followers.keys)
         let active = activeLanguage(previous: previous)
         var results: [String: WordSuggestion] = [:]
         let first = word.first!
@@ -69,6 +71,7 @@ public struct SuggestionEngine {
             for i in lexicon.indexes(startingWith: starts) { consider(lexicon.words[i], frequency: lexicon.frequencies[i], code: lexicon.code) }
         }
         for (candidate, count) in learned { consider(candidate, frequency: min(count * 20, 1000), code: language.code, personal: true) }
+        for (candidate, count) in followers { consider(candidate, frequency: min(count * 40, 2000), code: language.code, personal: true) }
         for candidate in supplemental where candidate.count <= 32 {
             consider(candidate, frequency: frequency(of: candidate) ?? 10, code: language.code)
         }
@@ -99,15 +102,38 @@ public struct SuggestionEngine {
         return best.text
     }
 
-    /// Words likely to follow `word`: the person's own pairs first, then built-in pairs, then common words.
-    public func nextWords(after word: String, learnedPairs: [String: [String: Int]] = [:]) -> [String] {
-        let key = normalize(word)
+    func contextKey(_ word: String) -> String { word == TextContext.sentenceStart ? word : normalize(word) }
+
+    static func ranked(_ followers: [String: Int]) -> [String] {
+        let ordered: [(key: String, value: Int)] = followers.sorted { (lhs: (key: String, value: Int), rhs: (key: String, value: Int)) -> Bool in
+            if lhs.value != rhs.value { return lhs.value > rhs.value }
+            return lhs.key < rhs.key
+        }
+        return ordered.map { $0.key }
+    }
+
+    /// The person's own followers of the last two words and of the last word, with their counts.
+    /// A match on both words counts double, because it is the more specific habit.
+    public func personalFollowers(after word: String, before: String = "", learnedPairs: [String: [String: Int]]) -> [String: Int] {
+        let key = contextKey(word)
+        var result: [String: Int] = learnedPairs[key] ?? [:]
+        if !before.isEmpty, !key.isEmpty, let specific = learnedPairs[normalize(before) + " " + key] {
+            for (follower, count) in specific { result[follower] = max(result[follower] ?? 0, count * 2) }
+        }
+        return result
+    }
+
+    /// Words likely to follow `word`: what the person typed after the last two words, then after the last
+    /// word (or at the start of a sentence), then built-in pairs, then common words.
+    public func nextWords(after word: String, before: String = "", learnedPairs: [String: [String: Int]] = [:]) -> [String] {
+        let key = contextKey(word)
         var result: [String] = []
         func add(_ items: [String]) { for item in items where !result.contains(item) { result.append(item) } }
-        if let personal = learnedPairs[key] { add(personal.sorted { $0.value > $1.value }.map(\.key)) }
+        if !before.isEmpty, !key.isEmpty, let specific = learnedPairs[normalize(before) + " " + key] { add(Self.ranked(specific)) }
+        if let personal = learnedPairs[key] { add(Self.ranked(personal)) }
         add(language.nextWords[key] ?? [])
         if result.count < 3 {
-            if key.isEmpty, let primary { add(primary.top(3, minimumLength: language.code == "en" ? 1 : 2)) }
+            if key.isEmpty || key == TextContext.sentenceStart, let primary { add(primary.top(3, minimumLength: language.code == "en" ? 1 : 2)) }
             else if let primary { add(primary.top(3, minimumLength: 2)) }
         }
         return Array(result.prefix(3))

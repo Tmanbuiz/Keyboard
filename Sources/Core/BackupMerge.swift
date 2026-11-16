@@ -29,8 +29,8 @@ public struct BackupMergeResult: Equatable {
 /// shows what changed here and what changed elsewhere. Kept free of iCloud so it can be unit tested.
 public enum BackupMerge {
     public static let maxLearned = 1000
-    public static let maxPairs = 1500
-    public static let maxFollowers = 12
+    public static let maxPairs = 2500
+    public static let maxFollowers = TextContext.maxFollowers
     public static let maxEmoji = 40
 
     /// Consent switches and screen-size choices belong to each device and are never copied across.

@@ -94,3 +94,50 @@ final class BackupMergeTests: XCTestCase {
         XCTAssertEqual(decoded, payload)
     }
 }
+
+final class WordPatternTests: XCTestCase {
+    func testContextFindsLastTwoWordsAndSentenceStarts() {
+        XCTAssertTrue(TextContext.patternContext(in: "") == (TextContext.sentenceStart, ""))
+        XCTAssertTrue(TextContext.patternContext(in: "All done. ") == (TextContext.sentenceStart, ""))
+        XCTAssertTrue(TextContext.patternContext(in: "Hi\nto") == (TextContext.sentenceStart, ""))
+        XCTAssertTrue(TextContext.patternContext(in: "See you ") == ("you", "see"))
+        XCTAssertTrue(TextContext.patternContext(in: "See you tom") == ("you", "see"))
+        XCTAssertTrue(TextContext.patternContext(in: "Well, you ") == ("you", ""))
+        XCTAssertTrue(TextContext.patternContext(in: "Well, ") == ("", ""))
+    }
+
+    func testTwoWordHabitBeatsOneWordHabit() {
+        let engine = SuggestionEngine.make(primary: .english)
+        let pairs = ["you": ["are": 9], "see you": ["tomorrow": 2], "thank you": ["so": 3]]
+        XCTAssertEqual(engine.nextWords(after: "you", before: "see", learnedPairs: pairs).first, "tomorrow")
+        XCTAssertEqual(engine.nextWords(after: "you", before: "thank", learnedPairs: pairs).first, "so")
+        XCTAssertEqual(engine.nextWords(after: "you", learnedPairs: pairs).first, "are")
+        // While typing, a word the person uses after these two words comes first.
+        let typing = engine.suggestions(for: "t", previous: "you", before: "see", learnedPairs: pairs)
+        XCTAssertEqual(typing.first?.text, "tomorrow")
+    }
+
+    func testSentenceStartersAreLearned() {
+        let engine = SuggestionEngine.make(primary: .english)
+        let next = engine.nextWords(after: TextContext.sentenceStart, learnedPairs: [TextContext.sentenceStart: ["good": 3, "please": 1]])
+        XCTAssertEqual(Array(next.prefix(2)), ["good", "please"])
+    }
+
+    func testRecentHabitsOutweighOldOnes() {
+        var followers = ["old": 500, "rare": 1]
+        followers = TextContext.reinforced(followers, word: "new")
+        XCTAssertEqual(followers["old"], TextContext.recencyCeiling)
+        for _ in 0..<40 { followers = TextContext.reinforced(followers, word: "new", weight: 2) }
+        XCTAssertGreaterThan(followers["new"] ?? 0, followers["old"] ?? 0)
+        XCTAssertLessThanOrEqual(followers.values.max() ?? 0, TextContext.recencyCeiling)
+    }
+
+    func testFollowerListStaysSmallAndKeepsTheNewWord() {
+        var followers: [String: Int] = [:]
+        for index in 0..<TextContext.maxFollowers { followers["w\(index)"] = index + 2 }
+        followers = TextContext.reinforced(followers, word: "fresh")
+        XCTAssertEqual(followers.count, TextContext.maxFollowers)
+        XCTAssertNotNil(followers["fresh"])
+        XCTAssertNil(followers["w0"])
+    }
+}

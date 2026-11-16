@@ -211,14 +211,30 @@ final class KeyboardStore {
         }
         set { Self.pairsCache = newValue; save(newValue, key: "pairs.v1") }
     }
-    func learnPair(previous: String, word: String) {
-        guard preferences.learnWords, !preferences.privateMode, TextContext.canLearn(previous), TextContext.canLearn(word) else { return }
+    /// Learns that `word` followed `previous`, and that it followed the two words `before previous`.
+    /// `previous` may be `TextContext.sentenceStart`. Counts only; never the sentence itself.
+    func learnPair(previous: String, before: String = "", word: String, weight: Int = 1) {
+        guard preferences.learnWords, !preferences.privateMode, TextContext.canLearn(word) else { return }
+        var keys: [String] = []
+        if previous == TextContext.sentenceStart { keys = [previous] }
+        else if TextContext.canBeContext(previous) {
+            keys = [previous]
+            if TextContext.canBeContext(before) { keys.append(before + " " + previous) }
+        }
+        guard !keys.isEmpty else { return }
         var pairs = learnedPairs
-        var next = pairs[previous] ?? [:]
-        next[word] = min((next[word] ?? 0) + 1, 500)
-        if next.count > 12, let least = next.min(by: { $0.value < $1.value })?.key { next.removeValue(forKey: least) }
-        pairs[previous] = next
-        if pairs.count > 1500, let key = pairs.keys.first(where: { $0 != previous }) { pairs.removeValue(forKey: key) }
+        for key in keys { pairs[key] = TextContext.reinforced(pairs[key] ?? [:], word: word, weight: weight) }
+        // Over the limit, forget the least used context rather than a random one.
+        while pairs.count > BackupMerge.maxPairs {
+            var least: String?, leastTotal = Int.max
+            for (key, followers) in pairs where !keys.contains(key) {
+                var total = 0
+                for count in followers.values { total += count }
+                if total < leastTotal { least = key; leastTotal = total }
+            }
+            guard let least else { break }
+            pairs.removeValue(forKey: least)
+        }
         learnedPairs = pairs
     }
     var recentEmoji: [String] {

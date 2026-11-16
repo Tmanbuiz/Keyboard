@@ -335,12 +335,12 @@
   "de": "Datenschutz",
   "ar": "الخصوصية"
  },
- "Word learning is off by default. It saves word counts, not sentences. Remove personal data inside the keyboard too if your build uses separate storage.": {
-  "es": "El aprendizaje de palabras está desactivado por defecto. Guarda recuentos de palabras, no frases. Si tu versión usa almacenamiento separado, borra también los datos personales dentro del teclado.",
-  "fr": "L'apprentissage des mots est désactivé par défaut. Il enregistre des fréquences de mots, pas des phrases. Si votre version utilise un stockage séparé, effacez aussi les données personnelles dans le clavier.",
-  "pt": "O aprendizado de palavras vem desativado. Ele salva contagens de palavras, não frases. Se sua versão usa armazenamento separado, apague também os dados pessoais dentro do teclado.",
-  "de": "Das Lernen von Wörtern ist standardmäßig aus. Es speichert Worthäufigkeiten, keine Sätze. Wenn deine Version getrennten Speicher nutzt, lösche persönliche Daten auch in der Tastatur.",
-  "ar": "تعلُّم الكلمات متوقف افتراضيًا. يحفظ عدد مرات استخدام الكلمات وليس الجمل. إذا كانت نسختك تستخدم تخزينًا منفصلًا، فامسح البيانات الشخصية داخل لوحة المفاتيح أيضًا."
+ "Word learning is off by default. It saves counts of words and of which word follows the one or two before it, never sentences. Remove personal data inside the keyboard too if your build uses separate storage.": {
+  "es": "El aprendizaje de palabras está desactivado por defecto. Guarda recuentos de palabras y de qué palabra sigue a la anterior o a las dos anteriores, nunca frases. Si tu versión usa almacenamiento separado, borra también los datos personales dentro del teclado.",
+  "fr": "L'apprentissage des mots est désactivé par défaut. Il enregistre des fréquences de mots et le mot qui suit le ou les deux précédents, jamais des phrases. Si votre version utilise un stockage séparé, effacez aussi les données personnelles dans le clavier.",
+  "pt": "O aprendizado de palavras vem desativado. Ele salva contagens de palavras e de qual palavra vem depois da anterior ou das duas anteriores, nunca frases. Se sua versão usa armazenamento separado, apague também os dados pessoais dentro do teclado.",
+  "de": "Das Lernen von Wörtern ist standardmäßig aus. Es speichert Worthäufigkeiten und welches Wort auf das vorherige oder die zwei vorherigen folgt, niemals Sätze. Wenn deine Version getrennten Speicher nutzt, lösche persönliche Daten auch in der Tastatur.",
+  "ar": "تعلُّم الكلمات متوقف افتراضيًا. يحفظ عدد مرات استخدام الكلمات وأي كلمة تأتي بعد الكلمة أو الكلمتين السابقتين، ولا يحفظ الجمل أبدًا. إذا كانت نسختك تستخدم تخزينًا منفصلًا، فامسح البيانات الشخصية داخل لوحة المفاتيح أيضًا."
  },
  "Make it yours": {
   "es": "Hazlo tuyo",
@@ -587,12 +587,12 @@
   "de": "Grundlegendes Tippen, Rechtschreibvorschläge, Wischerkennung und Emojis laufen auf deinem iPhone. Die App hat keine Analysen, kein Werbe-SDK und keinen Tastenlogger.",
   "ar": "تعمل الكتابة الأساسية واقتراحات الإملاء والكتابة بالسحب والرموز التعبيرية على iPhone. لا يحتوي التطبيق على أدوات تحليل أو حزم إعلانات أو مسجل لضغطات المفاتيح."
  },
- "Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.": {
-  "es": "El aprendizaje opcional solo guarda recuentos de palabras sueltas. El historial del portapapeles está desactivado hasta que lo actives; guarda el texto copiado mientras el teclado está abierto, omite las copias de gestores de contraseñas y se queda en este iPhone. El texto fijado se conserva hasta que lo borres. Todo puede borrarse en Ajustes.",
-  "fr": "L'apprentissage facultatif n'enregistre que des fréquences de mots isolés. L'historique du presse-papiers est désactivé jusqu'à ce que vous l'activiez ; il garde le texte copié pendant que le clavier est ouvert, ignore les gestionnaires de mots de passe et reste sur cet iPhone. Le texte épinglé est conservé jusqu'à sa suppression. Tout peut être effacé dans les réglages.",
-  "pt": "O aprendizado opcional guarda apenas contagens de palavras soltas. O histórico da área de transferência fica desativado até você ativá-lo; ele guarda o texto copiado enquanto o teclado está aberto, ignora gerenciadores de senhas e fica neste iPhone. O texto fixado é mantido até você apagá-lo. Tudo pode ser apagado nos ajustes.",
-  "de": "Das optionale Lernen speichert nur Häufigkeiten einzelner Wörter. Der Zwischenablageverlauf ist aus, bis du ihn einschaltest; er merkt sich Text, der bei geöffneter Tastatur kopiert wird, überspringt Passwortmanager und bleibt auf diesem iPhone. Angehefteter Text bleibt, bis du ihn löschst. Alles lässt sich in den Einstellungen löschen.",
-  "ar": "يحفظ التعلُّم الاختياري عدد مرات استخدام الكلمات المفردة فقط. سجل الحافظة متوقف حتى تشغّله، ويحتفظ بالنص المنسوخ أثناء فتح لوحة المفاتيح، ويتخطى مديري كلمات المرور، ويبقى على هذا الـ iPhone. يبقى النص المثبت حتى تحذفه. يمكن حذف كل ذلك من الإعدادات."
+ "Optional learning stores counts of words and of which word follows the one or two before it, never sentences. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.": {
+  "es": "El aprendizaje opcional guarda recuentos de palabras y de qué palabra sigue a la anterior o a las dos anteriores, nunca frases. El historial del portapapeles está desactivado hasta que lo actives; guarda el texto copiado mientras el teclado está abierto, omite las copias de gestores de contraseñas y se queda en este iPhone. El texto fijado se conserva hasta que lo borres. Todo puede borrarse en Ajustes.",
+  "fr": "L'apprentissage facultatif enregistre des fréquences de mots et le mot qui suit le ou les deux précédents, jamais des phrases. L'historique du presse-papiers est désactivé jusqu'à ce que vous l'activiez ; il garde le texte copié pendant que le clavier est ouvert, ignore les gestionnaires de mots de passe et reste sur cet iPhone. Le texte épinglé est conservé jusqu'à sa suppression. Tout peut être effacé dans les réglages.",
+  "pt": "O aprendizado opcional guarda contagens de palavras e de qual palavra vem depois da anterior ou das duas anteriores, nunca frases. O histórico da área de transferência fica desativado até você ativá-lo; ele guarda o texto copiado enquanto o teclado está aberto, ignora gerenciadores de senhas e fica neste iPhone. O texto fixado é mantido até você apagá-lo. Tudo pode ser apagado nos ajustes.",
+  "de": "Das optionale Lernen speichert Worthäufigkeiten und welches Wort auf das vorherige oder die zwei vorherigen folgt, niemals Sätze. Der Zwischenablageverlauf ist aus, bis du ihn einschaltest; er merkt sich Text, der bei geöffneter Tastatur kopiert wird, überspringt Passwortmanager und bleibt auf diesem iPhone. Angehefteter Text bleibt, bis du ihn löschst. Alles lässt sich in den Einstellungen löschen.",
+  "ar": "يحفظ التعلُّم الاختياري عدد مرات استخدام الكلمات وأي كلمة تأتي بعد الكلمة أو الكلمتين السابقتين، ولا يحفظ الجمل أبدًا. سجل الحافظة متوقف حتى تشغّله، ويحتفظ بالنص المنسوخ أثناء فتح لوحة المفاتيح، ويتخطى مديري كلمات المرور، ويبقى على هذا الـ iPhone. يبقى النص المثبت حتى تحذفه. يمكن حذف كل ذلك من الإعدادات."
  },
  "When data can leave your device": {
   "es": "Cuándo pueden salir datos de tu dispositivo",

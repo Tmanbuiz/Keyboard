@@ -239,7 +239,7 @@ private struct SettingsView: View {
                 NavigationLink("Privacy & iOS limits") { PrivacyView() }
                 Button("Clear clipboard, pinned text and learned words", role: .destructive) { clearData = true }
             } header: { Text("Privacy") } footer: {
-                Text("Word learning is off by default. It saves word counts, not sentences. Remove personal data inside the keyboard too if your build uses separate storage.")
+                Text("Word learning is off by default. It saves counts of words and of which word follows the one or two before it, never sentences. Remove personal data inside the keyboard too if your build uses separate storage.")
             }
             if model.shared {
                 Section {
@@ -512,7 +512,7 @@ private struct PrivacyView: View {
             Section("Your typing stays local") {
                 Text("Basic typing, spelling suggestions, swipe decoding and emoji run on your iPhone. The app has no analytics, advertising SDK or keystroke logger.")
                 Text("iCloud backup is off unless you turn it on in Settings. It keeps learned words, pinned text, recent emoji and settings in your own iCloud. Recent clipboard items are never included, and WianTribe cannot see the backup.")
-                Text("Optional learning stores individual word counts only. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.")
+                Text("Optional learning stores counts of words and of which word follows the one or two before it, never sentences. Clipboard history is off until you turn it on; it keeps text copied while the keyboard is open, skips password-manager copies and stays on this iPhone. Pinned text is kept until you delete it. All of it can be deleted in settings.")
             }
             Section("When data can leave your device") {
                 Text("Translation and rewriting run on this iPhone when Apple's on-device models support the language. Otherwise, writing tools send only the text you choose to WianTribe's online service. Sign in with Apple connects the app and keyboard securely.")
