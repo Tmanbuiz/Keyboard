@@ -61,9 +61,12 @@ public struct SuggestionEngine {
             let transposed = Self.isTransposition(word, normalized)
             let distance = prefix ? 0 : (transposed ? 1 : Self.editDistance(word, normalized, limit: 2))
             guard prefix || distance <= (word.count > 6 ? 2 : 1) else { return }
-            let score = (prefix ? 6.0 : 3.0 - Double(distance)) + log(Double(max(frequency, 1)) + 1) / 3
-                + (personal ? 1 : 0) + (likely.contains(normalized) ? 2 : 0) + (code == active ? 0.6 : 0)
-                + habitBonus(followers[normalized])
+            var score: Double = prefix ? 6.0 : 3.0 - Double(distance)
+            score += log(Double(max(frequency, 1)) + 1) / 3
+            if personal { score += 1 }
+            if likely.contains(normalized) { score += 2 }
+            if code == active { score += 0.6 }
+            score += habitBonus(followers[normalized])
             let text = TextContext.matchingCase(candidate, to: original, language: language)
             let result = WordSuggestion(text: text, score: score, isCorrection: !prefix, language: code)
             if results[normalized] == nil || results[normalized]!.score < score { results[normalized] = result }
