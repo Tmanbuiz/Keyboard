@@ -44,7 +44,7 @@ Relevant guidelines: 4.4.1 (keyboard extensions), 5.1.1 (privacy). The keyboard 
 **Subtitle (30 max):** Type in 28 languages, privately
 
 **Promotional text (170 max):**
-Mix languages in one message, search every emoji, keep a clipboard of what you copy, and translate on your iPhone. Basic typing stays on your iPhone; online AI sends only the text you submit.
+Mix languages in one message, search every emoji, keep a clipboard and translate on your iPhone. Typing stays on your iPhone; online AI sends only what you submit.
 
 **Description:**
 WianTribe Keyboard brings the best of Android keyboards to iPhone, built around privacy.
