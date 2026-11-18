@@ -142,7 +142,7 @@ def configurations(label, settings):
 
 project_configs = configurations("project", project_settings)
 common_target = {"CODE_SIGN_STYLE": "Automatic", "CODE_SIGN_ENTITLEMENTS": "Configuration/Shared.entitlements" if options.shared_container else "Configuration/Sideload.entitlements",
-                 "CURRENT_PROJECT_VERSION": "1", "MARKETING_VERSION": "0.2.0", "TARGETED_DEVICE_FAMILY": "1,2",
+                 "CURRENT_PROJECT_VERSION": "1", "MARKETING_VERSION": "0.3.0", "TARGETED_DEVICE_FAMILY": "1,2",
                  "SUPPORTED_PLATFORMS": "iphoneos iphonesimulator", "SUPPORTS_MACCATALYST": "NO", "GENERATE_INFOPLIST_FILE": "NO",
                  "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/Frameworks"], "PRODUCT_NAME": "$(TARGET_NAME)"}
 app_configs = configurations("app", {**common_target, "CODE_SIGN_ENTITLEMENTS": "Configuration/AppShared.entitlements" if options.shared_container else "Configuration/Sideload.entitlements", "PRODUCT_BUNDLE_IDENTIFIER": "com.wiantribe.keyboard", "INFOPLIST_FILE": "Configuration/App-Info.plist",

@@ -220,12 +220,46 @@ public enum TextContext {
         let previous = currentWord(in: line)
         guard !previous.isEmpty else { return ("", "") }
         let earlier = String(line.dropLast(previous.count)).trimmingCharacters(in: .whitespaces)
-        return (previous.lowercased(), currentWord(in: earlier).lowercased())
+        return (learningForm(previous.lowercased()), learningForm(currentWord(in: earlier).lowercased()))
+    }
+
+    /// The form a word is learned and looked up in: curly apostrophes made straight, and none at either
+    /// end, so "don’t" and "don't" are one word and a word in 'quotes' is learned without them.
+    public static func learningForm(_ word: String) -> String {
+        var result = straightApostrophes(word)
+        while result.hasPrefix("'") { result.removeFirst() }
+        while result.hasSuffix("'") { result.removeLast() }
+        return result.precomposedStringWithCanonicalMapping
+    }
+
+    public static func straightApostrophes(_ word: String) -> String {
+        word.contains("’") ? word.replacingOccurrences(of: "’", with: "'") : word
+    }
+
+    /// Letters, with single apostrophes allowed between them: "don't", "c'est", "j'ai", "п'ять".
+    static func isWordShape(_ word: String) -> Bool {
+        guard let first = word.first, let last = word.last, first.isLetter, last.isLetter else { return false }
+        var apostrophes = 0, afterApostrophe = false
+        for character in word {
+            if character == "'" || character == "’" {
+                if afterApostrophe { return false }
+                afterApostrophe = true; apostrophes += 1
+            } else if character.isLetter {
+                afterApostrophe = false
+            } else { return false }
+        }
+        return apostrophes <= 2
     }
 
     /// Words that may serve as context for a prediction; unlike learned words this includes "a" and "i".
     public static func canBeContext(_ word: String) -> Bool {
-        (1...24).contains(word.count) && word.allSatisfy { $0.isLetter } && word == word.lowercased()
+        (1...24).contains(word.count) && isWordShape(word) && word == word.lowercased()
+    }
+
+    /// Words a language always writes with a capital letter wherever they fall, such as English "I" and "I'm".
+    public static func properCase(_ word: String, language code: String) -> String {
+        guard code == "en", word == "i" || word.hasPrefix("i'") || word.hasPrefix("i’") else { return word }
+        return "I" + word.dropFirst()
     }
 
     /// Counts one more use of `word` after a context. A suggestion the person tapped counts double.
@@ -252,10 +286,9 @@ public enum TextContext {
         return next
     }
 
+    /// Only words made of letters (and apostrophes inside them) are learned, never numbers, links or addresses.
     public static func canLearn(_ word: String) -> Bool {
-        let letters = word.filter { $0.isLetter }
-        return (2...24).contains(word.count) && letters.count == word.count
-            && word == word.lowercased() && !word.contains("@")
+        (2...24).contains(word.count) && isWordShape(word) && word == word.lowercased()
     }
 }
 

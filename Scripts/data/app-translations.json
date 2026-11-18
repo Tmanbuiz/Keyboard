@@ -957,5 +957,47 @@
   "pt": "Backup do iCloud apagado. Tudo neste iPhone foi mantido.",
   "de": "iCloud-Backup gelöscht. Alles auf diesem iPhone wurde behalten.",
   "ar": "تم حذف نسخة iCloud الاحتياطية. بقي كل ما على هذا الـ iPhone كما هو."
+ },
+ "Delete without Apple's confirmation": {
+  "es": "Eliminar sin la confirmación de Apple",
+  "fr": "Supprimer sans la confirmation d’Apple",
+  "de": "Ohne Bestätigung durch Apple löschen",
+  "pt": "Excluir sem a confirmação da Apple",
+  "ar": "الحذف دون تأكيد Apple"
+ },
+ "Deleting asks Apple to confirm it's you, then removes your AI account and WianTribe from your Sign in with Apple list.": {
+  "es": "Al eliminarla, Apple confirma que eres tú; después se borra tu cuenta de IA y WianTribe sale de tu lista de Iniciar sesión con Apple.",
+  "fr": "La suppression demande à Apple de confirmer votre identité, puis supprime votre compte IA et retire WianTribe de votre liste Se connecter avec Apple.",
+  "de": "Beim Löschen bestätigt Apple, dass du es bist. Danach werden dein KI-Konto gelöscht und WianTribe aus deiner Liste „Mit Apple anmelden“ entfernt.",
+  "pt": "Ao excluir, a Apple confirma que é você; depois sua conta de IA é excluída e o WianTribe sai da sua lista de Entrar com a Apple.",
+  "ar": "عند الحذف تتأكد Apple من هويتك، ثم يُحذف حساب الذكاء الاصطناعي وتُزال WianTribe من قائمة «تسجيل الدخول باستخدام Apple»."
+ },
+ "Deletion cancelled. Your AI account was not deleted.": {
+  "es": "Eliminación cancelada. Tu cuenta de IA no se eliminó.",
+  "fr": "Suppression annulée. Votre compte IA n’a pas été supprimé.",
+  "de": "Löschen abgebrochen. Dein KI-Konto wurde nicht gelöscht.",
+  "pt": "Exclusão cancelada. Sua conta de IA não foi excluída.",
+  "ar": "تم إلغاء الحذف. لم يُحذف حساب الذكاء الاصطناعي."
+ },
+ "Apple couldn't confirm it's you, so nothing was deleted. Try again, or delete without Apple's confirmation.": {
+  "es": "Apple no pudo confirmar que eres tú, así que no se eliminó nada. Inténtalo de nuevo o elimina sin la confirmación de Apple.",
+  "fr": "Apple n’a pas pu confirmer votre identité, rien n’a donc été supprimé. Réessayez, ou supprimez sans la confirmation d’Apple.",
+  "de": "Apple konnte nicht bestätigen, dass du es bist, daher wurde nichts gelöscht. Versuche es erneut oder lösche ohne Bestätigung durch Apple.",
+  "pt": "A Apple não conseguiu confirmar que é você, então nada foi excluído. Tente de novo ou exclua sem a confirmação da Apple.",
+  "ar": "تعذّر على Apple التأكد من هويتك، لذا لم يُحذف شيء. حاول مرة أخرى، أو احذف دون تأكيد Apple."
+ },
+ "Your WianTribe AI account was deleted, and WianTribe was removed from Sign in with Apple.": {
+  "es": "Se eliminó tu cuenta de IA de WianTribe y WianTribe se quitó de Iniciar sesión con Apple.",
+  "fr": "Votre compte IA WianTribe a été supprimé et WianTribe a été retiré de Se connecter avec Apple.",
+  "de": "Dein WianTribe-KI-Konto wurde gelöscht und WianTribe aus „Mit Apple anmelden“ entfernt.",
+  "pt": "Sua conta de IA do WianTribe foi excluída e o WianTribe foi removido de Entrar com a Apple.",
+  "ar": "حُذف حساب الذكاء الاصطناعي في WianTribe، وأُزيلت WianTribe من «تسجيل الدخول باستخدام Apple»."
+ },
+ "Your WianTribe AI account was deleted. WianTribe is still in your Sign in with Apple list. Use Manage Sign in with Apple below to remove it.": {
+  "es": "Se eliminó tu cuenta de IA de WianTribe. WianTribe sigue en tu lista de Iniciar sesión con Apple. Usa Gestionar Iniciar sesión con Apple, más abajo, para quitarlo.",
+  "fr": "Votre compte IA WianTribe a été supprimé. WianTribe figure encore dans votre liste Se connecter avec Apple. Utilisez Gérer Se connecter avec Apple ci-dessous pour le retirer.",
+  "de": "Dein WianTribe-KI-Konto wurde gelöscht. WianTribe steht noch in deiner Liste „Mit Apple anmelden“. Entferne es unten über die Verwaltung von „Mit Apple anmelden“.",
+  "pt": "Sua conta de IA do WianTribe foi excluída. O WianTribe ainda está na sua lista de Entrar com a Apple. Use Gerenciar Entrar com a Apple, abaixo, para removê-lo.",
+  "ar": "حُذف حساب الذكاء الاصطناعي في WianTribe. لا تزال WianTribe في قائمة «تسجيل الدخول باستخدام Apple». استخدم «إدارة تسجيل الدخول باستخدام Apple» أدناه لإزالتها."
  }
 }

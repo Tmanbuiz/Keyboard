@@ -7,7 +7,8 @@ fileprivate enum AccountAPI {
     struct Challenge: Decodable { let id: String; let nonce: String }
     struct Session: Decodable { let token: String; let expiresAtSeconds: Double; let dailyLimit: Int }
     struct Usage: Decodable { let dailyLimit: Int; let used: Int; let resetsAt: String }
-    struct Acknowledgement: Decodable { let signedOut: Bool?; let deleted: Bool? }
+    /// `appleRevoked` says whether the server also removed WianTribe from the person's Sign in with Apple list.
+    struct Acknowledgement: Decodable { let signedOut: Bool?; let deleted: Bool?; let appleRevoked: Bool? }
     static func call<T: Decodable>(_ path: String, body: [String: String]? = nil, token: String? = nil, method: String = "POST") async throws -> T {
         var request = URLRequest(url: base.appendingPathComponent(path))
         request.httpMethod = method; request.timeoutInterval = 30
@@ -38,6 +39,10 @@ final class AIAccountModel: ObservableObject {
     @Published private(set) var used: Int?
     @Published private(set) var dailyLimit: Int?
     @Published private(set) var deleted = false
+    /// Why the last deletion attempt stopped, shown next to the delete button.
+    @Published private(set) var deletionError = ""
+    /// Shown after Apple could not confirm, so deleting the account is always possible.
+    @Published private(set) var offerDeletionWithoutApple = false
     @Published private(set) var trace: [String] = []
     private func note(_ text: String) {
         let f = DateFormatter(); f.dateFormat = "HH:mm:ss"
@@ -119,22 +124,95 @@ final class AIAccountModel: ObservableObject {
         if let token { let _: AccountAPI.Acknowledgement? = try? await AccountAPI.call("auth/logout", token: token) }
         status = "Signed out on this device."
     }
+    /// Asks Apple to confirm it's the account owner, then deletes the account. Apple's one-time code
+    /// lets the server also remove WianTribe from the person's Sign in with Apple list.
+    func deleteWithAppleConfirmation() async {
+        guard signedIn, !busy else { return }
+        deletionError = ""
+        busy = true
+        // Let the confirmation dialog finish closing, or Apple's sheet may not open.
+        try? await Task.sleep(nanoseconds: 600_000_000)
+        var outcome = AppleConfirmation.Outcome.failed
+        if let anchor = Self.keyWindow() {
+            let confirmation = AppleConfirmation(anchor: anchor)
+            outcome = await confirmation.run()
+        }
+        busy = false
+        switch outcome {
+        case .confirmed(let code):
+            note("apple confirmed deletion (code \(code == nil ? "missing" : "received"))")
+            await deleteAccount(authorizationCode: code)
+        case .cancelled:
+            deletionError = String(localized: "Deletion cancelled. Your AI account was not deleted.")
+        case .failed:
+            note("apple confirmation failed")
+            deletionError = String(localized: "Apple couldn't confirm it's you, so nothing was deleted. Try again, or delete without Apple's confirmation.")
+            offerDeletionWithoutApple = true
+        }
+    }
     func deleteAccount(authorizationCode: String?) async {
         guard let token = ConnectionVault.load()?.token, !busy else { return }
         busy = true; defer { busy = false }
+        deletionError = ""
         do {
             let reply: AccountAPI.Acknowledgement = try await AccountAPI.call("account/delete", body: authorizationCode.map { ["authorizationCode": $0] } ?? [:], token: token)
             guard reply.deleted == true else { throw WritingError.invalidResponse }
             ConnectionVault.save(nil); signedIn = false; challenge = nil; used = nil; dailyLimit = nil; deleted = true
-            status = "Your WianTribe AI account was deleted. You can also remove WianTribe from Sign in with Apple in your Apple Account settings."
-        } catch { status = error.localizedDescription }
+            offerDeletionWithoutApple = false
+            note("account deleted; apple grant \(reply.appleRevoked == true ? "removed" : "kept")")
+            status = reply.appleRevoked == true
+                ? String(localized: "Your WianTribe AI account was deleted, and WianTribe was removed from Sign in with Apple.")
+                : String(localized: "Your WianTribe AI account was deleted. WianTribe is still in your Sign in with Apple list. Use Manage Sign in with Apple below to remove it.")
+        } catch { deletionError = error.localizedDescription }
+    }
+    private static func keyWindow() -> UIWindow? {
+        let scenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+        return scenes.flatMap(\.windows).first { $0.isKeyWindow } ?? scenes.first?.windows.first
+    }
+}
+
+/// Shows Apple's sign-in sheet so the person confirms it's them before their account is deleted.
+final class AppleConfirmation: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    enum Outcome { case confirmed(code: String?), cancelled, failed }
+    private let anchor: ASPresentationAnchor
+    private var continuation: CheckedContinuation<Outcome, Never>?
+    private var controller: ASAuthorizationController?
+
+    init(anchor: ASPresentationAnchor) { self.anchor = anchor }
+
+    @MainActor func run() async -> Outcome {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Outcome, Never>) in
+            self.continuation = continuation
+            let request = ASAuthorizationAppleIDProvider().createRequest()
+            request.requestedScopes = []
+            let controller = ASAuthorizationController(authorizationRequests: [request])
+            controller.delegate = self
+            controller.presentationContextProvider = self
+            self.controller = controller
+            controller.performRequests()
+        }
+    }
+
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor { anchor }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        let credential = authorization.credential as? ASAuthorizationAppleIDCredential
+        finish(.confirmed(code: credential?.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }))
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        finish((error as? ASAuthorizationError)?.code == .canceled ? .cancelled : .failed)
+    }
+
+    private func finish(_ outcome: Outcome) {
+        continuation?.resume(returning: outcome)
+        continuation = nil; controller = nil
     }
 }
 
 struct AIAccountView: View {
     @StateObject private var model = AIAccountModel.shared
     @State private var confirmDeletion = false
-    @State private var confirmWithApple = false
     @Environment(\.scenePhase) private var scenePhase
     var body: some View {
         Form {
@@ -142,7 +220,7 @@ struct AIAccountView: View {
                 Label(model.signedIn ? "AI account connected" : "Connect your AI account", systemImage: "sparkles")
                     .font(.headline)
                 Text("Sign in once to use rewriting and translation in the app and keyboard. Your connection is shared securely on this device.")
-                if !model.status.isEmpty { Text(model.status).font(.callout).foregroundStyle(model.signedIn ? Color.secondary : Color.orange) }
+                if !model.status.isEmpty { Text(model.status).font(.callout).foregroundStyle(model.signedIn || model.deleted ? Color.secondary : Color.orange) }
             }
             if model.signedIn {
                 Section("Daily allowance") {
@@ -155,21 +233,16 @@ struct AIAccountView: View {
                 Section {
                     Button("Sign out", role: .destructive) { Task { await model.signOut() } }.disabled(model.busy)
                     Button("Delete AI account", role: .destructive) { confirmDeletion = true }.disabled(model.busy)
-                }
-                if confirmWithApple {
-                    Section {
-                        Text("Confirm with Apple to finish deleting your account. This also removes WianTribe from your Sign in with Apple list.").font(.callout)
-                        SignInWithAppleButton(.continue) { $0.requestedScopes = [] } onCompletion: { result in
-                            confirmWithApple = false
-                            switch result {
-                            case .success(let authorization):
-                                let code = (authorization.credential as? ASAuthorizationAppleIDCredential)?.authorizationCode.flatMap { String(data: $0, encoding: .utf8) }
-                                Task { await model.deleteAccount(authorizationCode: code) }
-                            case .failure: break
-                            }
-                        }.signInWithAppleButtonStyle(.white).frame(height: 48)
-                        Button("Cancel") { confirmWithApple = false }
+                    if model.offerDeletionWithoutApple {
+                        Button("Delete without Apple's confirmation", role: .destructive) {
+                            Task { await model.deleteAccount(authorizationCode: nil) }
+                        }.disabled(model.busy)
                     }
+                    if !model.deletionError.isEmpty {
+                        Label(model.deletionError, systemImage: "exclamationmark.triangle").font(.callout).foregroundStyle(Color.orange)
+                    }
+                } footer: {
+                    Text("Deleting asks Apple to confirm it's you, then removes your AI account and WianTribe from your Sign in with Apple list.")
                 }
             } else {
                 Section {
@@ -196,9 +269,12 @@ struct AIAccountView: View {
         }.navigationTitle("AI account")
             .task { await model.prepare() }
             .onChange(of: scenePhase) { _, phase in if phase == .active { Task { await model.reload() } } }
-            .onReceive(NotificationCenter.default.publisher(for: ASAuthorizationAppleIDProvider.credentialRevokedNotification)) { _ in Task { await model.signOut() } }
+            .onReceive(NotificationCenter.default.publisher(for: ASAuthorizationAppleIDProvider.credentialRevokedNotification)) { _ in
+                // Deleting the account revokes Apple's grant too; that must not replace the deletion message.
+                if model.signedIn { Task { await model.signOut() } }
+            }
             .confirmationDialog("Delete your WianTribe AI account? All its connections will stop working.", isPresented: $confirmDeletion) {
-                Button("Delete AI account", role: .destructive) { confirmWithApple = true }
+                Button("Delete AI account", role: .destructive) { Task { await model.deleteWithAppleConfirmation() } }
             }
     }
 }

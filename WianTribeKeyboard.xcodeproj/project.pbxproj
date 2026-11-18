@@ -138,6 +138,12 @@
 			"path" = "Sources/Keyboard/MediaGridView.swift";
 			"sourceTree" = "<group>";
 		};
+		533FAAC2373A399BE600D868 = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Sources/Keyboard/MemoryMeter.swift";
+			"sourceTree" = "<group>";
+		};
 		A661E0890601E63AAEAFF913 = {
 			"isa" = "PBXFileReference";
 			"lastKnownFileType" = "sourcecode.swift";
@@ -560,6 +566,7 @@
 				4BB3554BB30FADCFB923D0C5,
 				722FF9AEDFAD89731318D902,
 				C57AEA25FACDC276759ED7B8,
+				533FAAC2373A399BE600D868,
 				A661E0890601E63AAEAFF913,
 				24F17267BCBA52399AFC593B,
 				339D57E43FB42F7A2592F03C,
@@ -791,6 +798,10 @@
 			"isa" = "PBXBuildFile";
 			"fileRef" = C57AEA25FACDC276759ED7B8;
 		};
+		589C7884D69C37B020E278A4 = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = 533FAAC2373A399BE600D868;
+		};
 		9DBA73733D2C5317711C6C8E = {
 			"isa" = "PBXBuildFile";
 			"fileRef" = 24F17267BCBA52399AFC593B;
@@ -831,6 +842,7 @@
 				19917022ADD92703C49017A9,
 				CC30FAE4B520F960CA82CE62,
 				2F39957C15CC5646CA348845,
+				589C7884D69C37B020E278A4,
 				9DBA73733D2C5317711C6C8E,
 				FC950075668C774EF863DECF,
 				17A176D87DCD8D8086A50B75,
@@ -1313,7 +1325,7 @@
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"SUPPORTS_MACCATALYST" = "NO";
@@ -1341,7 +1353,7 @@
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"SUPPORTS_MACCATALYST" = "NO";
@@ -1376,7 +1388,7 @@
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"SUPPORTS_MACCATALYST" = "NO";
@@ -1405,7 +1417,7 @@
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"SUPPORTS_MACCATALYST" = "NO";
@@ -1441,7 +1453,7 @@
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"SUPPORTS_MACCATALYST" = "NO";
@@ -1470,7 +1482,7 @@
 				"CODE_SIGN_STYLE" = "Automatic";
 				"CODE_SIGN_ENTITLEMENTS" = "Configuration/Sideload.entitlements";
 				"CURRENT_PROJECT_VERSION" = "1";
-				"MARKETING_VERSION" = "0.2.0";
+				"MARKETING_VERSION" = "0.3.0";
 				"TARGETED_DEVICE_FAMILY" = "1,2";
 				"SUPPORTED_PLATFORMS" = "iphoneos iphonesimulator";
 				"SUPPORTS_MACCATALYST" = "NO";

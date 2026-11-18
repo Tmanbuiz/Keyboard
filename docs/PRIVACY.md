@@ -1,6 +1,6 @@
 # WianTribe Keyboard privacy policy
 
-*Last updated: November 16, 2026. Publisher: WianTribe Inc. Contact: atoyejet@gmail.com. Published at https://wiantribe.com/keyboard/privacy*
+*Last updated: November 18, 2026. Publisher: WianTribe Inc. Contact: atoyejet@gmail.com. Published at https://wiantribe.com/keyboard/privacy*
 
 WianTribe Keyboard is designed so that what you type stays on your iPhone. This policy explains what the keyboard and its companion app do with your information.
 
@@ -28,7 +28,7 @@ If you turn on "Back up to iCloud" in the app's settings, your learned words, pi
 Only when you choose these optional features (and iCloud backup, described above, which goes to your own iCloud and not to us):
 
 - **WianTribe AI.** Sign in with Apple connects the app and keyboard. We request no name or email. Our service verifies Apple identity tokens and stores an app-specific hash of your Apple identifier, hashed session credentials, account status and usage counts. Raw Apple identity tokens are not persisted. Sessions expire after 30 days; expired sessions and sign-in challenges are cleaned up daily. Only text you submit to an online writing tool is sent, over HTTPS, to our AI service to produce the result. We do not save submitted text or AI output.
-- **Account deletion.** Delete AI account in Tools → AI account to remove account and session records and revoke all WianTribe sessions. App-specific pseudonymous usage records remain up to 30 days to enforce limits. You can separately remove WianTribe from Sign in with Apple in your Apple Account settings. Clipboard and learned words can be deleted in app settings.
+- **Account deletion.** Delete AI account in Tools → AI account to remove account and session records and revoke all WianTribe sessions. Apple first asks you to confirm it's you; the app then sends Apple's one-time code to our service, which uses it only to ask Apple to remove WianTribe from your Sign in with Apple list and does not keep it. If Apple can't confirm, you can still delete the account and remove WianTribe yourself in your Apple Account settings. App-specific pseudonymous usage records remain up to 30 days to enforce limits. Clipboard and learned words can be deleted in app settings.
 - **Voice editor.** When you record in the companion app, Apple's speech recognition converts your voice to text. It runs on your device when supported; otherwise Apple may process the audio under Apple's privacy policy. The keyboard itself never uses the microphone.
 
 ## Allow Full Access

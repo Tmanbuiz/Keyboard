@@ -35,14 +35,15 @@ public struct SuggestionEngine {
     public func contains(_ word: String) -> Bool { lexicons.contains { $0.contains(normalize(word)) } }
     public func frequency(of word: String) -> Int? { lexicons.compactMap { $0.frequency(of: normalize(word)) }.max() }
 
-    func normalize(_ word: String) -> String { language.lowercased(word).precomposedStringWithCanonicalMapping }
+    /// Lower case, composed accents and straight apostrophes, so "Don’t" finds "don't".
+    func normalize(_ word: String) -> String { TextContext.straightApostrophes(language.lowercased(word)).precomposedStringWithCanonicalMapping }
 
     public func suggestions(for original: String, previous: String = "", before: String = "", learned: [String: Int] = [:],
                             learnedPairs: [String: [String: Int]] = [:], supplemental: [String] = [], limit: Int = 3) -> [WordSuggestion] {
         let word = normalize(original)
         if word.isEmpty {
             return Array(nextWords(after: previous, before: before, learnedPairs: learnedPairs).prefix(limit))
-                .map { WordSuggestion(text: $0, score: 1, isCorrection: false, language: language.code) }
+                .map { WordSuggestion(text: TextContext.properCase($0, language: language.code), score: 1, isCorrection: false, language: language.code) }
         }
         guard word.count <= 32 else { return [] }
         // Everything the person has typed after these words before, so "see you t" offers "tomorrow" first.
@@ -67,7 +68,7 @@ public struct SuggestionEngine {
             if likely.contains(normalized) { score += 2 }
             if code == active { score += 0.6 }
             score += habitBonus(followers[normalized])
-            let text = TextContext.matchingCase(candidate, to: original, language: language)
+            let text = TextContext.properCase(TextContext.matchingCase(candidate, to: original, language: language), language: code)
             let result = WordSuggestion(text: text, score: score, isCorrection: !prefix, language: code)
             if results[normalized] == nil || results[normalized]!.score < score { results[normalized] = result }
         }

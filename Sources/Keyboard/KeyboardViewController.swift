@@ -68,6 +68,13 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var safeMode = false
     var crashNotice = false
     var lastActiveMark: TimeInterval = 0
+    /// A pending write of learned words; see scheduleLearningSave().
+    var learningSave: DispatchWorkItem?
+    var unsavedSince: TimeInterval = 0
+    /// Recently used emoji for suggestions, read from storage once rather than on every key press.
+    var recentEmojiCache: [String]?
+    /// Counts this keyboard in the memory report, to spot old keyboards that were never freed.
+    let instanceCounter = KeyboardInstanceCounter()
     var keyPreview: KeyPreview?
     /// While searching emoji, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
@@ -88,6 +95,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        MemoryMeter.markStart()
         // A restart is counted only when the keyboard was in use moments ago and never closed. iOS also
         // removes keyboards left open in a backgrounded app; that is normal and is not counted.
         // Either way dictionary, multilingual and emoji features stay enabled.
@@ -158,7 +166,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         if preferences.emojiPredictions && !safeMode && !EmojiCatalog.shared.isWarm {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
                 guard self?.view.window != nil else { return }
-                EmojiCatalog.shared.warmUp()
+                MemoryMeter.measure(.emoji) { EmojiCatalog.shared.warmUp() }
             }
         }
     }
@@ -166,6 +174,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         store.sessionOpen = false
+        saveLearning()
         clipboardTimer?.invalidate(); clipboardTimer = nil
         searchMode = nil; searchQuery = ""; handwriting?.stop()
         repeatDelete?.invalidate(); repeatDelete = nil
@@ -175,7 +184,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     /// The app using the keyboard left the screen. iOS may now remove the keyboard without telling it.
-    @objc func hostBecameInactive() { store.sessionOpen = false }
+    @objc func hostBecameInactive() { store.sessionOpen = false; saveLearning() }
 
     @objc func hostBecameActive() {
         guard isViewLoaded, view.window != nil else { return }
@@ -188,6 +197,39 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         guard force || now - lastActiveMark > 5 else { return }
         lastActiveMark = now
         store.sessionActiveAt = Date()
+    }
+
+    /// Learned words are written once typing pauses for two seconds, and at the latest every
+    /// 15 seconds, so saving them never slows a key press. Closing the keyboard saves them too.
+    func scheduleLearningSave() {
+        guard KeyboardStore.hasUnsavedLearning else { return }
+        let now = Date.timeIntervalSinceReferenceDate
+        if let pending = learningSave {
+            // Typing without a pause: stop postponing once words have waited a while.
+            guard now - unsavedSince < 15 else { return }
+            pending.cancel()
+        } else { unsavedSince = now }
+        let work = DispatchWorkItem { [weak self] in self?.saveLearning() }
+        learningSave = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: work)
+    }
+
+    func saveLearning() {
+        learningSave?.cancel(); learningSave = nil
+        store.saveLearning()
+    }
+
+    /// Recently used emoji, read from storage once and then kept in memory.
+    func recentlyUsedEmoji() -> [String] {
+        if let cached = recentEmojiCache { return cached }
+        let list = store.recentEmoji
+        recentEmojiCache = list
+        return list
+    }
+
+    /// Records an emoji the person typed, for the recent list and emoji suggestions.
+    func useEmoji(_ emoji: String) {
+        store.useEmoji(emoji); recentEmojiCache = nil
     }
 
     /// Megabytes this keyboard can still use before iOS closes it for using too much memory.
@@ -232,7 +274,10 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func reloadPreferences() {
-        KeyboardStore.invalidateLearningCache()
+        // Write what was learned, then reread storage so changes made in the app are picked up.
+        learningSave?.cancel(); learningSave = nil
+        store.reloadLearning()
+        recentEmojiCache = nil
         store = KeyboardStore(canWriteGroup: hasFullAccess)
         preferences = store.preferences
         usingDarkPalette = wantsDarkPalette
@@ -258,7 +303,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         engineKey = key
         engine = SuggestionEngine(language: primary.pack, lexicons: [])
         suggestionQueue.async { [weak self] in
-            let loaded = autoreleasepool { SuggestionEngine.make(primary: primary, others: others) }
+            let loaded = MemoryMeter.measure(.dictionaries) { autoreleasepool { SuggestionEngine.make(primary: primary, others: others) } }
             DispatchQueue.main.async {
                 guard let self, self.engineKey == key else { return }
                 self.engine = loaded
@@ -271,12 +316,16 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         super.didReceiveMemoryWarning()
         // Free everything that can be reloaded, so iOS doesn't close the keyboard.
         store.memoryWarnings += 1
-        store.recordMemoryWarning(screen: diagnosticScreen, headroomMB: Self.memoryHeadroomMB)
+        store.recordMemoryWarning(screen: diagnosticScreen, headroomMB: Self.memoryHeadroomMB,
+                                  detail: MemoryMeter.report(copies: KeyboardInstanceCounter.count))
         suggestionWork?.cancel(); keyPreview?.removeFromSuperview(); keyPreview = nil
         // Preserve active dictionaries and language features; trim only inactive cache entries.
-        LexiconCache.shared.trim(keeping: Set(engine.lexicons.map(\.code)))
-        EmojiCatalog.shared.releaseKeywords()
+        let active = Set(engine.lexicons.map(\.code))
+        MemoryMeter.measure(.dictionaries) { LexiconCache.shared.trim(keeping: active) }
+        MemoryMeter.measure(.emoji) { EmojiCatalog.shared.releaseKeywords() }
         MediaGridView.imageCache.removeAllObjects()
+        // Learned words wait in memory; write them now in case iOS closes the keyboard.
+        saveLearning()
     }
 
     func savePreferences() {
@@ -625,6 +674,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             let pattern = TextContext.patternContext(in: context)
             store.learnPair(previous: pattern.previous, before: pattern.before, word: pack.lowercased(written))
         }
+        scheduleLearningSave()
         glideChoices = []; lastSpace = now; updateShift(); refreshSuggestions()
     }
 
@@ -732,7 +782,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         // Emoji for the word being typed, or for the word just finished when the cursor follows a space.
         let emojiWord = word.isEmpty ? (context.last?.isWhitespace == true && context.last != "\n" ? previous : "") : word
         let emojiLanguages = preferences.emojiPredictions ? preferences.activeLanguages.map(\.code) : []
-        let recentEmoji = preferences.emojiPredictions ? store.recentEmoji : []
+        let recentEmoji = preferences.emojiPredictions ? recentlyUsedEmoji() : []
         let tone = preferences.skinTone
         let work = DispatchWorkItem { [weak self] in autoreleasepool {
             guard let self else { return }
@@ -740,15 +790,23 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             // Apple's spelling dictionary adds words for any language installed on the phone.
             if let checkerLanguage, word.count > 1 && word.count < 32 {
                 let range = NSRange(location: 0, length: (word as NSString).length)
-                native = self.checker.completions(forPartialWordRange: range, in: word, language: checkerLanguage) ?? []
-                if native.isEmpty { native = self.checker.guesses(forWordRange: range, in: word, language: checkerLanguage) ?? [] }
+                native = MemoryMeter.measure(.spellChecker) { () -> [String] in
+                    let completions = self.checker.completions(forPartialWordRange: range, in: word, language: checkerLanguage) ?? []
+                    if !completions.isEmpty { return completions }
+                    return self.checker.guesses(forWordRange: range, in: word, language: checkerLanguage) ?? []
+                }
             }
             var results = engine.suggestions(for: word, previous: pattern.previous, before: pattern.before, learned: learned, learnedPairs: pairs, supplemental: supplemental + Array(native.prefix(12)))
             if capitalize {
                 results = results.map { WordSuggestion(text: TextContext.matchingCase($0.text, to: "A", language: engine.language), score: $0.score, isCorrection: $0.isCorrection, language: $0.language) }
             }
-            let emoji = emojiLanguages.isEmpty || emojiWord.isEmpty ? [] :
-                EmojiCatalog.shared.predictions(for: emojiWord, languages: emojiLanguages, recent: recentEmoji, limit: word.isEmpty ? 3 : 1).map { $0.toned(tone) }
+            var emoji: [String] = []
+            if !emojiLanguages.isEmpty && !emojiWord.isEmpty {
+                let items: [EmojiItem] = MemoryMeter.measure(.emoji) {
+                    EmojiCatalog.shared.predictions(for: emojiWord, languages: emojiLanguages, recent: recentEmoji, limit: word.isEmpty ? 3 : 1)
+                }
+                emoji = items.map { $0.toned(tone) }
+            }
             DispatchQueue.main.async {
                 guard self.generation == thisGeneration, self.before == context, self.panel == nil, self.searchMode == nil else { return }
                 self.currentSuggestions = results
@@ -767,11 +825,15 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         suggestionQueue.asyncAfter(deadline: .now() + 0.04, execute: work)
     }
 
+    /// Apple's spell-checking language for each layout, looked up once rather than on every key press.
+    static var checkerLanguages: [String: String] = [:]
     static func checkerLanguage(for pack: LanguagePack) -> String? {
+        if let known = checkerLanguages[pack.checker] { return known.isEmpty ? nil : known }
         let available = UITextChecker.availableLanguages
-        if available.contains(pack.checker) { return pack.checker }
         let base = pack.checker.split(separator: "_").first.map(String.init) ?? pack.checker
-        return available.first { $0 == base || $0.hasPrefix(base + "_") }
+        let found = available.contains(pack.checker) ? pack.checker : available.first { $0 == base || $0.hasPrefix(base + "_") }
+        checkerLanguages[pack.checker] = found ?? ""
+        return found
     }
 
     func showSuggestions(_ choices: [(String, () -> Void)]) {
@@ -799,6 +861,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
             // A suggestion the person chose is a stronger sign of their wording than a word typed out.
             let pattern = TextContext.patternContext(in: expectedContext)
             store.learnPair(previous: pattern.previous, before: pattern.before, word: pack.lowercased(word), weight: 2)
+            scheduleLearningSave()
         }
         updateShift(); refreshSuggestions()
     }
@@ -809,7 +872,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         crashNotice = false; correction = nil; glideChoices = []
         let needsSpace = !(before.last?.isWhitespace ?? true)
         textDocumentProxy.insertText((needsSpace ? " " : "") + emoji + " ")
-        store.useEmoji(emoji)
+        useEmoji(emoji)
         updateShift(); refreshSuggestions()
     }
 
@@ -994,7 +1057,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let memoryLine = "\nMemory left before iOS limit: \(Self.memoryHeadroomMB) MB (lowest at a warning: \(lowest))"
         let screenLine = "\nWarnings by screen: \(screens.isEmpty ? "none yet" : screens)"
         let summary = "WianTribe \(version) (build \(build)) · iOS \(UIDevice.current.systemVersion)\nMemory warnings reported by iOS: \(store.memoryWarnings)\nUnconfirmed session restarts: \(closes) (not a verified crash count)\nLanguages: \(preferences.activeLanguages.map(\.code).joined(separator: ", "))\nActive dictionaries: \(engine.lexicons.count)"
-        let diagnostic = summary + memoryLine + screenLine
+        let nowLine = "\nMemory now: " + MemoryMeter.report(copies: KeyboardInstanceCounter.count)
+        let lowestLine = store.lowestMemoryDetail.map { $0.isEmpty ? "" : "\nAt the lowest warning: " + $0 } ?? ""
+        let diagnostic = summary + memoryLine + screenLine + nowLine + lowestLine
         note(diagnostic, in: stack)
         panelButton("Copy diagnostic details", in: stack) { [weak self] in self?.copyToClipboard(diagnostic) }
         if closes > 0 || store.memoryWarnings > 0 {

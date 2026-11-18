@@ -4,7 +4,7 @@ Users open WianTribe → Tools → AI account → Continue with Apple, then enab
 
 ## Owner deployment
 
-The root Wrangler configuration deploys the `keyboard` Worker to the existing account and D1 database. Keep the existing `PROVIDER_API_KEY` and `ADMIN_TOKEN` secrets. Apple sign-in uses public Apple signing keys, not an Apple private key. `APPLE_CLIENT_ID` must equal the signed app bundle identifier (`com.wiantribe.keyboard`). New tables are initialized idempotently; migration 0002 also documents the schema. The original clients schema must already exist.
+The root Wrangler configuration deploys the `keyboard` Worker to the existing account and D1 database. Keep the existing `PROVIDER_API_KEY` and `ADMIN_TOKEN` secrets. Signing in checks Apple's public signing keys. Deleting an account also needs a Sign in with Apple private key, stored as three Worker secrets: `APPLE_TEAM_ID`, `APPLE_KEY_ID` and `APPLE_PRIVATE_KEY` (the whole `.p8` file). `APPLE_CLIENT_ID` must equal the signed app bundle identifier (`com.wiantribe.keyboard`). New tables are initialized idempotently; migration 0002 also documents the schema. The original clients schema must already exist.
 
 Enable **Sign in with Apple** for the main app identifier in Apple Developer → Certificates, Identifiers & Profiles → Identifiers. The app needs this capability plus its existing App Group. Only the companion app gets the Apple sign-in entitlement; all entitled app/keyboard components share the App Group. The TestFlight workflow generates those entitlements and lets Xcode refresh provisioning profiles.
 
@@ -20,6 +20,12 @@ App Store Connect privacy answers must reflect account identifiers and usage cou
 
 Install the processed TestFlight build, sign in, open the keyboard in another app, and use grammar/translation without copying credentials. Check Full Access off/on, quota display, expiry/sign-in again, sign-out, deleting the account, Apple credential revocation, and a second device. Verify the Cloudflare provider key is configured with a successful real writing request.
 
-## Apple grant revocation limitation
+## Removing WianTribe from Sign in with Apple on deletion
 
-Account deletion removes the WianTribe account and backend sessions. This implementation does not collect an Apple authorization code or refresh token, so it cannot automatically revoke Apple's own authorization grant. The app explains how to remove that grant in Apple Account settings. Before a public App Store release, complete Apple's server token-exchange/revocation lifecycle and applicable account-deletion requirements; do not present manual grant removal as automatic revocation.
+Delete AI account opens Apple's sign-in sheet so the person confirms it's them. The app sends Apple's one-time authorization code with the deletion request. The Worker exchanges it with Apple using the private key above, revokes the grant (so WianTribe leaves the person's Sign in with Apple list), then deletes the account and every session. The code and the tokens it returns are used once and never stored. The reply says `appleRevoked: true` when Apple confirmed the removal; the app tells the person either way.
+
+If Apple can't confirm (no connection, for example), the app offers "Delete without Apple's confirmation". The account is still deleted, and the app tells the person to remove WianTribe themselves with Manage Sign in with Apple.
+
+Status: the three secrets are set in Cloudflare. In November 2026, deleting a test account on an iPhone removed WianTribe from that Apple Account's Sign in with Apple list.
+
+**The Apple key.** Created in Apple Developer → Certificates, Identifiers & Profiles → Keys, with Sign in with Apple enabled for the app's primary App ID. `APPLE_KEY_ID` is the key's 10-character ID and `APPLE_TEAM_ID` is the team ID shown at the top right of the developer site. Apple lets you download the `.p8` file only once: keep it in a password manager, never in this repository or a chat. If it is lost or exposed, revoke the key in Apple Developer, create a new one and update the three secrets in Cloudflare (in the dashboard, or with `npx wrangler secret put <NAME>`).

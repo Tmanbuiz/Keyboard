@@ -94,7 +94,7 @@ extension KeyboardViewController {
         grid.onSelect = { [weak self] index in
             guard let self, list.indices.contains(index) else { return }
             let emoji = list[index].toned(tone)
-            self.textDocumentProxy.insertText(emoji); self.store.useEmoji(emoji)
+            self.textDocumentProxy.insertText(emoji); self.useEmoji(emoji)
         }
         grid.onLongPress = { [weak self] index, cell in
             guard let self, list.indices.contains(index) else { return }
@@ -124,7 +124,7 @@ extension KeyboardViewController {
                 let option = options[start + offset]
                 let key = button(option) { [weak self] in
                     guard let self else { return }
-                    self.removeAccentPopup(); self.textDocumentProxy.insertText(option); self.store.useEmoji(option)
+                    self.removeAccentPopup(); self.textDocumentProxy.insertText(option); self.useEmoji(option)
                     if option == options.first { self.preferences.skinTone = 0 }
                     else if let index = defaultSkins.firstIndex(of: option) { self.preferences.skinTone = index + 1 }
                     self.store.preferences = self.preferences; self.rebuildContent()
@@ -220,7 +220,7 @@ extension KeyboardViewController {
                                      row.heightAnchor.constraint(equalTo: scroll.frameLayoutGuide.heightAnchor)])
         for item in results {
             let emoji = item.toned(preferences.skinTone)
-            let key = button(emoji) { [weak self] in self?.textDocumentProxy.insertText(emoji); self?.store.useEmoji(emoji) }
+            let key = button(emoji) { [weak self] in self?.textDocumentProxy.insertText(emoji); self?.useEmoji(emoji) }
             key.backgroundColor = .clear; key.normalColor = .clear; key.layer.shadowOpacity = 0
             key.titleLabel?.font = .systemFont(ofSize: 24)
             key.widthAnchor.constraint(equalToConstant: 38).isActive = true

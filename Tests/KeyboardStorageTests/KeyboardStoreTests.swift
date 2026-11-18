@@ -9,9 +9,58 @@ final class KeyboardStoreTests: XCTestCase {
         suites.append(name)
         return UserDefaults(suiteName: name)!
     }
+    override func setUp() {
+        super.setUp()
+        KeyboardStore.invalidateLearningCache()
+    }
     override func tearDown() {
         for name in suites { UserDefaults.standard.removePersistentDomain(forName: name) }
-        suites = []; super.tearDown()
+        suites = []; KeyboardStore.invalidateLearningCache(); super.tearDown()
+    }
+    private func learningStore(_ local: UserDefaults) -> KeyboardStore {
+        let store = KeyboardStore(local: local, group: nil, canWriteGroup: true)
+        var preferences = store.preferences
+        preferences.learnWords = true; store.preferences = preferences
+        return store
+    }
+    func testLearnedWordsWaitInMemoryUntilSaved() {
+        let local = defaults()
+        let store = learningStore(local)
+        store.learn("don’t")
+        store.learnPair(previous: "i", word: "don’t")
+        XCTAssertEqual(store.learned["don't"], 1)
+        XCTAssertTrue(KeyboardStore.hasUnsavedLearning)
+        XCTAssertNil(local.data(forKey: "learned.v1"), "a space press must not wait for storage")
+        store.saveLearning()
+        XCTAssertFalse(KeyboardStore.hasUnsavedLearning)
+        KeyboardStore.invalidateLearningCache()
+        XCTAssertEqual(store.learned["don't"], 1)
+        XCTAssertEqual(store.learnedPairs["i"]?["don't"], 1)
+    }
+    func testClearingDropsWordsNotSavedYet() {
+        let store = learningStore(defaults())
+        store.learn("hello")
+        store.clearLearnedWords()
+        store.saveLearning()
+        KeyboardStore.invalidateLearningCache()
+        XCTAssertTrue(store.learned.isEmpty)
+    }
+    func testANewWordIsKeptWhenTheListIsFull() {
+        let store = learningStore(defaults())
+        var words: [String: Int] = [:]
+        for index in 0..<BackupMerge.maxLearned { words["word\(index)"] = 1 }
+        store.learned = words
+        store.learn("fresh")
+        XCTAssertEqual(store.learned.count, BackupMerge.maxLearned)
+        XCTAssertEqual(store.learned["fresh"], 1)
+    }
+    func testChangedSettingsAreSeenAtOnce() {
+        let store = learningStore(defaults())
+        var preferences = store.preferences
+        XCTAssertTrue(preferences.learnWords)
+        preferences.privateMode = true; store.preferences = preferences
+        store.learn("secret")
+        XCTAssertNil(store.learned["secret"])
     }
     func testAppDeletionDoesNotResurrectFromKeyboardCache() throws {
         let shared = defaults(), appLocal = defaults(), keyboardLocal = defaults()

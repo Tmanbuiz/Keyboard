@@ -132,6 +132,25 @@ final class WordPatternTests: XCTestCase {
         XCTAssertLessThanOrEqual(followers.values.max() ?? 0, TextContext.recencyCeiling)
     }
 
+    func testApostropheWordsAreLearnedAndUsedAsContext() {
+        for word in ["don't", "i'm", "c'est", "j'ai", "aujourd'hui", "п'ять"] { XCTAssertTrue(TextContext.canLearn(word), word) }
+        for word in ["'tis", "dogs'", "don''t", "it's'", "a'b'c'd"] { XCTAssertFalse(TextContext.canLearn(word), word) }
+        XCTAssertTrue(TextContext.canBeContext("i'm"))
+        XCTAssertEqual(TextContext.learningForm("don’t"), "don't")
+        XCTAssertEqual(TextContext.learningForm("'hello'"), "hello")
+        XCTAssertTrue(TextContext.patternContext(in: "I’m going ") == ("going", "i'm"))
+        XCTAssertTrue(TextContext.patternContext(in: "I'm ") == ("i'm", ""))
+    }
+
+    func testCurlyApostrophesMatchAndEnglishIIsCapitalised() {
+        let engine = SuggestionEngine.make(primary: .english)
+        XCTAssertEqual(engine.suggestions(for: "", previous: "and", learnedPairs: ["and": ["i'm": 5]]).first?.text, "I'm")
+        XCTAssertTrue(engine.suggestions(for: "don’").contains { $0.text == "don't" })
+        XCTAssertEqual(TextContext.properCase("i've", language: "en"), "I've")
+        XCTAssertEqual(TextContext.properCase("it", language: "en"), "it")
+        XCTAssertEqual(TextContext.properCase("i", language: "fr"), "i")
+    }
+
     func testFollowerListStaysSmallAndKeepsTheNewWord() {
         var followers: [String: Int] = [:]
         for index in 0..<TextContext.maxFollowers { followers["w\(index)"] = index + 2 }

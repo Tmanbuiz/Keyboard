@@ -68,20 +68,25 @@ final class KeyboardStore {
             (defaults?.string(forKey: key + ".generation") ?? "") == generation(for: key)) else { return nil }
         return defaults?.data(forKey: key)
     }
-    private func load<T: Decodable>(_ key: String, fallback: T) -> T {
+    private func storedData(_ key: String) -> Data? {
         reconcile(key)
-        let data = (canWriteGroup ? data(key, in: group) : data(key, in: local)) ?? data(key, in: local) ?? data(key, in: group)
-        guard let data, let value = try? JSONDecoder().decode(T.self, from: data) else { return fallback }
+        return (canWriteGroup ? data(key, in: group) : data(key, in: local)) ?? data(key, in: local) ?? data(key, in: group)
+    }
+    private func load<T: Decodable>(_ key: String, fallback: T) -> T {
+        guard let data = storedData(key), let value = try? JSONDecoder().decode(T.self, from: data) else { return fallback }
         return value
     }
-    private func save<T: Encodable>(_ value: T, key: String) {
+    /// Returns false when nothing was written.
+    @discardableResult private func save<T: Encodable>(_ value: T, key: String) -> Bool {
+        // Encoding first keeps the check for a clear made elsewhere right next to the write.
+        guard let data = try? JSONEncoder().encode(value) else { return false }
         // A setter holding a pre-reset learning snapshot must not restore it.
-        if reconcile(key), ["learned.v1", "pairs.v1"].contains(key) { return }
-        guard let data = try? JSONEncoder().encode(value) else { return }
+        if reconcile(key), ["learned.v1", "pairs.v1"].contains(key) { return false }
         let now = Date()
         let current = generation(for: key)
         local.set(data, forKey: key); local.set(now, forKey: key + ".updatedAt"); local.set(current, forKey: key + ".generation")
         if canWriteGroup { group?.set(data, forKey: key); group?.set(now, forKey: key + ".updatedAt"); group?.set(current, forKey: key + ".generation") }
+        return true
     }
     var writingRevokedAt: Date? {
         get {
@@ -105,8 +110,18 @@ final class KeyboardStore {
             if canWriteGroup { group?.set(values, forKey: "clips.deleted") }
         }
     }
+    // Settings are checked for every learned word, so they are decoded again only when the stored bytes change.
+    private static let preferencesLock = NSLock()
+    private static var preferencesCache: (data: Data, value: KeyboardPreferences)?
     var preferences: KeyboardPreferences {
-        get { load("preferences.v1", fallback: KeyboardPreferences()) }
+        get {
+            guard let data = storedData("preferences.v1") else { return KeyboardPreferences() }
+            Self.preferencesLock.lock(); defer { Self.preferencesLock.unlock() }
+            if let cached = Self.preferencesCache, cached.data == data { return cached.value }
+            guard let value = try? JSONDecoder().decode(KeyboardPreferences.self, from: data) else { return KeyboardPreferences() }
+            Self.preferencesCache = (data, value)
+            return value
+        }
         set { save(newValue, key: "preferences.v1") }
     }
     /// Clipboard history and saved phrases (pinned items) in one list, newest first.
@@ -159,15 +174,20 @@ final class KeyboardStore {
         get { local.object(forKey: "session.lowestHeadroomMB") as? Int }
         set { local.set(newValue, forKey: "session.lowestHeadroomMB") }
     }
-    func recordMemoryWarning(screen: String, headroomMB: Int) {
+    /// Where the memory went at the warning with the least left, such as "used 180 MB · dictionaries 6 MB". Numbers only.
+    var lowestMemoryDetail: String? {
+        get { local.string(forKey: "session.lowestDetail") }
+        set { local.set(newValue, forKey: "session.lowestDetail") }
+    }
+    func recordMemoryWarning(screen: String, headroomMB: Int, detail: String = "") {
         var screens = memoryWarningScreens
         screens[screen, default: 0] += 1
         memoryWarningScreens = screens
-        if headroomMB < (lowestMemoryHeadroomMB ?? Int.max) { lowestMemoryHeadroomMB = headroomMB }
+        if headroomMB < (lowestMemoryHeadroomMB ?? Int.max) { lowestMemoryHeadroomMB = headroomMB; lowestMemoryDetail = detail }
     }
     func resetHealthCounters() {
         unexpectedCloses = 0; memoryWarnings = 0
-        memoryWarningScreens = [:]; lowestMemoryHeadroomMB = nil
+        memoryWarningScreens = [:]; lowestMemoryHeadroomMB = nil; lowestMemoryDetail = nil
     }
     /// When the keyboard was last seen in use. Tells a restart while typing apart from iOS's routine
     /// clean-up of a keyboard left open in an app that went to the background.
@@ -190,17 +210,36 @@ final class KeyboardStore {
     }
     func clearRecentClips() { phrases = phrases.filter(\.pinned) }
     // Decoding these from UserDefaults on every key press made typing lag, so each process keeps an in-memory copy.
-    // The keyboard calls invalidateLearningCache() whenever it appears, so changes made in the app (e.g. clearing) are picked up.
+    // The keyboard calls reloadLearning() whenever it appears, so changes made in the app (e.g. clearing) are picked up.
     private static var learnedCache: [String: Int]?
     private static var pairsCache: [String: [String: Int]]?
-    static func invalidateLearningCache() { learnedCache = nil; pairsCache = nil }
+    /// Words learned while typing stay in memory until saveLearning(), so a space press never waits for storage.
+    private static var unsavedLearning = false
+    static var hasUnsavedLearning: Bool { unsavedLearning }
+    /// Forgets the in-memory copy, including words not saved yet. Used after learned words are cleared.
+    static func invalidateLearningCache() { learnedCache = nil; pairsCache = nil; unsavedLearning = false }
+    /// Saves what was learned, then rereads storage so changes made in the app (clearing, iCloud) are picked up.
+    func reloadLearning() { saveLearning(); Self.invalidateLearningCache() }
+    /// Writes words learned in memory. The keyboard calls this when typing pauses and when it closes.
+    func saveLearning() {
+        guard Self.unsavedLearning else { return }
+        Self.unsavedLearning = false
+        let words = Self.learnedCache, pairs = Self.pairsCache
+        if let words { learned = words }
+        // If learned words were cleared elsewhere, the setter dropped the in-memory copy; the pairs are stale too.
+        if let pairs, words == nil || Self.learnedCache != nil { learnedPairs = pairs }
+    }
     var learned: [String: Int] {
         get {
             if let cached = Self.learnedCache { return cached }
             let value: [String: Int] = load("learned.v1", fallback: [String: Int]())
             Self.learnedCache = value; return value
         }
-        set { Self.learnedCache = newValue; save(newValue, key: "learned.v1") }
+        set {
+            Self.learnedCache = newValue
+            // Refused when learned words were cleared elsewhere since they were read: drop the old copy too.
+            if !save(newValue, key: "learned.v1") { Self.invalidateLearningCache() }
+        }
     }
     /// Which word followed which, counted only when word learning is on. Used for next-word suggestions.
     var learnedPairs: [String: [String: Int]] {
@@ -209,12 +248,20 @@ final class KeyboardStore {
             let value: [String: [String: Int]] = load("pairs.v1", fallback: [String: [String: Int]]())
             Self.pairsCache = value; return value
         }
-        set { Self.pairsCache = newValue; save(newValue, key: "pairs.v1") }
+        set {
+            Self.pairsCache = newValue
+            if !save(newValue, key: "pairs.v1") { Self.invalidateLearningCache() }
+        }
     }
     /// Learns that `word` followed `previous`, and that it followed the two words `before previous`.
     /// `previous` may be `TextContext.sentenceStart`. Counts only; never the sentence itself.
+    /// Kept in memory until saveLearning().
     func learnPair(previous: String, before: String = "", word: String, weight: Int = 1) {
+        let word = TextContext.learningForm(word)
+        let preferences = self.preferences
         guard preferences.learnWords, !preferences.privateMode, TextContext.canLearn(word) else { return }
+        let previous = previous == TextContext.sentenceStart ? previous : TextContext.learningForm(previous)
+        let before = TextContext.learningForm(before)
         var keys: [String] = []
         if previous == TextContext.sentenceStart { keys = [previous] }
         else if TextContext.canBeContext(previous) {
@@ -235,7 +282,7 @@ final class KeyboardStore {
             guard let least else { break }
             pairs.removeValue(forKey: least)
         }
-        learnedPairs = pairs
+        Self.pairsCache = pairs; Self.unsavedLearning = true
     }
     var recentEmoji: [String] {
         get { load("recentEmoji.v1", fallback: [String]()) }
@@ -247,12 +294,20 @@ final class KeyboardStore {
         list.insert(emoji, at: 0)
         recentEmoji = list
     }
+    /// Counts one more use of a word the person typed. Kept in memory until saveLearning().
     func learn(_ word: String) {
+        let word = TextContext.learningForm(word)
+        let preferences = self.preferences
         guard preferences.learnWords, !preferences.privateMode, TextContext.canLearn(word) else { return }
         var words = learned
         words[word] = min((words[word] ?? 0) + 1, 500)
-        if words.count > 1000, let least = words.min(by: { $0.value < $1.value })?.key { words.removeValue(forKey: least) }
-        learned = words
+        if words.count > BackupMerge.maxLearned {
+            // Make room by forgetting the least used word, never the one just typed.
+            var least: String?, leastCount = Int.max
+            for (key, count) in words where key != word && count < leastCount { least = key; leastCount = count }
+            if let least { words.removeValue(forKey: least) }
+        }
+        Self.learnedCache = words; Self.unsavedLearning = true
     }
     func addPhrase(_ text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)

@@ -24,7 +24,7 @@ What's ready in this repository, and what only you can do.
   - **By hand, once:** in the Apple Developer portal → Identifiers → `com.wiantribe.keyboard`, enable **iCloud**, save, then run the TestFlight workflow. Without this the upload fails at signing.
 - **Tracking:** No.
 - `Configuration/PrivacyInfo.xcprivacy` declares the same two data types and the UserDefaults reason codes. Privacy policy: https://wiantribe.com/keyboard/privacy. Support URL: https://wiantribe.com/keyboard.
-- **Before public release:** apps with Sign in with Apple must revoke the Apple grant when an account is deleted (Guideline 5.1.1(v)); see APPLE-SIGNIN.md.
+- **Account deletion (Guideline 5.1.1(v)):** done. Deleting the AI account asks Apple to confirm, then revokes the Apple grant so WianTribe leaves the person's Sign in with Apple list (checked on a device in November 2026); see APPLE-SIGNIN.md.
 
 ## Review notes (paste into App Review Information)
 
@@ -74,7 +74,7 @@ PRIVATE BY DESIGN
 
 **Keywords (100 max):** keyboard,multilingual,swipe,emoji,clipboard,translate,themes,handwriting,yoruba,pidgin
 
-**What's New (0.2.0):** First public release.
+**What's New (0.3.0):** First public release.
 
 **Category:** Utilities (secondary: Productivity). **Age rating:** 4+ answers throughout, except "Unrestricted web access: No".
 
