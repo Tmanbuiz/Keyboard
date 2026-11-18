@@ -83,7 +83,7 @@ export async function appleAuth(request, env, database, fetcher = fetch) {
   if (typeof input?.challengeID !== 'string' || !/^[a-f0-9-]{36}$/.test(input.challengeID)) return json({ error: 'Invalid sign-in request' }, 400);
   let claims;
   try { claims = await verifyAppleToken(input.identityToken, env.APPLE_CLIENT_ID, fetcher); }
-  catch (error) { return json({ error: 'Apple sign-in could not be verified. Please try again.', reason: String(error?.reason || error?.message || 'unknown').slice(0, 60) }, 401); }
+  catch (error) { console.error('apple token rejected:', String(error?.reason || error?.message || 'unknown').slice(0, 60)); return json({ error: 'Apple sign-in could not be verified. Please try again.' }, 401); }
   // DELETE ... RETURNING consumes a valid challenge exactly once, even with concurrent replays.
   // Apple returns the nonce as sent; some SDKs return its SHA-256 instead. Accept either form of the same single-use challenge.
   const challenge = await database.prepare('DELETE FROM auth_challenges WHERE id = ? AND (nonce_hash = ? OR nonce_hash = ?) AND expires_at > ? RETURNING id')

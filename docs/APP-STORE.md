@@ -74,7 +74,7 @@ PRIVATE BY DESIGN
 
 **Keywords (100 max):** keyboard,multilingual,swipe,emoji,clipboard,translate,themes,handwriting,yoruba,pidgin
 
-**What's New (0.3.0):** First public release.
+**What's New (1.0):** First public release.
 
 **Category:** Utilities (secondary: Productivity). **Age rating:** 4+ answers throughout, except "Unrestricted web access: No".
 

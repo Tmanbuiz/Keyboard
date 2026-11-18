@@ -104,11 +104,17 @@ final class KeyboardStore {
             let shared = (group?.stringArray(forKey: "clips.deleted") ?? []).compactMap(UUID.init(uuidString:))
             return Set(own + shared)
         }
-        set {
-            let values = newValue.map(\.uuidString)
-            local.set(values, forKey: "clips.deleted")
-            if canWriteGroup { group?.set(values, forKey: "clips.deleted") }
-        }
+    }
+    /// Remembers deleted clip IDs, newest last, keeping only the most recent 500 so the list cannot grow forever.
+    private func markClipsDeleted(_ ids: [UUID]) {
+        guard !ids.isEmpty else { return }
+        var ordered = (local.stringArray(forKey: "clips.deleted") ?? []).compactMap(UUID.init(uuidString:))
+        for id in (group?.stringArray(forKey: "clips.deleted") ?? []).compactMap(UUID.init(uuidString:)) where !ordered.contains(id) { ordered.append(id) }
+        let known = Set(ordered)
+        ordered.append(contentsOf: ids.filter { !known.contains($0) })
+        let values = ordered.suffix(500).map(\.uuidString)
+        local.set(values, forKey: "clips.deleted")
+        if canWriteGroup { group?.set(values, forKey: "clips.deleted") }
     }
     // Settings are checked for every learned word, so they are decoded again only when the stored bytes change.
     private static let preferencesLock = NSLock()
@@ -144,7 +150,7 @@ final class KeyboardStore {
         }
         set {
             let remaining = Set(newValue.map(\.id))
-            deletedClipIDs.formUnion(phrases.filter { !remaining.contains($0.id) }.map(\.id))
+            markClipsDeleted(phrases.filter { !remaining.contains($0.id) }.map(\.id))
             save(ClipboardHistory.pruned(newValue.filter { $0.createdAt > resetDate(for: "clips.v2") && !deletedClipIDs.contains($0.id) }, keepDays: preferences.clipboardDays), key: "clips.v2")
         }
     }
@@ -332,7 +338,7 @@ final class KeyboardStore {
     func clearLearnedWords() { reset("learning.resetAt", keys: ["learned.v1", "pairs.v1"]); Self.invalidateLearningCache() }
     func clearPersonalData() {
         // Keep IDs too, so an old UI snapshot cannot restore a clip with a future-dated timestamp.
-        deletedClipIDs.formUnion(phrases.map(\.id))
+        markClipsDeleted(phrases.map(\.id))
         reset("personal.resetAt", keys: Self.historyKeys); Self.invalidateLearningCache()
     }
 }

@@ -96,7 +96,7 @@ all_paths = all_files + resources + keyboard_data + ["Sources/App/Assets.xcasset
 refs = {}
 for path in all_paths:
     suffix = pathlib.Path(path).suffix
-    filetype = {".swift": "sourcecode.swift", ".json": "text.json", ".txt": "text", ".png": "image.png", ".gif": "image.gif", ".plist": "text.plist.xml", ".entitlements": "text.plist.entitlements", ".xcprivacy": "text.xml", ".xcassets": "folder.assetcatalog", ".xcstrings": "text.json.xcstrings"}[suffix]
+    filetype = {".swift": "sourcecode.swift", ".json": "text.json", ".txt": "text", ".png": "image.png", ".plist": "text.plist.xml", ".entitlements": "text.plist.entitlements", ".xcprivacy": "text.xml", ".xcassets": "folder.assetcatalog", ".xcstrings": "text.json.xcstrings"}[suffix]
     refs[path] = add("file-" + path, "PBXFileReference", lastKnownFileType=filetype, path=path, sourceTree="<group>")
 app_product = add("product-app", "PBXFileReference", explicitFileType="wrapper.application", includeInIndex=0, path="WianTribeKeyboard.app", sourceTree="BUILT_PRODUCTS_DIR")
 keyboard_product = add("product-keyboard", "PBXFileReference", explicitFileType="wrapper.app-extension", includeInIndex=0, path="WianTribeKeyboardExtension.appex", sourceTree="BUILT_PRODUCTS_DIR")
@@ -142,7 +142,7 @@ def configurations(label, settings):
 
 project_configs = configurations("project", project_settings)
 common_target = {"CODE_SIGN_STYLE": "Automatic", "CODE_SIGN_ENTITLEMENTS": "Configuration/Shared.entitlements" if options.shared_container else "Configuration/Sideload.entitlements",
-                 "CURRENT_PROJECT_VERSION": "1", "MARKETING_VERSION": "0.3.0", "TARGETED_DEVICE_FAMILY": "1,2",
+                 "CURRENT_PROJECT_VERSION": "1", "MARKETING_VERSION": "1.0", "TARGETED_DEVICE_FAMILY": "1,2",
                  "SUPPORTED_PLATFORMS": "iphoneos iphonesimulator", "SUPPORTS_MACCATALYST": "NO", "GENERATE_INFOPLIST_FILE": "NO",
                  "LD_RUNPATH_SEARCH_PATHS": ["$(inherited)", "@executable_path/Frameworks"], "PRODUCT_NAME": "$(TARGET_NAME)"}
 app_configs = configurations("app", {**common_target, "CODE_SIGN_ENTITLEMENTS": "Configuration/AppShared.entitlements" if options.shared_container else "Configuration/Sideload.entitlements", "PRODUCT_BUNDLE_IDENTIFIER": "com.wiantribe.keyboard", "INFOPLIST_FILE": "Configuration/App-Info.plist",

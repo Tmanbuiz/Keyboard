@@ -1,12 +1,10 @@
 import UIKit
-import ImageIO
 
 /// A scrolling grid for emoji. A collection view keeps thousands of
 /// emoji fast and light on memory, which matters inside a keyboard extension.
 final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     enum Item {
         case emoji(String, toned: Bool, name: String? = nil)
-        case image(UIImage, label: String)
     }
 
     var items: [Item] = [] { didSet { collection.reloadData(); collection.setContentOffset(.zero, animated: false); updateEmptyState() } }
@@ -31,9 +29,6 @@ final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewD
     var onLongPress: ((Int, UIView) -> Void)?
     private let palette: KeyboardPalette
     private let collection: UICollectionView
-    static let imageCache: NSCache<NSURL, UIImage> = {
-        let cache = NSCache<NSURL, UIImage>(); cache.totalCostLimit = 8_000_000; cache.countLimit = 60; return cache
-    }()
 
     init(palette: KeyboardPalette) {
         self.palette = palette
@@ -60,7 +55,7 @@ final class MediaGridView: UIView, UICollectionViewDataSource, UICollectionViewD
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MediaCell
-        cell.configure(items[indexPath.item], palette: palette, cache: Self.imageCache)
+        cell.configure(items[indexPath.item], palette: palette)
         return cell
     }
 
@@ -106,16 +101,13 @@ private final class MediaCell: UICollectionViewCell {
         imageView.image = nil; label.text = nil
     }
 
-    func configure(_ item: MediaGridView.Item, palette: KeyboardPalette, cache: NSCache<NSURL, UIImage>) {
+    func configure(_ item: MediaGridView.Item, palette: KeyboardPalette) {
         imageView.image = nil
         switch item {
         case .emoji(let emoji, let toned, let name):
             label.isHidden = false; imageView.isHidden = true
             label.text = emoji; accessibilityLabel = name ?? emoji
             accessibilityHint = toned ? "Hold for skin tones" : nil
-        case .image(let image, let text):
-            label.isHidden = true; imageView.isHidden = false
-            imageView.image = image; imageView.backgroundColor = palette.key.withAlphaComponent(0.4); accessibilityLabel = text
         }
     }
 }

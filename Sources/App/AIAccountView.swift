@@ -211,6 +211,7 @@ final class AppleConfirmation: NSObject, ASAuthorizationControllerDelegate, ASAu
 }
 
 struct AIAccountView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var model = AIAccountModel.shared
     @State private var confirmDeletion = false
     @Environment(\.scenePhase) private var scenePhase
@@ -250,7 +251,7 @@ struct AIAccountView: View {
                         SignInWithAppleButton(.continue) { request in
                             request.requestedScopes = []; request.nonce = model.challenge?.nonce
                         } onCompletion: { model.finish($0) }
-                        .signInWithAppleButtonStyle(.white).frame(height: 48).disabled(model.busy)
+                        .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black).frame(height: 48).disabled(model.busy)
                     }
                     Button(model.challenge == nil ? "Prepare sign-in" : "Refresh sign-in") { Task { await model.prepare() } }.disabled(model.busy)
                     Text("Apple verifies your identity. WianTribe does not request your name or email address. No API key or connection import is needed.").font(.caption)

@@ -323,7 +323,6 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let active = Set(engine.lexicons.map(\.code))
         MemoryMeter.measure(.dictionaries) { LexiconCache.shared.trim(keeping: active) }
         MemoryMeter.measure(.emoji) { EmojiCatalog.shared.releaseKeywords() }
-        MediaGridView.imageCache.removeAllObjects()
         // Learned words wait in memory; write them now in case iOS closes the keyboard.
         saveLearning()
     }

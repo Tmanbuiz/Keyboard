@@ -90,17 +90,18 @@ export default {
           // Only the provider's HTTP status and a short machine code (never message text or keys) so setup problems are diagnosable.
           const failure = await response.json().catch(() => null);
           const code = [failure?.error?.code, failure?.error?.type].find(v => typeof v === "string" && /^[a-z0-9_]{1,40}$/.test(v)) || "";
-          return json({ error: "Writing provider unavailable", detail: `${response.status} ${code}`.trim() }, 502);
+          console.error("provider failure:", `${response.status} ${code}`.trim());
+          return json({ error: "Writing provider unavailable" }, 502);
         }
         const body = await response.json();
         text = body?.choices?.[0]?.message?.content?.trim();
-        if (!text && body?.choices?.[0]?.finish_reason === "length") return json({ error: "Invalid provider response", detail: "length" }, 502);
+        if (!text && body?.choices?.[0]?.finish_reason === "length") { console.error("provider response cut off (length)"); return json({ error: "Invalid provider response" }, 502); }
       } else {
         const result = await env.AI.run(env.MODEL || "@cf/meta/llama-3.1-8b-instruct-fp8", { messages, max_tokens: 2048, temperature: 0.2, stream: false });
         text = result?.response?.trim();
       }
       if (!text || [...text].length > 6000) return json({ error: "Invalid provider response" }, 502);
       return json({ text });
-    } catch (error) { return json({ error: "Writing provider unavailable", detail: String(error?.name || "error").slice(0, 40) }, 502); }
+    } catch (error) { console.error("provider error:", String(error?.name || "error").slice(0, 40)); return json({ error: "Writing provider unavailable" }, 502); }
   }
 };
