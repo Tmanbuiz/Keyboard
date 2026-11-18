@@ -12,7 +12,9 @@ concurrency:
   cancel-in-progress: false
 jobs:
   upload:
-    runs-on: macos-latest
+    # Apple needs App Store uploads built with Xcode 27 (iOS 27 SDK) or later from April 2027
+    # (ITMS-90725). GitHub keeps Xcode 27 on its own "xcode-27" Mac; macos-latest still has Xcode 26.
+    runs-on: xcode-27
     timeout-minutes: 45
     env:
       TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
@@ -20,6 +22,14 @@ jobs:
       ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Check Xcode version
+        run: |
+          sdk=$(xcrun --sdk iphoneos --show-sdk-version)
+          echo "::notice title=Toolchain::$(xcodebuild -version | tr '\n' ' ')/ iOS SDK $sdk"
+          if [ "${sdk%%.*}" -lt 27 ]; then
+            echo "::error title=Xcode too old::This Mac has the iOS $sdk SDK. Apple needs the iOS 27 SDK (Xcode 27) or later for App Store uploads (ITMS-90725). Change runs-on in testflight.yml to a GitHub Mac with Xcode 27."
+            exit 1
+          fi
       - name: Test typing engine
         run: swift test --jobs 2
       - name: Test writing service boundaries
