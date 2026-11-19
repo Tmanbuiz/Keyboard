@@ -1682,6 +1682,41 @@
         }
       }
     },
+    "The AI left out part of your text. Try again, or select fewer lines.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La IA omitió parte de tu texto. Vuelve a intentarlo o selecciona menos líneas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’IA a omis une partie de votre texte. Réessayez ou sélectionnez moins de lignes."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die KI hat einen Teil deines Textes weggelassen. Versuche es erneut oder wähle weniger Zeilen aus."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A IA omitiu parte do seu texto. Tente novamente ou selecione menos linhas."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أغفل الذكاء الاصطناعي جزءًا من نصك. حاول مرة أخرى أو حدّد أسطرًا أقل."
+          }
+        }
+      }
+    },
     "The result cannot be empty": {
       "extractionState": "manual",
       "localizations": {

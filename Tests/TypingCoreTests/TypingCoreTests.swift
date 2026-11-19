@@ -263,4 +263,19 @@ extension TypingCoreTests {
         XCTAssertTrue(engine.contains("bonjour"))
         XCTAssertTrue(engine.contains("hallo"))
     }
+
+    func testWritingCheckSpotsAResultThatDroppedText() {
+        let email = "Good morning Sandy.\nJust updating you as i received the mail today about the\nProgress of myapplication. Thank you very much and do have a lovely day."
+        // What Apple's on-device model returned in a tester's report: the middle sentence was gone.
+        XCTAssertTrue(WritingCheck.leftOutText(source: email, result: "Good morning, Sandy. Thank you very much, and have a lovely day.", action: .grammar))
+        let fixed = "Good morning, Sandy.\nJust updating you, as I received the mail today about the\nprogress of my application. Thank you very much, and do have a lovely day."
+        XCTAssertFalse(WritingCheck.leftOutText(source: email, result: fixed, action: .grammar))
+        // Shortening is the point of a summary, and texts under 20 letters are not judged.
+        XCTAssertFalse(WritingCheck.leftOutText(source: email, result: "Thanks, Sandy.", action: .summary))
+        XCTAssertFalse(WritingCheck.leftOutText(source: "teh cat", result: "The cat.", action: .grammar))
+        // A change of tone may reword, but not lose most of the text.
+        XCTAssertFalse(WritingCheck.leftOutText(source: "Thank you very much and do have a lovely day", result: "Thanks a lot, have a great day!", action: .casual))
+        XCTAssertTrue(WritingCheck.leftOutText(source: email, result: "Morning Sandy!", action: .casual))
+        XCTAssertFalse(WritingAction.translate.keepsAllText)
+    }
 }

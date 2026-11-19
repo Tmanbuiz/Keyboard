@@ -263,11 +263,19 @@ extension KeyboardViewController {
             func online() async {
                 guard ConnectionVault.load() != nil else { return }
                 guard self.hasFullAccess else { failure = failure ?? NSError(domain: "Writing", code: 1, userInfo: [NSLocalizedDescriptionKey: "Your service needs Allow Full Access"]); return }
-                do { result = try await WritingService.perform(text: source.text, action: action, language: target); via = "by your service" }
+                do {
+                    let text = try await WritingService.perform(text: source.text, action: action, language: target)
+                    // Never offer a result that dropped part of the person's text.
+                    if WritingCheck.leftOutText(source: source.text, result: text, action: action) { failure = WritingCheck.LeftOutText(); return }
+                    result = text; via = "by your service"
+                }
                 catch { failure = error }
             }
             if preferService { await online(); if result == nil { failure = nil; via = "on this iPhone"; await onDevice() } }
             else { await onDevice(); if result == nil { await online() } }
+            if let text = result, WritingCheck.leftOutText(source: source.text, result: text, action: action) {
+                result = nil; failure = WritingCheck.LeftOutText()
+            }
             self.finishWriting(action, result, via, failure?.localizedDescription ?? "Sign in in WianTribe → Tools → AI account")
         }
     }

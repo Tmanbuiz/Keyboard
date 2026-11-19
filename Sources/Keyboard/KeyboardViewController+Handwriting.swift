@@ -96,7 +96,8 @@ final class HandwritingSupport {
             }
             var results: [String] = []
             do {
-                try VNImageRequestHandler(cgImage: cgImage, options: [:]).perform([request])
+                // Apple's text recognizer loads its model into the keyboard's own memory: measure it for the report.
+                try MemoryMeter.measure(.handwriting) { Result { try VNImageRequestHandler(cgImage: cgImage, options: [:]).perform([request]) } }.get()
                 let observations = request.results ?? []
                 // Join the lines for each candidate rank so a word written in two parts still reads as one.
                 for rank in 0..<3 {

@@ -5,10 +5,10 @@ const languages = { en: "English", es: "Spanish", fr: "French", pt: "Portuguese"
 const legacyLanguages = { english: "en", yoruba: "yo", pidgin: "pcm" };
 // Keep in sync with WritingAction.instruction in Sources/Core/KeyboardModels.swift.
 const actions = {
-  grammar: "Correct grammar, spelling and punctuation. Keep the meaning, tone and language.",
-  professional: "Rewrite in a clear, professional tone. Keep the meaning and language.",
-  casual: "Rewrite in a friendly, casual tone. Keep the meaning and language.",
-  polite: "Rewrite so it sounds polite, warm and respectful. Keep the meaning and language.",
+  grammar: "Correct grammar, spelling and punctuation. Keep every sentence and line break, and keep the meaning, tone and language. Do not remove or summarise anything.",
+  professional: "Rewrite in a clear, professional tone. Keep every point, the meaning and the language.",
+  casual: "Rewrite in a friendly, casual tone. Keep every point, the meaning and the language.",
+  polite: "Rewrite so it sounds polite, warm and respectful. Keep every point, the meaning and the language.",
   social: "Rewrite as an engaging social media post, ending with two to four relevant hashtags. Keep the language.",
   emojify: "Add a few fitting emoji to the text. Keep every word as it is.",
   shorter: "Make the text shorter and clearer, keeping the key points and the language.",

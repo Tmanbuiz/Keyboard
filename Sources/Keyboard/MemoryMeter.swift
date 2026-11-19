@@ -4,10 +4,12 @@ import Foundation
 /// only, never anything typed. Each part is measured as the change in memory while that part did its
 /// work, so the figures are close estimates rather than exact sizes.
 enum MemoryMeter {
-    enum Part { case dictionaries, emoji, spellChecker }
+    enum Part { case dictionaries, emoji, spellChecker, handwriting }
 
     private static let lock = NSLock()
     private static var growth: [Part: Int64] = [:]
+    /// Memory given back by keyboard copies that went off screen and freed their keys and panels.
+    private static var freedByHiding: Int64 = 0
     /// Memory in use when the first keyboard screen loaded in this process.
     private static var startBytes: UInt64?
 
@@ -40,15 +42,24 @@ enum MemoryMeter {
 
     private static func megabytes(_ bytes: Int64) -> Int { Int(max(bytes, 0) / 1_048_576) }
 
-    /// For example "used 182 MB (31 MB at start) · keyboard copies 1 · dictionaries 4 MB · emoji 9 MB · spell checker 41 MB".
-    static func report(copies: Int) -> String {
-        lock.lock(); let parts = growth, start = startBytes; lock.unlock()
+    /// Adds the memory a hidden keyboard copy gave back since `before`.
+    static func noteFreed(since before: UInt64) {
+        let freed = Int64(before) - Int64(footprint)
+        lock.lock(); freedByHiding += max(freed, 0); lock.unlock()
+    }
+
+    /// For example "used 182 MB (31 MB at start) · keyboard copies 3 (1 with keys) · hidden copies freed 20 MB ·
+    /// dictionaries 4 MB · emoji 9 MB · spell checker 41 MB · handwriting 0 MB".
+    static func report(copies: Int, withKeys: Int) -> String {
+        lock.lock(); let parts = growth, start = startBytes, freed = freedByHiding; lock.unlock()
         var text = "used \(megabytes(Int64(footprint))) MB"
         if let start { text += " (\(megabytes(Int64(start))) MB at start)" }
-        text += " · keyboard copies \(copies)"
+        text += " · keyboard copies \(copies) (\(withKeys) with keys)"
+        text += " · hidden copies freed \(megabytes(freed)) MB"
         text += " · dictionaries \(megabytes(parts[.dictionaries] ?? 0)) MB"
         text += " · emoji \(megabytes(parts[.emoji] ?? 0)) MB"
         text += " · spell checker \(megabytes(parts[.spellChecker] ?? 0)) MB"
+        text += " · handwriting \(megabytes(parts[.handwriting] ?? 0)) MB"
         return text
     }
 }

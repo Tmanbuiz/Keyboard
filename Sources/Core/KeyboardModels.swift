@@ -155,10 +155,10 @@ public enum WritingAction: String, Codable, CaseIterable, Identifiable {
 
     public var instruction: String {
         switch self {
-        case .grammar: return "Correct grammar, spelling and punctuation. Keep the meaning, tone and language."
-        case .professional: return "Rewrite in a clear, professional tone. Keep the meaning and language."
-        case .casual: return "Rewrite in a friendly, casual tone. Keep the meaning and language."
-        case .polite: return "Rewrite so it sounds polite, warm and respectful. Keep the meaning and language."
+        case .grammar: return "Correct grammar, spelling and punctuation. Keep every sentence and line break, and keep the meaning, tone and language. Do not remove or summarise anything."
+        case .professional: return "Rewrite in a clear, professional tone. Keep every point, the meaning and the language."
+        case .casual: return "Rewrite in a friendly, casual tone. Keep every point, the meaning and the language."
+        case .polite: return "Rewrite so it sounds polite, warm and respectful. Keep every point, the meaning and the language."
         case .social: return "Rewrite as an engaging social media post, ending with two to four relevant hashtags. Keep the language."
         case .emojify: return "Add a few fitting emoji to the text. Keep every word as it is."
         case .shorter: return "Make the text shorter and clearer, keeping the key points and the language."
@@ -169,6 +169,33 @@ public enum WritingAction: String, Codable, CaseIterable, Identifiable {
         case .email: return "Format the text as a clear email: a greeting, short paragraphs and a closing line followed by [Your name]. Use the same language."
         case .translate: return "Translate the text into the requested language, preserving the meaning."
         }
+    }
+
+    /// Rewrites that must keep all of the person's text. A result that loses a large part of it is not offered.
+    public var keepsAllText: Bool { [.grammar, .emojify, .professional, .casual, .polite].contains(self) }
+}
+
+/// Spots an AI result that left out part of the person's text, such as a dropped sentence,
+/// so the keyboard never offers it as a replacement.
+public enum WritingCheck {
+    public struct LeftOutText: LocalizedError {
+        public init() {}
+        public var errorDescription: String? { "The AI left out part of your text. Try again, or select fewer lines." }
+    }
+
+    /// True when `result` has clearly fewer letters than `source`, for an action that must keep all the text.
+    /// Spaces, punctuation and emoji don't count, and texts under 20 letters are not judged.
+    public static func leftOutText(source: String, result: String, action: WritingAction) -> Bool {
+        guard action.keepsAllText else { return false }
+        let original = letters(in: source)
+        guard original >= 20 else { return false }
+        // Fixing grammar or adding emoji keeps nearly every letter; a change of tone may reword more.
+        let minimum = action == .grammar || action == .emojify ? 0.75 : 0.4
+        return Double(letters(in: result)) < Double(original) * minimum
+    }
+
+    static func letters(in text: String) -> Int {
+        text.unicodeScalars.reduce(0) { $0 + (CharacterSet.letters.contains($1) ? 1 : 0) }
     }
 }
 

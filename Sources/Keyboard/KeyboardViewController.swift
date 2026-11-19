@@ -75,6 +75,14 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var recentEmojiCache: [String]?
     /// Counts this keyboard in the memory report, to spot old keyboards that were never freed.
     let instanceCounter = KeyboardInstanceCounter()
+    /// Every keyboard copy alive in this process, to count in the report how many still hold their keys.
+    static let liveCopies = NSHashTable<KeyboardViewController>.weakObjects()
+    /// The copy most recently shown. Only one keyboard is on screen at a time.
+    static weak var onScreen: KeyboardViewController?
+    /// When the last memory warning was recorded. iOS sends each warning to every copy.
+    static var lastMemoryWarning: TimeInterval = 0
+    /// True while this copy is off screen with its keys and panels freed. viewWillAppear builds them again.
+    var releasedViews = false
     var keyPreview: KeyPreview?
     /// While searching emoji, typed letters go into this query instead of the document.
     var searchMode: SearchMode?
@@ -96,6 +104,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         MemoryMeter.markStart()
+        Self.liveCopies.add(self)
         // A restart is counted only when the keyboard was in use moments ago and never closed. iOS also
         // removes keyboards left open in a backgrounded app; that is normal and is not counted.
         // Either way dictionary, multilingual and emoji features stay enabled.
@@ -127,7 +136,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         suggestionBar.distribution = .fill
         // viewWillAppear builds the keys once, with the host field's current appearance.
         registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (controller: KeyboardViewController, _: UITraitCollection) in
-            if controller.preferences.theme == .auto && controller.wantsDarkPalette != controller.usingDarkPalette { controller.reloadPreferences() }
+            // A copy that is off screen picks up the new appearance when it shows again.
+            if !controller.releasedViews && controller.preferences.theme == .auto && controller.wantsDarkPalette != controller.usingDarkPalette { controller.reloadPreferences() }
         }
     }
 
@@ -149,6 +159,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        Self.onScreen = self
         toolbarExpanded = !crashNotice
         reloadPreferences()
         store.sessionOpen = true; markActive(force: true)
@@ -181,6 +192,40 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         suggestionWork?.cancel(); onlineTask?.cancel()
         if writingResult == nil { writingAction = nil } // a cancelled request must not reopen as a permanent "Working…"
         removeAccentPopup()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if Self.onScreen === self { Self.onScreen = nil }
+        releaseHiddenViews()
+    }
+
+    /// iOS can keep a keyboard copy alive for every app left with the keyboard open, and each copy
+    /// holds its own keys, toolbar and panels. A copy that is off screen frees them. viewWillAppear
+    /// builds them again from the saved settings, as it does every time the keyboard shows.
+    func releaseHiddenViews() {
+        guard isViewLoaded, !releasedViews else { return }
+        releasedViews = true
+        let before = MemoryMeter.footprint
+        suggestionWork?.cancel(); suggestionWork = nil; generation += 1
+        onlineTask?.cancel(); if writingResult == nil { writingAction = nil }
+        repeatDelete?.invalidate(); repeatDelete = nil
+        autoreleasepool {
+            removeAccentPopup(); keyPreview?.removeFromSuperview(); keyPreview = nil
+            handwriting?.stop(); handwriting = nil
+            clear(toolbar); clear(suggestionBar)
+            content.subviews.forEach { $0.removeFromSuperview() }
+            glideLayer.removeFromSuperlayer(); glidePath = []
+            keys = KeyAreaView(); letterButtons = []; swipeGesture = nil
+            currentSuggestions = []; recentEmojiCache = nil
+        }
+        MemoryMeter.noteFreed(since: before)
+    }
+
+    /// The "Memory now" figures: memory used, keyboard copies alive and how many still hold their keys.
+    static func memoryReport() -> String {
+        let withKeys = liveCopies.allObjects.filter { $0.isViewLoaded && !$0.releasedViews }.count
+        return MemoryMeter.report(copies: KeyboardInstanceCounter.count, withKeys: withKeys)
     }
 
     /// The app using the keyboard left the screen. iOS may now remove the keyboard without telling it.
@@ -240,6 +285,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     override func textDidChange(_ textInput: UITextInput?) {
         super.textDidChange(textInput)
+        guard !releasedViews else { return } // rebuilt with the current text when it shows again
         if let correction, !correction.canUndo(context: before) { self.correction = nil }
         if !before.hasSuffix(glideSuffix) { glideChoices = [] }
         if preferences.theme == .auto && wantsDarkPalette != usingDarkPalette { reloadPreferences() }
@@ -274,6 +320,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func reloadPreferences() {
+        releasedViews = false
         // Write what was learned, then reread storage so changes made in the app are picked up.
         learningSave?.cancel(); learningSave = nil
         store.reloadLearning()
@@ -315,12 +362,18 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Free everything that can be reloaded, so iOS doesn't close the keyboard.
-        store.memoryWarnings += 1
-        store.recordMemoryWarning(screen: diagnosticScreen, headroomMB: Self.memoryHeadroomMB,
-                                  detail: MemoryMeter.report(copies: KeyboardInstanceCounter.count))
         suggestionWork?.cancel(); keyPreview?.removeFromSuperview(); keyPreview = nil
+        // iOS sends the same warning to every keyboard copy it keeps. A copy that is off screen frees its keys and panels.
+        if Self.onScreen !== self && viewIfLoaded?.window == nil { releaseHiddenViews() }
+        // The rest is shared by all copies, so only the first copy to hear a warning records it and trims.
+        let now = Date.timeIntervalSinceReferenceDate
+        guard now - Self.lastMemoryWarning > 2 else { return }
+        Self.lastMemoryWarning = now
+        store.memoryWarnings += 1
+        store.recordMemoryWarning(screen: Self.onScreen?.diagnosticScreen ?? "closed", headroomMB: Self.memoryHeadroomMB,
+                                  detail: Self.memoryReport())
         // Preserve active dictionaries and language features; trim only inactive cache entries.
-        let active = Set(engine.lexicons.map(\.code))
+        let active = Set((Self.onScreen ?? self).engine.lexicons.map(\.code))
         MemoryMeter.measure(.dictionaries) { LexiconCache.shared.trim(keeping: active) }
         MemoryMeter.measure(.emoji) { EmojiCatalog.shared.releaseKeywords() }
         // Learned words wait in memory; write them now in case iOS closes the keyboard.
@@ -1056,7 +1109,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let memoryLine = "\nMemory left before iOS limit: \(Self.memoryHeadroomMB) MB (lowest at a warning: \(lowest))"
         let screenLine = "\nWarnings by screen: \(screens.isEmpty ? "none yet" : screens)"
         let summary = "WianTribe \(version) (build \(build)) · iOS \(UIDevice.current.systemVersion)\nMemory warnings reported by iOS: \(store.memoryWarnings)\nUnconfirmed session restarts: \(closes) (not a verified crash count)\nLanguages: \(preferences.activeLanguages.map(\.code).joined(separator: ", "))\nActive dictionaries: \(engine.lexicons.count)"
-        let nowLine = "\nMemory now: " + MemoryMeter.report(copies: KeyboardInstanceCounter.count)
+        let nowLine = "\nMemory now: " + Self.memoryReport()
         let lowestLine = store.lowestMemoryDetail.map { $0.isEmpty ? "" : "\nAt the lowest warning: " + $0 } ?? ""
         let diagnostic = summary + memoryLine + screenLine + nowLine + lowestLine
         note(diagnostic, in: stack)
