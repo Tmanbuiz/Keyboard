@@ -18,7 +18,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     let content = UIView()
     var keys: UIStackView = KeyAreaView()
     var heightConstraint: NSLayoutConstraint?
-    var panel: String?
+    var panel: String? { didSet { if panel != oldValue { noteShownScreen() } } }
     var mode = "letters"
     var shift = false
     var capsLock = false
@@ -87,7 +87,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var releasedViews = false
     var keyPreview: KeyPreview?
     /// While searching emoji, typed letters go into this query instead of the document.
-    var searchMode: SearchMode?
+    var searchMode: SearchMode? { didSet { if searchMode != oldValue { noteShownScreen() } } }
     var searchQuery = ""
     var clipQuery = ""
     var emojiQuery = ""
@@ -167,6 +167,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Self.onScreen = self
+        noteShownScreen() // ends the time the keyboard was closed, before anything is rebuilt
         toolbarExpanded = !crashNotice
         reloadPreferences()
         store.sessionOpen = true; markActive(force: true)
@@ -296,6 +297,10 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
 
     /// The screen in use, for the memory report. Never includes anything typed.
     var diagnosticScreen: String { searchMode != nil ? "search" : (panel ?? "typing") }
+
+    /// Credits memory to the screen that was shown, the moment the screen changes and before the new one is
+    /// built. Only the copy on screen counts; a hidden copy changing its state is not a screen change.
+    func noteShownScreen() { if Self.onScreen === self { MemoryMeter.noteScreen(diagnosticScreen) } }
 
     override func textDidChange(_ textInput: UITextInput?) {
         super.textDidChange(textInput)
@@ -536,8 +541,6 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func rebuildContent() {
-        // Every change of screen comes through here: the memory high so far goes to the screen that was shown.
-        MemoryMeter.noteScreen(diagnosticScreen)
         repeatDelete?.invalidate(); repeatDelete = nil
         removeAccentPopup()
         content.subviews.forEach { $0.removeFromSuperview() }

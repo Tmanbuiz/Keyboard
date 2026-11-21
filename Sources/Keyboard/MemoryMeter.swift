@@ -15,8 +15,8 @@ enum MemoryMeter {
     /// The screen shown since the last noteScreen call, and this process's highest memory at that call.
     private static var shownScreen: String?
     private static var lastPeak: UInt64 = 0
-    /// For each screen, the highest memory this process reached while it was shown, in megabytes. A screen
-    /// is credited only when it set a new high for the process: that is the screen that pushed memory up.
+    /// For each screen, the most memory seen while it was shown, in megabytes: any new high the process
+    /// reached on it (caught by iOS's own peak figure, even between checks) and the memory in use when it was left.
     private static var screenPeaks: [String: Int] = [:]
 
     /// iOS's memory accounting for this keyboard process.
@@ -41,44 +41,58 @@ enum MemoryMeter {
         return max(UInt64(max(info.ledger_phys_footprint_peak, 0)), info.phys_footprint)
     }
 
+    /// Memory region tags from <mach/vm_statistics.h>, by name so the compiler checks every value.
+    private static let heapTags: Set<Int32> = [
+        VM_MEMORY_MALLOC, VM_MEMORY_MALLOC_SMALL, VM_MEMORY_MALLOC_LARGE, VM_MEMORY_MALLOC_HUGE, VM_MEMORY_REALLOC,
+        VM_MEMORY_MALLOC_TINY, VM_MEMORY_MALLOC_LARGE_REUSABLE, VM_MEMORY_MALLOC_LARGE_REUSED, VM_MEMORY_MALLOC_NANO,
+        VM_MEMORY_MALLOC_MEDIUM]
+    private static let drawnTags: Set<Int32> = [
+        VM_MEMORY_COREGRAPHICS, VM_MEMORY_LAYERKIT, VM_MEMORY_CGIMAGE, VM_MEMORY_COREGRAPHICS_DATA,
+        VM_MEMORY_COREGRAPHICS_SHARED, VM_MEMORY_COREGRAPHICS_FRAMEBUFFERS, VM_MEMORY_COREGRAPHICS_BACKINGSTORES,
+        VM_MEMORY_COREGRAPHICS_XALLOC, VM_MEMORY_COREIMAGE, VM_MEMORY_IMAGEIO, VM_MEMORY_COREUI,
+        VM_MEMORY_COREUI_CACHED_IMAGE_DATA]
+    private static let surfaceTags: Set<Int32> = [VM_MEMORY_IOSURFACE, VM_MEMORY_IOACCELERATOR]
+
     /// Splits the memory in use by kind, from iOS's own record of each memory region: heap (objects, word
     /// lists and text), graphics (keys, emoji and images drawn for the screen) and the rest (mostly system
-    /// frameworks' own data, such as Apple's spell checker or text recognition). Takes a few milliseconds,
-    /// so it runs only for the report and at a memory warning, never on a key press.
+    /// frameworks' own data, such as Apple's spell checker or text recognition). It lists the top-level
+    /// regions only, about a millisecond's work, and runs only for the report and at a memory warning,
+    /// never on a key press.
     static func kinds() -> (heap: UInt64, graphics: UInt64, other: UInt64) {
         guard let info = taskInfo() else { return (0, 0, 0) }
         let page = UInt64(getpagesize())
         var heap: UInt64 = 0, drawn: UInt64 = 0, surfaces: UInt64 = 0
-        var address: vm_address_t = 0, depth: natural_t = 0
-        for _ in 0..<200_000 {
+        var address: vm_address_t = 0
+        for _ in 0..<100_000 {
             var region = vm_region_submap_info_data_64_t()
             var count = mach_msg_type_number_t(MemoryLayout<vm_region_submap_info_data_64_t>.size / MemoryLayout<natural_t>.size)
-            var size: vm_size_t = 0
+            // Depth 0 lists the top level only. Heap and graphics memory is never inside a submap such as the
+            // system's shared libraries, so there is no need to step into one.
+            var size: vm_size_t = 0, depth: natural_t = 0
             let result = withUnsafeMutablePointer(to: &region) { pointer in
                 pointer.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { raw in
                     vm_region_recurse_64(mach_task_self_, &address, &size, &depth, raw, &count)
                 }
             }
             guard result == KERN_SUCCESS else { break }
-            if region.is_submap != 0 { depth += 1; continue }
-            let dirty = (UInt64(region.pages_dirtied) + UInt64(region.pages_swapped_out)) * page
-            // Region tags from <mach/vm_statistics.h>.
-            switch region.user_tag {
-            case 1...13: heap += dirty                                  // malloc
-            case 42, 51, 52, 54...58, 68, 70, 76, 103: drawn += dirty   // CoreGraphics, CoreAnimation, CGImage, CoreImage, ImageIO, CoreUI
-            case 88, 100: surfaces += UInt64(region.pages_resident) * page // IOSurface, GPU
-            default: break
+            if region.is_submap == 0 {
+                let tag = Int32(bitPattern: region.user_tag)
+                let dirty = (UInt64(region.pages_dirtied) + UInt64(region.pages_swapped_out)) * page
+                if heapTags.contains(tag) { heap += dirty }
+                else if drawnTags.contains(tag) { drawn += dirty }
+                else if surfaceTags.contains(tag) { surfaces += UInt64(region.pages_resident) * page }
             }
             let next = address.addingReportingOverflow(size)
             guard size > 0, !next.overflow else { break }
             address = next.partialValue
         }
-        // iOS also charges IOSurfaces and GPU memory to the keyboard through a ledger. Surfaces that are
-        // mapped show up both ways, so the larger figure is used rather than the sum.
+        // iOS also charges IOSurfaces and GPU memory to the keyboard through a ledger, and memory the keyboard
+        // draws into can appear in both records. The larger figure is used rather than the sum, so graphics
+        // is never counted twice; it can read slightly low instead.
         let ledger = UInt64(max(info.ledger_tag_graphics_footprint, 0)) + UInt64(max(info.ledger_tag_graphics_footprint_compressed, 0))
         let total = info.phys_footprint
         let heapPart = min(heap, total)
-        let graphics = min(drawn + max(ledger, surfaces), total - heapPart)
+        let graphics = min(max(drawn + surfaces, ledger), total - heapPart)
         return (heapPart, graphics, total - heapPart - graphics)
     }
 
@@ -105,13 +119,17 @@ enum MemoryMeter {
         lock.lock(); freedByHiding += max(freed, 0); lock.unlock()
     }
 
-    /// Credits any new high in this process's memory to the screen shown since the last call, then follows
-    /// `screen`. Called whenever the screen changes, when the keyboard closes and at a memory warning.
+    /// Credits the screen shown since the last call with the memory it reached, then follows `screen`.
+    /// Called the moment the screen changes, when the keyboard closes or the app leaves, and at a memory warning.
     static func noteScreen(_ screen: String) {
-        let peak = peakFootprint
+        let info = taskInfo()
+        let current = info?.phys_footprint ?? 0
+        let peak = max(UInt64(max(info?.ledger_phys_footprint_peak ?? 0, 0)), current)
         lock.lock(); defer { lock.unlock() }
-        if let shown = shownScreen, peak > lastPeak {
-            screenPeaks[shown] = max(screenPeaks[shown] ?? 0, megabytes(Int64(peak)))
+        if let shown = shownScreen {
+            // A new high for the process was reached while `shown` was on display; otherwise note memory now.
+            let reached = peak > lastPeak ? peak : current
+            screenPeaks[shown] = max(screenPeaks[shown] ?? 0, megabytes(Int64(reached)))
         }
         lastPeak = max(lastPeak, peak)
         shownScreen = screen
@@ -120,7 +138,7 @@ enum MemoryMeter {
     /// The highest memory this process reached on each screen, in megabytes.
     static var peaksByScreen: [String: Int] { lock.lock(); defer { lock.unlock() }; return screenPeaks }
 
-    /// After "Reset health counter", only new highs count.
+    /// After "Reset health counter", highs from before the reset no longer count.
     static func resetScreenPeaks() {
         let peak = peakFootprint
         lock.lock(); screenPeaks = [:]; lastPeak = peak; lock.unlock()
