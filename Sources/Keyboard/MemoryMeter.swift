@@ -77,7 +77,9 @@ enum MemoryMeter {
             guard result == KERN_SUCCESS else { break }
             if region.is_submap == 0 {
                 let tag = Int32(bitPattern: region.user_tag)
-                let dirty = (UInt64(region.pages_dirtied) + UInt64(region.pages_swapped_out)) * page
+                // Pages marked reusable (freed, waiting to be reclaimed) don't count against the limit.
+                let dirtied = UInt64(region.pages_dirtied) - min(UInt64(region.pages_reusable), UInt64(region.pages_dirtied))
+                let dirty = (dirtied + UInt64(region.pages_swapped_out)) * page
                 if heapTags.contains(tag) { heap += dirty }
                 else if drawnTags.contains(tag) { drawn += dirty }
                 else if surfaceTags.contains(tag) { surfaces += UInt64(region.pages_resident) * page }
