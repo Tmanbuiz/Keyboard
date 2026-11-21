@@ -14,6 +14,7 @@ The app contains no analytics, advertising or tracking SDK. Basic typing stays o
 - **Learned words (optional, off by default).** If you turn on "Learn my words", the keyboard stores counts of individual words you type, which word tends to follow the one or two words before it, and which words you start sentences with, so it can predict your next word. These are short word sequences of at most three words; it never stores sentences or messages. Older habits fade as you type. You can clear this at any time.
 - **Clipboard history (optional, off by default).** If you turn it on, the keyboard keeps up to 40 recent texts you copy while it is open, for 1, 7 or 30 days, plus anything you pin. Copies marked as passwords by password managers are skipped. You can clear it at any time.
 - **Settings, recent emoji and pinned text** are stored on your device.
+- **Keyboard health figures.** To help fix problems, the keyboard counts memory warnings and unexpected restarts, and notes how much memory it used and which of its screens was open at the time (for example typing or emoji). These are numbers and screen names only, never anything you type. They stay on your device; you can view, copy and reset them in the keyboard's ⚙︎ settings.
 - **Handwriting** is read by Apple's on-device text recognition.
 - **Translation and rewriting on iOS 26** use Apple's on-device models. Apple states that on-device translation content is not sent to Apple.
 

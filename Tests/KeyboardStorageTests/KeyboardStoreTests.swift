@@ -169,4 +169,17 @@ extension KeyboardStoreTests {
         let other = KeyboardStore(local: defaults(), group: shared, canWriteGroup: false)
         XCTAssertTrue(other.preferences.privateMode)
     }
+    func testMemoryPeaksKeepTheHighestPerScreenUntilReset() {
+        let store = KeyboardStore(local: defaults(), group: nil, canWriteGroup: true)
+        store.recordMemoryPeaks(["typing": 40, "emoji": 90])
+        store.recordMemoryPeaks(["typing": 35, "emoji": 120, "writing": 50])
+        XCTAssertEqual(store.memoryPeakScreens, ["typing": 40, "emoji": 120, "writing": 50])
+        store.recordMemoryWarning(screen: "emoji", headroomMB: 20, detail: "used 150 MB")
+        store.lastRestartNote = "emoji screen, 160 MB used, 16 MB left"
+        store.resetHealthCounters()
+        XCTAssertEqual(store.memoryPeakScreens, [:])
+        XCTAssertEqual(store.memoryWarningScreens, [:])
+        XCTAssertNil(store.lastRestartNote)
+        XCTAssertNil(store.lowestMemoryDetail)
+    }
 }

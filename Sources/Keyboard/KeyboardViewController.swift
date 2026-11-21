@@ -81,6 +81,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     static weak var onScreen: KeyboardViewController?
     /// When the last memory warning was recorded. iOS sends each warning to every copy.
     static var lastMemoryWarning: TimeInterval = 0
+    /// Set once this process has checked whether the previous one ended unexpectedly.
+    static var checkedRestart = false
     /// True while this copy is off screen with its keys and panels freed. viewWillAppear builds them again.
     var releasedViews = false
     var keyPreview: KeyPreview?
@@ -107,9 +109,14 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         Self.liveCopies.add(self)
         // A restart is counted only when the keyboard was in use moments ago and never closed. iOS also
         // removes keyboards left open in a backgrounded app; that is normal and is not counted.
-        // Either way dictionary, multilingual and emoji features stay enabled.
-        if store.sessionOpen, let active = store.sessionActiveAt, abs(Date().timeIntervalSince(active)) < 90 {
-            store.unexpectedCloses += 1
+        // Either way dictionary, multilingual and emoji features stay enabled. A restart starts a new
+        // keyboard process, so only its first copy checks; later copies are other apps' keyboards.
+        if !Self.checkedRestart {
+            Self.checkedRestart = true
+            if store.sessionOpen, let active = store.sessionActiveAt, abs(Date().timeIntervalSince(active)) < 90 {
+                store.unexpectedCloses += 1
+                store.lastRestartNote = store.sessionMemoryNote
+            }
         }
         store.sessionOpen = false
         let center = NotificationCenter.default
@@ -197,6 +204,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if Self.onScreen === self { Self.onScreen = nil }
+        if Self.onScreen == nil { MemoryMeter.noteScreen("closed"); store.recordMemoryPeaks(MemoryMeter.peaksByScreen) }
         releaseHiddenViews()
     }
 
@@ -229,7 +237,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     /// The app using the keyboard left the screen. iOS may now remove the keyboard without telling it.
-    @objc func hostBecameInactive() { store.sessionOpen = false; saveLearning() }
+    @objc func hostBecameInactive() {
+        store.sessionOpen = false; saveLearning()
+        MemoryMeter.noteScreen(Self.onScreen?.diagnosticScreen ?? "closed")
+        store.recordMemoryPeaks(MemoryMeter.peaksByScreen)
+    }
 
     @objc func hostBecameActive() {
         guard isViewLoaded, view.window != nil else { return }
@@ -242,6 +254,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         guard force || now - lastActiveMark > 5 else { return }
         lastActiveMark = now
         store.sessionActiveAt = Date()
+        // Screen name and megabytes only, so the report can say what came before an unexpected restart.
+        store.sessionMemoryNote = "\(diagnosticScreen) screen, \(MemoryMeter.footprint / 1_048_576) MB used, \(Self.memoryHeadroomMB) MB left"
     }
 
     /// Learned words are written once typing pauses for two seconds, and at the latest every
@@ -369,9 +383,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let now = Date.timeIntervalSinceReferenceDate
         guard now - Self.lastMemoryWarning > 2 else { return }
         Self.lastMemoryWarning = now
+        let screen = Self.onScreen?.diagnosticScreen ?? "closed"
+        MemoryMeter.noteScreen(screen)
         store.memoryWarnings += 1
-        store.recordMemoryWarning(screen: Self.onScreen?.diagnosticScreen ?? "closed", headroomMB: Self.memoryHeadroomMB,
-                                  detail: Self.memoryReport())
+        store.recordMemoryWarning(screen: screen, headroomMB: Self.memoryHeadroomMB, detail: Self.memoryReport())
+        store.recordMemoryPeaks(MemoryMeter.peaksByScreen)
         // Preserve active dictionaries and language features; trim only inactive cache entries.
         let active = Set((Self.onScreen ?? self).engine.lexicons.map(\.code))
         MemoryMeter.measure(.dictionaries) { LexiconCache.shared.trim(keeping: active) }
@@ -512,6 +528,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         rebuildToolbar(); rebuildContent()
         if identifier == nil { refreshSuggestions() }
         updateTopBar()
+        markActive(force: true) // notes the new screen and its memory
     }
 
     var panelTitle: String {
@@ -519,6 +536,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func rebuildContent() {
+        // Every change of screen comes through here: the memory high so far goes to the screen that was shown.
+        MemoryMeter.noteScreen(diagnosticScreen)
         repeatDelete?.invalidate(); repeatDelete = nil
         removeAccentPopup()
         content.subviews.forEach { $0.removeFromSuperview() }
@@ -806,6 +825,8 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func refreshSuggestions() {
+        // A hidden copy that finishes loading a dictionary must not rebuild the buttons it freed.
+        guard !releasedViews else { return }
         if store.sessionOpen { markActive() }
         if searchMode != nil { showSearchResults(); return }
         guard panel == nil else { return }
@@ -1108,15 +1129,19 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let lowest = store.lowestMemoryHeadroomMB.map { "\($0) MB" } ?? "none yet"
         let memoryLine = "\nMemory left before iOS limit: \(Self.memoryHeadroomMB) MB (lowest at a warning: \(lowest))"
         let screenLine = "\nWarnings by screen: \(screens.isEmpty ? "none yet" : screens)"
-        let summary = "WianTribe \(version) (build \(build)) · iOS \(UIDevice.current.systemVersion)\nMemory warnings reported by iOS: \(store.memoryWarnings)\nUnconfirmed session restarts: \(closes) (not a verified crash count)\nLanguages: \(preferences.activeLanguages.map(\.code).joined(separator: ", "))\nActive dictionaries: \(engine.lexicons.count)"
+        store.recordMemoryPeaks(MemoryMeter.peaksByScreen)
+        let peaks = store.memoryPeakScreens.sorted { $0.value > $1.value }.map { "\($0.key) \($0.value) MB" }.joined(separator: ", ")
+        let peakLine = "\nHighest memory by screen: \(peaks.isEmpty ? "none yet" : peaks)"
+        let restartNote = closes > 0 ? (store.lastRestartNote.map { " · before the last one: \($0)" } ?? "") : ""
+        let summary = "WianTribe \(version) (build \(build)) · iOS \(UIDevice.current.systemVersion)\nMemory warnings reported by iOS: \(store.memoryWarnings)\nUnconfirmed session restarts: \(closes) (not a verified crash count)\(restartNote)\nLanguages: \(preferences.activeLanguages.map(\.code).joined(separator: ", "))\nActive dictionaries: \(engine.lexicons.count)"
         let nowLine = "\nMemory now: " + Self.memoryReport()
         let lowestLine = store.lowestMemoryDetail.map { $0.isEmpty ? "" : "\nAt the lowest warning: " + $0 } ?? ""
-        let diagnostic = summary + memoryLine + screenLine + nowLine + lowestLine
+        let diagnostic = summary + memoryLine + screenLine + peakLine + nowLine + lowestLine
         note(diagnostic, in: stack)
         panelButton("Copy diagnostic details", in: stack) { [weak self] in self?.copyToClipboard(diagnostic) }
-        if closes > 0 || store.memoryWarnings > 0 {
+        if closes > 0 || store.memoryWarnings > 0 || !store.memoryPeakScreens.isEmpty {
             panelButton("Reset health counter", in: stack) { [weak self] in
-                self?.store.resetHealthCounters(); self?.rebuildContent()
+                MemoryMeter.resetScreenPeaks(); self?.store.resetHealthCounters(); self?.rebuildContent()
             }
         }
         note("Changes here apply immediately. Basic typing works without Full Access.", in: stack)

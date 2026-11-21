@@ -191,9 +191,31 @@ final class KeyboardStore {
         memoryWarningScreens = screens
         if headroomMB < (lowestMemoryHeadroomMB ?? Int.max) { lowestMemoryHeadroomMB = headroomMB; lowestMemoryDetail = detail }
     }
+    /// For each keyboard screen, the most memory the keyboard reached while it was shown, in megabytes.
+    var memoryPeakScreens: [String: Int] {
+        get { (local.dictionary(forKey: "session.memoryPeakScreens") as? [String: Int]) ?? [:] }
+        set { local.set(newValue, forKey: "session.memoryPeakScreens") }
+    }
+    /// Keeps the higher figure for each screen. Writes only when one rises.
+    func recordMemoryPeaks(_ peaks: [String: Int]) {
+        var stored = memoryPeakScreens, changed = false
+        for (screen, megabytes) in peaks where megabytes > (stored[screen] ?? 0) { stored[screen] = megabytes; changed = true }
+        if changed { memoryPeakScreens = stored }
+    }
+    /// Screen and memory at the last check while the keyboard was in use, such as "emoji screen, 160 MB used,
+    /// 16 MB left". Kept so the report can say what was happening before an unexpected restart.
+    var sessionMemoryNote: String? {
+        get { local.string(forKey: "session.memoryNote") }
+        set { local.set(newValue, forKey: "session.memoryNote") }
+    }
+    var lastRestartNote: String? {
+        get { local.string(forKey: "session.lastRestartNote") }
+        set { local.set(newValue, forKey: "session.lastRestartNote") }
+    }
     func resetHealthCounters() {
         unexpectedCloses = 0; memoryWarnings = 0
         memoryWarningScreens = [:]; lowestMemoryHeadroomMB = nil; lowestMemoryDetail = nil
+        memoryPeakScreens = [:]; lastRestartNote = nil
     }
     /// When the keyboard was last seen in use. Tells a restart while typing apart from iOS's routine
     /// clean-up of a keyboard left open in an app that went to the background.
