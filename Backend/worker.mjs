@@ -102,6 +102,6 @@ export default {
       }
       if (!text || [...text].length > 6000) return json({ error: "Invalid provider response" }, 502);
       return json({ text });
-    } catch (error) { console.error("provider error:", String(error?.name || "error").slice(0, 40)); return json({ error: "Writing provider unavailable" }, 502); }
+    } catch (error) { console.error("provider request threw", String(error?.name || "Error").slice(0, 40)); return json({ error: "Writing provider unavailable" }, 502); }
   }
 };

@@ -2,6 +2,7 @@
 """Install/launch the actual companion app and capture a simulator screenshot."""
 import json
 import pathlib
+import re
 import subprocess
 import time
 
@@ -35,7 +36,16 @@ try:
     time.sleep(12)  # Let one-time simulator setup notification banners disappear.
     output = root / "build/output"
     output.mkdir(parents=True, exist_ok=True)
-    run("xcrun", "simctl", "io", device, "screenshot", str(output / "Home-iPhone.png"))
+    shot = output / "Home-iPhone.png"
+    first = subprocess.run(["xcrun", "simctl", "io", device, "screenshot", str(shot)], text=True, capture_output=True)
+    if first.returncode != 0:
+        # A two-screen iPhone needs the screen named: simctl lists the choices, and the primary one is used.
+        choices = re.findall(r"--display=(\S+)\s+([^|\n]*)", first.stderr + first.stdout)
+        display = next((value for value, label in choices if "primary" in label.lower()), choices[0][0] if choices else None)
+        if display is None:
+            print(f"::error title=simctl screenshot::{(first.stderr or first.stdout).strip()[:900]}")
+            raise SystemExit(first.returncode)
+        run("xcrun", "simctl", "io", device, "screenshot", f"--display={display}", str(shot))
     print("Companion app installed and launched in iPhone simulator")
 finally:
     subprocess.run(["xcrun", "simctl", "shutdown", device], check=False)
