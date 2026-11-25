@@ -1,37 +1,18 @@
 import Foundation
 
 /// iOS shows a keyboard only part of the text it works on. A selection of several lines arrives as its
-/// first line and last sentence, with everything between them missing (seen in Messages and Mail), and the
+/// first and last sentences, with everything between them missing (seen in Messages and the Claude app), and the
 /// text before and after the cursor is cut to a few sentences. These helpers decide when a selection can be
 /// trusted as reported, and find the whole selection in text the keyboard read by moving the cursor.
 public enum SelectionText {
-    /// Longest selection taken as reported. Longer ones are read from the text box.
-    static let trustedLength = 200
-
-    /// True when iOS may have shortened `selected`: it is long, spans lines, or holds more than one sentence.
+    /// True unless `selected` is a single word, number, link or address. iOS can shorten any longer selection
+    /// to its first and last sentences, even into something that reads like one sentence: selecting a whole
+    /// message in the Claude app reported just "Hi James" and "Do have a lovely day".
     public static func mayBeShortened(_ selected: String) -> Bool {
-        selected.count > trustedLength || selected.contains(where: \.isNewline) || hasSentenceBreak(selected)
-    }
-
-    /// A sentence end (. ! ? … and the Arabic, Urdu, Chinese and Japanese forms) with more text after it.
-    static func hasSentenceBreak(_ text: String) -> Bool {
-        let ends: Set<Character> = [".", "!", "?", "…", "؟", "۔", "。", "！", "？"]
-        let spaceless: Set<Character> = ["。", "！", "？"]
-        let closers: Set<Character> = ["\"", "'", "”", "’", ")", "]", "»"]
-        let chars = Array(text)
-        var index = 0
-        while index < chars.count {
-            guard ends.contains(chars[index]) else { index += 1; continue }
-            var next = index + 1
-            // Quotes, brackets and repeated marks stay with the sentence they end.
-            while next < chars.count, closers.contains(chars[next]) || ends.contains(chars[next]) { next += 1 }
-            let restHasText = next < chars.count && chars[next...].contains { !$0.isWhitespace }
-            if restHasText && chars[next].isWhitespace { return true }
-            // Chinese and Japanese put no space after a sentence.
-            if restHasText && spaceless.contains(chars[index]) { return true }
-            index = next
-        }
-        return false
+        guard selected.count <= 100, !selected.contains(where: \.isWhitespace) else { return true }
+        // Chinese, Japanese and Arabic-script sentences can end without a space after them.
+        let ends: Set<Character> = ["。", "！", "？", "؟", "۔"]
+        return selected.dropLast().contains { ends.contains($0) }
     }
 
     /// Finds the whole selection in `text`, the text box as read by moving the cursor.

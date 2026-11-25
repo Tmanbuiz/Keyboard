@@ -121,8 +121,8 @@ extension KeyboardViewController {
     func copySelectionOrStatus(cut: Bool) {
         guard let selected = textDocumentProxy.selectedText, !selected.isEmpty else { setStatus("Select text first: double-tap a word in the app"); return }
         guard hasFullAccess else { setStatus("Copy and paste need Allow Full Access"); return }
-        // A short selection is exactly what iOS reported. A longer one can arrive with its middle missing, so
-        // it is read from the text box first, and Cut deletes only text the keyboard has read.
+        // A single word, link or address is exactly what iOS reported. Anything longer can arrive with its middle
+        // missing, so it is read from the text box first, and Cut deletes only text the keyboard has read.
         guard SelectionText.mayBeShortened(selected) else {
             copyToClipboard(selected)
             if cut { textDocumentProxy.deleteBackward(); setStatus("Cut. Paste it anywhere") }
@@ -130,7 +130,7 @@ extension KeyboardViewController {
         }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            guard let spot = await self.readSelection(selected) else { self.setStatus("Couldn't read all of this selection. Use Copy in the app's menu instead"); return }
+            guard let spot = await self.readSelection(selected) else { self.setStatus("Couldn't read all of this selection. Use the app's own menu instead"); return }
             self.copyToClipboard(spot.text)
             guard cut else { return }
             let removed = await self.replace(spot, with: "")

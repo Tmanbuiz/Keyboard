@@ -457,37 +457,37 @@
         }
       }
     },
-    "Couldn't read all of this selection. Use Copy in the app's menu instead": {
+    "Couldn't read all of this selection. Use the app's own menu instead": {
       "extractionState": "manual",
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudo leer toda la selección. Usa Copiar en el menú de la app"
+            "value": "No se pudo leer toda la selección. Usa el menú de la propia app"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Impossible de lire toute la sélection. Utilisez Copier dans le menu de l’app"
+            "value": "Impossible de lire toute la sélection. Utilisez plutôt le menu de l’app"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Auswahl konnte nicht ganz gelesen werden. Nutze stattdessen „Kopieren“ im Menü der App"
+            "value": "Die Auswahl konnte nicht ganz gelesen werden. Nutze stattdessen das Menü der App"
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Não foi possível ler toda a seleção. Use Copiar no menu do app"
+            "value": "Não foi possível ler toda a seleção. Use o menu do próprio app"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "تعذّرت قراءة التحديد كاملًا. استخدم «نسخ» في قائمة التطبيق بدلًا من ذلك"
+            "value": "تعذّرت قراءة التحديد كاملًا. استخدم قائمة التطبيق نفسه بدلًا من ذلك"
           }
         }
       }

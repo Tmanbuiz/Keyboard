@@ -146,7 +146,7 @@ extension KeyboardViewController {
         guard SelectionText.mayBeShortened(selected) else { use(selected); return }
         Task { @MainActor [weak self] in
             guard let self else { return }
-            guard let spot = await self.readSelection(selected) else { self.setStatus("Couldn't read all of this selection. Use Copy in the app's menu instead"); return }
+            guard let spot = await self.readSelection(selected) else { self.setStatus("Couldn't read all of this selection. Use the app's own menu instead"); return }
             use(spot.text)
         }
     }

@@ -203,7 +203,7 @@ extension KeyboardViewController {
                 }
                 let replacement = SelectionText.keepingOuterSpace(of: source.text, result)
                 guard let spot = source.spot else {
-                    // A short selection iOS reported whole: typing replaces it.
+                    // A selected word, link or address, which iOS reports whole: typing replaces the selection.
                     guard self.textDocumentProxy.selectedText == source.text else { self.setStatus("Selection changed. Select the original text again"); return }
                     self.textDocumentProxy.insertText(replacement)
                     self.finishReplacing(source.text, with: replacement); return
@@ -308,8 +308,8 @@ extension KeyboardViewController {
     /// The text a writing tool works on, and where it came from.
     struct WritingSource {
         var text: String
-        /// Where the text sits in the text box when it was read from there; nil for a short selection, which
-        /// Replace types over.
+        /// Where the text sits in the text box, as read from there; nil for a selected word, link or address,
+        /// which iOS reports whole and Replace types over.
         var spot: TextSpot?
         var documentID: UUID
     }
@@ -336,6 +336,8 @@ extension KeyboardViewController {
         let documentID = textDocumentProxy.documentIdentifier
         let selected = textDocumentProxy.selectedText ?? ""
         if !selected.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            // iOS can shorten any selection longer than a word, even into something that reads like one
+            // sentence, so it is read from the text box.
             guard SelectionText.mayBeShortened(selected) else { return .success(WritingSource(text: selected, spot: nil, documentID: documentID)) }
             guard let spot = await readSelection(selected) else { return .failure(.unreadSelection) }
             return checked(WritingSource(text: spot.text, spot: spot, documentID: documentID))

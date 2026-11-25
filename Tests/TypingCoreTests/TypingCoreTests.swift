@@ -290,6 +290,10 @@ extension TypingCoreTests {
         XCTAssertEqual(SelectionText.locate(selected: reported, before: "", after: "", in: text, caret: 1), 0 ..< text.count)
         // Joined without a line break, too.
         XCTAssertEqual(SelectionText.locate(selected: "Hi James Jullie is already aware of it", before: "", after: "", in: text, caret: text.count - 1), 0 ..< text.count)
+        // The second report, from the Claude app: first and last lines of a longer message, joined by a space.
+        let longer = Array("Hi James\nThis is Tolu.\nPlease bear with me. Tola will send the shift tomorrow morning.\nJullie is already aware of it.\n\nDo have a lovely day")
+        XCTAssertEqual(SelectionText.locate(selected: "Hi James Do have a lovely day", before: "", after: "", in: longer, caret: longer.count - 1), 0 ..< longer.count)
+        XCTAssertEqual(SelectionText.locate(selected: "Hi James\nDo have a lovely day", before: "", after: "", in: longer, caret: 1), 0 ..< longer.count)
         // Nothing fits away from the cursor, or text that isn't there.
         XCTAssertNil(SelectionText.locate(selected: reported, before: "", after: "", in: text, caret: 40))
         XCTAssertNil(SelectionText.locate(selected: "Something else entirely", before: "", after: "", in: text, caret: text.count - 1))
@@ -309,15 +313,17 @@ extension TypingCoreTests {
         XCTAssertEqual(SelectionText.locate(selected: "Thanks. Bye", before: "", after: "\nThanks. Bye", in: twice, caret: 1), 0 ..< 11)
     }
 
-    func testSelectionTextTrustsOnlyShortSingleSentences() {
-        XCTAssertFalse(SelectionText.mayBeShortened("Jullie is already aware of it"))
-        XCTAssertFalse(SelectionText.mayBeShortened("Wait for it..."))
-        XCTAssertFalse(SelectionText.mayBeShortened("It costs 3.5 dollars."))
-        XCTAssertTrue(SelectionText.mayBeShortened("Thanks. See you soon"))
+    func testSelectionTextTrustsOnlySingleWords() {
+        // What iOS reported when a whole message was selected in the Claude app: it reads like one sentence.
+        XCTAssertTrue(SelectionText.mayBeShortened("Hi James Do have a lovely day"))
+        XCTAssertTrue(SelectionText.mayBeShortened("Jullie is already aware of it"))
         XCTAssertTrue(SelectionText.mayBeShortened("Hi James\nThis is Tolu."))
-        XCTAssertTrue(SelectionText.mayBeShortened("Really?! Yes"))
         XCTAssertTrue(SelectionText.mayBeShortened("你好。我很好"))
-        XCTAssertTrue(SelectionText.mayBeShortened(String(repeating: "a", count: 201)))
+        XCTAssertTrue(SelectionText.mayBeShortened(String(repeating: "a", count: 101)))
+        XCTAssertFalse(SelectionText.mayBeShortened("lovely"))
+        XCTAssertFalse(SelectionText.mayBeShortened("atoyejet@gmail.com"))
+        XCTAssertFalse(SelectionText.mayBeShortened("https://wiantribe.com/keyboard"))
+        XCTAssertFalse(SelectionText.mayBeShortened("你好。"))
     }
 
     func testSelectionTextKeepsLimitsAndSpacing() {
