@@ -317,6 +317,41 @@
         }
       }
     },
+    "Copied. The text changed, so nothing was cut": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiado. El texto cambió, así que no se cortó nada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copié. Le texte a changé, donc rien n’a été coupé"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopiert. Der Text hat sich geändert, daher wurde nichts ausgeschnitten"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiado. O texto mudou, então nada foi recortado"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تم النسخ. تغيّر النص، لذلك لم يُقص أي شيء"
+          }
+        }
+      }
+    },
     "Copy": {
       "extractionState": "manual",
       "localizations": {
@@ -418,6 +453,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "النسخ يتطلب «السماح بالوصول الكامل» في الإعدادات"
+          }
+        }
+      }
+    },
+    "Couldn't read all of this selection. Use Copy in the app's menu instead": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo leer toda la selección. Usa Copiar en el menú de la app"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de lire toute la sélection. Utilisez Copier dans le menu de l’app"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Auswahl konnte nicht ganz gelesen werden. Nutze stattdessen „Kopieren“ im Menü der App"
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Não foi possível ler toda a seleção. Use Copiar no menu do app"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تعذّرت قراءة التحديد كاملًا. استخدم «نسخ» في قائمة التطبيق بدلًا من ذلك"
           }
         }
       }
@@ -2277,107 +2347,107 @@
         }
       }
     },
-    "Works on selected text, or on what you've typed in this paragraph. Runs on this iPhone with Apple Intelligence when your language is supported.": {
+    "Works on selected text, or on your message up to the cursor. Runs on this iPhone with Apple Intelligence when your language is supported.": {
       "extractionState": "manual",
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funciona con el texto seleccionado o con lo escrito en este párrafo. Se ejecuta en este iPhone con Apple Intelligence cuando tu idioma es compatible."
+            "value": "Funciona con el texto seleccionado o con tu mensaje hasta el cursor. Se ejecuta en este iPhone con Apple Intelligence cuando tu idioma es compatible."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fonctionne sur le texte sélectionné ou sur ce que vous avez saisi dans ce paragraphe. S’exécute sur cet iPhone avec Apple Intelligence lorsque votre langue est prise en charge."
+            "value": "Fonctionne sur le texte sélectionné ou sur votre message jusqu’au curseur. S’exécute sur cet iPhone avec Apple Intelligence lorsque votre langue est prise en charge."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funktioniert mit ausgewähltem Text oder dem, was du in diesem Absatz getippt hast. Läuft auf diesem iPhone mit Apple Intelligence, wenn deine Sprache unterstützt wird."
+            "value": "Funktioniert mit ausgewähltem Text oder deiner Nachricht bis zum Cursor. Läuft auf diesem iPhone mit Apple Intelligence, wenn deine Sprache unterstützt wird."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funciona com o texto selecionado ou com o que você digitou neste parágrafo. Roda neste iPhone com Apple Intelligence quando o seu idioma é compatível."
+            "value": "Funciona com o texto selecionado ou com a sua mensagem até o cursor. Roda neste iPhone com Apple Intelligence quando o seu idioma é compatível."
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "يعمل على النص المحدد أو على ما كتبته في هذه الفقرة. يعمل على هذا الـ iPhone باستخدام Apple Intelligence عندما تكون لغتك مدعومة."
+            "value": "يعمل على النص المحدد أو على رسالتك حتى المؤشر. يعمل على هذا الـ iPhone باستخدام Apple Intelligence عندما تكون لغتك مدعومة."
           }
         }
       }
     },
-    "Works on selected text, or on what you've typed in this paragraph. Translation runs on this iPhone once the languages are downloaded in the WianTribe app.": {
+    "Works on selected text, or on your message up to the cursor. Translation runs on this iPhone once the languages are downloaded in the WianTribe app.": {
       "extractionState": "manual",
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funciona con el texto seleccionado o con lo escrito en este párrafo. La traducción se ejecuta en este iPhone cuando los idiomas están descargados en la app WianTribe."
+            "value": "Funciona con el texto seleccionado o con tu mensaje hasta el cursor. La traducción se ejecuta en este iPhone cuando los idiomas están descargados en la app WianTribe."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fonctionne sur le texte sélectionné ou sur ce que vous avez saisi dans ce paragraphe. La traduction s’exécute sur cet iPhone une fois les langues téléchargées dans l’app WianTribe."
+            "value": "Fonctionne sur le texte sélectionné ou sur votre message jusqu’au curseur. La traduction s’exécute sur cet iPhone une fois les langues téléchargées dans l’app WianTribe."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funktioniert mit ausgewähltem Text oder dem, was du in diesem Absatz getippt hast. Die Übersetzung läuft auf diesem iPhone, sobald die Sprachen in der WianTribe-App geladen sind."
+            "value": "Funktioniert mit ausgewähltem Text oder deiner Nachricht bis zum Cursor. Die Übersetzung läuft auf diesem iPhone, sobald die Sprachen in der WianTribe-App geladen sind."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funciona com o texto selecionado ou com o que você digitou neste parágrafo. A tradução roda neste iPhone quando os idiomas são baixados no app WianTribe."
+            "value": "Funciona com o texto selecionado ou com a sua mensagem até o cursor. A tradução roda neste iPhone quando os idiomas são baixados no app WianTribe."
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "يعمل على النص المحدد أو على ما كتبته في هذه الفقرة. تعمل الترجمة على هذا الـ iPhone بعد تنزيل اللغات في تطبيق WianTribe."
+            "value": "يعمل على النص المحدد أو على رسالتك حتى المؤشر. تعمل الترجمة على هذا الـ iPhone بعد تنزيل اللغات في تطبيق WianTribe."
           }
         }
       }
     },
-    "Works on selected text, or on what you've typed in this paragraph. Uses your WianTribe service, because Apple Intelligence isn't available here.": {
+    "Works on selected text, or on your message up to the cursor. Uses your WianTribe service, because Apple Intelligence isn't available here.": {
       "extractionState": "manual",
       "localizations": {
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funciona con el texto seleccionado o con lo escrito en este párrafo. Usa tu servicio WianTribe, porque Apple Intelligence no está disponible aquí."
+            "value": "Funciona con el texto seleccionado o con tu mensaje hasta el cursor. Usa tu servicio WianTribe, porque Apple Intelligence no está disponible aquí."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fonctionne sur le texte sélectionné ou sur ce que vous avez saisi dans ce paragraphe. Utilise votre service WianTribe, car Apple Intelligence n’est pas disponible ici."
+            "value": "Fonctionne sur le texte sélectionné ou sur votre message jusqu’au curseur. Utilise votre service WianTribe, car Apple Intelligence n’est pas disponible ici."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funktioniert mit ausgewähltem Text oder dem, was du in diesem Absatz getippt hast. Nutzt deinen WianTribe-Dienst, da Apple Intelligence hier nicht verfügbar ist."
+            "value": "Funktioniert mit ausgewähltem Text oder deiner Nachricht bis zum Cursor. Nutzt deinen WianTribe-Dienst, da Apple Intelligence hier nicht verfügbar ist."
           }
         },
         "pt": {
           "stringUnit": {
             "state": "translated",
-            "value": "Funciona com o texto selecionado ou com o que você digitou neste parágrafo. Usa o seu serviço WianTribe, porque o Apple Intelligence não está disponível aqui."
+            "value": "Funciona com o texto selecionado ou com a sua mensagem até o cursor. Usa o seu serviço WianTribe, porque o Apple Intelligence não está disponível aqui."
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "يعمل على النص المحدد أو على ما كتبته في هذه الفقرة. يستخدم خدمة WianTribe لديك لأن Apple Intelligence غير متاح هنا."
+            "value": "يعمل على النص المحدد أو على رسالتك حتى المؤشر. يستخدم خدمة WianTribe لديك لأن Apple Intelligence غير متاح هنا."
           }
         }
       }
@@ -2728,6 +2798,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "أغلق iOS تطبيق WianTribe في المرة الأخيرة لذا بدأ في الوضع الخفيف (العدّاد في ⚙︎)"
+          }
+        }
+      }
+    },
+    "iOS shared only part of this selection with the keyboard. Tap at the end of your message without selecting anything, then try again.": {
+      "extractionState": "manual",
+      "localizations": {
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS solo compartió parte de esta selección con el teclado. Toca al final de tu mensaje sin seleccionar nada y vuelve a intentarlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS n’a partagé qu’une partie de cette sélection avec le clavier. Touchez la fin de votre message sans rien sélectionner, puis réessayez."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS hat nur einen Teil dieser Auswahl an die Tastatur weitergegeben. Tippe ans Ende deiner Nachricht, ohne etwas auszuwählen, und versuche es erneut."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O iOS compartilhou só parte desta seleção com o teclado. Toque no fim da sua mensagem sem selecionar nada e tente de novo."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "شارك iOS جزءًا فقط من هذا التحديد مع لوحة المفاتيح. اضغط في نهاية رسالتك دون تحديد أي شيء، ثم حاول مرة أخرى."
           }
         }
       }

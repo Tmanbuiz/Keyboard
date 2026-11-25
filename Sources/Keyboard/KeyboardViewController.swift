@@ -57,7 +57,11 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     var writingError: String?
     var writingVia = "on this iPhone"
     var writingStyleMenu = false
-    var writingSourceText: (text: String, isSelection: Bool)?
+    var writingSourceText: WritingSource?
+    /// The last text a writing tool read from the text box, so the next tool can work on the same text.
+    var lastReadSource: WritingSource?
+    /// True while the keyboard moves the cursor to read the text box; typing feedback waits until it is done.
+    var readingText = false
     var clipboardTimer: Timer?
     var freshClip: (text: String, date: Date)?
     /// True when the clipboard changed but iOS withheld its text (Paste from Other Apps is set to Ask or Deny).
@@ -305,6 +309,7 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     override func textDidChange(_ textInput: UITextInput?) {
         super.textDidChange(textInput)
         guard !releasedViews else { return } // rebuilt with the current text when it shows again
+        guard !readingText else { return } // the keyboard is moving the cursor to read the text box
         if let correction, !correction.canUndo(context: before) { self.correction = nil }
         if !before.hasSuffix(glideSuffix) { glideChoices = [] }
         if preferences.theme == .auto && wantsDarkPalette != usingDarkPalette { reloadPreferences() }
@@ -1115,14 +1120,9 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
     }
 
     func buildSettings(_ stack: UIStackView) {
-        if let undo = writingUndo {
+        if writingUndo != nil {
             panelButton("Undo last AI replacement", in: stack) { [weak self] in
-                guard let self else { return }
-                guard self.textDocumentProxy.documentIdentifier == undo.documentID,
-                      self.textDocumentProxy.selectedText?.isEmpty != false,
-                      self.before.hasSuffix(undo.replacement) else { self.setStatus("Text or cursor changed. Undo is no longer safe"); return }
-                for _ in undo.replacement { self.textDocumentProxy.deleteBackward() }
-                self.textDocumentProxy.insertText(undo.original); self.writingUndo = nil; self.showPanel(nil)
+                Task { @MainActor [weak self] in await self?.undoWritingReplacement() }
             }
         }
         let closes = store.unexpectedCloses
@@ -1275,12 +1275,12 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         let copy = button("Copy selected") { [weak self] in
             guard let self else { return }
             guard let selected = self.textDocumentProxy.selectedText, !selected.isEmpty else { self.setStatus("Select text in your message first"); return }
-            self.copyToClipboard(selected)
+            self.useWholeSelection(selected) { self.copyToClipboard($0) }
         }
         let save = button("Pin selected") { [weak self] in
             guard let self else { return }
             guard let selected = self.textDocumentProxy.selectedText, !selected.isEmpty else { self.setStatus("Select text in your message first"); return }
-            self.store.addPhrase(selected); self.rebuildContent(); self.setStatus("Pinned on this device")
+            self.useWholeSelection(selected) { text in self.store.addPhrase(text); self.rebuildContent(); self.setStatus("Pinned on this device") }
         }
         let clearRecent = button("Clear recent") { [weak self] in
             self?.store.clearRecentClips(); self?.freshClip = nil; self?.rebuildContent(); self?.setStatus("Recent clips cleared. Pinned items kept")
@@ -1345,14 +1345,6 @@ final class KeyboardViewController: UIInputViewController, UIGestureRecognizerDe
         controls.heightAnchor.constraint(equalToConstant: 26).isActive = true
         card.addArrangedSubview(body); card.addArrangedSubview(controls)
         return card
-    }
-
-    /// The text writing tools work on: the selection, or else the paragraph typed before the cursor.
-    func writingSource() -> (text: String, isSelection: Bool)? {
-        if let selected = textDocumentProxy.selectedText, !selected.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return (selected, true) }
-        let paragraph = before.split(separator: "\n", omittingEmptySubsequences: false).last.map(String.init) ?? ""
-        let text = String(paragraph.suffix(1500))
-        return text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : (text, false)
     }
 
     func buildServiceRows(_ stack: UIStackView) {

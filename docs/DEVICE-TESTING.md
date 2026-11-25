@@ -22,6 +22,7 @@ The automated tests validate the typing engine and writing request boundaries; a
 - Emoji: browse every category, use search in English and another language, set a skin tone by holding 👋, and confirm Recents.
 - Editing panel: arrows (hold to repeat), word and line jumps, copy/cut/paste and delete word in Notes.
 - Handwriting: write several words in your language; check alternatives replace the word. Watch for the keyboard closing unexpectedly (a memory limit), and report the device model if it does.
+- Long selections: in Messages, type three lines, select all of them and run Spelling and grammar. The result must cover every line, and Replace must change all three lines and nothing else. Repeat with nothing selected (cursor at the end), with only the middle line selected, and with Copy and Cut in the editing panel; check that Undo last AI replacement restores the text.
 - Translate & write on iOS 26: download a language in the app, then translate selected text and typed text in the keyboard, and try grammar and tone on a device with Apple Intelligence. Repeat with airplane mode on.
 - App languages: switch the iPhone to Spanish, French, Portuguese, German and Arabic and check the app's text fits and reads naturally (Arabic right to left).
 

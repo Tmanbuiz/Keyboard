@@ -122,8 +122,8 @@ extension KeyboardViewController {
             writingTile("Email", symbol: "envelope", horizontal: true) { go(.email) }], height: 44))
         let onDevice = OnDeviceWriting.canRewrite && preferences.aiEngine == .auto
         note(onDevice
-             ? "Works on selected text, or on what you've typed in this paragraph. Runs on this iPhone with Apple Intelligence when your language is supported."
-             : "Works on selected text, or on what you've typed in this paragraph. Uses your WianTribe service, because Apple Intelligence isn't available here.", in: stack)
+             ? "Works on selected text, or on your message up to the cursor. Runs on this iPhone with Apple Intelligence when your language is supported."
+             : "Works on selected text, or on your message up to the cursor. Uses your WianTribe service, because Apple Intelligence isn't available here.", in: stack)
         buildServiceRows(stack)
     }
 
@@ -146,7 +146,7 @@ extension KeyboardViewController {
         let others = LanguageCatalog.all.filter { pack in !mine.contains { $0.code == pack.code } }.sorted { $0.englishName < $1.englishName }
         var packs = mine + others
         // Don't offer the language the text is already in.
-        if let text = writingSource()?.text, let detected = OnDeviceWriting.detectLanguage(text) {
+        if let text = quickWritingText(), let detected = OnDeviceWriting.detectLanguage(text) {
             let base = Locale.Language(identifier: detected).languageCode
             packs = packs.filter { Locale.Language(identifier: $0.primaryLanguage).languageCode != base }
         }
@@ -160,7 +160,7 @@ extension KeyboardViewController {
             while row.count < 3 { row.append(UIView()) }
             stack.addArrangedSubview(writingCard(row, height: 48))
         }
-        note("Works on selected text, or on what you've typed in this paragraph. Translation runs on this iPhone once the languages are downloaded in the WianTribe app.", in: stack)
+        note("Works on selected text, or on your message up to the cursor. Translation runs on this iPhone once the languages are downloaded in the WianTribe app.", in: stack)
         buildServiceRows(stack)
     }
 
@@ -201,15 +201,19 @@ extension KeyboardViewController {
                 guard self.textDocumentProxy.documentIdentifier == self.writingDocumentID else {
                     self.setStatus("The text field changed. Run the writing tool again"); return
                 }
-                if source.isSelection {
+                let replacement = SelectionText.keepingOuterSpace(of: source.text, result)
+                guard let spot = source.spot else {
+                    // A short selection iOS reported whole: typing replaces it.
                     guard self.textDocumentProxy.selectedText == source.text else { self.setStatus("Selection changed. Select the original text again"); return }
-                } else {
-                    guard self.textDocumentProxy.selectedText?.isEmpty != false, self.before.hasSuffix(source.text) else { self.setStatus("The text changed. Try again"); return }
-                    for _ in source.text { self.textDocumentProxy.deleteBackward() }
+                    self.textDocumentProxy.insertText(replacement)
+                    self.finishReplacing(source.text, with: replacement); return
                 }
-                self.textDocumentProxy.insertText(result)
-                self.writingUndo = (source.text, result, self.textDocumentProxy.documentIdentifier)
-                self.showPanel(nil)
+                // Text read from the text box: replaced from the cursor, only if it is still the same.
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    guard await self.replace(spot, with: replacement) else { self.setStatus("The text changed. Try again"); return }
+                    self.finishReplacing(source.text, with: replacement)
+                }
             })
             stack.addArrangedSubview(writingCard([
                 writingTile("Edit", symbol: "pencil", horizontal: true) { [weak self] in
@@ -217,23 +221,25 @@ extension KeyboardViewController {
                     self.enterSearch(.writing); self.searchQuery = result
                     self.rebuildToolbar(); self.refreshSuggestions()
                 }], height: 44))
-        } else if writingError != nil {
+        } else if writingError != nil, writingSourceText != nil {
+            // Offered when the AI failed. When reading the text failed, the message says what to do instead.
             actions.addArrangedSubview(writingTile("Try again", symbol: nil, horizontal: true) { [weak self] in
                 guard let self, let target = self.writingTarget else { return }
-                self.runWritingAssist(action, target: target)
+                self.runWritingAssist(action, target: target, reusing: self.writingSourceText)
             })
         }
         stack.addArrangedSubview(card)
         caption(writingResult != nil ? String(format: tr("Result %@."), tr(writingVia)) : (writingError != nil ? "Request stopped. Your text has not been changed." : (action == .translate ? "Translating…" : "Working…")), in: stack)
     }
 
-    /// Tries Apple's on-device models first, then the person's own service.
-    func runWritingAssist(_ action: WritingAction, target: KeyboardLanguage) {
-        guard let source = writingSource() else { setStatus("Type or select some text first"); return }
+    /// Reads the text to work on (the selection, or the message typed before the cursor), then tries Apple's
+    /// on-device models first and the person's own service after. `earlier` runs again on text already read.
+    func runWritingAssist(_ action: WritingAction, target: KeyboardLanguage, reusing earlier: WritingSource? = nil) {
+        guard earlier != nil || quickWritingText() != nil else { setStatus("Type or select some text first"); return }
         onlineTask?.cancel()
         writingAction = action; writingTarget = target; writingResult = nil; writingError = nil
-        writingDocumentID = textDocumentProxy.documentIdentifier
-        writingSourceText = source; writingVia = "on this iPhone"
+        if earlier == nil { writingDocumentID = textDocumentProxy.documentIdentifier }
+        writingSourceText = earlier; writingVia = "on this iPhone"
         rebuildContent()
         onlineTask = Task { @MainActor [weak self] in
             guard let self else { return }
@@ -242,6 +248,17 @@ extension KeyboardViewController {
             if preferService && ConnectionVault.load() == nil {
                 self.finishWriting(action, nil, via, "Sign in: WianTribe app → Tools → AI account"); return
             }
+            let source: WritingSource
+            if let earlier { source = earlier }
+            else {
+                switch await self.readWritingSource() {
+                case .success(let found): source = found
+                case .failure(let problem): self.finishWriting(action, nil, via, problem.message); return
+                }
+            }
+            guard !Task.isCancelled else { return }
+            self.writingSourceText = source
+            if source.spot != nil { self.lastReadSource = source }
             // Runs the iPhone's own AI. Used first on Auto, and as the fallback when the online service fails.
             func onDevice() async {
                 do {
@@ -284,5 +301,79 @@ extension KeyboardViewController {
         guard !Task.isCancelled, panel == "writing" || panel == "translate", writingAction == action else { return }
         writingResult = result; writingVia = via; writingError = result == nil ? message : nil
         rebuildContent()
+    }
+
+    // MARK: The text a tool works on
+
+    /// The text a writing tool works on, and where it came from.
+    struct WritingSource {
+        var text: String
+        /// Where the text sits in the text box when it was read from there; nil for a short selection, which
+        /// Replace types over.
+        var spot: TextSpot?
+        var documentID: UUID
+    }
+
+    enum WritingSourceProblem: Error {
+        case empty, unreadSelection, tooLong
+        var message: String {
+            switch self {
+            case .empty: return "Type or select some text first"
+            case .unreadSelection: return "iOS shared only part of this selection with the keyboard. Tap at the end of your message without selecting anything, then try again."
+            case .tooLong: return "Select or enter between 1 and 3,000 characters."
+            }
+        }
+    }
+
+    /// What a writing tool will likely work on, read without moving the cursor (to choose languages).
+    func quickWritingText() -> String? {
+        if let selected = textDocumentProxy.selectedText, !selected.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return selected }
+        return before.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : before
+    }
+
+    /// The selection, read whole when iOS may have shortened it, or else the message typed before the cursor.
+    func readWritingSource() async -> Result<WritingSource, WritingSourceProblem> {
+        let documentID = textDocumentProxy.documentIdentifier
+        let selected = textDocumentProxy.selectedText ?? ""
+        if !selected.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            guard SelectionText.mayBeShortened(selected) else { return .success(WritingSource(text: selected, spot: nil, documentID: documentID)) }
+            guard let spot = await readSelection(selected) else { return .failure(.unreadSelection) }
+            return checked(WritingSource(text: spot.text, spot: spot, documentID: documentID))
+        }
+        if let spot = await readTypedText(limit: 3000) {
+            // Right after a tool ran on a selection, the cursor sits at its end: the next tool works on the
+            // same text rather than on everything before it.
+            if let last = lastReadSource, let lastSpot = last.spot, last.documentID == documentID,
+               spot.field.agrees(with: lastSpot.field, covering: lastSpot.length) { return .success(last) }
+            return checked(WritingSource(text: spot.text, spot: spot, documentID: documentID))
+        }
+        // iOS didn't follow the cursor in this app: use the paragraph it shows before the cursor.
+        let window = Array(before)
+        let paragraph = window.split(separator: "\n", omittingEmptySubsequences: false).last ?? []
+        let spot = TextSpot(field: FieldText(before: window, after: []), length: paragraph.drop { $0.isWhitespace }.count,
+                            readsAfter: false, limit: 0)
+        return checked(WritingSource(text: spot.text, spot: spot, documentID: documentID))
+    }
+
+    private func checked(_ source: WritingSource) -> Result<WritingSource, WritingSourceProblem> {
+        if source.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return .failure(.empty) }
+        if source.text.unicodeScalars.count > 3000 { return .failure(.tooLong) }
+        return .success(source)
+    }
+
+    private func finishReplacing(_ original: String, with replacement: String) {
+        writingUndo = (original, replacement, textDocumentProxy.documentIdentifier)
+        lastReadSource = nil
+        showPanel(nil)
+    }
+
+    /// Puts back the text the last AI replacement changed, if the text before the cursor still ends with it.
+    func undoWritingReplacement() async {
+        guard let undo = writingUndo, textDocumentProxy.documentIdentifier == undo.documentID,
+              textDocumentProxy.selectedText?.isEmpty != false else { setStatus("Text or cursor changed. Undo is no longer safe"); return }
+        let typed = await readField(limit: undo.replacement.count + 50, readsAfter: false).map { String($0.before) } ?? before
+        guard typed.hasSuffix(undo.replacement) else { setStatus("Text or cursor changed. Undo is no longer safe"); return }
+        for _ in undo.replacement { textDocumentProxy.deleteBackward() }
+        textDocumentProxy.insertText(undo.original); writingUndo = nil; showPanel(nil)
     }
 }

@@ -278,4 +278,61 @@ extension TypingCoreTests {
         XCTAssertTrue(WritingCheck.leftOutText(source: email, result: "Morning Sandy!", action: .casual))
         XCTAssertFalse(WritingAction.translate.keepsAllText)
     }
+
+    func testSelectionTextFindsASelectionIOSShortened() {
+        let message = "Hi James\nThis is Tolu.\nPlease bear withme Tola will send the shift tomorrow morning. Jullie is already aware of it"
+        let text = Array(message)
+        // What the keyboard got when the whole message was selected in Messages: first line and last sentence.
+        let reported = "Hi James\nJullie is already aware of it"
+        XCTAssertTrue(SelectionText.mayBeShortened(reported))
+        // The cursor ends up next to the selection's end or its start, depending on the app.
+        XCTAssertEqual(SelectionText.locate(selected: reported, before: "", after: "", in: text, caret: text.count - 1), 0 ..< text.count)
+        XCTAssertEqual(SelectionText.locate(selected: reported, before: "", after: "", in: text, caret: 1), 0 ..< text.count)
+        // Joined without a line break, too.
+        XCTAssertEqual(SelectionText.locate(selected: "Hi James Jullie is already aware of it", before: "", after: "", in: text, caret: text.count - 1), 0 ..< text.count)
+        // Nothing fits away from the cursor, or text that isn't there.
+        XCTAssertNil(SelectionText.locate(selected: reported, before: "", after: "", in: text, caret: 40))
+        XCTAssertNil(SelectionText.locate(selected: "Something else entirely", before: "", after: "", in: text, caret: text.count - 1))
+
+        // A selection in the middle of an email, with what iOS showed before and after it.
+        let opening = "Good morning Sandy.\n", closing = "\nTolu"
+        let body = "Just updating you as i received the mail today about the\nProgress of myapplication. Thank you very much and do have a lovely day."
+        let email = Array(opening + body + closing)
+        let selection = opening.count ..< opening.count + body.count
+        let shortened = "Just updating you as i received the mail today about the\nThank you very much and do have a lovely day."
+        XCTAssertEqual(SelectionText.locate(selected: shortened, before: opening, after: closing, in: email, caret: selection.upperBound + 1), selection)
+        XCTAssertEqual(SelectionText.locate(selected: shortened, before: opening, after: closing, in: email, caret: selection.lowerBound + 1), selection)
+
+        // A selection iOS gave whole is found exactly; the cursor tells two copies apart.
+        let twice = Array("Thanks. Bye\nThanks. Bye")
+        XCTAssertEqual(SelectionText.locate(selected: "Thanks. Bye", before: "", after: "", in: twice, caret: twice.count - 1), 12 ..< 23)
+        XCTAssertEqual(SelectionText.locate(selected: "Thanks. Bye", before: "", after: "\nThanks. Bye", in: twice, caret: 1), 0 ..< 11)
+    }
+
+    func testSelectionTextTrustsOnlyShortSingleSentences() {
+        XCTAssertFalse(SelectionText.mayBeShortened("Jullie is already aware of it"))
+        XCTAssertFalse(SelectionText.mayBeShortened("Wait for it..."))
+        XCTAssertFalse(SelectionText.mayBeShortened("It costs 3.5 dollars."))
+        XCTAssertTrue(SelectionText.mayBeShortened("Thanks. See you soon"))
+        XCTAssertTrue(SelectionText.mayBeShortened("Hi James\nThis is Tolu."))
+        XCTAssertTrue(SelectionText.mayBeShortened("Really?! Yes"))
+        XCTAssertTrue(SelectionText.mayBeShortened("你好。我很好"))
+        XCTAssertTrue(SelectionText.mayBeShortened(String(repeating: "a", count: 201)))
+    }
+
+    func testSelectionTextKeepsLimitsAndSpacing() {
+        let long = "Dear team,\n" + String(repeating: "word ", count: 1000)
+        let part = SelectionText.recentPart(of: long, limit: 3000)
+        XCTAssertLessThanOrEqual(part.unicodeScalars.count, 3000)
+        XCTAssertTrue(long.hasSuffix(part))
+        XCTAssertTrue(part.hasPrefix("word "))
+        XCTAssertEqual(SelectionText.recentPart(of: "Short note", limit: 3000), "Short note")
+        // A line break near the start of the room is where the part begins.
+        let lines = String(repeating: "x", count: 50) + "\nSecond line " + String(repeating: "y", count: 2980)
+        XCTAssertTrue(SelectionText.recentPart(of: lines, limit: 3000).hasPrefix("Second line"))
+
+        XCTAssertEqual(SelectionText.keepingOuterSpace(of: "teh cat \n", "The cat."), "The cat. \n")
+        XCTAssertEqual(SelectionText.keepingOuterSpace(of: " hi", "Hi"), " Hi")
+        XCTAssertEqual(SelectionText.keepingOuterSpace(of: "hi", "Hi!"), "Hi!")
+    }
 }
